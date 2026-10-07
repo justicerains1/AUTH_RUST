@@ -120,8 +120,12 @@ npm run dev:down
 
 `dev:down` 保留开发卷。未实现的任务套件不能返回伪成功；测试库与临时 schema 清理不会指向 production。不要把 `.local`、密码、邮件链接、私钥、token、Cookie 或含这些值的浏览器 trace 提交 Git。
 
-当前T11已完成，提交后按前置顺序推进T12刷新/撤销、T13双BFF及T14管理API。T17～T19产品流程整合依赖相应真实后端；T20～T23完成后才能评估生产发布。每个模块验收后提交推送，完整任务结束时生成最终测试总结。
+当前T11已完成并推送83d1de3，按前置顺序推进T12刷新/撤销、T13双BFF及T14管理API。T17～T19产品流程整合依赖相应真实后端；T20～T23完成后才能评估生产发布。每个模块验收后提交推送，完整任务结束时生成最终测试总结。
 
 ## 最近完成：T11
 
 授权码交换与RS256/Discovery/JWKS/Userinfo通过真实API、外部OIDC客户端、独立JOSE验证；十并发仅一个令牌家族，签名失败完整回滚，PG故障503，Cookie不可替代Basic。[完整结果](docs/evidence/T11/test-summary.md)。当前discovery仅公布实际授权码能力，T12完成后扩展。
+
+## CI 恢复修复
+
+T01→T03的顺序失败已在本地真实复现并修复：API就绪早于Docker健康探针，恢复结束需等待容器healthy。顺序复测两项退出0；新增脱敏CI诊断保留原检查和失败状态。Windowscheck具体原因仍待下一远端诊断，[结果](docs/evidence/tooling/ci-recovery/test-summary.md)。

@@ -28,9 +28,9 @@ jobs:
       - run: npm ci
       - run: npm run verify:docs
       - run: npm run test:tooling
-      - run: npm run check
-      - run: npm run test:unit
-      - run: npm run build
+      - run: node scripts/ci-command.mjs check
+      - run: node scripts/ci-command.mjs test:unit
+      - run: node scripts/ci-command.mjs build
 
   integration-t01:
     runs-on: ubuntu-24.04

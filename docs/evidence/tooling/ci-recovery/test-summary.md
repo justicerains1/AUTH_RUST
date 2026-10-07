@@ -1,0 +1,7 @@
+# CI 依赖恢复与诊断模块
+
+2026-10-08，父提交83d1de3。本地真实执行T01→T03准确复现：T01成功恢复PG并得到APIready200，但紧随其后的T03看到ComposePGHealth仍starting而拒绝；after.txt记录修复后两项连续退出0。修复T01恢复阶段等待真实容器running/healthy后才结束，不降低T03前置检查、不用固定长sleep掩盖故障。
+
+新增CI检查执行器复用原check/unit/build命令，失败状态原样返回；原始诊断只存.local/ci，公开输出删除配置秘密、连接、Authorization、JWT、私钥及过长值，失败摘要经GitHub工作流转义发布annotation。2个行为测试与ESLint真实通过；未替换或跳过Windows检查。
+
+实际查询T11远端run37681836037，Windows仍在check失败，integration仍在T03失败；旧run9d76a11与d055641同样失败。公共日志接口403，原annotation仅Processcompleted，没有具体compiler信息。新增诊断待下一远端run，不能把推断写为Windows根因。原始失败与复测文件保存，此模块不宣称远端全绿。

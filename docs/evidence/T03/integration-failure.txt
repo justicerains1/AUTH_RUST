@@ -1,0 +1,4 @@
+T03 real database acceptance: 2026-10-07T20:29:31.400Z
+FAIL postgres must be running/healthy; run npm run dev:up.
+Completed: 2026-10-07T20:29:31.656Z
+Exit code: 1

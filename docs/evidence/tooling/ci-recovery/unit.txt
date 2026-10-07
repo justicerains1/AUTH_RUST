@@ -1,0 +1,22 @@
+TAP version 13
+# Subtest: CI diagnostics preserve compiler errors while removing credentials and private material
+ok 1 - CI diagnostics preserve compiler errors while removing credentials and private material
+  ---
+  duration_ms: 1.6687
+  type: 'test'
+  ...
+# Subtest: CI wrapper rejects commands outside its read-only verification list
+ok 2 - CI wrapper rejects commands outside its read-only verification list
+  ---
+  duration_ms: 0.4706
+  type: 'test'
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 2
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 106.9373

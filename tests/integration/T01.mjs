@@ -52,6 +52,17 @@ async function health(expected, attempts = 30) {
   throw new Error(`Readiness did not reach ${expected}.`);
 }
 
+async function dependencyHealthy(name) {
+  for (let attempt = 0; attempt < 40; attempt += 1) {
+    const raw = (await compose('ps', '--all', '--format', 'json')).stdout.trim();
+    const states = raw.startsWith('[') ? JSON.parse(raw) : raw.split('\n').filter(Boolean).map((line) => JSON.parse(line));
+    const service = states.find((state) => state.Service === name);
+    if (service?.State === 'running' && service.Health === 'healthy') return;
+    await delay(500);
+  }
+  throw new Error(`${name} did not recover to running/healthy.`);
+}
+
 async function configCases() {
   await mkdir(privateTestDir, { recursive: true, mode: 0o700 });
   await chmod(privateTestDir, 0o700);
@@ -192,6 +203,9 @@ async function main() {
       lines.push(`PASS ${dependency} stopped: live=200 / ready=503`);
     } finally {
       await compose('start', dependency);
+      // API readiness can recover before Docker's next health probe. Leave the dependency
+      // healthy as required by the following T03 suite, rather than racing that probe.
+      await dependencyHealthy(dependency);
     }
     await health(200);
     lines.push(`PASS ${dependency} restored: live=200 / ready=200`);
