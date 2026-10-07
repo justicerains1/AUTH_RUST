@@ -457,7 +457,7 @@ fn validate_challenge(row: &PgRow, now: OffsetDateTime, version: i64) -> Result<
     }
     Ok(())
 }
-async fn require_recent(
+pub(crate) async fn require_recent(
     tx: &mut Transaction<'_, Postgres>,
     user: Uuid,
     session: Uuid,

@@ -18602,6 +18602,18 @@
         "properties": {
           "credProps": {
             "type": "boolean"
+          },
+          "credentialProtectionPolicy": {
+            "type": "string",
+            "enum": [
+              "userVerificationRequired"
+            ]
+          },
+          "enforceCredentialProtectionPolicy": {
+            "type": "boolean"
+          },
+          "uvm": {
+            "type": "boolean"
           }
         },
         "required": [],
@@ -18609,7 +18621,8 @@
           {
             "credProps": true
           }
-        ]
+        ],
+        "description": "固定库生成的WebAuthn输入扩展；credProps用于检查resident属性，UV由认证签名验证。"
       },
       "WebAuthnClientExtensions": {
         "type": "object",
@@ -18816,6 +18829,16 @@
           },
           "userVerification": {
             "const": "required"
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "uvm": {
+                "type": "boolean"
+              }
+            },
+            "description": "库请求的用户验证方法扩展；真正UV仍通过认证器签名与服务器库验证。"
           }
         },
         "required": [

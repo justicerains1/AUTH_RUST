@@ -36,6 +36,7 @@ pub struct AuthAppState {
     pub(crate) sessions: identity_store::sessions::SessionService,
     pub(crate) password_store: identity_store::passwords::PasswordStore,
     pub(crate) mfa: identity_store::mfa::MfaService,
+    pub(crate) passkeys: identity_store::passkeys::PasskeyService,
 }
 pub(crate) struct AccountsInner {
     store: AccountsStore,
@@ -67,6 +68,14 @@ impl AuthAppState {
             .map_err(|_| "password service unavailable")?;
         Ok(Self {
             security,
+            passkeys: identity_store::passkeys::PasskeyService::new(
+                dependencies.postgres.clone(),
+                clock.clone(),
+                keys.clone(),
+                &config.issuer,
+                &config.rp_id,
+            )
+            .map_err(|_| "WebAuthn configuration invalid")?,
             mfa: identity_store::mfa::MfaService::new(
                 dependencies.postgres.clone(),
                 clock.clone(),
@@ -130,7 +139,8 @@ pub fn accounts_router(state: AuthAppState, existing: Router) -> Router {
             .merge(accounts)
             .merge(crate::sessions::session_routes(state.clone()))
             .merge(crate::passwords::password_routes(state.clone()))
-            .merge(crate::mfa::mfa_routes(state)),
+            .merge(crate::mfa::mfa_routes(state.clone()))
+            .merge(crate::passkeys::passkey_routes(state)),
     )
 }
 

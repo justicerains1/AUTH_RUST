@@ -1,0 +1,25 @@
+
+> rust-unified-identity@0.1.0 check
+> node scripts/run.mjs check
+
+Diff in /root/code/rust/auth_rust/crates/identity-server/src/lib.rs:1:
+ //! Startup and dependency health routes only. Authentication routes belong to later tasks.
+ pub mod accounts;
+ pub mod mfa;
+[31m-pub mod passwords;
+(B[m pub mod passkeys;
+[32m+pub mod passwords;
+(B[m pub mod security;
+ pub mod sessions;
+ use axum::{Json, Router, extract::State, http::StatusCode, routing::get};
+Diff in /root/code/rust/auth_rust/crates/identity-store/src/lib.rs:2:
+ pub mod accounts;
+ pub mod mfa;
+ pub mod migrations;
+[31m-pub mod passwords;
+(B[m pub mod passkeys;
+[32m+pub mod passwords;
+(B[m pub mod repository;
+ pub mod security;
+ pub mod sessions;
+cargo 退出码 1。

@@ -1,0 +1,7 @@
+# T09 库协议结构校正
+
+实际webauthn-rs0.5.5的注册输入扩展为credentialProtectionPolicy、enforceCredentialProtectionPolicy、uvm、credProps。OpenAPI逐项补齐安全约束，前端保留并传入浏览器；不使用自由对象替代校验。公钥凭证算法仅ES256/RS256，库验证后的产物再按该策略拒其他算法。
+
+库Passkey通用注册默认resident不强制；本服务要求residentKey=required/requireResidentKey=true及credProps.rk=true。rk是标准客户端扩展，不能宣称密码学硬件证明。可发现登录实际无allowlist、signed userHandle归属并UV验证；同步counter由库更新不一概递增。
+
+- 可发现认证options实际包含extensions.uvm=true，PublicKeyRequestOptions逐字段补该有界结构；前端保留传浏览器，不静默丢弃库参数。

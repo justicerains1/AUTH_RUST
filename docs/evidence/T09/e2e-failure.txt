@@ -1,0 +1,7 @@
+T09 real UI E2E 2026-10-07T19:12:57.140Z
+FAIL T09 browser checks failed; private details suppressed.
+
+1 !== 0
+
+Completed 2026-10-07T19:14:16.323Z
+Exit code 1

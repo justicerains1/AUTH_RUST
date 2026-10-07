@@ -76,7 +76,7 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 | T06 | 密码登录、账号查询和会话撤销 | 通过 | T05 | docs/evidence/T06/test-summary.md |
 | T07 | 找回密码、密码修改与安全通知 | 通过 | T06 | docs/evidence/T07/test-summary.md |
 | T08 | TOTP、恢复码与近期认证 | 通过 | T06、T07 | docs/evidence/T08/test-summary.md |
-| T09 | Passkey 注册、登录和管理 | 未开始 | T06、T08 | 待提供 |
+| T09 | Passkey 注册、登录和管理 | 待验收 | T06、T08 | docs/evidence/T09/test-summary.md |
 | T10 | 受管理客户端与授权/同意事务 | 未开始 | T06、T02 | 待提供 |
 | T11 | 授权码交换、ID Token、Discovery 和 Userinfo | 未开始 | T10 | 待提供 |
 | T12 | 刷新轮换、Introspection、撤销与 RP 退出 | 未开始 | T11 | 待提供 |
@@ -401,30 +401,30 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 
 | 案例 | 前置状态 | 操作步骤 | 预期结果 | 实际结果 | 状态 | 证据 |
 |---|---|---|---|---|---|---|
-| T09-PK-01 | 可注册账号、虚拟认证器 | 注册、退出、discoverable 登录 | 成功识别本人并达到强认证 | 待填写 | 未执行 | 待提供：浏览器测试 |
-| T09-PK-02 | 已有 challenge | 错误 origin/无 UV/重放 assertion | 全部失败，无会话 | 待填写 | 未执行 | 待提供：负向测试 |
-| T09-PK-03 | 两个用户 | 跨账号删除 credential、超过十个 | 越权拒绝，数量限制有效 | 待填写 | 未执行 | 待提供：API 测试 |
-| T09-PK-04 | 真实手机/桌面认证器 | 注册、登录、取消、备选密码 | 真实流程成功，取消可恢复 | 待填写 | 未执行 | 待提供：设备和操作记录 |
+| T09-PK-01 | 可注册账号、虚拟认证器 | 注册、退出、discoverable 登录 | 成功识别本人并达到强认证 | CDP虚拟CTAP2生成真实凭证/签名；注册、discoverable登录及Passkey强reauth成功 | 通过 | docs/evidence/T09/e2e.txt |
+| T09-PK-02 | 已有 challenge | 错误 origin/无 UV/重放 assertion | 全部失败，无会话 | fresh未消费签名：错origin/challenge/signature各拒；原合法签名成功；重放拒；重新有效签名UVfalse拒绝 | 通过 | docs/evidence/T09/e2e.txt及测试源码 |
+| T09-PK-03 | 两个用户 | 跨账号删除 credential、超过十个 | 越权拒绝，数量限制有效 | PG真实近期认证保护、加密挑战、跨user删除404、最多10凭证限制；HMAC分页及last_used实际 | 通过 | docs/evidence/T09/integration.txt |
+| T09-PK-04 | 真实手机/桌面认证器 | 注册、登录、取消、备选密码 | 真实流程成功，取消可恢复 | 当前只有虚拟认证器，外部手机/桌面设备及Safari尚未提供 | 阻塞 | docs/evidence/T09/test-summary.md |
 
 **实现子步骤检查：**
 
-- [ ] T09.01：构建 webauthn-rs RP，固定 origin/RP_ID，要求 UV 和 discoverable credential。
-- [ ] T09.02：注册先核验近期认证，保存一次性加密状态及 user/session/purpose 绑定。
-- [ ] T09.03：验证完成使用库检查 challenge/origin/RP/signature/UV 后保存凭证；credential ID 唯一。
-- [ ] T09.04：登录 options 不泄露账号，discoverable assertion 后由已存凭证识别用户。
-- [ ] T09.05：credential 状态更新、challenge 消费及会话生成同事务；验证前后检查用户 enabled。
-- [ ] T09.06：支持 Passkey reauth、名称编辑与删除，最多十个。
-- [ ] T09.07：按库处理同步凭证计数器，不自行要求所有 signCount 递增。
+- [x] T09.01：构建 webauthn-rs RP，固定 origin/RP_ID，要求 UV 和 discoverable credential。
+- [x] T09.02：注册先核验近期认证，保存一次性加密状态及 user/session/purpose 绑定。
+- [x] T09.03：验证完成使用库检查 challenge/origin/RP/signature/UV 后保存凭证；credential ID 唯一。
+- [x] T09.04：登录 options 不泄露账号，discoverable assertion 后由已存凭证识别用户。
+- [x] T09.05：credential 状态更新、challenge 消费及会话生成同事务；验证前后检查用户 enabled。
+- [x] T09.06：支持 Passkey reauth、名称编辑与删除，最多十个。
+- [x] T09.07：按库处理同步凭证计数器，不自行要求所有 signCount 递增。
 - [ ] T09.08：Playwright 虚拟认证器覆盖各负向场景；真实设备验收不可用则保持待验收。
 
 **验收记录：**
 
-- 代码版本：待填写。
-- 环境与时间：待填写。
-- 命令退出码：待填写。
-- 失败/阻塞项：待填写。
-- 修复与复测：待填写。
-- 任务结论：未开始。
+- 代码版本：当前模块Git提交，父6f39d22。
+- 环境与时间：2026-10-08 Linux/PG17/Redis7.4/Chromium153 CDP；真实设备不可用。
+- 命令退出码：check/unit/build/APIintegration及2E2E均0；真实设备case未运行。
+- 失败/阻塞项：T09-PK-04真实设备待验收；标准clientDataJSON与库uvm扩展已修，测试失败保留。
+- 修复与复测：docs/evidence/T09/test-summary.md、contract-revisions.md。
+- 任务结论：待验收。
 
 ### T10 — 受管理客户端与授权/同意事务
 

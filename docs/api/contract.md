@@ -90,3 +90,5 @@ userinfo仅Bearer access；每次PG核查user/session/grant/client/token，profi
 `/oauth/logout` GET与POST form只验证hint/iss/aud/当前sid/预注册post_logout URI并展示确认，不能直接撤销；`/oauth/logout/confirm` 用户点击后验证精确Origin/CSRF、confirmation_id与浏览器绑定并单次完成。无有效hint仅本地确认页，不外跳；expired hint仅签名仍有效且当前浏览器sid/client匹配可用于退出，常规ID Token仍检查exp。退出后只注册URI带回state；当前无session不创建session、不影响别人会话。确认取消不撤销。
 
 discovery/jwks schema为规划能力，T11发布时须仅报告实际支持并通过独立客户端互操作验收；不能以本文件或自写验签称已获OpenID认证。来源版本、状态机、威胁与实现案例对应见 [架构文档](../architecture.md)。
+
+T09库0.5.5实际注册扩展包含credentialProtectionPolicy=userVerificationRequired、enforceCredentialProtectionPolicy和uvm，以及credProps；OpenAPI逐项定义，不以任意object放宽。ResidentKey通过浏览器required策略和credProps.rk确认，rk是标准客户端扩展而非硬件证明；登录仍必须是无allowCredentials的可发现签名且库确认UV。

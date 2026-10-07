@@ -1,0 +1,41 @@
+
+Running 2 tests using 1 worker
+T09 safe registration shape {"sameId":true,"responseFields":["clientDataJSON","attestationObject","transports"],"extensionFields":["credProps"]}
+T09 safe assertion-option shape {"allowCredentials":"array","challenge":"string","extensions":"object","rpId":"string","timeout":"number","userVerification":"string"}
+·T09 safe registration shape {"sameId":true,"responseFields":["clientDataJSON","attestationObject","transports"],"extensionFields":["credProps"]}
+T
+
+  1) tests/e2e/T09.spec.ts:48:1 › @T09 signed assertion is single-use and user verification cannot be bypassed 
+
+    Test timeout of 60000ms exceeded.
+
+    Error: page.waitForResponse: Test timeout of 60000ms exceeded.
+
+      83 |     });
+      84 |     const noUvRequest = page.waitForRequest((request) => request.url().endsWith('/auth/passkeys/verify'));
+    > 85 |     const noUvResponse = page.waitForResponse((response) => response.url().endsWith('/auth/passkeys/verify'));
+         |                               ^
+      86 |     await page.getByRole('button', { name: '使用Passkey登录', exact: true }).click();
+      87 |     const noUvProof = (await noUvRequest).postDataJSON() as { credential: { response: { authenticatorData: string } } };
+      88 |     const flags = Buffer.from(noUvProof.credential.response.authenticatorData, 'base64url')[32] ?? 0;
+        at /root/code/rust/auth_rust/tests/e2e/T09.spec.ts:85:31
+
+    Error: cdpSession.send: Target page, context or browser has been closed
+
+      91 |     await expect(page.getByRole('alert').filter({ hasText: '登录未完成' })).toBeVisible();
+      92 |     await expect(page).toHaveURL(/\/login$/u);
+    > 93 |   } finally { await cdp.send('WebAuthn.removeVirtualAuthenticator', { authenticatorId: id }); await cdp.detach(); }
+         |                         ^
+      94 | });
+      95 |
+        at /root/code/rust/auth_rust/tests/e2e/T09.spec.ts:93:25
+
+    Error Context: .local/t09-browser-results/[OPAQUE_DATA]/error-context.md
+
+  1 failed
+    tests/e2e/T09.spec.ts:48:1 › @T09 signed assertion is single-use and user verification cannot be bypassed 
+  1 passed (1.2m)
+[WebServer] (node:1462783) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+(node:1462925) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

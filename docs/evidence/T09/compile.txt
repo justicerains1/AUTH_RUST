@@ -1,0 +1,57 @@
+    Checking num-traits v0.2.19
+    Checking zerotrie v0.2.5
+   Compiling openssl-sys v0.9.117
+    Checking minimal-lexical v0.2.1
+    Checking tinystr v0.8.4
+    Checking zerocopy v0.8.61
+    Checking icu_collections v2.3.0
+    Checking thiserror v1.0.69
+    Checking getrandom v0.3.4
+    Checking base64 v0.21.7
+    Checking foreign-types-shared v0.1.1
+    Checking data-encoding v2.11.1
+    Checking foreign-types v0.3.2
+    Checking rand_core v0.9.5
+   Compiling icu_locale_core v2.3.0
+    Checking nom v7.1.3
+    Checking base64urlsafedata v0.5.5
+   Compiling openssl v0.10.81
+   Compiling webauthn-attestation-ca v0.5.5
+   Compiling webauthn-rs-core v0.5.5
+    Checking num-integer v0.1.47
+    Checking atoi v2.0.0
+    Checking num-bigint v0.4.8
+    Checking icu_provider v2.3.1
+    Checking icu_properties v2.3.0
+    Checking icu_normalizer v2.3.0
+    Checking rusticata-macros v4.1.0
+    Checking asn1-rs v0.6.2
+    Checking simple_asn1 v0.6.4
+    Checking jsonwebtoken v11.1.0
+    Checking idna_adapter v1.2.2
+    Checking idna v1.1.0
+    Checking url v2.5.8
+    Checking oid-registry v0.7.1
+    Checking der-parser v9.0.0
+    Checking webauthn-rs-proto v0.5.5
+    Checking sqlx-core v0.9.0
+    Checking totp-rs v6.0.0
+    Checking redis v1.7.1
+    Checking lettre v0.11.23
+    Checking x509-parser v0.16.0
+    Checking ppv-lite86 v0.2.21
+    Checking half v2.7.1
+    Checking serde_cbor_2 v0.13.0
+    Checking rand_chacha v0.9.0
+    Checking rand v0.9.5
+    Checking sqlx-postgres v0.9.0
+    Checking webauthn-rs v0.5.5
+    Checking identity-core v0.1.0 (/root/code/rust/auth_rust/crates/identity-core)
+    Checking identity-admin-cli v0.1.0 (/root/code/rust/auth_rust/crates/identity-admin-cli)
+   Compiling sqlx-macros-core v0.9.0
+   Compiling sqlx-macros v0.9.0
+    Checking sqlx v0.9.0
+    Checking identity-store v0.1.0 (/root/code/rust/auth_rust/crates/identity-store)
+    Checking identity-server v0.1.0 (/root/code/rust/auth_rust/crates/identity-server)
+    Checking identity-worker v0.1.0 (/root/code/rust/auth_rust/crates/identity-worker)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 8.07s

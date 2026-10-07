@@ -3,4 +3,5 @@ pub mod clock;
 pub mod config;
 pub mod mfa;
 pub mod oauth;
+pub mod passkeys;
 pub mod security;

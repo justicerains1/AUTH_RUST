@@ -226,6 +226,9 @@ impl MailWorker {
                     "mfa.recovery_codes_regenerated" => {
                         "您的账号恢复码已重新生成，旧恢复码已失效。"
                     }
+                    "passkey.registered" => "您的账号已添加新的通行密钥。",
+                    "passkey.renamed" => "您的账号通行密钥名称已修改。",
+                    "passkey.removed" => "您的账号通行密钥已删除。",
                     _ => return Err(WorkerError::InvalidPayload),
                 };
                 let occurred = OffsetDateTime::parse(&payload.occurred_at, &Rfc3339)
