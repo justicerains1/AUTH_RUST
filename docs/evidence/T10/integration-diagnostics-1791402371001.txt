@@ -1,0 +1,24 @@
+
+running 1 test
+PASS T10-AUTHZ-01 registered client secret only hashed; GET/POST real login/consent yields code60s or access_denied with original state
+PASS T10-AUTHZ-02 invalid/prefix/wildcard callbacks remain local; duplicate params and PKCE downgrade rejected
+PASS T10-AUTHZ-03 prompt none returns standard login_required/consent_required with original state
+test t10_real_oauth ... FAILED
+
+failures:
+
+failures:
+    t10_real_oauth
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1 filtered out; finished in 6.90s
+
+   Compiling identity-server v0.1.0 (/root/code/rust/auth_rust/crates/identity-server)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.43s
+     Running tests/t10_oauth.rs (target/debug/deps/t10_oauth-bc238604ba917d90)
+
+thread 't10_real_oauth' (1553075) panicked at crates/identity-server/tests/t10_oauth.rs:590:5:
+assertion `left == right` failed
+  left: 3
+ right: 2
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+error: test failed, to rerun pass `-p identity-server --test t10_oauth`

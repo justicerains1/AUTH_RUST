@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useQueryClient } from '@tanstack/react-query';
-import { Link, useNavigate } from 'react-router';
+import { Link, useNavigate, useSearchParams } from 'react-router';
 import { z } from 'zod';
 import { api, ApiError, passwordLoginSchema } from '../lib/api';
 import type { PasswordLogin } from '../lib/api';
@@ -20,6 +20,10 @@ type MfaChallenge = Extract<PasswordLogin, { status: 'mfa_required' }>;
 export default function LoginPage() {
   const client = useQueryClient();
   const navigate = useNavigate();
+  const [search] = useSearchParams();
+  const candidate = search.getAll('transaction');
+  const transaction = candidate.length === 1 && z.uuid().safeParse(candidate[0]).success ? candidate[0] : undefined;
+  const destination = transaction === undefined ? '/me' : `/oauth/consent/${transaction}`;
   const { register, handleSubmit, setError, resetField, formState: { errors, isSubmitting } } = useForm<LoginInput>();
   const [passkeyBusy,setPasskeyBusy]=useState(false);
   const [failure, setFailure] = useState<ApiError | null>(null);
@@ -38,12 +42,12 @@ export default function LoginPage() {
       client.removeQueries({ queryKey: ['identity'] });
       if (response.status === 'mfa_required') { api.resetCsrf(); setChallenge(response); return; }
       api.acceptRotatedCsrf(response.csrf_token);
-      await navigate('/me', { replace: true });
+      await navigate(destination, { replace: true });
     } catch (error) { setFailure(error instanceof ApiError ? error : new ApiError(0, 'CLIENT_NETWORK_UNAVAILABLE', '请求暂未完成，请重试')); } finally { resetField('password'); }
   }
   async function passkeyLogin() {
     setPasskeyBusy(true);setFailure(null);
-    try {const options=await api.request('/auth/passkeys/options',loginOptionsSchema,{method:'POST'});const credential=assertionCredential(await navigator.credentials.get({publicKey:requestOptions(options.publicKey)}));const result=await api.request('/auth/passkeys/verify',passwordLoginSchema,{method:'POST',body:{challenge_id:options.challenge_id,credential}});if(result.status!=='authenticated')throw new ApiError(0,'CLIENT_INVALID_RESPONSE','Passkey未完成登录');api.acceptRotatedCsrf(result.csrf_token);client.removeQueries({queryKey:['identity']});await navigate('/me',{replace:true});}catch(error){setFailure(error instanceof DOMException && ['AbortError','NotAllowedError'].includes(error.name)?new ApiError(0,'CLIENT_CANCELLED','Passkey登录已取消，你可以重试或使用密码登录。'):error instanceof ApiError?error:new ApiError(0,'CLIENT_NETWORK_UNAVAILABLE','Passkey登录暂未完成，请重新开始'));}finally{setPasskeyBusy(false);}
+    try {const options=await api.request('/auth/passkeys/options',loginOptionsSchema,{method:'POST'});const credential=assertionCredential(await navigator.credentials.get({publicKey:requestOptions(options.publicKey)}));const result=await api.request('/auth/passkeys/verify',passwordLoginSchema,{method:'POST',body:{challenge_id:options.challenge_id,credential}});if(result.status!=='authenticated')throw new ApiError(0,'CLIENT_INVALID_RESPONSE','Passkey未完成登录');api.acceptRotatedCsrf(result.csrf_token);client.removeQueries({queryKey:['identity']});await navigate(destination,{replace:true});}catch(error){setFailure(error instanceof DOMException && ['AbortError','NotAllowedError'].includes(error.name)?new ApiError(0,'CLIENT_CANCELLED','Passkey登录已取消，你可以重试或使用密码登录。'):error instanceof ApiError?error:new ApiError(0,'CLIENT_NETWORK_UNAVAILABLE','Passkey登录暂未完成，请重新开始'));}finally{setPasskeyBusy(false);}
   }
-  return <><PageTitle title="登录" /><div className="foundation-grid"><div><p className="eyebrow">ACCOUNT ACCESS</p><h1>登录</h1><p className="lead">从统一入口，进入你的账号。</p><p className="muted">使用已验证邮箱和密码登录。</p></div><section className="panel form-panel"><h2>密码登录</h2>{challenge ? <><Status kind="limited" title="还需要完成第二因素验证" description="密码已验证，此时尚未登录。请继续完成第二因素验证。" /><FactorChallenge challenge={challenge} purpose="login" onComplete={async (result) => { if (result.status !== 'authenticated') throw new ApiError(0, 'CLIENT_INVALID_RESPONSE', '认证结果不适用于登录'); api.acceptRotatedCsrf(result.csrf_token); client.removeQueries({ queryKey: ['identity'] }); await navigate('/me', { replace: true }); }} onRestart={() => { setChallenge(null); }} /></> : <form noValidate onSubmit={(event) => { void handleSubmit(submit)(event); }}><Input label="邮箱地址" type="email" autoComplete="username" {...register('email')} error={errors.email?.message} /><Password label="密码" autoComplete="current-password" {...register('password')} error={errors.password?.message} /><Button className="form-submit" type="submit" variant="primary" loading={isSubmitting} loadingLabel="正在登录…">登录</Button></form>}<Button disabled={!webauthnAvailable()} loading={passkeyBusy} loadingLabel="正在验证Passkey…" onClick={()=>{void passkeyLogin();}}>使用Passkey登录</Button>{failure && <Status kind={failure.status === 429 ? 'limited' : failure.status === 503 || failure.status === 0 ? 'unavailable' : 'error'} title="登录未完成" description={failure.retryAfter === undefined ? failure.message : `${failure.message}，请在${String(failure.retryAfter)}秒后重试。`} requestId={failure.requestId} />}<p><Link to="/password-reset">忘记密码？</Link></p><p>尚未创建账号？<Link to="/register">创建账号</Link></p><p><Link to="/email-verification">验证邮箱或重新发送邮件</Link></p></section></div></>;
+  return <><PageTitle title="登录" /><div className="foundation-grid"><div><p className="eyebrow">ACCOUNT ACCESS</p><h1>登录</h1><p className="lead">从统一入口，进入你的账号。</p><p className="muted">使用已验证邮箱和密码登录。</p></div><section className="panel form-panel"><h2>密码登录</h2>{challenge ? <><Status kind="limited" title="还需要完成第二因素验证" description="密码已验证，此时尚未登录。请继续完成第二因素验证。" /><FactorChallenge challenge={challenge} purpose="login" onComplete={async (result) => { if (result.status !== 'authenticated') throw new ApiError(0, 'CLIENT_INVALID_RESPONSE', '认证结果不适用于登录'); api.acceptRotatedCsrf(result.csrf_token); client.removeQueries({ queryKey: ['identity'] }); await navigate(destination, { replace: true }); }} onRestart={() => { setChallenge(null); }} /></> : <form noValidate onSubmit={(event) => { void handleSubmit(submit)(event); }}><Input label="邮箱地址" type="email" autoComplete="username" {...register('email')} error={errors.email?.message} /><Password label="密码" autoComplete="current-password" {...register('password')} error={errors.password?.message} /><Button className="form-submit" type="submit" variant="primary" loading={isSubmitting} loadingLabel="正在登录…">登录</Button></form>}<Button disabled={!webauthnAvailable()} loading={passkeyBusy} loadingLabel="正在验证Passkey…" onClick={()=>{void passkeyLogin();}}>使用Passkey登录</Button>{failure && <Status kind={failure.status === 429 ? 'limited' : failure.status === 503 || failure.status === 0 ? 'unavailable' : 'error'} title="登录未完成" description={failure.retryAfter === undefined ? failure.message : `${failure.message}，请在${String(failure.retryAfter)}秒后重试。`} requestId={failure.requestId} />}<p><Link to="/password-reset">忘记密码？</Link></p><p>尚未创建账号？<Link to="/register">创建账号</Link></p><p><Link to="/email-verification">验证邮箱或重新发送邮件</Link></p></section></div></>;
 }

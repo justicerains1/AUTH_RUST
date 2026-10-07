@@ -37,6 +37,7 @@ pub struct AuthAppState {
     pub(crate) password_store: identity_store::passwords::PasswordStore,
     pub(crate) mfa: identity_store::mfa::MfaService,
     pub(crate) passkeys: identity_store::passkeys::PasskeyService,
+    pub(crate) oauth: identity_store::oauth::OAuthStore,
 }
 pub(crate) struct AccountsInner {
     store: AccountsStore,
@@ -68,6 +69,10 @@ impl AuthAppState {
             .map_err(|_| "password service unavailable")?;
         Ok(Self {
             security,
+            oauth: identity_store::oauth::OAuthStore::new(
+                dependencies.postgres.clone(),
+                clock.clone(),
+            ),
             passkeys: identity_store::passkeys::PasskeyService::new(
                 dependencies.postgres.clone(),
                 clock.clone(),
@@ -140,7 +145,8 @@ pub fn accounts_router(state: AuthAppState, existing: Router) -> Router {
             .merge(crate::sessions::session_routes(state.clone()))
             .merge(crate::passwords::password_routes(state.clone()))
             .merge(crate::mfa::mfa_routes(state.clone()))
-            .merge(crate::passkeys::passkey_routes(state)),
+            .merge(crate::passkeys::passkey_routes(state.clone()))
+            .merge(crate::oauth::oauth_routes(state)),
     )
 }
 

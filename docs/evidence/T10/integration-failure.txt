@@ -1,0 +1,7 @@
+T10 real authorization integration 2026-10-07T19:46:02.074Z
+FAIL T10 real integration failed; output suppressed to protect passwords/tokens.
+
+101 !== 0
+
+Completed 2026-10-07T19:46:11.003Z
+Exit code 1

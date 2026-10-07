@@ -91,6 +91,21 @@ impl AuthorizationRequest {
         }
         let mut values = BTreeMap::new();
         for (name, value) in url::form_urlencoded::parse(form.as_bytes()) {
+            if !matches!(
+                name.as_ref(),
+                "client_id"
+                    | "response_type"
+                    | "redirect_uri"
+                    | "scope"
+                    | "state"
+                    | "nonce"
+                    | "code_challenge"
+                    | "code_challenge_method"
+                    | "prompt"
+                    | "max_age"
+            ) {
+                return Err(OAuthInputError::InvalidRequest);
+            }
             if values
                 .insert(name.into_owned(), value.into_owned())
                 .is_some()
@@ -157,7 +172,11 @@ impl AuthorizationRequest {
                 if text.is_empty() || !text.bytes().all(|byte| byte.is_ascii_digit()) {
                     return Err(OAuthInputError::InvalidRequest);
                 }
-                text.parse().map_err(|_| OAuthInputError::InvalidRequest)
+                let value: u64 = text.parse().map_err(|_| OAuthInputError::InvalidRequest)?;
+                if value > i64::MAX as u64 {
+                    return Err(OAuthInputError::InvalidRequest);
+                }
+                Ok(value)
             })
             .transpose()?;
         Ok(Self {
@@ -279,6 +298,8 @@ mod tests {
             "&prompt=login+login",
             "&max_age=-1",
             "&max_age=18446744073709551616",
+            "&max_age=9223372036854775808",
+            "&return_to=https%3A%2F%2Fattacker.example",
         ] {
             assert!(AuthorizationRequest::parse(&(valid_request() + extra)).is_err());
         }

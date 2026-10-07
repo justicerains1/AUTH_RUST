@@ -1,0 +1,7 @@
+T10 real UI E2E 2026-10-07T19:40:18.018Z
+FAIL T10 browser checks failed; private details suppressed.
+
+1 !== 0
+
+Completed 2026-10-07T19:42:24.261Z
+Exit code 1

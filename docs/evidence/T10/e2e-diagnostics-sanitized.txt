@@ -1,0 +1,55 @@
+
+Running 2 tests using 1 worker
+TT
+
+  1) tests/e2e/T10.spec.ts:12:1 › @T10 real authorize login continuation and consent produce a registered callback code 
+
+    Test timeout of 60000ms exceeded.
+
+    Error: locator.fill: Test timeout of 60000ms exceeded.
+    Call log:
+      - waiting for getByLabel('邮箱地址')
+
+
+       6 | async function login(page: Page) {
+       7 |   const password = process.env.T10_BROWSER_PASSWORD; if (!password) throw new Error('Private browser password required.');
+    >  8 |   await page.getByLabel('邮箱地址').fill('[EMAIL]'); await page.getByLabel('密码', { exact: true }).fill(password); await page.getByRole('button', { name: '登录', exact: true }).click();
+         |                                 ^
+       9 |   await expect(page).toHaveURL(/\/oauth\/consent\/[0-9a-f-]{36}$/u);
+      10 | }
+      11 |
+        at login (/root/code/rust/auth_rust/tests/e2e/T10.spec.ts:8:33)
+        at /root/code/rust/auth_rust/tests/e2e/T10.spec.ts:14:9
+
+    Error Context: .local/t10-browser-results/[OPAQUE]/error-context.md
+
+  2) tests/e2e/T10.spec.ts:20:1 › @T10 explicit denial returns standard error at the registered callback 
+
+    Test timeout of 60000ms exceeded.
+
+    Error: locator.fill: Test timeout of 60000ms exceeded.
+    Call log:
+      - waiting for getByLabel('邮箱地址')
+
+
+       6 | async function login(page: Page) {
+       7 |   const password = process.env.T10_BROWSER_PASSWORD; if (!password) throw new Error('Private browser password required.');
+    >  8 |   await page.getByLabel('邮箱地址').fill('[EMAIL]'); await page.getByLabel('密码', { exact: true }).fill(password); await page.getByRole('button', { name: '登录', exact: true }).click();
+         |                                 ^
+       9 |   await expect(page).toHaveURL(/\/oauth\/consent\/[0-9a-f-]{36}$/u);
+      10 | }
+      11 |
+        at login (/root/code/rust/auth_rust/tests/e2e/T10.spec.ts:8:33)
+        at /root/code/rust/auth_rust/tests/e2e/T10.spec.ts:21:48
+
+    Error Context: .local/t10-browser-results/[OPAQUE]/error-context.md
+
+  2 failed
+    tests/e2e/T10.spec.ts:12:1 › @T10 real authorize login continuation and consent produce a registered callback code 
+    tests/e2e/T10.spec.ts:20:1 › @T10 explicit denial returns standard error at the registered callback 
+[WebServer] (node:1538374) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+(node:1538420) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1540962) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

@@ -18,7 +18,8 @@
 | T07 | 通过 | 密码找回/修改、近期认证与安全通知；真实API/SMTP、并发及2E2E通过，[结果](docs/evidence/T07/test-summary.md) |
 | T08 | 通过 | TOTP、单次恢复码和强认证；真实并发/重放/完整浏览器验收，[结果](docs/evidence/T08/test-summary.md) |
 | T09 | 待验收 | 实现/真实PG策略及2个虚拟签名E2E通过，外部真实设备阻塞；[记录](docs/evidence/T09/test-summary.md) |
-| T10～T14 | 未开始 | OAuth/OIDC、BFF SSO、管理 API（T10.03纯协议输入已独立提交） |
+| T10 | 通过 | 受管理client/授权同意、严格PKCE和浏览器绑定；真实API/2E2E通过，[结果](docs/evidence/T10/test-summary.md) |
+| T11～T14 | 未开始 | 令牌/OIDC、刷新撤销、BFF SSO、管理 API |
 | T15 | 通过 | 官方设计研究、视觉稿与状态规范；用户明确采用方案并进入 T16；[用户确认](docs/evidence/T15/user-review.md) |
 | T16 | 通过 | 设计组件、响应式布局、API/CSRF 客户端、可访问基础路由与保护提示；[结果](docs/evidence/T16/test-summary.md)、[UI 模块记录](docs/evidence/T16/ui-summary.md) |
 | T17～T24 | 未开始 | 完整认证/账号/后台产品页面、全面安全验收、性能、生产部署、发布与高可用 |

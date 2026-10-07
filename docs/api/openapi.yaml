@@ -16052,7 +16052,7 @@
                     "scope": "openid profile email",
                     "state": "EXAMPLE_STATE_0000000001",
                     "nonce": "EXAMPLE_NONCE_0000000001",
-                    "code_challenge": "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC",
+                    "code_challenge": "E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM",
                     "code_challenge_method": "S256",
                     "prompt": "login",
                     "max_age": 300
@@ -20337,7 +20337,7 @@
         "maxLength": 43,
         "pattern": "^[A-Za-z0-9_-]{43}$",
         "examples": [
-          "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"
+          "E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM"
         ]
       },
       "AuthorizeRequest": {
@@ -20404,7 +20404,7 @@
             "scope": "openid profile email",
             "state": "EXAMPLE_STATE_0000000001",
             "nonce": "EXAMPLE_NONCE_0000000001",
-            "code_challenge": "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC",
+            "code_challenge": "E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM",
             "code_challenge_method": "S256",
             "prompt": "login",
             "max_age": 300

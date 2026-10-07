@@ -186,6 +186,34 @@ impl SecurityState {
     pub fn cookie_names(&self) -> (&'static str, &'static str) {
         (self.0.session_cookie, self.0.preauth_cookie)
     }
+    /// Top-level OAuth entry points create only a durable preauthentication context, never identity.
+    pub async fn ensure_preauth(
+        &self,
+        headers: &HeaderMap,
+        existing_is_valid: bool,
+    ) -> Result<(Digest, Option<HeaderValue>), BoundaryUnavailable> {
+        let old = self.preauth_digest(headers)?;
+        let now = self.0.clock.now();
+        if let Some(hash) = old
+            && existing_is_valid
+        {
+            return Ok((hash, None));
+        }
+        let token = Token::generate().map_err(|_| BoundaryUnavailable)?;
+        let csrf = Token::generate().map_err(|_| BoundaryUnavailable)?;
+        let hash = token_hash(token.expose()).map_err(|_| BoundaryUnavailable)?;
+        self.0
+            .store
+            .replace_preauth(
+                old,
+                hash,
+                token_hash(csrf.expose()).map_err(|_| BoundaryUnavailable)?,
+                now,
+            )
+            .await
+            .map_err(|_| BoundaryUnavailable)?;
+        Ok((hash, Some(self.preauth_cookie(token.expose())?)))
+    }
     pub fn identity_digest(
         &self,
         headers: &HeaderMap,
@@ -408,7 +436,7 @@ pub fn trusted_source(
     Ok(current)
 }
 
-fn unique_header<'a>(headers: &'a HeaderMap, name: &str) -> Result<Option<&'a str>, ()> {
+pub(crate) fn unique_header<'a>(headers: &'a HeaderMap, name: &str) -> Result<Option<&'a str>, ()> {
     let mut values = headers.get_all(name).iter();
     let value = values.next();
     if values.next().is_some() {
@@ -565,6 +593,16 @@ async fn safe_not_found(request: Request) -> Response {
         .extensions()
         .get::<RequestId>()
         .map_or_else(Uuid::new_v4, |id| id.0);
+    if request.uri().path() == "/oauth/authorize" {
+        return crate::oauth::local_error(StatusCode::BAD_REQUEST);
+    }
+    if request.uri().path().starts_with("/oauth/") {
+        return (
+            StatusCode::NOT_FOUND,
+            Json(json!({"error":"invalid_request"})),
+        )
+            .into_response();
+    }
     ApiError::new(StatusCode::NOT_FOUND, "RESOURCE_NOT_FOUND", id).into_response()
 }
 async fn safe_method_not_allowed(request: Request) -> Response {
@@ -572,6 +610,16 @@ async fn safe_method_not_allowed(request: Request) -> Response {
         .extensions()
         .get::<RequestId>()
         .map_or_else(Uuid::new_v4, |id| id.0);
+    if request.uri().path() == "/oauth/authorize" {
+        return crate::oauth::local_error(StatusCode::BAD_REQUEST);
+    }
+    if request.uri().path().starts_with("/oauth/") {
+        return (
+            StatusCode::METHOD_NOT_ALLOWED,
+            Json(json!({"error":"invalid_request"})),
+        )
+            .into_response();
+    }
     ApiError::new(StatusCode::METHOD_NOT_ALLOWED, "INPUT_INVALID", id).into_response()
 }
 
@@ -623,7 +671,8 @@ async fn browser_boundary(
                 ));
             }
         }
-        let maximum = if path.starts_with("/api/v1/auth/")
+        let maximum = if path.starts_with("/oauth/")
+            || path.starts_with("/api/v1/auth/")
             || path.contains("/passkeys")
             || path.contains("/mfa/")
             || path.contains("/reauth/")
@@ -643,6 +692,21 @@ async fn browser_boundary(
     .await;
     let mut response = match result {
         Ok(response) => response,
+        Err(error) if path == "/oauth/authorize" => {
+            crate::oauth::local_error(if error.status.is_server_error() {
+                StatusCode::SERVICE_UNAVAILABLE
+            } else {
+                StatusCode::BAD_REQUEST
+            })
+        }
+        Err(error) if path.starts_with("/oauth/") => {
+            let status = if error.status.is_server_error() {
+                StatusCode::SERVICE_UNAVAILABLE
+            } else {
+                error.status
+            };
+            (status,Json(json!({"error":if status.is_server_error(){"temporarily_unavailable"}else{"invalid_request"}}))).into_response()
+        }
         Err(error) => error.into_response(),
     };
     let headers = response.headers_mut();

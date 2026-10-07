@@ -77,7 +77,7 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 | T07 | 找回密码、密码修改与安全通知 | 通过 | T06 | docs/evidence/T07/test-summary.md |
 | T08 | TOTP、恢复码与近期认证 | 通过 | T06、T07 | docs/evidence/T08/test-summary.md |
 | T09 | Passkey 注册、登录和管理 | 待验收 | T06、T08 | docs/evidence/T09/test-summary.md |
-| T10 | 受管理客户端与授权/同意事务 | 未开始 | T06、T02 | 待提供 |
+| T10 | 受管理客户端与授权/同意事务 | 通过 | T06、T02 | docs/evidence/T10/test-summary.md |
 | T11 | 授权码交换、ID Token、Discovery 和 Userinfo | 未开始 | T10 | 待提供 |
 | T12 | 刷新轮换、Introspection、撤销与 RP 退出 | 未开始 | T11 | 待提供 |
 | T13 | 两个 BFF 演示应用与接入指南 | 未开始 | T12 | 待提供 |
@@ -435,30 +435,30 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 
 | 案例 | 前置状态 | 操作步骤 | 预期结果 | 实际结果 | 状态 | 证据 |
 |---|---|---|---|---|---|---|
-| T10-AUTHZ-01 | 注册客户端 | GET/POST form 合法请求、首次同意、拒绝同意 | 正确流程；拒绝返回 access_denied+state | 待填写 | 未执行 | 待提供：响应和跳转记录 |
-| T10-AUTHZ-02 | 错误/前缀/通配符回调 | 请求 authorize | 留在身份域，不开放重定向 | 待填写 | 未执行 | 待提供：安全测试 |
-| T10-AUTHZ-03 | 未登录/无同意 | prompt=none 请求 | 规范 login_required/consent_required | 待填写 | 未执行 | 待提供：协议输出 |
-| T10-AUTHZ-04 | 两个浏览器事务 | 交换事务 ID 或重复 decision | 拒绝跨浏览器/重复操作 | 待填写 | 未执行 | 待提供：绑定测试 |
+| T10-AUTHZ-01 | 注册客户端 | GET/POST form 合法请求、首次同意、拒绝同意 | 正确流程；拒绝返回 access_denied+state | 真实GET/POSTform授权→登录续接→同意生成60秒code；拒绝回access_denied/state，只有注册回调 | 通过 | docs/evidence/T10/integration.txt、e2e.txt |
+| T10-AUTHZ-02 | 错误/前缀/通配符回调 | 请求 authorize | 留在身份域，不开放重定向 | 无效/前缀/通配回调不外跳；重复参数/PKCE降级/未知return_to/非法state、nonce、scope拒绝 | 通过 | docs/evidence/T10/integration.txt、e2e.txt |
+| T10-AUTHZ-03 | 未登录/无同意 | prompt=none 请求 | 规范 login_required/consent_required | 未登录promptnone login_required、未同意consent_required且state正确；promptlogin需新session，maxage旧认证拒绝 | 通过 | docs/evidence/T10/integration.txt、e2e.txt |
+| T10-AUTHZ-04 | 两个浏览器事务 | 交换事务 ID 或重复 decision | 拒绝跨浏览器/重复操作 | 浏览器事务交换拒；十并发decision一次消费；client禁用拒发code，扩scope须同意 | 通过 | docs/evidence/T10/integration.txt、e2e.txt |
 
 **实现子步骤检查：**
 
-- [ ] T10.01：实现客户端 service；后台在 T14 暴露，当前测试 fixture 注册 A/B。
-- [ ] T10.02：生成随机 client secret，只存摘要，回调严格验证并区分 login/logout。
-- [ ] T10.03：authorize 严格解析单值参数，检查 client/redirect/scopes/PKCE/state/nonce/prompt/max_age。
-- [ ] T10.04：验证后保存授权事务并绑定当前浏览器；无效回调不向外部跳转。
-- [ ] T10.05：处理未登录、prompt=login、max_age、prompt=none 和已有同意。
-- [ ] T10.06：登录成功恢复原事务，不让浏览器改 client/redirect/scope。
-- [ ] T10.07：同意页读取服务端已验证参数；POST 同意/拒绝有 CSRF，决定原子单次消费。
-- [ ] T10.08：签发 grant/code 的逻辑连接 T11，不提供跳过同意的临时 endpoint。
+- [x] T10.01：实现客户端 service；后台在 T14 暴露，当前测试 fixture 注册 A/B。
+- [x] T10.02：生成随机 client secret，只存摘要，回调严格验证并区分 login/logout。
+- [x] T10.03：authorize 严格解析单值参数，检查 client/redirect/scopes/PKCE/state/nonce/prompt/max_age。
+- [x] T10.04：验证后保存授权事务并绑定当前浏览器；无效回调不向外部跳转。
+- [x] T10.05：处理未登录、prompt=login、max_age、prompt=none 和已有同意。
+- [x] T10.06：登录成功恢复原事务，不让浏览器改 client/redirect/scope。
+- [x] T10.07：同意页读取服务端已验证参数；POST 同意/拒绝有 CSRF，决定原子单次消费。
+- [x] T10.08：签发 grant/code 的逻辑连接 T11，不提供跳过同意的临时 endpoint。
 
 **验收记录：**
 
-- 代码版本：待填写。
-- 环境与时间：待填写。
-- 命令退出码：待填写。
-- 失败/阻塞项：待填写。
-- 修复与复测：待填写。
-- 任务结论：未开始。
+- 代码版本：当前模块Git提交（父d8a1434）。
+- 环境与时间：2026-10-08 Linux/PG17/Redis7.4/Chromium153，同源协议代理。
+- 命令退出码：check/unit/build/APIintegration及2E2E均0，36前端/62工具测试通过。
+- 失败/阻塞项：非法PKCE示例、开发代理同源、未知return_to已修，失败证据保留；签名/交换在T11。
+- 修复与复测：docs/evidence/T10/test-summary.md、contract-revisions.md。
+- 任务结论：通过。
 
 ### T11 — 授权码交换、ID Token、Discovery 和 Userinfo
 

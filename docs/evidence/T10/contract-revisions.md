@@ -1,0 +1,3 @@
+# T10 规范示例修正
+
+旧PKCE示例C重复43符合表面字符正则但非canonical base64url尾部位，严格服务器拒绝该编码是正确行为。OpenAPI及测试示例改RFC7636已知合法S256challenge，不降低服务端校验。实际输入nonce/state/重复参数与解码长度仍强校验。

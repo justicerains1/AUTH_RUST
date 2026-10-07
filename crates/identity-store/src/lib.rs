@@ -2,6 +2,7 @@
 pub mod accounts;
 pub mod mfa;
 pub mod migrations;
+pub mod oauth;
 pub mod passkeys;
 pub mod passwords;
 pub mod repository;

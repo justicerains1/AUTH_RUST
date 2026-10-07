@@ -10,6 +10,8 @@ export default defineConfig({
     proxy: {
       '/api': process.env.IDENTITY_API_PROXY ?? 'http://127.0.0.1:8080',
       '/health': process.env.IDENTITY_API_PROXY ?? 'http://127.0.0.1:8080',
+      '^/oauth/(authorize|token|jwks|userinfo|introspect|revoke|logout)(?:[/?]|$)':
+        process.env.IDENTITY_API_PROXY ?? 'http://127.0.0.1:8080',
     },
   },
 });

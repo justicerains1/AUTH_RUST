@@ -1,0 +1,15 @@
+
+running 1 test
+test t10_real_oauth ... FAILED
+
+failures:
+
+failures:
+    t10_real_oauth
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1 filtered out; finished in 3.31s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.11s
+     Running tests/t10_oauth.rs (target/debug/deps/t10_oauth-bc238604ba917d90)
+Error: "server transaction missing"
+error: test failed, to rerun pass `-p identity-server --test t10_oauth`

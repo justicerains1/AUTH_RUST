@@ -1,0 +1,33 @@
+
+> rust-unified-identity@0.1.0 db:migrate
+> node scripts/run.mjs db:migrate --env=development
+
+   Compiling asn1-rs v0.6.2
+   Compiling icu_normalizer v2.3.0
+   Compiling base64urlsafedata v0.5.5
+   Compiling serde_cbor_2 v0.13.0
+   Compiling simple_asn1 v0.6.4
+   Compiling webauthn-attestation-ca v0.5.5
+   Compiling jsonwebtoken v11.1.0
+   Compiling idna_adapter v1.2.2
+   Compiling idna v1.1.0
+   Compiling url v2.5.8
+   Compiling oid-registry v0.7.1
+   Compiling der-parser v9.0.0
+   Compiling sqlx-core v0.9.0
+   Compiling webauthn-rs-proto v0.5.5
+   Compiling totp-rs v6.0.0
+   Compiling redis v1.7.1
+   Compiling x509-parser v0.16.0
+   Compiling webauthn-rs-core v0.5.5
+   Compiling sqlx-postgres v0.9.0
+   Compiling webauthn-rs v0.5.5
+   Compiling identity-core v0.1.0 (/root/code/rust/auth_rust/crates/identity-core)
+   Compiling sqlx-macros-core v0.9.0
+   Compiling sqlx-macros v0.9.0
+   Compiling sqlx v0.9.0
+   Compiling identity-store v0.1.0 (/root/code/rust/auth_rust/crates/identity-store)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 8.77s
+     Running `target/debug/identity-migrate`
+migration target: environment=development, database=identity_development
+migrations applied successfully (checksummed SQLx migration history)
