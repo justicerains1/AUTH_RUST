@@ -193,6 +193,12 @@ function checkResponses(path, method, operation) {
 }
 
 function checkStandardFields(document) {
+  const pkce = document.components?.schemas?.PkceChallenge;
+  for (const example of pkce?.examples ?? []) {
+    requireCondition(typeof example === 'string' && /^[A-Za-z0-9_-]{43}$/u.test(example)
+      && Buffer.from(example, 'base64url').length === 32
+      && Buffer.from(example, 'base64url').toString('base64url') === example, 'PKCE 示例必须是32字节规范base64url编码');
+  }
   for (const path of LIST_PATHS.map((suffix) => `/api/v1${suffix}`)) {
     const item = document.paths[path];
     if (!item?.get) continue;

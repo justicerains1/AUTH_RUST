@@ -91,6 +91,7 @@ async function actualDocument() {
 }
 
 const contractMutations = [
+  ['non-canonical PKCE example', (doc) => { doc.components.schemas.PkceChallenge.examples = ['C'.repeat(43)]; }, /PKCE 示例/u],
   ['administrator auth downgrade', (doc) => { doc.paths['/api/v1/admin/users'].get['x-auth-level'] = 'authenticated'; }, /必须为 admin/u],
   ['missing mutating CSRF', (doc) => { doc.paths['/api/v1/auth/register'].post['x-csrf-required'] = false; }, /状态变更必须 CSRF/u],
   ['missing Origin requirement', (doc) => { doc.components.parameters.Origin.required = false; }, /required Origin/u],

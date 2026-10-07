@@ -1,0 +1,184 @@
+TAP version 13
+# Subtest: valid 3.1 local-ref fixture is actually parsed and its examples validated
+ok 1 - valid 3.1 local-ref fixture is actually parsed and its examples validated
+  ---
+  duration_ms: 125.603199
+  type: 'test'
+  ...
+# Subtest: fixture rejects missing document metadata
+ok 2 - fixture rejects missing document metadata
+  ---
+  duration_ms: 45.5364
+  type: 'test'
+  ...
+# Subtest: fixture rejects unresolved reference
+ok 3 - fixture rejects unresolved reference
+  ---
+  duration_ms: 0.9174
+  type: 'test'
+  ...
+# Subtest: fixture rejects external reference
+ok 4 - fixture rejects external reference
+  ---
+  duration_ms: 0.2838
+  type: 'test'
+  ...
+# Subtest: fixture rejects invalid JSON Schema type
+ok 5 - fixture rejects invalid JSON Schema type
+  ---
+  duration_ms: 40.0556
+  type: 'test'
+  ...
+# Subtest: fixture rejects example inconsistent with schema
+ok 6 - fixture rejects example inconsistent with schema
+  ---
+  duration_ms: 37.8411
+  type: 'test'
+  ...
+# Subtest: fixture rejects missing success schema
+ok 7 - fixture rejects missing success schema
+  ---
+  duration_ms: 39.233599
+  type: 'test'
+  ...
+# Subtest: fixture rejects unknown auth level
+ok 8 - fixture rejects unknown auth level
+  ---
+  duration_ms: 36.1421
+  type: 'test'
+  ...
+# Subtest: fixture rejects missing explicit security
+ok 9 - fixture rejects missing explicit security
+  ---
+  duration_ms: 37.8489
+  type: 'test'
+  ...
+# Subtest: fixture rejects anonymous protected security
+ok 10 - fixture rejects anonymous protected security
+  ---
+  duration_ms: 34.1828
+  type: 'test'
+  ...
+# Subtest: fixture rejects missing CSRF metadata
+ok 11 - fixture rejects missing CSRF metadata
+  ---
+  duration_ms: 31.07
+  type: 'test'
+  ...
+# Subtest: fixture rejects CSRF on read-only operation
+ok 12 - fixture rejects CSRF on read-only operation
+  ---
+  duration_ms: 33.1216
+  type: 'test'
+  ...
+# Subtest: fixture rejects missing idempotency description
+ok 13 - fixture rejects missing idempotency description
+  ---
+  duration_ms: 32.098599
+  type: 'test'
+  ...
+# Subtest: fixture rejects invalid rate limit failure policy
+ok 14 - fixture rejects invalid rate limit failure policy
+  ---
+  duration_ms: 30.0366
+  type: 'test'
+  ...
+# Subtest: fixture rejects missing route
+ok 15 - fixture rejects missing route
+  ---
+  duration_ms: 29.593
+  type: 'test'
+  ...
+# Subtest: extra paths cannot silently bypass plan coverage
+ok 16 - extra paths cannot silently bypass plan coverage
+  ---
+  duration_ms: 28.3755
+  type: 'test'
+  ...
+# Subtest: actual plan 6.1/6.2 declarations expand methods and sibling paths
+ok 17 - actual plan 6.1/6.2 declarations expand methods and sibling paths
+  ---
+  duration_ms: 7.7482
+  type: 'test'
+  ...
+# Subtest: actual OpenAPI validates every plan operation and real schema/example
+ok 18 - actual OpenAPI validates every plan operation and real schema/example
+  ---
+  duration_ms: 219.399599
+  type: 'test'
+  ...
+# Subtest: actual contract rejects non-canonical PKCE example
+ok 19 - actual contract rejects non-canonical PKCE example
+  ---
+  duration_ms: 197.727399
+  type: 'test'
+  ...
+# Subtest: actual contract rejects administrator auth downgrade
+ok 20 - actual contract rejects administrator auth downgrade
+  ---
+  duration_ms: 133.789299
+  type: 'test'
+  ...
+# Subtest: actual contract rejects missing mutating CSRF
+ok 21 - actual contract rejects missing mutating CSRF
+  ---
+  duration_ms: 119.5123
+  type: 'test'
+  ...
+# Subtest: actual contract rejects missing Origin requirement
+ok 22 - actual contract rejects missing Origin requirement
+  ---
+  duration_ms: 118.846199
+  type: 'test'
+  ...
+# Subtest: actual contract rejects non-UUID path id
+ok 23 - actual contract rejects non-UUID path id
+  ---
+  duration_ms: 52.4726
+  type: 'test'
+  ...
+# Subtest: actual contract rejects unknown API error code
+ok 24 - actual contract rejects unknown API error code
+  ---
+  duration_ms: 116.845099
+  type: 'test'
+  ...
+# Subtest: actual contract rejects list limit beyond maximum
+ok 25 - actual contract rejects list limit beyond maximum
+  ---
+  duration_ms: 116.2621
+  type: 'test'
+  ...
+# Subtest: actual contract rejects scope expansion
+ok 26 - actual contract rejects scope expansion
+  ---
+  duration_ms: 121.400499
+  type: 'test'
+  ...
+# Subtest: actual contract rejects token without form
+ok 27 - actual contract rejects token without form
+  ---
+  duration_ms: 115.024399
+  type: 'test'
+  ...
+# Subtest: actual contract rejects authorize HTML error without schema
+ok 28 - actual contract rejects authorize HTML error without schema
+  ---
+  duration_ms: 115.44
+  type: 'test'
+  ...
+# Subtest: actual contract rejects authorize nonstandard error code
+ok 29 - actual contract rejects authorize nonstandard error code
+  ---
+  duration_ms: 113.235099
+  type: 'test'
+  ...
+1..29
+# tests 29
+# suites 0
+# pass 29
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2289.691589
