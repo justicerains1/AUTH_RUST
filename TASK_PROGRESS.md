@@ -15,7 +15,8 @@
 | T04 | 通过 | 邮箱/密码规则、受控 Argon2id、随机摘要、AEAD、CSRF/Origin、可信代理、Redis 原子限流、审计；[结果](docs/evidence/T04/test-summary.md) |
 | T05 | 通过 | 注册、邮箱确认、重发、加密 outbox、Worker、SMTP 与真实页面；最终两例 E2E 2 passed / 0 failed；[结果](docs/evidence/T05/test-summary.md)、[浏览器证据](docs/evidence/T05/e2e.txt) |
 | T06 | 通过 | 密码登录、本人账号/设备及派生授权撤销；真实并发与2E2E通过，[证据](docs/evidence/T06/test-summary.md) |
-| T07～T14 | 未开始 | 找回/修改、MFA、Passkey、OAuth/OIDC、BFF SSO、管理 API |
+| T07 | 通过 | 密码找回/修改、近期认证与安全通知；真实API/SMTP、并发及2E2E通过，[结果](docs/evidence/T07/test-summary.md) |
+| T08～T14 | 未开始 | MFA、Passkey、OAuth/OIDC、BFF SSO、管理 API |
 | T15 | 通过 | 官方设计研究、视觉稿与状态规范；用户明确采用方案并进入 T16；[用户确认](docs/evidence/T15/user-review.md) |
 | T16 | 通过 | 设计组件、响应式布局、API/CSRF 客户端、可访问基础路由与保护提示；[结果](docs/evidence/T16/test-summary.md)、[UI 模块记录](docs/evidence/T16/ui-summary.md) |
 | T17～T24 | 未开始 | 完整认证/账号/后台产品页面、全面安全验收、性能、生产部署、发布与高可用 |
@@ -24,7 +25,7 @@ T05 最终收尾记录：
 
 - 最后两例 E2E 结果：2 passed / 0 failed，已同步 acceptance.md。
 - T05 最终结论：通过（当前Linux真实开发服务及浏览器验收）。
-- T05已提交推送 `7f736ac`；T06当前模块已通过，后续遵循前置验收。
+- T05已提交推送 `7f736ac`；T06模块a4a1764已推送（首次commit_refs错误，重试后远端sha一致），后续遵循前置验收。
 
 ## 已实现能力
 

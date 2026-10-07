@@ -1,0 +1,7 @@
+T07 real password integration 2026-10-07T17:21:18.734Z
+FAIL T07 real integration failed; output suppressed to protect passwords/tokens.
+
+101 !== 0
+
+Completed 2026-10-07T17:21:29.164Z
+Exit code 1

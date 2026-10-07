@@ -1,0 +1,16 @@
+
+> @identity/identity-web@0.1.0 check
+> tsc --noEmit
+
+src/pages/PasswordChangePage.tsx(28,45): error TS2379: Argument of type '{ message: string | undefined; }' is not assignable to parameter of type 'ErrorOption' with 'exactOptionalPropertyTypes: true'. Consider adding 'undefined' to the types of the target's properties.
+  Types of property 'message' are incompatible.
+    Type 'string | undefined' is not assignable to type 'string'.
+      Type 'undefined' is not assignable to type 'string'.
+src/pages/PasswordResetPage.tsx(40,48): error TS2379: Argument of type '{ message: string | undefined; }' is not assignable to parameter of type 'ErrorOption' with 'exactOptionalPropertyTypes: true'. Consider adding 'undefined' to the types of the target's properties.
+  Types of property 'message' are incompatible.
+    Type 'string | undefined' is not assignable to type 'string'.
+      Type 'undefined' is not assignable to type 'string'.
+npm ERR! Lifecycle script `check` failed with error: 
+npm ERR! Error: command failed 
+npm ERR!   in workspace: @identity/identity-web@0.1.0 
+npm ERR!   at location: /root/code/rust/auth_rust/apps/identity-web 

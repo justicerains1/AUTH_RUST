@@ -19,6 +19,11 @@ export const passwordLoginSchema = z.discriminatedUnion('status', [
 export type PasswordLogin = z.infer<typeof passwordLoginSchema>;
 export const sessionPageSchema = z.object({ items: z.array(sessionSchema).max(100), next_cursor: z.string().max(2048).nullable() });
 export const noContentSchema = z.undefined();
+export const passwordResetSchema = z.object({ status: z.literal('password_reset'), next: z.literal('login') });
+export const passwordReauthSchema = z.discriminatedUnion('status', [
+  z.object({ status: z.literal('reauthenticated'), reauthenticated_at: utc, valid_until: utc, strong: z.boolean(), amr: z.array(z.enum(['pwd', 'otp', 'rcv', 'user', 'hwk'])).min(1) }),
+  z.object({ status: z.literal('mfa_required'), challenge_id: uuid, purpose: z.literal('reauthentication'), methods: z.array(z.enum(['totp', 'recovery_code'])).min(1).max(2), expires_at: utc }),
+]);
 export type Me = z.infer<typeof meSchema>;
 export const acceptedSchema = z.object({ status: z.literal('accepted'), message: z.string() });
 export const emailVerifiedSchema = z.object({ status: z.literal('verified') });

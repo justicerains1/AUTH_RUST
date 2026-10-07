@@ -74,7 +74,7 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 | T04 | 安全基础、密码服务、限流与审计 | 通过 | T03 | docs/evidence/T04/test-summary.md |
 | T05 | 注册、邮箱验证与 outbox 邮件 | 通过 | T04 | docs/evidence/T05/test-summary.md |
 | T06 | 密码登录、账号查询和会话撤销 | 通过 | T05 | docs/evidence/T06/test-summary.md |
-| T07 | 找回密码、密码修改与安全通知 | 未开始 | T06 | 待提供 |
+| T07 | 找回密码、密码修改与安全通知 | 通过 | T06 | docs/evidence/T07/test-summary.md |
 | T08 | TOTP、恢复码与近期认证 | 未开始 | T06、T07 | 待提供 |
 | T09 | Passkey 注册、登录和管理 | 未开始 | T06、T08 | 待提供 |
 | T10 | 受管理客户端与授权/同意事务 | 未开始 | T06、T02 | 待提供 |
@@ -334,29 +334,29 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 
 | 案例 | 前置状态 | 操作步骤 | 预期结果 | 实际结果 | 状态 | 证据 |
 |---|---|---|---|---|---|---|
-| T07-PWD-01 | 已有用户、多会话 | 申请并完成找回，再测试旧密码与会话 | 旧密码/会话失效；新密码登录，无自动会话 | 待填写 | 未执行 | 待提供：流程证据 |
-| T07-PWD-02 | 一个 reset token | 并发两次确认，另用 verify token 重置 | 只有一次成功，跨目的失败 | 待填写 | 未执行 | 待提供：并发/目的校验输出 |
-| T07-PWD-03 | TOTP 用户 | 邮件重置后用新密码登录 | 仍需 TOTP；不能借重置新增 Passkey | 待填写 | 未执行 | 待提供：认证测试 |
-| T07-PWD-04 | 过期近期认证 | 调用密码修改 | 提示重新认证，不修改密码 | 待填写 | 未执行 | 待提供：API 输出 |
+| T07-PWD-01 | 已有用户、多会话 | 申请并完成找回，再测试旧密码与会话 | 旧密码/会话失效；新密码登录，无自动会话 | 真实reset邮件/按钮POST，新密码有效、旧密码/全会话与派生token失效，无自动登录，安全通知送达清密文 | 通过 | docs/evidence/T07/integration.txt、e2e.txt |
+| T07-PWD-02 | 一个 reset token | 并发两次确认，另用 verify token 重置 | 只有一次成功，跨目的失败 | 10同步HTTP请求仅1成功，verify token不能重置，失败审计事务整体回滚 | 通过 | docs/evidence/T07/integration.txt、e2e.txt |
+| T07-PWD-03 | TOTP 用户 | 邮件重置后用新密码登录 | 仍需 TOTP；不能借重置新增 Passkey | 既有TOTP/Passkey未删；新密码仍返回有限MFA挑战；凭邮箱重置不新增登录方式 | 通过 | docs/evidence/T07/integration.txt、e2e.txt |
+| T07-PWD-04 | 过期近期认证 | 调用密码修改 | 提示重新认证，不修改密码 | 必须显式当前session近期密码确认；5分钟边界拒绝，已有MFA仅密码仍要求strong | 通过 | docs/evidence/T07/integration.txt、e2e.txt |
 
 **实现子步骤检查：**
 
-- [ ] T07.01：找回申请统一 202；存在用户创建 reset action 和通知 outbox，不暴露状态。
-- [ ] T07.02：重置页面 fragment 读取清除；确认必须 token+新密码，不 GET 自动消费。
-- [ ] T07.03：事务内锁用户/action，验证用途/expiry，更新 hash/version，consume，撤销全会话/grants。
-- [ ] T07.04：成功不自动登录，保留 TOTP 和 Passkey，转登录页。
-- [ ] T07.05：密码修改验证近期认证；无 MFA 密码确认，有 MFA 强认证确认。
-- [ ] T07.06：密码变更发送通知但 SMTP 故障不回滚完成的安全事务。
-- [ ] T07.07：测试 action 重放、交叉目的、并发消费、reset 与 refresh 竞争。
+- [x] T07.01：找回申请统一 202；存在用户创建 reset action 和通知 outbox，不暴露状态。
+- [x] T07.02：重置页面 fragment 读取清除；确认必须 token+新密码，不 GET 自动消费。
+- [x] T07.03：事务内锁用户/action，验证用途/expiry，更新 hash/version，consume，撤销全会话/grants。
+- [x] T07.04：成功不自动登录，保留 TOTP 和 Passkey，转登录页。
+- [x] T07.05：密码修改验证近期认证；无 MFA 密码确认，有 MFA 强认证确认。
+- [x] T07.06：密码变更发送通知但 SMTP 故障不回滚完成的安全事务。
+- [x] T07.07：测试 action 重放、交叉目的、并发消费、reset 与 refresh 竞争。
 
 **验收记录：**
 
-- 代码版本：待填写。
-- 环境与时间：待填写。
-- 命令退出码：待填写。
-- 失败/阻塞项：待填写。
-- 修复与复测：待填写。
-- 任务结论：未开始。
+- 代码版本：模块Git提交（父a4a1764）；source-sha256.txt。
+- 环境与时间：2026-10-08 Linux/WSL2，真实PG/Redis/Mailpit/Chromium153。
+- 命令退出码：check/unit/build/integrationT07/e2eT07/工具均0；26UI/Vitest、62工具、2E2E通过。
+- 失败/阻塞项：首次过严Set-Cookie断言及fixture时间边界已修；真实刷新端点并发T12/T20回归，不冒充现端点。
+- 修复与复测：docs/evidence/T07/test-summary.md。
+- 任务结论：通过。
 
 ### T08 — TOTP、恢复码与近期认证
 

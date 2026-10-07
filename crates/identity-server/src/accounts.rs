@@ -34,12 +34,13 @@ pub struct AuthAppState {
     pub security: SecurityState,
     pub(crate) inner: Arc<AccountsInner>,
     pub(crate) sessions: identity_store::sessions::SessionService,
+    pub(crate) password_store: identity_store::passwords::PasswordStore,
 }
 pub(crate) struct AccountsInner {
     store: AccountsStore,
     pub(crate) passwords: PasswordService,
-    keys: AeadKeyRing,
-    issuer: String,
+    pub(crate) keys: AeadKeyRing,
+    pub(crate) issuer: String,
 }
 impl AuthAppState {
     pub async fn new(config: &Config, dependencies: Dependencies) -> Result<Self, &'static str> {
@@ -52,6 +53,10 @@ impl AuthAppState {
             .map_err(|_| "password service unavailable")?;
         Ok(Self {
             security,
+            password_store: identity_store::passwords::PasswordStore::new(
+                dependencies.postgres.clone(),
+                Arc::new(identity_core::clock::SystemClock),
+            ),
             sessions: identity_store::sessions::SessionService::new(
                 dependencies.postgres.clone(),
                 Arc::new(identity_core::clock::SystemClock),
@@ -103,7 +108,8 @@ pub fn accounts_router(state: AuthAppState, existing: Router) -> Router {
         state.security.clone(),
         existing
             .merge(accounts)
-            .merge(crate::sessions::session_routes(state)),
+            .merge(crate::sessions::session_routes(state.clone()))
+            .merge(crate::passwords::password_routes(state)),
     )
 }
 
@@ -125,10 +131,10 @@ fn context(request: &Request) -> Result<(Uuid, std::net::IpAddr), ApiError> {
         })?;
     Ok((id, source))
 }
-fn accepted() -> Response {
+pub(crate) fn accepted() -> Response {
     (StatusCode::ACCEPTED,Json(json!({"status":"accepted","message":"如果该邮箱可接收此操作的邮件，我们将发送后续说明。"}))).into_response()
 }
-async fn mail_budget(
+pub(crate) async fn mail_budget(
     state: &AuthAppState,
     source: std::net::IpAddr,
     email: &str,

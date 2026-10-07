@@ -52,6 +52,7 @@ impl From<RepositoryError> for SessionError {
 
 pub struct LoginCredential {
     pub id: Uuid,
+    pub email: String,
     pub password_hash: Zeroizing<String>,
     pub verified: bool,
     pub status: String,
@@ -181,10 +182,11 @@ impl SessionService {
         &self,
         email: &str,
     ) -> Result<Option<LoginCredential>, SessionError> {
-        let row=sqlx::query("SELECT u.id,u.password_hash,u.verified,u.status,u.credential_version,EXISTS(SELECT 1 FROM totp_factors f WHERE f.user_id=u.id AND f.confirmed) AS totp_enabled FROM users u WHERE u.email=$1").bind(email).fetch_optional(&self.pool).await?;
+        let row=sqlx::query("SELECT u.id,u.email,u.password_hash,u.verified,u.status,u.credential_version,EXISTS(SELECT 1 FROM totp_factors f WHERE f.user_id=u.id AND f.confirmed) AS totp_enabled FROM users u WHERE u.email=$1").bind(email).fetch_optional(&self.pool).await?;
         row.map(|row| {
             Ok(LoginCredential {
                 id: row.try_get("id")?,
+                email: row.try_get("email")?,
                 password_hash: Zeroizing::new(row.try_get("password_hash")?),
                 verified: row.try_get("verified")?,
                 status: row.try_get("status")?,
@@ -542,7 +544,7 @@ fn session_view(row: &PgRow, id: Uuid, current: bool) -> Result<SessionView, Ses
         current,
     })
 }
-async fn lock_revocation(
+pub(crate) async fn lock_revocation(
     tx: &mut Transaction<'_, Postgres>,
     user: Uuid,
     ids: &[Uuid],
@@ -559,7 +561,7 @@ async fn lock_revocation(
     sqlx::query("SELECT c.id FROM authorization_codes c JOIN oauth_grants g ON g.id=c.grant_id WHERE g.user_id=$1 AND g.session_id=ANY($2::uuid[]) ORDER BY c.id FOR UPDATE OF c").bind(user).bind(ids).fetch_all(&mut **tx).await?;
     Ok(())
 }
-async fn revoke_locked(
+pub(crate) async fn revoke_locked(
     tx: &mut Transaction<'_, Postgres>,
     user: Uuid,
     ids: &[Uuid],

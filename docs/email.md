@@ -8,7 +8,7 @@
 
 邮件MIME为text/plain与text/html alternative，中文主题“统一身份中心 — 验证您的邮箱”，说明用途、UTC到期、打开链接本身不消费以及非本人忽略提示。HTML插值经过转义；正文不把用户名称作为HTML。Message-ID以outbox UUID组成以便至少一次重试关联，不打印邮件正文、收件人、链接、token或加密参数。
 
-当前实现只投递T05验证模板；数据库已有reset_password/security_notification名，具体载荷与后续密码/安全通知模板在T07等任务补齐，不能把本任务称为已完成密码重置邮件。
+T07新增 `reset_password`，载荷 `ResetMail { reset_url, expires_at }`，固定ISSUER `/password-reset#token=<43位base64url>`，15分钟到期；Worker与验证模板共用严格origin/path/fragment校验。`security_notification`使用`SecurityNotificationMail { event, occurred_at }`，仅password.changed/password.reset_completed事件，不包含密码、token或任意外部链接。两模板继续使用AEAD user/email-outbox绑定。
 
 ## 数据事务与投递
 

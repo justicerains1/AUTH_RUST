@@ -32,7 +32,7 @@ async function integration(args) {
     throw new CommandError('用法：npm run test:integration -- --task=T01（任务参数只能提供一次）。');
   }
   const task = args[0]?.slice('--task='.length);
-  if (task && !['T01', 'T03', 'T04', 'T05', 'T06'].includes(task)) throw new CommandError(`${task} 的真实集成套件尚未实现；不能作为验收通过。`);
+  if (task && !['T01', 'T03', 'T04', 'T05', 'T06', 'T07'].includes(task)) throw new CommandError(`${task} 的真实集成套件尚未实现；不能作为验收通过。`);
   if (!task) throw new CommandError('全量集成套件尚未实现。可使用 npm run test:integration -- --task=T01、T03 或 T04。');
   const path = resolve(ROOT, 'tests', 'integration', `${task}.mjs`);
   await requireFile(path, `${task} 的真实 Postgres/Redis/API 集成测试尚未创建；不能作为验收通过。`);
@@ -44,7 +44,7 @@ export async function runCommand(command, args = []) {
   if (FUTURE_COMMANDS[command]) throw new CommandError(`${FUTURE_COMMANDS[command]} 该命令返回失败，按 plan.md 实施后再验收。`);
   if (command === 'test:integration') return integration(args);
   if (command === 'test:e2e') {
-    if (args.length === 1 && ['--task=T05', '--task=T06'].includes(args[0])) {
+    if (args.length === 1 && ['--task=T05', '--task=T06', '--task=T07'].includes(args[0])) {
       const task = args[0].slice('--task='.length);
       await runProcess(process.execPath, [resolve(ROOT, `tests/integration/${task}.mjs`), '--e2e'], { cwd: ROOT });
       return;

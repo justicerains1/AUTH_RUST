@@ -73,6 +73,8 @@ impl IntoResponse for ApiError {
             "AUTH_INVALID_CREDENTIALS" => "凭证无效，请重试",
             "AUTH_ACCOUNT_DISABLED" => "凭证无效，请重试",
             "AUTH_EMAIL_UNVERIFIED" => "请先完成邮箱验证",
+            "AUTH_REAUTH_REQUIRED" => "请先完成近期重新认证",
+            "ADMIN_STRONG_AUTH_REQUIRED" => "请先完成近期强认证",
             "AUTH_ACTION_INVALID" => "验证链接无效，请重新申请验证邮件",
             "AUTH_ACTION_EXPIRED" => "验证链接已过期，请重新申请验证邮件",
             "AUTH_ACTION_CONSUMED" => "验证链接已使用或已被新邮件替换，请使用最新邮件",
@@ -91,6 +93,32 @@ impl IntoResponse for ApiError {
             response.headers_mut().insert(header::RETRY_AFTER, value);
         }
         response
+    }
+}
+
+/// Discriminated step-up response; no arbitrary frontend status or permission string.
+#[derive(serde::Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum RequiredStrength {
+    Password,
+    Strong,
+}
+#[derive(serde::Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum ReauthMethod {
+    Password,
+    Totp,
+    RecoveryCode,
+    Passkey,
+}
+pub struct ReauthFailure {
+    pub request_id: Uuid,
+    pub required_strength: RequiredStrength,
+    pub methods: Vec<ReauthMethod>,
+}
+impl IntoResponse for ReauthFailure {
+    fn into_response(self) -> Response {
+        (StatusCode::FORBIDDEN,Json(json!({"error":{"code":"AUTH_REAUTH_REQUIRED","message":"请先完成近期重新认证","request_id":self.request_id},"next":{"status":"reauth_required","required_strength":self.required_strength,"methods":self.methods}}))).into_response()
     }
 }
 

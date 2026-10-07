@@ -1,0 +1,9 @@
+
+> rust-unified-identity@0.1.0 test:integration
+> node scripts/run.mjs test:integration --task=T07
+
+T07 real integration failed; output suppressed to protect passwords/tokens.
+
+101 !== 0
+
+/usr/bin/node 退出码 1。

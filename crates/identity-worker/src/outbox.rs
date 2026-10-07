@@ -6,6 +6,7 @@ use identity_core::{
 };
 use identity_store::{
     accounts::VerificationMail,
+    passwords::{ResetMail, SecurityNotificationMail},
     repository::{OutboxLease, Repository},
 };
 use lettre::{
@@ -189,35 +190,68 @@ impl MailWorker {
             .keys
             .decrypt(user_id, "email-outbox", &envelope)
             .map_err(|_| WorkerError::InvalidPayload)?;
-        if lease.template != "verify_email" {
-            return Err(WorkerError::InvalidPayload);
-        }
-        let payload: VerificationMail =
-            serde_json::from_slice(&plaintext).map_err(|_| WorkerError::InvalidPayload)?;
-        validate_verification_link(&self.issuer, &payload.verification_url)?;
-        let expires = OffsetDateTime::parse(&payload.expires_at, &Rfc3339)
-            .map_err(|_| WorkerError::InvalidPayload)?;
-        let now = self.clock.now();
-        if expires <= now || expires > lease.lease_until + Duration::minutes(30) {
-            return Err(WorkerError::InvalidPayload);
-        }
+        let content = match lease.template.as_str() {
+            "verify_email" => {
+                let payload: VerificationMail =
+                    serde_json::from_slice(&plaintext).map_err(|_| WorkerError::InvalidPayload)?;
+                self.link_content(
+                    ("验证您的邮箱", "前往验证邮箱"),
+                    &payload.verification_url,
+                    &payload.expires_at,
+                    "/email-verification",
+                    Duration::minutes(30),
+                    lease,
+                )?
+            }
+            "reset_password" => {
+                let payload: ResetMail =
+                    serde_json::from_slice(&plaintext).map_err(|_| WorkerError::InvalidPayload)?;
+                self.link_content(
+                    ("重置您的密码", "前往重置密码"),
+                    &payload.reset_url,
+                    &payload.expires_at,
+                    "/password-reset",
+                    Duration::minutes(15),
+                    lease,
+                )?
+            }
+            "security_notification" => {
+                let payload: SecurityNotificationMail =
+                    serde_json::from_slice(&plaintext).map_err(|_| WorkerError::InvalidPayload)?;
+                let description = match payload.event.as_str() {
+                    "password.changed" => "您的账号密码已修改。",
+                    "password.reset_completed" => "您的账号密码已通过邮箱找回完成重置。",
+                    _ => return Err(WorkerError::InvalidPayload),
+                };
+                let occurred = OffsetDateTime::parse(&payload.occurred_at, &Rfc3339)
+                    .map_err(|_| WorkerError::InvalidPayload)?;
+                if occurred > self.clock.now() {
+                    return Err(WorkerError::InvalidPayload);
+                }
+                let text = Zeroizing::new(format!(
+                    "账号安全通知\n\n{description}\n操作时间（UTC）：{}。\n原有设备会话及应用授权已退出，已绑定的身份验证器与通行密钥保持不变。\n如果不是您本人操作，请通过身份中心的官方入口重新找回密码，并检查您的邮箱安全。\n本邮件不包含密码，请勿回复认证秘密。\n",
+                    payload.occurred_at
+                ));
+                let html = Zeroizing::new(format!(
+                    "<!doctype html><html lang=\"zh-CN\"><body><h1>账号安全通知</h1><p>{description}</p><p>操作时间（UTC）：{}。</p><p>原有设备会话及应用授权已退出，已绑定的身份验证器与通行密钥保持不变。</p><p>如果不是您本人操作，请通过身份中心的官方入口重新找回密码，并检查邮箱安全。</p></body></html>",
+                    escape_html(&payload.occurred_at)
+                ));
+                MailContent {
+                    subject: "统一身份中心 — 账号安全通知",
+                    text,
+                    html,
+                }
+            }
+            _ => return Err(WorkerError::InvalidPayload),
+        };
         let recipient: Mailbox = lease
             .recipient
             .parse()
             .map_err(|_| WorkerError::InvalidPayload)?;
-        let text = Zeroizing::new(format!(
-            "验证您的邮箱\n\n请打开以下链接，再点击页面上的确认按钮完成邮箱验证：\n{}\n\n链接到期时间（UTC）：{}。打开链接本身不会完成验证。\n如果这不是您发起的注册，请忽略此邮件。请勿将链接转发给他人。\n",
-            payload.verification_url, payload.expires_at
-        ));
-        let html = Zeroizing::new(format!(
-            "<!doctype html><html lang=\"zh-CN\"><body><h1>验证您的邮箱</h1><p>请打开链接，再点击页面上的确认按钮完成邮箱验证。</p><p><a href=\"{}\">前往验证邮箱</a></p><p>链接到期时间（UTC）：{}。打开链接本身不会完成验证。</p><p>如果这不是您发起的注册，请忽略此邮件。请勿转发链接。</p></body></html>",
-            escape_html(&payload.verification_url),
-            escape_html(&payload.expires_at)
-        ));
         Message::builder()
             .from(self.from.clone())
             .to(recipient)
-            .subject("统一身份中心 — 验证您的邮箱")
+            .subject(content.subject)
             .message_id(Some(format!(
                 "<{}.identity-outbox@{}>",
                 lease.id,
@@ -225,10 +259,44 @@ impl MailWorker {
             )))
             .multipart(
                 MultiPart::alternative()
-                    .singlepart(SinglePart::plain(text.to_string()))
-                    .singlepart(SinglePart::html(html.to_string())),
+                    .singlepart(SinglePart::plain(content.text.to_string()))
+                    .singlepart(SinglePart::html(content.html.to_string())),
             )
             .map_err(|_| WorkerError::InvalidPayload)
+    }
+
+    fn link_content(
+        &self,
+        labels: (&str, &str),
+        url: &str,
+        expires_at: &str,
+        path: &str,
+        lifetime: Duration,
+        lease: &OutboxLease,
+    ) -> Result<MailContent, WorkerError> {
+        let (title, button) = labels;
+        validate_action_link(&self.issuer, url, path)?;
+        let expires =
+            OffsetDateTime::parse(expires_at, &Rfc3339).map_err(|_| WorkerError::InvalidPayload)?;
+        if expires <= self.clock.now() || expires > lease.lease_until + lifetime {
+            return Err(WorkerError::InvalidPayload);
+        }
+        let subject = match path {
+            "/email-verification" => "统一身份中心 — 验证您的邮箱",
+            "/password-reset" => "统一身份中心 — 重置您的密码",
+            _ => return Err(WorkerError::InvalidPayload),
+        };
+        Ok(MailContent {
+            subject,
+            text: Zeroizing::new(format!(
+                "{title}\n\n请打开以下链接，再点击页面上的确认按钮完成操作：\n{url}\n\n链接到期时间（UTC）：{expires_at}。打开链接本身不会消费链接。\n如果这不是您发起的操作，请忽略此邮件。请勿将链接转发给他人。\n"
+            )),
+            html: Zeroizing::new(format!(
+                "<!doctype html><html lang=\"zh-CN\"><body><h1>{title}</h1><p>请打开链接，再点击页面上的确认按钮完成操作。</p><p><a href=\"{}\">{button}</a></p><p>链接到期时间（UTC）：{}。打开链接本身不会消费链接。</p><p>如果这不是您发起的操作，请忽略此邮件。请勿转发链接。</p></body></html>",
+                escape_html(url),
+                escape_html(expires_at)
+            )),
+        })
     }
 
     async fn delivery_committed(&self, lease: &OutboxLease) -> Result<(), WorkerError> {
@@ -302,12 +370,16 @@ pub fn retry_delay(attempts: i32) -> Option<Duration> {
         .and_then(|index| RETRY_MINUTES.get(index))
         .map(|minutes| Duration::minutes(*minutes))
 }
+#[cfg(test)]
 fn validate_verification_link(issuer: &Url, text: &str) -> Result<(), WorkerError> {
+    validate_action_link(issuer, text, "/email-verification")
+}
+fn validate_action_link(issuer: &Url, text: &str, path: &str) -> Result<(), WorkerError> {
     let url = Url::parse(text).map_err(|_| WorkerError::InvalidPayload)?;
     if url.origin() != issuer.origin()
         || !url.username().is_empty()
         || url.password().is_some()
-        || url.path() != "/email-verification"
+        || url.path() != path
         || url.query().is_some()
     {
         return Err(WorkerError::InvalidPayload);
@@ -324,6 +396,11 @@ fn validate_verification_link(issuer: &Url, text: &str) -> Result<(), WorkerErro
         return Err(WorkerError::InvalidPayload);
     }
     Ok(())
+}
+struct MailContent {
+    subject: &'static str,
+    text: Zeroizing<String>,
+    html: Zeroizing<String>,
 }
 fn escape_html(value: &str) -> String {
     value

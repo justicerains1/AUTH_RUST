@@ -1,6 +1,7 @@
 //! PostgreSQL and Redis connectivity. Repository transactions are implemented in T03.
 pub mod accounts;
 pub mod migrations;
+pub mod passwords;
 pub mod repository;
 pub mod security;
 pub mod sessions;
