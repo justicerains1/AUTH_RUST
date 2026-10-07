@@ -1,6 +1,6 @@
 # 任务进度与接续记录
 
-更新时间：2026-10-08（Asia/Shanghai）；功能验收于2026-10-07完成，仓库提交前检查于2026-10-08完成。实现基准：[plan.md](plan.md)、[acceptance.md](acceptance.md)。代码版本为本次初始化提交，由 Git 记录。仓库：https://github.com/justicerains1/AUTH_RUST ，分支 `main`。
+更新时间：2026-10-08（Asia/Shanghai）。实现基准：[plan.md](plan.md)、[acceptance.md](acceptance.md)。各模块版本由下方记录及 Git 历史追踪。仓库：https://github.com/justicerains1/AUTH_RUST ，分支 `main`。
 
 用户已恢复推进：按文档依赖继续，每完成一个模块并通过相应测试后提交推送。最终运行完整测试；若仍有失败，按用户要求推送并提供总结，失败不标通过。Git推送不等于生产部署。
 
@@ -19,7 +19,8 @@
 | T08 | 通过 | TOTP、单次恢复码和强认证；真实并发/重放/完整浏览器验收，[结果](docs/evidence/T08/test-summary.md) |
 | T09 | 待验收 | 实现/真实PG策略及2个虚拟签名E2E通过，外部真实设备阻塞；[记录](docs/evidence/T09/test-summary.md) |
 | T10 | 通过 | 受管理client/授权同意、严格PKCE和浏览器绑定；真实API/2E2E通过，[结果](docs/evidence/T10/test-summary.md) |
-| T11～T14 | 未开始 | 令牌/OIDC、刷新撤销、BFF SSO、管理 API |
+| T11 | 通过 | 原子授权码交换、RS256及旧公钥、scope Userinfo、成熟OIDC互操作与真实并发/故障；[结果](docs/evidence/T11/test-summary.md) |
+| T12～T14 | 未开始 | 刷新撤销、BFF SSO、管理 API |
 | T15 | 通过 | 官方设计研究、视觉稿与状态规范；用户明确采用方案并进入 T16；[用户确认](docs/evidence/T15/user-review.md) |
 | T16 | 通过 | 设计组件、响应式布局、API/CSRF 客户端、可访问基础路由与保护提示；[结果](docs/evidence/T16/test-summary.md)、[UI 模块记录](docs/evidence/T16/ui-summary.md) |
 | T17～T24 | 未开始 | 完整认证/账号/后台产品页面、全面安全验收、性能、生产部署、发布与高可用 |
@@ -50,7 +51,7 @@ T05 已实现真实注册与邮箱验证：统一 202 不泄漏是否存在；�
 
 T05 新 Cargo.lock 的在线 RustSec 公告更新失败已记录；随后 `cargo audit --no-fetch --json` 使用缓存公告库扫描 278 个依赖，0 漏洞、无警告。缓存 HEAD 为 `b0797f54ea5d1d5bc1266bff06e201d1c5e07dca`，提交时间 `2026-10-07T14:00:26+02:00`。这不是在线更新成功，也不代替 T20 全部安全扫描；[扫描说明](docs/evidence/T05/rustsec-cache.md)。
 
-第一版所有业务能力尚未完成，当前不具备生产发布条件。正式密码登录、MFA、Passkey、OAuth token/discovery 实际端点、双 BFF SSO、管理功能、备份恢复与生产配置仍待对应任务。OpenAPI 全量契约不能作为这些端点可用的证据。
+第一版尚未完成，当前不具备生产发布条件。密码登录、MFA、Passkey及授权码/OIDC端点已有真实模块验收；Passkey实体设备、刷新撤销、双BFF SSO、管理功能、完整产品流程、备份恢复与生产验收仍待对应任务。OpenAPI全量契约不能作为未实现端点可用的证据。
 
 ## 并行模块分工
 
@@ -83,7 +84,7 @@ T05 新 Cargo.lock 的在线 RustSec 公告更新失败已记录；随后 `cargo
 
 ## 独立协议输入模块
 
-T10.03的纯协议输入子模块已先行完成并推送a4320d2；4个Rust规则测试与Clippy通过。它不创建授权或签发令牌，T10其余部分仍未完成。
+T10.03的纯协议输入子模块已先行完成并推送a4320d2；4个Rust规则测试与Clippy通过。它不创建授权或签发令牌，T10完整授权/同意随后完成并推送d055641。
 
 ## 完整测试编排模块
 
@@ -119,4 +120,8 @@ npm run dev:down
 
 `dev:down` 保留开发卷。未实现的任务套件不能返回伪成功；测试库与临时 schema 清理不会指向 production。不要把 `.local`、密码、邮件链接、私钥、token、Cookie 或含这些值的浏览器 trace 提交 Git。
 
-当前从 T06 密码登录/会话开始，按前置顺序推进 T07～T14。T17～T19产品流程整合依赖相应真实后端；T20～T23完成后才能评估生产发布。每个模块验收后提交推送，完整任务结束时生成最终测试总结。
+当前T11已完成，提交后按前置顺序推进T12刷新/撤销、T13双BFF及T14管理API。T17～T19产品流程整合依赖相应真实后端；T20～T23完成后才能评估生产发布。每个模块验收后提交推送，完整任务结束时生成最终测试总结。
+
+## 最近完成：T11
+
+授权码交换与RS256/Discovery/JWKS/Userinfo通过真实API、外部OIDC客户端、独立JOSE验证；十并发仅一个令牌家族，签名失败完整回滚，PG故障503，Cookie不可替代Basic。[完整结果](docs/evidence/T11/test-summary.md)。当前discovery仅公布实际授权码能力，T12完成后扩展。

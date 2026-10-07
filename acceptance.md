@@ -4,7 +4,7 @@
 编写日期：2026-10-07  
 关联计划：[plan.md](plan.md)
 
-> 初始交付仅为文档；用户已于 2026-10-07 授权开始代码实施并要求多 agent 分模块并行。当前 T01 进行中，逐项记录真实执行结果。原第 11 节保留为历史文档交付记录，不能作为系统实现验收。
+> 初始交付仅为文档；用户已于 2026-10-07 授权开始代码实施并要求多 agent 分模块并行。当前T11模块通过，后续按前置顺序继续，逐项记录真实执行结果。原第 11 节保留为历史文档交付记录，不能作为系统实现验收。
 
 ## 1. 验收规则
 
@@ -78,7 +78,7 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 | T08 | TOTP、恢复码与近期认证 | 通过 | T06、T07 | docs/evidence/T08/test-summary.md |
 | T09 | Passkey 注册、登录和管理 | 待验收 | T06、T08 | docs/evidence/T09/test-summary.md |
 | T10 | 受管理客户端与授权/同意事务 | 通过 | T06、T02 | docs/evidence/T10/test-summary.md |
-| T11 | 授权码交换、ID Token、Discovery 和 Userinfo | 未开始 | T10 | 待提供 |
+| T11 | 授权码交换、ID Token、Discovery 和 Userinfo | 通过 | T10 | docs/evidence/T11/test-summary.md |
 | T12 | 刷新轮换、Introspection、撤销与 RP 退出 | 未开始 | T11 | 待提供 |
 | T13 | 两个 BFF 演示应用与接入指南 | 未开始 | T12 | 待提供 |
 | T14 | 管理员初始化与管理 API | 未开始 | T08、T10、T12 | 待提供 |
@@ -469,30 +469,31 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 
 | 案例 | 前置状态 | 操作步骤 | 预期结果 | 实际结果 | 状态 | 证据 |
 |---|---|---|---|---|---|---|
-| T11-OIDC-01 | 授权成功 code | 成熟客户端交换并验签 | iss/aud/nonce/exp/signature 符合规范 | 待填写 | 未执行 | 待提供：客户端验证输出 |
-| T11-OIDC-02 | 同一 code | 错误 verifier/client/redirect 和并发重复消费 | 非法失败，合法最多一次成功 | 待填写 | 未执行 | 待提供：负向和并发测试 |
-| T11-OIDC-03 | 不同 scope token | 访问 userinfo | sub 稳定，email/profile 不越权返回 | 待填写 | 未执行 | 待提供：响应对照 |
-| T11-OIDC-04 | JWKS | 检查公私钥和 discovery 能力 | 无私钥字段，声明与实际一致 | 待填写 | 未执行 | 待提供：公开响应证据 |
+| T11-OIDC-01 | 授权成功 code | 成熟客户端交换并验签 | iss/aud/nonce/exp/signature 符合规范 | openid-client6.8.8真实discovery/Basic/PKCE/nonce兑换，独立jose6.2.12验签与算法/iss/aud/expiry负向通过 | 通过 | [docs/evidence/T11/integration.txt](docs/evidence/T11/integration.txt) |
+| T11-OIDC-02 | 同一 code | 错误 verifier/client/redirect 和并发重复消费 | 非法失败，合法最多一次成功 | 错误verifier/client/redirect拒；十并发仅一成功；签名失败不消费code | 通过 | [docs/evidence/T11/integration.txt](docs/evidence/T11/integration.txt) |
+| T11-OIDC-03 | 不同 scope token | 访问 userinfo | sub 稳定，email/profile 不越权返回 | scope字段对照、稳定sub；refresh不能访问userinfo；禁用当前权限立即拒 | 通过 | [docs/evidence/T11/integration.txt](docs/evidence/T11/integration.txt) |
+| T11-OIDC-04 | JWKS | 检查公私钥和 discovery 能力 | 无私钥字段，声明与实际一致 | 公开仅RSA公钥；固定RS256/kid；当前仅公布真实authorization_code | 通过 | [docs/evidence/T11/integration.txt](docs/evidence/T11/integration.txt) |
 
 **实现子步骤检查：**
 
-- [ ] T11.01：实现 code 原子消费，绑定 grant/client/redirect/PKCE；固定客户端 Basic 验证。
-- [ ] T11.02：创建不透明 access/refresh token 摘要及 family，expiry 不超过会话。
-- [ ] T11.03：RS256 签发 ID Token，固定 iss/aud/sub/nonce/auth_time/amr/sid；禁止算法协商降级。
-- [ ] T11.04：实现 discovery，只声明实际功能；JWKS 仅公钥，当前 kid 唯一。
-- [ ] T11.05：实现 userinfo 每次检查有效状态并按 scope 限制字段。
-- [ ] T11.06：token/认证响应 no-store，日志不打印 body/token。
-- [ ] T11.07：支持当前与旧公钥窗口，明确正常 token exp 与退出 hint 的差别。
-- [ ] T11.08：用成熟外部 OIDC client 互操作测试，不只用自写解析器自证。
+- [x] T11.01：实现 code 原子消费，绑定 grant/client/redirect/PKCE；固定客户端 Basic 验证。
+- [x] T11.02：创建不透明 access/refresh token 摘要及 family，expiry 不超过会话。
+- [x] T11.03：RS256 签发 ID Token，固定 iss/aud/sub/nonce/auth_time/amr/sid；禁止算法协商降级。
+- [x] T11.04：实现 discovery，只声明实际功能；JWKS 仅公钥，当前 kid 唯一。
+- [x] T11.05：实现 userinfo 每次检查有效状态并按 scope 限制字段。
+- [x] T11.06：token/认证响应 no-store，日志不打印 body/token。
+- [x] T11.07：支持当前与旧公钥窗口，明确正常 token exp 与退出 hint 的差别。
+- [x] T11.08：用成熟外部 OIDC client 互操作测试，不只用自写解析器自证。
 
 **验收记录：**
 
-- 代码版本：待填写。
-- 环境与时间：待填写。
-- 命令退出码：待填写。
-- 失败/阻塞项：待填写。
-- 修复与复测：待填写。
-- 任务结论：未开始。
+- 代码版本：本模块 Git 提交（父提交9d76a11）。
+- 环境与时间：2026-10-08 Linux、Rust1.98/Node22、真实PG17/Redis7.4；openid-client6.8.8/jose6.2.12。
+- 命令退出码：final-check/unit/build/docs/openapi/tooling/integration均0；63工具测试、40前端测试及Rust单元通过。
+- 失败/阻塞项：初始fmt/needless_borrow已修并保留失败证据；CI既有Windows/T03失败仍未解决，完整安全验收在T20。
+- 修复与复测：[T11结果](docs/evidence/T11/test-summary.md)、[签名契约](docs/oidc-signing.md)。
+- 任务结论：通过（当前真实本地模块验收，未宣称OpenID认证）。
+
 
 ### T12 — 刷新轮换、Introspection、撤销与 RP 退出
 

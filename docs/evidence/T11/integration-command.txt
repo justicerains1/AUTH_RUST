@@ -1,0 +1,5 @@
+
+> rust-unified-identity@0.1.0 test:integration
+> node scripts/run.mjs test:integration --task=T11
+
+T11 real token API and mature OIDC/JOSE interoperability passed without secret output.

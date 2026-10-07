@@ -1,0 +1,27 @@
+
+> rust-unified-identity@0.1.0 check
+> node scripts/run.mjs check
+
+    Checking identity-core v0.1.0 (/root/code/rust/auth_rust/crates/identity-core)
+error: this expression creates a reference which is immediately dereferenced by the compiler
+   --> crates/identity-core/src/jose.rs:181:40
+    |
+181 |             PKey::private_key_from_pem(&pem).map_err(|_| JoseError::InvalidConfiguration)?;
+    |                                        ^^^^ help: change this to: `pem`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#needless_borrow
+    = note: `-D clippy::needless-borrow` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::needless_borrow)]`
+
+error: this expression creates a reference which is immediately dereferenced by the compiler
+   --> crates/identity-core/src/jose.rs:189:45
+    |
+189 |         let key = EncodingKey::from_rsa_pem(&pem).map_err(|_| JoseError::InvalidConfiguration)?;
+    |                                             ^^^^ help: change this to: `pem`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#needless_borrow
+
+error: could not compile `identity-core` (lib) due to 2 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `identity-core` (lib test) due to 2 previous errors
+cargo 退出码 101。

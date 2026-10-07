@@ -1,0 +1,209 @@
+
+> rust-unified-identity@0.1.0 check
+> node scripts/run.mjs check
+
+Diff in /root/code/rust/auth_rust/crates/identity-core/src/jose.rs:20:
+     InvalidToken,
+ }
+
+-#[cfg(test)]mod tests{use super::*;use openssl::rsa::Rsa;
+-    #[test]fn fixed_rs256_public_jwks_and_claim_validation()->Result<(),Box<dyn std::error::Error>>{let pem=Zeroizing::new(Rsa::generate(2048)?.private_key_to_pem()?);let signer=Signer::from_pem("https://identity.example".into(),"test-current".into(),&pem,None)?;let now=time::OffsetDateTime::now_utc().unix_timestamp();let mut claims=IdTokenClaims{iss:signer.issuer().into(),sub:Uuid::new_v4(),aud:"demo-a".into(),exp:now+300,iat:now,nonce:Some("nonce_unit_example_1234".into()),auth_time:now,amr:vec!["pwd".into()],sid:Uuid::new_v4()};let token=signer.sign(&claims)?;let decoded=signer.verify(&token,"demo-a")?;assert_eq!(decoded.sub,claims.sub);assert!(signer.verify(&token,"demo-b").is_err());let keys=signer.jwks();let public=keys["keys"][0].as_object().ok_or("public key missing")?;assert_eq!(public.get("alg"),Some(&Value::String("RS256".into())));assert!(public.keys().all(|name|!matches!(name.as_str(),"d"|"p"|"q"|"qi")));claims.iss="https://evil.example".into();assert!(signer.sign(&claims).is_err());claims.iss=signer.issuer().into();claims.exp=now+301;assert!(signer.sign(&claims).is_err());claims.exp=now-1;assert!(signer.sign(&claims).is_err());let header=Header::new(Algorithm::HS256);let forged=jsonwebtoken::encode(&header,&claims,&EncodingKey::from_secret(b"unit fixture key"))?;assert!(signer.verify(&forged,"demo-a").is_err());Ok(())}
+-    #[test]fn old_public_key_remains_verifiable_and_private_jwks_rejected()->Result<(),Box<dyn std::error::Error>>{let pem=Zeroizing::new(Rsa::generate(2048)?.private_key_to_pem()?);let old=Signer::from_pem("https://identity.example".into(),"old".into(),&pem,None)?;let currentpem=Zeroizing::new(Rsa::generate(2048)?.private_key_to_pem()?);let previous=old.jwks().to_string();let current=Signer::from_pem("https://identity.example".into(),"current".into(),&currentpem,Some(&previous))?;let now=time::OffsetDateTime::now_utc().unix_timestamp();let claims=IdTokenClaims{iss:old.issuer().into(),sub:Uuid::new_v4(),aud:"demo-a".into(),exp:now+120,iat:now,nonce:None,auth_time:now,amr:vec!["user".into()],sid:Uuid::new_v4()};assert!(current.verify(&old.sign(&claims)?,"demo-a").is_ok());let mut private=old.jwks();private["keys"][0]["d"]=Value::String("secret-invalid".into());assert!(Signer::from_pem("https://identity.example".into(),"current".into(),&currentpem,Some(&private.to_string())).is_err());Ok(())}
++#[cfg(test)]
++mod tests {
++    use super::*;
++    use openssl::rsa::Rsa;
++    #[test]
++    fn fixed_rs256_public_jwks_and_claim_validation() -> Result<(), Box<dyn std::error::Error>> {
++        let pem = Zeroizing::new(Rsa::generate(2048)?.private_key_to_pem()?);
++        let signer = Signer::from_pem(
++            "https://identity.example".into(),
++            "test-current".into(),
++            &pem,
++            None,
++        )?;
++        let now = time::OffsetDateTime::now_utc().unix_timestamp();
++        let mut claims = IdTokenClaims {
++            iss: signer.issuer().into(),
++            sub: Uuid::new_v4(),
++            aud: "demo-a".into(),
++            exp: now + 300,
++            iat: now,
++            nonce: Some("nonce_unit_example_1234".into()),
++            auth_time: now,
++            amr: vec!["pwd".into()],
++            sid: Uuid::new_v4(),
++        };
++        let token = signer.sign(&claims)?;
++        let decoded = signer.verify(&token, "demo-a")?;
++        assert_eq!(decoded.sub, claims.sub);
++        assert!(signer.verify(&token, "demo-b").is_err());
++        let keys = signer.jwks();
++        let public = keys["keys"][0].as_object().ok_or("public key missing")?;
++        assert_eq!(public.get("alg"), Some(&Value::String("RS256".into())));
++        assert!(
++            public
++                .keys()
++                .all(|name| !matches!(name.as_str(), "d" | "p" | "q" | "qi"))
++        );
++        claims.iss = "https://evil.example".into();
++        assert!(signer.sign(&claims).is_err());
++        claims.iss = signer.issuer().into();
++        claims.exp = now + 301;
++        assert!(signer.sign(&claims).is_err());
++        claims.exp = now - 1;
++        assert!(signer.sign(&claims).is_err());
++        let header = Header::new(Algorithm::HS256);
++        let forged = jsonwebtoken::encode(
++            &header,
++            &claims,
++            &EncodingKey::from_secret(b"unit fixture key"),
++        )?;
++        assert!(signer.verify(&forged, "demo-a").is_err());
++        Ok(())
++    }
++    #[test]
++    fn old_public_key_remains_verifiable_and_private_jwks_rejected()
++    -> Result<(), Box<dyn std::error::Error>> {
++        let pem = Zeroizing::new(Rsa::generate(2048)?.private_key_to_pem()?);
++        let old = Signer::from_pem("https://identity.example".into(), "old".into(), &pem, None)?;
++        let currentpem = Zeroizing::new(Rsa::generate(2048)?.private_key_to_pem()?);
++        let previous = old.jwks().to_string();
++        let current = Signer::from_pem(
++            "https://identity.example".into(),
++            "current".into(),
++            &currentpem,
++            Some(&previous),
++        )?;
++        let now = time::OffsetDateTime::now_utc().unix_timestamp();
++        let claims = IdTokenClaims {
++            iss: old.issuer().into(),
++            sub: Uuid::new_v4(),
++            aud: "demo-a".into(),
++            exp: now + 120,
++            iat: now,
++            nonce: None,
++            auth_time: now,
++            amr: vec!["user".into()],
++            sid: Uuid::new_v4(),
++        };
++        assert!(current.verify(&old.sign(&claims)?, "demo-a").is_ok());
++        let mut private = old.jwks();
++        private["keys"][0]["d"] = Value::String("secret-invalid".into());
++        assert!(
++            Signer::from_pem(
++                "https://identity.example".into(),
++                "current".into(),
++                &currentpem,
++                Some(&private.to_string())
++            )
++            .is_err()
++        );
++        Ok(())
++    }
+ }
+ impl fmt::Display for JoseError {
+     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+Diff in /root/code/rust/auth_rust/crates/identity-core/src/jose.rs:60:
+         let pem = Zeroizing::new(
+             fs::read(&config.signing_key_file).map_err(|_| JoseError::InvalidConfiguration)?,
+         );
+-        let previous=if let Some(path)=&config.jwks_previous_file{Some(Zeroizing::new(fs::read_to_string(path).map_err(|_|JoseError::InvalidConfiguration)?))}else{None};
+-        Self::from_pem(config.issuer.origin().ascii_serialization(),config.signing_kid.clone(),&pem,previous.as_deref().map(String::as_str))
++        let previous = if let Some(path) = &config.jwks_previous_file {
++            Some(Zeroizing::new(
++                fs::read_to_string(path).map_err(|_| JoseError::InvalidConfiguration)?,
++            ))
++        } else {
++            None
++        };
++        Self::from_pem(
++            config.issuer.origin().ascii_serialization(),
++            config.signing_kid.clone(),
++            &pem,
++            previous.as_deref().map(String::as_str),
++        )
+     }
+-    fn from_pem(issuer:String,kid:String,pem:&[u8],previous:Option<&str>)->Result<Self,JoseError>{
+-        if kid.is_empty()||kid.len()>128||!kid.bytes().all(|byte|byte.is_ascii_alphanumeric()||b"-_.".contains(&byte)){return Err(JoseError::InvalidConfiguration);}
++    fn from_pem(
++        issuer: String,
++        kid: String,
++        pem: &[u8],
++        previous: Option<&str>,
++    ) -> Result<Self, JoseError> {
++        if kid.is_empty()
++            || kid.len() > 128
++            || !kid
++                .bytes()
++                .all(|byte| byte.is_ascii_alphanumeric() || b"-_.".contains(&byte))
++        {
++            return Err(JoseError::InvalidConfiguration);
++        }
+         let private =
+             PKey::private_key_from_pem(&pem).map_err(|_| JoseError::InvalidConfiguration)?;
+         let rsa = private.rsa().map_err(|_| JoseError::InvalidConfiguration)?;
+Diff in /root/code/rust/auth_rust/crates/identity-core/src/jose.rs:73:
+         }
+         let n = BASE64_URL_SAFE_NO_PAD.encode(rsa.n().to_vec());
+         let e = BASE64_URL_SAFE_NO_PAD.encode(rsa.e().to_vec());
+-        let current =
+-            json!({"kty":"RSA","use":"sig","alg":"RS256","kid":kid,"n":n,"e":e});
++        let current = json!({"kty":"RSA","use":"sig","alg":"RS256","kid":kid,"n":n,"e":e});
+         let key = EncodingKey::from_rsa_pem(&pem).map_err(|_| JoseError::InvalidConfiguration)?;
+         let mut keys = vec![current];
+         if let Some(raw) = previous {
+Diff in /root/code/rust/auth_rust/crates/identity-core/src/jose.rs:146:
+             || claims.aud.len() > 128
+             || claims.iat < 0
+             || claims.exp <= claims.iat
+-            || claims.iat.checked_add(300).is_none_or(|maximum|claims.exp>maximum)
++            || claims
++                .iat
++                .checked_add(300)
++                .is_none_or(|maximum| claims.exp > maximum)
+             || claims.auth_time > claims.iat
+             || claims.auth_time < 0
+             || claims.amr.is_empty()
+Diff in /root/code/rust/auth_rust/crates/identity-core/src/jose.rs:184:
+         validation.set_issuer(&[&self.issuer]);
+         validation.set_audience(&[audience]);
+         validation.set_required_spec_claims(&["iss", "sub", "aud", "exp", "iat"]);
+-        let claims=jsonwebtoken::decode::<IdTokenClaims>(token, key, &validation).map_err(|_|JoseError::InvalidToken)?.claims;
+-        let now=time::OffsetDateTime::now_utc().unix_timestamp();
+-        if claims.iat<0||claims.iat>now.saturating_add(120)||claims.auth_time<0||claims.auth_time>claims.iat||claims.exp<=claims.iat||claims.iat.checked_add(300).is_none_or(|maximum|claims.exp>maximum)||claims.amr.is_empty()||claims.amr.iter().any(|method|!matches!(method.as_str(),"pwd"|"otp"|"rcv"|"user"|"hwk")){return Err(JoseError::InvalidToken);}
++        let claims = jsonwebtoken::decode::<IdTokenClaims>(token, key, &validation)
++            .map_err(|_| JoseError::InvalidToken)?
++            .claims;
++        let now = time::OffsetDateTime::now_utc().unix_timestamp();
++        if claims.iat < 0
++            || claims.iat > now.saturating_add(120)
++            || claims.auth_time < 0
++            || claims.auth_time > claims.iat
++            || claims.exp <= claims.iat
++            || claims
++                .iat
++                .checked_add(300)
++                .is_none_or(|maximum| claims.exp > maximum)
++            || claims.amr.is_empty()
++            || claims
++                .amr
++                .iter()
++                .any(|method| !matches!(method.as_str(), "pwd" | "otp" | "rcv" | "user" | "hwk"))
++        {
++            return Err(JoseError::InvalidToken);
++        }
+         Ok(claims)
+     }
+ }
+Diff in /root/code/rust/auth_rust/crates/identity-store/src/tokens.rs:215:
+             claims["email_verified"] = Value::Bool(row.try_get("verified")?);
+         }
+         if scopes.iter().any(|s| s == "profile")
+-            && let Some(name) = row.try_get::<Option<String>, _>("display_name")? {
++            && let Some(name) = row.try_get::<Option<String>, _>("display_name")?
++        {
+             claims["display_name"] = Value::String(name);
+         }
+         Ok(claims)
+cargo 退出码 1。

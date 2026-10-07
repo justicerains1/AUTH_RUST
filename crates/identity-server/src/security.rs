@@ -287,6 +287,7 @@ impl SecurityState {
             LimitPolicy::Mail => (20, 3600),
             LimitPolicy::Challenge => (30, 60),
             LimitPolicy::Preauth => (30, 60),
+            LimitPolicy::Token => (30, 60),
         };
         budgets.push((
             self.limit_key(&format!("{}:ip", policy.key()), &source.to_string()),
@@ -294,9 +295,15 @@ impl SecurityState {
             seconds,
         ));
         if let Some(account) = account {
-            let normalized = normalize_email(account).map_err(|_| BoundaryUnavailable)?;
+            let normalized = if matches!(policy, LimitPolicy::Token) {
+                account.to_string()
+            } else {
+                normalize_email(account).map_err(|_| BoundaryUnavailable)?
+            };
             let (limit, seconds) = if matches!(policy, LimitPolicy::Mail) {
                 (3, 3600)
+            } else if matches!(policy, LimitPolicy::Token) {
+                (30, 60)
             } else {
                 (5, 60)
             };
@@ -365,6 +372,7 @@ pub enum LimitPolicy {
     Mail,
     Challenge,
     Preauth,
+    Token,
 }
 impl LimitPolicy {
     fn key(self) -> &'static str {
@@ -373,6 +381,7 @@ impl LimitPolicy {
             Self::Mail => "mail",
             Self::Challenge => "mfa",
             Self::Preauth => "preauth",
+            Self::Token => "token",
         }
     }
 }
@@ -715,7 +724,13 @@ async fn browser_boundary(
         HeaderValue::from_str(&id.to_string())
             .unwrap_or_else(|_| HeaderValue::from_static("invalid")),
     );
-    headers.insert(header::CACHE_CONTROL, HeaderValue::from_static("no-store"));
+    if !matches!(
+        path.as_str(),
+        "/.well-known/openid-configuration" | "/oauth/jwks"
+    ) || !headers.contains_key(header::CACHE_CONTROL)
+    {
+        headers.insert(header::CACHE_CONTROL, HeaderValue::from_static("no-store"));
+    }
     headers.insert("referrer-policy", HeaderValue::from_static("no-referrer"));
     headers.insert(
         "x-content-type-options",

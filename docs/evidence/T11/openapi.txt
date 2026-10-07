@@ -1,0 +1,5 @@
+
+> rust-unified-identity@0.1.0 verify:openapi
+> node scripts/run.mjs verify:openapi
+
+OpenAPI 检查通过：59 个操作（48 个 JSON API）、125 个 schema、598 个 examples；契约验证不代表功能已实现。

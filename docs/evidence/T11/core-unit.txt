@@ -1,0 +1,8 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.08s
+     Running unittests src/lib.rs (target/debug/deps/identity_core-5da1222c9299baf9)
+
+running 2 tests
+test jose::tests::fixed_rs256_public_jwks_and_claim_validation ... ok
+test jose::tests::old_public_key_remains_verifiable_and_private_jwks_rejected ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 24 filtered out; finished in 0.05s

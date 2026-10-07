@@ -8,6 +8,7 @@ pub mod passwords;
 pub mod repository;
 pub mod security;
 pub mod sessions;
+pub mod tokens;
 use identity_core::config::Config;
 use sqlx::postgres::PgPoolOptions;
 use std::time::Duration;

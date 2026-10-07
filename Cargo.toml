@@ -26,6 +26,7 @@ hmac = "=0.13.0"
 ipnet = "=2.12.2"
 jsonwebtoken = { version = "=11.1.0", default-features = false, features = ["aws_lc_rs", "use_pem"] }
 lettre = { version = "=0.11.23", default-features = false, features = ["builder", "smtp-transport", "tokio1-rustls-tls", "pool", "hostname"] }
+openssl = "=0.10.81"
 redis = { version = "=1.7.1", default-features = false, features = ["tokio-rustls-comp", "script"] }
 serde = { version = "=1.0.229", features = ["derive"] }
 serde_json = "=1.0.151"
