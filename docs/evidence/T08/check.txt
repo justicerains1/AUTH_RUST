@@ -1,0 +1,16 @@
+
+> rust-unified-identity@0.1.0 check
+> node scripts/run.mjs check
+
+Diff in /root/code/rust/auth_rust/crates/identity-store/src/mfa.rs:290:
+         }
+         let located=sqlx::query("SELECT purpose,session_id,preauth_hash FROM authentication_challenges WHERE id=$1 AND user_id=$2").bind(input.challenge_id).bind(id).fetch_one(&mut *tx).await?;
+         let purpose: String = located.try_get("purpose")?;
+[31m-        if input.reauth_only && purpose != "reauthentication" { return Err(MfaError::InvalidChallenge); }
+(B[m[32m+        if input.reauth_only && purpose != "reauthentication" {
+(B[m[32m+            return Err(MfaError::InvalidChallenge);
+(B[m[32m+        }
+(B[m         let session_id: Option<Uuid> = located.try_get("session_id")?;
+         if purpose == "reauthentication" {
+             let hash = input.session_hash.ok_or(MfaError::InvalidSession)?;
+cargo 退出码 1。

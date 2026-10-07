@@ -36,6 +36,7 @@ time = { version = "=0.3.55", features = ["serde", "formatting", "parsing", "mac
 tokio = { version = "=1.53.2", features = ["macros", "rt-multi-thread", "net", "signal", "time", "sync"] }
 tracing = "=0.1.44"
 tracing-subscriber = { version = "=0.3.23", features = ["json", "env-filter"] }
+totp-rs = { version = "=6.0.0", default-features = false, features = ["otpauth", "zeroize"] }
 url = "=2.5.8"
 uuid = { version = "=1.27.0", features = ["v4", "serde"] }
 zeroize = "=1.9.1"

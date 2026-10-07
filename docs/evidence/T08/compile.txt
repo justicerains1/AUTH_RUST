@@ -1,0 +1,44 @@
+    Checking totp-rs v6.0.0
+    Checking identity-core v0.1.0 (/root/code/rust/auth_rust/crates/identity-core)
+    Checking identity-store v0.1.0 (/root/code/rust/auth_rust/crates/identity-store)
+    Checking identity-admin-cli v0.1.0 (/root/code/rust/auth_rust/crates/identity-admin-cli)
+    Checking identity-worker v0.1.0 (/root/code/rust/auth_rust/crates/identity-worker)
+    Checking identity-server v0.1.0 (/root/code/rust/auth_rust/crates/identity-server)
+error[E0308]: mismatched types
+   --> crates/identity-server/src/mfa.rs:35:35
+    |
+ 35 | ...fa.verify_factor(FactorVerificationInput{challenge_id:input.c...器".into()},audit:audit(&state,source,id)}).a...
+    |       ------------- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^...^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `&FactorVerificationInput`, found `FactorVerificationInput`
+    |       |
+    |       arguments to this method are incorrect
+    |
+note: method defined here
+   --> crates/identity-store/src/mfa.rs:272:18
+    |
+272 |     pub async fn verify_factor(
+    |                  ^^^^^^^^^^^^^
+help: consider borrowing here
+    |
+ 35 |     match state.mfa.verify_factor(&FactorVerificationInput{challenge_id:input.challenge_id,code:Zeroizing::new(std::mem::take(&mut input.code)),method,preauth_hash,session_hash,login:LoginCompletion{session_id:Uuid::new_v4(),session_token_hash:digest(&token),session_csrf_hash:digest(&csrf),new_preauth_hash:digest(&preauth),new_preauth_csrf_hash:digest(&preauth_csrf),user_agent:"浏览器".into()},audit:audit(&state,source,id)}).await {
+    |                                   +
+
+error[E0308]: mismatched types
+   --> crates/identity-server/src/mfa.rs:40:335
+    |
+ 40 | ...fa.confirm_enrollment(EnrollmentConfirmInput{session_hash,challenge_id:input.challenge_id,code:Zeroizing::new(std::mem::take(&mut input.code)),audit:audit(&state,source,id)}).a...
+    |       ------------------ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `&EnrollmentConfirmInput`, found `EnrollmentConfirmInput`
+    |       |
+    |       arguments to this method are incorrect
+    |
+note: method defined here
+   --> crates/identity-store/src/mfa.rs:162:18
+    |
+162 |     pub async fn confirm_enrollment(
+    |                  ^^^^^^^^^^^^^^^^^^
+help: consider borrowing here
+    |
+ 40 | async fn confirm_enrollment(State(state):State<AuthAppState>,request:Request)->Result<Response,ApiError>{let(id,source)=context(&request)?;let session_hash=session(&state,&request,id)?;let mut input=read_json::<FactorRequest>(request).await?;budget(&state,source,id,Some(input.challenge_id)).await?;match state.mfa.confirm_enrollment(&EnrollmentConfirmInput{session_hash,challenge_id:input.challenge_id,code:Zeroizing::new(std::mem::take(&mut input.code)),audit:audit(&state,source,id)}).await {Err(failure)=>Ok(error(failure,id)),Ok(codes)=>Ok(Json(json!({"status":"totp_enabled","recovery_codes":{"codes":codes.expose(),"shown_once":true}})).into_response())}}
+    |                                                                                                                                                                                                                                                                                                                                               +
+
+For more information about this error, try `rustc --explain E0308`.
+error: could not compile `identity-server` (lib) due to 2 previous errors

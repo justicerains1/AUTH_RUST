@@ -19,6 +19,7 @@ sha2.workspace = true
 subtle.workspace = true
 time.workspace = true
 tokio.workspace = true
+totp-rs.workspace = true
 uuid.workspace = true
 url.workspace = true
 zeroize.workspace = true

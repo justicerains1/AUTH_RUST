@@ -58,5 +58,7 @@ jobs:
       - run: npm run test:e2e -- --task=T06
       - run: npm run test:integration -- --task=T07
       - run: npm run test:e2e -- --task=T07
+      - run: npm run test:integration -- --task=T08
+      - run: npm run test:e2e -- --task=T08
       - if: always()
         run: npm run dev:down

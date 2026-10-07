@@ -1,0 +1,123 @@
+
+> rust-unified-identity@0.1.0 test:unit
+> node scripts/run.mjs test:unit
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.10s
+     Running unittests src/main.rs (target/debug/deps/demo_bff-ac2236355b25f571)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/identity_admin_cli-114212586604b2ba)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/identity_core-d8c58d0720ee077b)
+
+running 23 tests
+test clock::tests::expiry_is_exclusive_and_independent_of_wall_clock ... ok
+test config::tests::canonical_origins_with_optional_root_slash_are_accepted ... ok
+test config::tests::invalid_environment_rp_or_secret_connection_never_echoes_values ... ok
+test config::tests::encryption_map_rejects_duplicate_versions_and_invalid_secret_material ... ok
+test config::tests::secret_debug_is_redacted ... ok
+test config::tests::production_origin_is_fixed_and_https ... ok
+test config::tests::smtp_credentials_reject_blank_accounts_and_control_characters ... ok
+test config::tests::smtp_host_and_mailbox_are_plain_addresses ... ok
+test mfa::tests::material_is_random_minimum160bit_and_roundtrips_without_debug ... ok
+test oauth::tests::callbacks_require_exact_safe_registration_and_loopback_http_only ... ok
+test oauth::tests::pkce_matches_rfc7636_and_enforces_verifier_charset ... ok
+test config::tests::previous_jwks_checks_unsigned_rsa_components_and_public_only_policy ... ok
+test mfa::tests::rfc6238_sha1_vectors_and_exact_step_boundaries ... ok
+test oauth::tests::valid_authorization_is_typed_and_secret_debug_is_redacted ... ok
+test oauth::tests::rejects_duplicate_parameters_weak_pkce_and_invalid_prompt ... ok
+test security::tests::email_normalization_preserves_aliases_and_rejects_invalid_domains ... ok
+test security::tests::duplicate_key_versions_are_rejected_before_crypto_loading ... ok
+test security::tests::hmac_matches_rfc4231_and_separates_purpose_boundaries ... ok
+test security::tests::aead_authenticates_user_purpose_nonce_ciphertext_and_key_version ... ok
+test security::tests::random_tokens_recovery_and_comparison_have_correct_entropy_and_redaction ... ok
+test security::tests::unicode_password_limits_do_not_trim_or_force_character_classes ... ok
+test security::tests::bundled_weak_list_matches_pinned_raw_bytes_and_rejects_an_allowed_length_entry ... ok
+test security::tests::argon2_real_hash_legacy_verify_dummy_reuse_and_global_queue_budget ... ok
+
+test result: ok. 23 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 15.80s
+
+     Running unittests src/lib.rs (target/debug/deps/identity_server-a86a631257034e57)
+
+running 4 tests
+test security::tests::duplicate_sensitive_cookie_or_header_is_invalid ... ok
+test security::tests::duplicate_members_are_rejected_before_json_dto_parsing ... ok
+test security::tests::trusted_proxy_chain_stops_at_nearest_untrusted_hop ... ok
+test security::tests::untrusted_forwarding_headers_cannot_override_peer ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/identity_server-2233dc6b21ff9285)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/identity_store-3d563c510b826855)
+
+running 8 tests
+test migrations::tests::production_migration_requires_explicit_acknowledgement_but_is_supported ... ok
+test migrations::tests::errors_and_debug_do_not_echo_secret_connection_values ... ok
+test repository::tests::digest_requires_exactly_256_bits_and_never_formats_material ... ok
+test migrations::tests::test_database_uses_effective_driver_database_and_rejects_overrides ... ok
+test migrations::tests::test_schema_is_scoped_and_never_interprets_arbitrary_sql ... ok
+test repository::tests::repository_error_never_exposes_internal_diagnostics ... ok
+test accounts::tests::verification_payload_is_encrypted_and_uses_fixed_origin_fragment ... ok
+test sessions::tests::cursor_is_user_sort_expiry_and_signature_bound ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/identity-migrate.rs (target/debug/deps/identity_migrate-8bb7586af9a65fdb)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/identity_worker-07a81cddd22c286b)
+
+running 2 tests
+test outbox::tests::retry_schedule_is_bounded_and_exact ... ok
+test outbox::tests::verification_links_reject_different_origin_query_or_nonfragment_tokens ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/identity_worker-edd9d44f04e2f499)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+ RUN  v5.0.3 /root/code/rust/auth_rust/apps/identity-web
+
+
+ Test Files  6 passed (6)
+      Tests  29 passed (29)
+   Start at  02:12:18
+   Duration  1.78s (environment 46%, tests 36%, import 13%, transform 5%)
+
+
+ RUN  v5.0.3 /root/code/rust/auth_rust/apps/demo-a
+
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  02:12:20
+   Duration  1.32s (tests 53%, environment 38%, import 6%, transform 2%)
+
+
+ RUN  v5.0.3 /root/code/rust/auth_rust/apps/demo-b
+
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  02:12:22
+   Duration  1.33s (tests 53%, environment 38%, import 5%, transform 2%)
+

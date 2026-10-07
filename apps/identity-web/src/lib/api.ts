@@ -24,6 +24,15 @@ export const passwordReauthSchema = z.discriminatedUnion('status', [
   z.object({ status: z.literal('reauthenticated'), reauthenticated_at: utc, valid_until: utc, strong: z.boolean(), amr: z.array(z.enum(['pwd', 'otp', 'rcv', 'user', 'hwk'])).min(1) }),
   z.object({ status: z.literal('mfa_required'), challenge_id: uuid, purpose: z.literal('reauthentication'), methods: z.array(z.enum(['totp', 'recovery_code'])).min(1).max(2), expires_at: utc }),
 ]);
+export const mfaVerificationSchema = z.discriminatedUnion('status', [
+  z.object({ status: z.literal('authenticated'), user: userSchema, session: sessionSchema, csrf_token: z.string().min(43).max(512) }),
+  z.object({ status: z.literal('reauthenticated'), reauthenticated_at: utc, valid_until: utc, strong: z.boolean(), amr: z.array(z.enum(['pwd', 'otp', 'rcv', 'user', 'hwk'])).min(1) }),
+]);
+export const totpEnrollmentSchema = z.object({ challenge_id: uuid, purpose: z.literal('totp_enrollment'), secret: z.string().min(32).max(128), otpauth_uri: z.string().startsWith('otpauth://totp/'), expires_at: utc });
+export const recoveryCodesSchema = z.object({ codes: z.array(z.string().min(22).max(128)).length(10), shown_once: z.literal(true) });
+export const totpCompletedSchema = z.object({ status: z.literal('totp_enabled'), recovery_codes: recoveryCodesSchema });
+export type MfaVerification = z.infer<typeof mfaVerificationSchema>;
+export type TotpEnrollment = z.infer<typeof totpEnrollmentSchema>;
 export type Me = z.infer<typeof meSchema>;
 export const acceptedSchema = z.object({ status: z.literal('accepted'), message: z.string() });
 export const emailVerifiedSchema = z.object({ status: z.literal('verified') });

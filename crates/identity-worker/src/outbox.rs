@@ -221,6 +221,11 @@ impl MailWorker {
                 let description = match payload.event.as_str() {
                     "password.changed" => "您的账号密码已修改。",
                     "password.reset_completed" => "您的账号密码已通过邮箱找回完成重置。",
+                    "mfa.totp_enrolled" => "您的账号已开启身份验证器双重验证。",
+                    "mfa.totp_removed" => "您的账号身份验证器双重验证已关闭。",
+                    "mfa.recovery_codes_regenerated" => {
+                        "您的账号恢复码已重新生成，旧恢复码已失效。"
+                    }
                     _ => return Err(WorkerError::InvalidPayload),
                 };
                 let occurred = OffsetDateTime::parse(&payload.occurred_at, &Rfc3339)

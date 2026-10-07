@@ -24,7 +24,6 @@ use std::{
     sync::Arc,
     time::Duration,
 };
-use time::OffsetDateTime;
 use uuid::Uuid;
 use zeroize::Zeroizing;
 
@@ -73,6 +72,12 @@ impl IntoResponse for ApiError {
             "AUTH_INVALID_CREDENTIALS" => "凭证无效，请重试",
             "AUTH_ACCOUNT_DISABLED" => "凭证无效，请重试",
             "AUTH_EMAIL_UNVERIFIED" => "请先完成邮箱验证",
+            "AUTH_CHALLENGE_INVALID" => "认证挑战无效，请重新开始",
+            "AUTH_CHALLENGE_EXPIRED" => "认证挑战已过期，请重新开始",
+            "AUTH_CHALLENGE_CONSUMED" => "认证挑战已使用或次数耗尽，请重新开始",
+            "AUTH_FACTOR_INVALID" => "验证码或恢复码无效，请重试",
+            "AUTH_FACTOR_REPLAYED" => "验证码已使用，请等待下一个验证码",
+            "STATE_CONFLICT" => "当前状态不允许此操作，请刷新后重试",
             "AUTH_REAUTH_REQUIRED" => "请先完成近期重新认证",
             "ADMIN_STRONG_AUTH_REQUIRED" => "请先完成近期强认证",
             "AUTH_ACTION_INVALID" => "验证链接无效，请重新申请验证邮件",
@@ -133,9 +138,21 @@ struct SecurityInner {
     secure: bool,
     proxies: Vec<IpNet>,
     limit_key: Zeroizing<[u8; 32]>,
+    clock: Arc<dyn identity_core::clock::Clock>,
 }
 impl SecurityState {
     pub fn new(config: &Config, dependencies: Dependencies) -> Result<Self, &'static str> {
+        Self::new_with_clock(
+            config,
+            dependencies,
+            Arc::new(identity_core::clock::SystemClock),
+        )
+    }
+    pub fn new_with_clock(
+        config: &Config,
+        dependencies: Dependencies,
+        clock: Arc<dyn identity_core::clock::Clock>,
+    ) -> Result<Self, &'static str> {
         let ring =
             AeadKeyRing::load_file(&config.encryption_keys_file, &config.active_encryption_kid)
                 .map_err(|_| "invalid encryption key configuration")?;
@@ -163,6 +180,7 @@ impl SecurityState {
             secure,
             proxies: config.trusted_proxy_cidrs.clone(),
             limit_key,
+            clock,
         })))
     }
     pub fn cookie_names(&self) -> (&'static str, &'static str) {
@@ -433,7 +451,7 @@ async fn csrf(State(state): State<SecurityState>, request: Request) -> Result<Re
         .extensions()
         .get::<RequestId>()
         .map_or_else(Uuid::new_v4, |id| id.0);
-    let now = OffsetDateTime::now_utc();
+    let now = state.0.clock.now();
     let source = state.source(&request)?;
     limit(&state, LimitPolicy::Preauth, source, None, None, id).await?;
     let csrf = Token::generate().map_err(|_| ApiError::unavailable(id))?;
@@ -594,7 +612,7 @@ async fn browser_boundary(
             if !state
                 .0
                 .store
-                .valid_csrf(session, preauth, csrf, OffsetDateTime::now_utc())
+                .valid_csrf(session, preauth, csrf, state.0.clock.now())
                 .await
                 .map_err(|_| ApiError::unavailable(id))?
             {

@@ -1,0 +1,7 @@
+T08 real MFA integration 2026-10-07T18:04:28.154Z
+FAIL T08 real integration failed; output suppressed to protect factor secrets.
+
+101 !== 0
+
+Completed 2026-10-07T18:04:41.973Z
+Exit code 1

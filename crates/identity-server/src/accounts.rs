@@ -35,31 +35,51 @@ pub struct AuthAppState {
     pub(crate) inner: Arc<AccountsInner>,
     pub(crate) sessions: identity_store::sessions::SessionService,
     pub(crate) password_store: identity_store::passwords::PasswordStore,
+    pub(crate) mfa: identity_store::mfa::MfaService,
 }
 pub(crate) struct AccountsInner {
     store: AccountsStore,
     pub(crate) passwords: PasswordService,
-    pub(crate) keys: AeadKeyRing,
+    pub(crate) keys: Arc<AeadKeyRing>,
     pub(crate) issuer: String,
 }
 impl AuthAppState {
     pub async fn new(config: &Config, dependencies: Dependencies) -> Result<Self, &'static str> {
-        let security = SecurityState::new(config, dependencies.clone())?;
-        let keys =
+        Self::new_with_clock(
+            config,
+            dependencies,
+            Arc::new(identity_core::clock::SystemClock),
+        )
+        .await
+    }
+    pub async fn new_with_clock(
+        config: &Config,
+        dependencies: Dependencies,
+        clock: Arc<dyn identity_core::clock::Clock>,
+    ) -> Result<Self, &'static str> {
+        let security = SecurityState::new_with_clock(config, dependencies.clone(), clock.clone())?;
+        let keys = Arc::new(
             AeadKeyRing::load_file(&config.encryption_keys_file, &config.active_encryption_kid)
-                .map_err(|_| "invalid encryption key configuration")?;
+                .map_err(|_| "invalid encryption key configuration")?,
+        );
         let passwords = PasswordService::initialize(config.argon2_parallelism_limit)
             .await
             .map_err(|_| "password service unavailable")?;
         Ok(Self {
             security,
+            mfa: identity_store::mfa::MfaService::new(
+                dependencies.postgres.clone(),
+                clock.clone(),
+                keys.clone(),
+                config.issuer.origin().ascii_serialization(),
+            ),
             password_store: identity_store::passwords::PasswordStore::new(
                 dependencies.postgres.clone(),
-                Arc::new(identity_core::clock::SystemClock),
+                clock.clone(),
             ),
             sessions: identity_store::sessions::SessionService::new(
                 dependencies.postgres.clone(),
-                Arc::new(identity_core::clock::SystemClock),
+                clock.clone(),
             ),
             inner: Arc::new(AccountsInner {
                 store: AccountsStore::new(dependencies.postgres),
@@ -109,7 +129,8 @@ pub fn accounts_router(state: AuthAppState, existing: Router) -> Router {
         existing
             .merge(accounts)
             .merge(crate::sessions::session_routes(state.clone()))
-            .merge(crate::passwords::password_routes(state)),
+            .merge(crate::passwords::password_routes(state.clone()))
+            .merge(crate::mfa::mfa_routes(state)),
     )
 }
 

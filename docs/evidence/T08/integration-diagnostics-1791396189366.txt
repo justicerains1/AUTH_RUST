@@ -1,0 +1,20 @@
+
+running 1 test
+PASS T08-MFA-01 actual encrypted enrollment rejects wrong code, confirms ten recovery codes; password only not authenticated; independent RFC TOTP grants session
+PASS T08-MFA-04 password reauthentication cannot disable/regenerate; actual TOTP strong proof enables regeneration and invalidates old recovery set
+test t08_real_mfa ... FAILED
+
+failures:
+
+failures:
+    t08_real_mfa
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1 filtered out; finished in 11.74s
+
+   Compiling identity-store v0.1.0 (/root/code/rust/auth_rust/crates/identity-store)
+   Compiling identity-server v0.1.0 (/root/code/rust/auth_rust/crates/identity-server)
+   Compiling identity-worker v0.1.0 (/root/code/rust/auth_rust/crates/identity-worker)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.10s
+     Running tests/t08_mfa.rs (target/debug/deps/[SECRET])
+Error: "expected successful real password login"
+error: test failed, to rerun pass `-p identity-server --test t08_mfa`

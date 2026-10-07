@@ -520,7 +520,7 @@ impl SessionService {
     }
 }
 
-fn user_view(row: &PgRow) -> Result<UserView, SessionError> {
+pub(crate) fn user_view(row: &PgRow) -> Result<UserView, SessionError> {
     let id = row.try_get("id")?;
     Ok(UserView {
         id,
@@ -583,7 +583,7 @@ async fn revoke_locked_excluding_transactions(
     sqlx::query("UPDATE authentication_challenges SET consumed_at=COALESCE(consumed_at,$3) WHERE user_id=$1 AND session_id=ANY($2::uuid[])").bind(user).bind(ids).bind(now).execute(&mut **tx).await?;
     Ok(())
 }
-async fn insert_preauth(
+pub(crate) async fn insert_preauth(
     tx: &mut Transaction<'_, Postgres>,
     token: Digest,
     csrf: Digest,

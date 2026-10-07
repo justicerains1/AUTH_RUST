@@ -1,0 +1,13 @@
+
+> @identity/identity-web@0.1.0 test:unit
+> vitest run
+
+
+ RUN  v5.0.3 /root/code/rust/auth_rust/apps/identity-web
+
+
+ Test Files  6 passed (6)
+      Tests  29 passed (29)
+   Start at  02:08:18
+   Duration  1.88s (environment 44%, tests 37%, import 14%, transform 5%)
+

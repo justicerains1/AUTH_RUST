@@ -378,7 +378,7 @@ impl PasswordStore {
         Ok((tx, user, session.ok_or(PasswordError::InvalidSession)?))
     }
 }
-async fn factor_methods(
+pub(crate) async fn factor_methods(
     tx: &mut Transaction<'_, Postgres>,
     id: Uuid,
 ) -> Result<Vec<String>, PasswordError> {
@@ -416,7 +416,7 @@ async fn outbox(
     sqlx::query("INSERT INTO email_outbox(id,user_id,recipient,template,encrypted_params,created_at,next_attempt_at) VALUES($1,$2,$3,$4,$5,$6,$6)").bind(Uuid::new_v4()).bind(user).bind(email).bind(template).bind(envelope).bind(now).execute(&mut **tx).await?;
     Ok(())
 }
-async fn notification(
+pub(crate) async fn notification(
     tx: &mut Transaction<'_, Postgres>,
     user: &PgRow,
     keys: &AeadKeyRing,

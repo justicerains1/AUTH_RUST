@@ -1,0 +1,10 @@
+T08 real MFA integration 2026-10-07T18:10:50.043Z
+PASS T08-MFA-01 actual encrypted enrollment rejects wrong code, confirms ten recovery codes; password only not authenticated; independent RFC TOTP grants session
+PASS T08-MFA-04 password reauthentication cannot disable/regenerate; actual TOTP strong proof enables regeneration and invalidates old recovery set
+PASS T08-MFA-02 ten same-step proofs yield one session; same TOTP step on a fresh challenge is rejected without resetting last_step
+PASS T08 five wrong proofs destroy challenge; valid code cannot revive exhausted challenge
+PASS T08-MFA-03 ten recovery-code requests grant one session; old recovery codes absent after real regeneration
+PASS T08 actual SystemClock independent RFC TOTP enrollment confirms against real wall clock
+Fixture preparation: only individual login-account / local-MFA-source Redis budget keys in this run's random AEAD-HMAC namespace were removed between scenarios; no FLUSHALL and no TOTP/recovery replay counters were changed. Limiter behavior is independently tested in T04.
+Completed 2026-10-07T18:11:12.168Z
+Exit code 0

@@ -1,0 +1,9 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.06s
+     Running unittests src/lib.rs (target/debug/deps/identity_core-c5f69f828e497d2b)
+
+running 2 tests
+test mfa::tests::material_is_random_minimum160bit_and_roundtrips_without_debug ... ok
+test mfa::tests::rfc6238_sha1_vectors_and_exact_step_boundaries ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 21 filtered out; finished in 0.00s
+

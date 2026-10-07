@@ -109,3 +109,7 @@ h2 { font-size: 1.5rem; }
   .dialog-content { padding: 24px; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+
+.setup-secret, .recovery-codes code { overflow-wrap: anywhere; user-select: all; }
+.recovery-codes { padding-left: 24px; }
+.recovery-codes li { margin-bottom: 8px; }

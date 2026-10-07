@@ -1,0 +1,11 @@
+    Checking identity-store v0.1.0 (/root/code/rust/auth_rust/crates/identity-store)
+    Checking identity-server v0.1.0 (/root/code/rust/auth_rust/crates/identity-server)
+    Checking identity-worker v0.1.0 (/root/code/rust/auth_rust/crates/identity-worker)
+error[E0063]: missing field `reauth_only` in initializer of `FactorVerificationInput`
+   --> crates/identity-server/src/mfa.rs:215:36
+    |
+215 |     match state.mfa.verify_factor(&FactorVerificationInput{challenge_id:input.challenge_id,code:Zeroizing::new(std::mem::take(&mut ...
+    |                                    ^^^^^^^^^^^^^^^^^^^^^^^ missing `reauth_only`
+
+For more information about this error, try `rustc --explain E0063`.
+error: could not compile `identity-server` (lib) due to 1 previous error
