@@ -1,0 +1,3 @@
+Pre-fix unrelated environment: exit101, leaked dummy sentinel=true
+PASS nonUTF8 UNRELATED_SECRET exit=0 leaked_test_sentinel=False
+PASS nonUTF8 SMTP_USERNAME exit=1 leaked_test_sentinel=False

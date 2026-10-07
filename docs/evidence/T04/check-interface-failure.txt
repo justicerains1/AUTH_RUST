@@ -1,0 +1,39 @@
+
+> rust-unified-identity@0.1.0 check
+> node scripts/run.mjs check
+
+    Blocking waiting for file lock on build directory
+    Checking futures-channel v0.3.34
+    Checking sync_wrapper v1.0.2
+    Checking try-lock v0.2.5
+    Checking identity-admin-cli v0.1.0 (/root/code/rust/auth_rust/crates/identity-admin-cli)
+    Checking identity-core v0.1.0 (/root/code/rust/auth_rust/crates/identity-core)
+    Checking want v0.3.2
+    Checking tower v0.5.3
+    Checking axum-core v0.5.6
+    Checking hyper v1.12.0
+    Checking sqlx-postgres v0.9.0
+    Checking tower-http v0.6.11
+    Checking hyper-util v0.1.21
+    Checking axum v0.8.9
+    Checking reqwest v0.13.5
+    Checking sqlx v0.9.0
+    Checking identity-store v0.1.0 (/root/code/rust/auth_rust/crates/identity-store)
+    Checking identity-server v0.1.0 (/root/code/rust/auth_rust/crates/identity-server)
+    Checking identity-worker v0.1.0 (/root/code/rust/auth_rust/crates/identity-worker)
+    Checking demo-bff v0.1.0 (/root/code/rust/auth_rust/crates/demo-bff)
+error[E0308]: mismatched types
+   --> crates/identity-server/tests/t04_security.rs:138:13
+    |
+127 |     match decision {
+    |           -------- this expression has type `Result<LimitDecision, BoundaryUnavailable>`
+...
+138 |         Err(()) => ApiError::new(
+    |             ^^ expected `BoundaryUnavailable`, found `()`
+    |
+    = note: the full name for the type has been written to '/root/code/rust/auth_rust/target/debug/deps/t04_security-56e6dcc63bb62271.long-type-813959823027921836.txt'
+    = note: consider using `--verbose` to print the full type name to the console
+
+For more information about this error, try `rustc --explain E0308`.
+error: could not compile `identity-server` (test "t04_security") due to 1 previous error
+cargo 退出码 101。

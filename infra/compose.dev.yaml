@@ -1,0 +1,164 @@
+name: auth-rust-development
+
+x-backend: &backend
+  build:
+    context: ..
+    dockerfile: infra/Dockerfile.dev
+  env_file:
+    - ../.local/dev.env
+  volumes:
+    - type: bind
+      source: ../.local/signing.pem
+      target: /run/secrets/signing.pem
+      read_only: true
+      bind:
+        create_host_path: false
+    - type: bind
+      source: ../.local/encryption-keys.json
+      target: /run/secrets/encryption-keys.json
+      read_only: true
+      bind:
+        create_host_path: false
+  init: true
+  stop_grace_period: 10s
+  depends_on:
+    postgres:
+      condition: service_healthy
+    redis:
+      condition: service_healthy
+    mailpit:
+      condition: service_healthy
+
+x-web: &web
+  build:
+    context: ..
+    dockerfile: infra/Dockerfile.web.dev
+  init: true
+  environment:
+    HOST: 0.0.0.0
+    IDENTITY_API_PROXY: http://api:8080
+
+services:
+  postgres:
+    image: docker.m.daocloud.io/library/postgres:17.11-bookworm@sha256:3645570cccdfa447589da9f57dd740faa29b30938e861289a5574b6ca6b03826
+    environment:
+      POSTGRES_USER: identity
+      POSTGRES_DB: identity_development
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Generate .local/dev.env and pass it with --env-file}
+    ports:
+      - 127.0.0.1:5432:5432
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U "$${POSTGRES_USER}" -d "$${POSTGRES_DB}"']
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 10s
+
+  redis:
+    image: docker.m.daocloud.io/library/redis:7.4@sha256:4fa24486b8bcca8eec45ee0eb166edc674795e53a2b53d1a9ef263eecebaac85
+    command: [redis-server, --appendonly, 'yes']
+    ports:
+      - 127.0.0.1:6379:6379
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: [CMD, redis-cli, ping]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 5s
+
+  mailpit:
+    image: docker.m.daocloud.io/axllent/mailpit:v1.31.4@sha256:b68349e3a014b90c5610bfb26b2ae36f3892d7b8cf25ee140c6c71c98d2fcf48
+    environment:
+      MP_DATABASE: /data/mailpit.db
+      MP_MAX_MESSAGES: '1000'
+      MP_DISABLE_VERSION_CHECK: 'true'
+    ports:
+      - 127.0.0.1:8025:8025
+      - 127.0.0.1:1025:1025
+    volumes:
+      - mailpit-data:/data
+    healthcheck:
+      test: [CMD, /mailpit, readyz]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 5s
+
+  api:
+    <<: *backend
+    image: auth-rust-api:development
+    command: [identity-server]
+    ports:
+      - 127.0.0.1:8080:8080
+    healthcheck:
+      test: [CMD, curl, --fail, --silent, --show-error, http://127.0.0.1:8080/health/ready]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 10s
+
+  worker:
+    <<: *backend
+    image: auth-rust-worker:development
+    command: [identity-worker]
+    environment:
+      BIND: 0.0.0.0:8081
+    ports:
+      - 127.0.0.1:8081:8081
+    healthcheck:
+      test: [CMD, curl, --fail, --silent, --show-error, http://127.0.0.1:8081/health/live]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 10s
+
+  identity-web:
+    <<: *web
+    image: auth-rust-identity-web:development
+    command: [npm, run, dev, --workspace, '@identity/identity-web']
+    ports:
+      - 127.0.0.1:5173:5173
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: [CMD, node, -e, 'fetch("http://127.0.0.1:5173/").then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))']
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 10s
+
+  demo-a:
+    <<: *web
+    image: auth-rust-demo-a:development
+    command: [npm, run, dev, --workspace, '@identity/demo-a']
+    ports:
+      - 127.0.0.1:5174:5174
+    healthcheck:
+      test: [CMD, node, -e, 'fetch("http://127.0.0.1:5174/").then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))']
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 10s
+
+  demo-b:
+    <<: *web
+    image: auth-rust-demo-b:development
+    command: [npm, run, dev, --workspace, '@identity/demo-b']
+    ports:
+      - 127.0.0.1:5175:5175
+    healthcheck:
+      test: [CMD, node, -e, 'fetch("http://127.0.0.1:5175/").then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))']
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 10s
+
+volumes:
+  postgres-data:
+  redis-data:
+  mailpit-data:

@@ -1,0 +1,76 @@
+{
+  "started": "2026-10-07T12:39:00.890Z",
+  "browser": "153.0.8010.12",
+  "layouts": [
+    {
+      "width": 360,
+      "horizontalOverflow": false,
+      "minimumTarget": 44,
+      "screenshot": "components-360.png",
+      "result": "pass"
+    },
+    {
+      "width": 390,
+      "horizontalOverflow": false,
+      "minimumTarget": 44,
+      "screenshot": "components-390.png",
+      "result": "pass"
+    },
+    {
+      "width": 768,
+      "horizontalOverflow": false,
+      "minimumTarget": 44,
+      "screenshot": "components-768.png",
+      "result": "pass"
+    },
+    {
+      "width": 1440,
+      "horizontalOverflow": false,
+      "minimumTarget": 44,
+      "screenshot": "components-1440.png",
+      "result": "pass"
+    }
+  ],
+  "checks": [
+    "labels/errors/password visibility and clearing secrets while preserving email: pass",
+    "dialog initial cancel/trap/Escape/return focus and axe: pass",
+    "cursor pagination boundaries: pass",
+    "200% text scaling (32px base) and reduced motion: pass; full browser zoom/screen reader remains manual release work"
+  ],
+  "accessibility": [
+    {
+      "width": 360,
+      "passes": 26,
+      "violations": [],
+      "incompleteRules": [
+        "color-contrast"
+      ]
+    },
+    {
+      "width": 390,
+      "passes": 26,
+      "violations": [],
+      "incompleteRules": [
+        "color-contrast"
+      ]
+    },
+    {
+      "width": 768,
+      "passes": 26,
+      "violations": [],
+      "incompleteRules": [
+        "color-contrast"
+      ]
+    },
+    {
+      "width": 1440,
+      "passes": 26,
+      "violations": [],
+      "incompleteRules": [
+        "color-contrast"
+      ]
+    }
+  ],
+  "completed": "2026-10-07T12:39:08.458Z",
+  "exitCode": 0
+}

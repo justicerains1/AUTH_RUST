@@ -1,0 +1,9 @@
+
+> rust-unified-identity@0.1.0 test:e2e
+> node scripts/run.mjs test:e2e --task=T05
+
+T05 browser checks failed; private details suppressed.
+
+1 !== 0
+
+/usr/bin/node 退出码 1。

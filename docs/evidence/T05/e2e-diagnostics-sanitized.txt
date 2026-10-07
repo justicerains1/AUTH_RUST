@@ -1,0 +1,36 @@
+
+Running 2 tests using 1 worker
+·F
+
+  1) tests/e2e/T05.spec.ts:47:1 › @T05 resend invalidates the old link and verifies the new link ───
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('status').filter({ hasText: '验证暂未完成' })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('status').filter({ hasText: '验证暂未完成' }) with timeout 5000ms
+      - waiting for getByRole('status').filter({ hasText: '验证暂未完成' })
+
+
+      60 |   await openPrivateLink(page, old);
+      61 |   await page.getByRole('button', { name: '确认验证邮箱', exact: true }).click();
+    > 62 |   await expect(page.getByRole('status').filter({ hasText: '验证暂未完成' })).toBeVisible();
+         |                                                                        ^
+      63 |   await openPrivateLink(page, current);
+      64 |   await page.getByRole('button', { name: '确认验证邮箱', exact: true }).click();
+      65 |   await expect(page.getByRole('status').filter({ hasText: '邮箱验证完成' })).toBeVisible();
+        at /root/code/rust/auth_rust/tests/e2e/T05.spec.ts:62:72
+
+    Error Context: .local/t05-browser-results/T05--[REDACTED]the-new-link/error-context.md
+
+  1 failed
+    tests/e2e/T05.spec.ts:47:1 › @T05 resend invalidates the old link and verifies the new link ────
+  1 passed (13.8s)
+[WebServer] (node:873120) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+(node:873208) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

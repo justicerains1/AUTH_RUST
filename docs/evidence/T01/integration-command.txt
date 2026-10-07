@@ -1,0 +1,5 @@
+
+> rust-unified-identity@0.1.0 test:integration
+> node scripts/run.mjs test:integration --task=T01
+
+T01: real Compose startup, production configuration rejection, and dependency outage/recovery checks passed.

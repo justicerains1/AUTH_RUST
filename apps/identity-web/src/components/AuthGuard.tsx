@@ -1,0 +1,29 @@
+import { useQuery } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
+import { Navigate, Outlet } from 'react-router';
+import { api, ApiError, meSchema } from '../lib/api';
+import { meQueryKey } from '../lib/query';
+import { Status } from './Status';
+import { Empty } from './Empty';
+
+export function AuthGuard({ admin = false }: { admin?: boolean }) {
+  const [now, setNow] = useState(() => Date.now());
+  const query = useQuery({ queryKey: meQueryKey, queryFn: ({ signal }) => api.request('/me', meSchema, { signal }) });
+  useEffect(() => {
+    const interval = window.setInterval(() => { setNow(Date.now()); }, 1000);
+    return () => { window.clearInterval(interval); };
+  }, []);
+  if (query.isPending) return <Status kind="loading" title="正在检查账号状态…" />;
+  if (query.isError) {
+    if (query.error instanceof ApiError && query.error.status === 401) return <Navigate to="/login" replace />;
+    if (query.error instanceof ApiError && query.error.status === 403) return <Empty title="无法访问此页面" description="当前账号没有此页面所需的权限。" />;
+    return <Status kind="unavailable" title="暂时无法检查账号状态" description="请重新加载后再继续。" onRetry={() => { void query.refetch(); }} retrying={query.isFetching} />;
+  }
+  if (!query.data.user.email_verified || query.data.user.status !== 'active' || Date.parse(query.data.session.expires_at) <= now) return <Navigate to="/login" replace />;
+  if (admin) {
+    if (!query.data.security.is_admin || query.data.security.admin_binding_only) return <Empty title="无法访问管理后台" description="管理后台仅对已完成因素绑定的管理员开放。" />;
+    const strongAt = query.data.session.strong_at === null ? NaN : Date.parse(query.data.session.strong_at);
+    if (!Number.isFinite(strongAt) || strongAt > now || now - strongAt >= 300_000) return <Empty title="请先完成近期强认证" description="管理后台需要最近五分钟内的强认证。账号安全中心的认证流程将在相应任务中提供。" />;
+  }
+  return <Outlet />;
+}

@@ -1,0 +1,13 @@
+/target/
+/node_modules/
+**/node_modules/
+**/dist/
+/.local/
+/.env
+/.env.*
+!/.env.example
+**/.vite/
+**/coverage/
+/test-results/
+/playwright-report/
+*.log

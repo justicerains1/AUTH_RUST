@@ -1,0 +1,5 @@
+
+> rust-unified-identity@0.1.0 check
+> node scripts/run.mjs check
+
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.14s

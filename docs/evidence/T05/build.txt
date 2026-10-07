@@ -1,0 +1,113 @@
+
+> rust-unified-identity@0.1.0 build
+> node scripts/run.mjs build
+
+   Compiling syn v3.0.6
+   Compiling rustls v0.23.45
+   Compiling email-encoding v0.4.2
+   Compiling nom v8.0.0
+   Compiling hostname v0.4.2
+   Compiling email_address v0.2.9
+   Compiling quoted_printable v0.5.2
+   Compiling fastrand v2.5.0
+   Compiling synstructure v0.14.0
+   Compiling serde_derive v1.0.229
+   Compiling zerofrom-derive v0.1.8
+   Compiling yoke-derive v0.8.4
+   Compiling zerovec-derive v0.11.6
+   Compiling displaydoc v0.2.7
+   Compiling tokio-macros v2.7.2
+   Compiling thiserror-impl v2.0.21
+   Compiling async-trait v0.1.92
+   Compiling tokio v1.53.2
+   Compiling zerofrom v0.1.8
+   Compiling yoke v0.8.3
+   Compiling zerovec v0.11.8
+   Compiling zerotrie v0.2.5
+   Compiling thiserror v2.0.21
+   Compiling simple_asn1 v0.6.4
+   Compiling tinystr v0.8.4
+   Compiling potential_utf v0.1.6
+   Compiling icu_collections v2.3.0
+   Compiling icu_locale_core v2.3.0
+   Compiling serde v1.0.229
+   Compiling icu_provider v2.3.1
+   Compiling icu_properties v2.3.0
+   Compiling smallvec v1.16.2
+   Compiling either v1.19.0
+   Compiling jsonwebtoken v11.1.0
+   Compiling serde_urlencoded v0.7.1
+   Compiling tracing-serde v0.2.0
+   Compiling icu_normalizer v2.3.0
+   Compiling parking_lot_core v0.9.12
+   Compiling tracing-subscriber v0.3.23
+   Compiling parking_lot v0.12.5
+   Compiling futures-intrusive v0.5.0
+   Compiling idna_adapter v1.2.2
+   Compiling idna v1.1.0
+   Compiling url v2.5.8
+   Compiling sqlx-core v0.9.0
+   Compiling tokio-stream v0.1.19
+   Compiling tokio-util v0.7.19
+   Compiling tokio-rustls v0.26.6
+   Compiling identity-core v0.1.0 (/root/code/rust/auth_rust/crates/identity-core)
+   Compiling hyper v1.12.0
+   Compiling tower v0.5.3
+   Compiling lettre v0.11.23
+   Compiling combine v4.6.8
+   Compiling hyper-util v0.1.21
+   Compiling axum v0.8.9
+   Compiling sqlx-postgres v0.9.0
+   Compiling identity-admin-cli v0.1.0 (/root/code/rust/auth_rust/crates/identity-admin-cli)
+   Compiling redis v1.7.1
+   Compiling sqlx-macros-core v0.9.0
+   Compiling demo-bff v0.1.0 (/root/code/rust/auth_rust/crates/demo-bff)
+   Compiling sqlx-macros v0.9.0
+   Compiling sqlx v0.9.0
+   Compiling identity-store v0.1.0 (/root/code/rust/auth_rust/crates/identity-store)
+   Compiling identity-server v0.1.0 (/root/code/rust/auth_rust/crates/identity-server)
+   Compiling identity-worker v0.1.0 (/root/code/rust/auth_rust/crates/identity-worker)
+    Finished `release` profile [optimized] target(s) in 38.61s
+vite v8.3.3 building client environment for production...
+transforming...
+✓ 256 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                  0.41 kB │ gzip:   0.31 kB
+dist/assets/index-DWrwqd7r.css                   6.55 kB │ gzip:   2.01 kB
+dist/assets/PageTitle-BxKpH8k5.js                0.18 kB │ gzip:   0.17 kB
+dist/assets/NotFoundPage-D-OiwZvo.js             0.39 kB │ gzip:   0.31 kB
+dist/assets/AdminPage-27VEtzNX.js                0.51 kB │ gzip:   0.38 kB
+dist/assets/AccountPage-cj3Kx4UY.js              0.71 kB │ gzip:   0.51 kB
+dist/assets/LoginPage-CNXITI5j.js                0.76 kB │ gzip:   0.49 kB
+dist/assets/InitializationPage-CKH2YGDE.js       1.08 kB │ gzip:   0.63 kB
+dist/assets/EmailVerificationPage-BFk-FZsi.js    2.86 kB │ gzip:   1.48 kB
+dist/assets/RegisterPage-CnUibuX_.js             3.14 kB │ gzip:   1.62 kB
+dist/assets/Input-DW3B10i3.js                   35.13 kB │ gzip:  12.82 kB
+dist/assets/index-vAZMbAuV.js                  385.28 kB │ gzip: 119.21 kB
+
+✓ built in 276ms
+vite v8.3.3 building client environment for production...
+transforming...
+✓ 94 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                               0.41 kB │ gzip:  0.31 kB
+dist/assets/index-DuyWQwhO.css                0.29 kB │ gzip:  0.21 kB
+dist/assets/NotFoundPage-DZ2sbATk.js          0.22 kB │ gzip:  0.20 kB
+dist/assets/InitializationPage-DqNNHS40.js    0.35 kB │ gzip:  0.30 kB
+dist/assets/index-Dtm_7Jn0.js               257.64 kB │ gzip: 82.01 kB
+
+✓ built in 141ms
+vite v8.3.3 building client environment for production...
+transforming...
+✓ 94 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                               0.41 kB │ gzip:  0.31 kB
+dist/assets/index-DuyWQwhO.css                0.29 kB │ gzip:  0.21 kB
+dist/assets/NotFoundPage-B3MP-TiB.js          0.22 kB │ gzip:  0.20 kB
+dist/assets/InitializationPage-CiDNIHAo.js    0.35 kB │ gzip:  0.30 kB
+dist/assets/index-3NqWCkpQ.js               257.64 kB │ gzip: 82.01 kB
+
+✓ built in 122ms

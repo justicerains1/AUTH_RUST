@@ -1,0 +1,57 @@
+{
+  "name": "rust-unified-identity",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "apps/identity-web",
+    "apps/demo-a",
+    "apps/demo-b"
+  ],
+  "engines": {
+    "node": ">=22.22.1",
+    "npm": ">=9"
+  },
+  "packageManager": "npm@9.2.0",
+  "scripts": {
+    "check": "node scripts/run.mjs check",
+    "test:unit": "node scripts/run.mjs test:unit",
+    "test:integration": "node scripts/run.mjs test:integration",
+    "test:e2e": "node scripts/run.mjs test:e2e",
+    "test:security": "node scripts/run.mjs test:security",
+    "test:load": "node scripts/run.mjs test:load",
+    "test:accessibility": "node scripts/run.mjs test:accessibility",
+    "build": "node scripts/run.mjs build",
+    "db:migrate": "node scripts/run.mjs db:migrate",
+    "dev:up": "node scripts/run.mjs dev:up",
+    "dev:down": "node scripts/run.mjs dev:down",
+    "dev:secrets": "node scripts/run.mjs dev:secrets",
+    "seed:acceptance": "node scripts/run.mjs seed:acceptance",
+    "verify:docs": "node scripts/run.mjs verify:docs",
+    "verify:openapi": "node scripts/run.mjs verify:openapi",
+    "test:tooling": "node scripts/run.mjs test:tooling"
+  },
+  "devDependencies": {
+    "@apidevtools/swagger-parser": "13.1.0",
+    "@axe-core/playwright": "4.13.0",
+    "@eslint/js": "10.0.1",
+    "@playwright/test": "1.63.0",
+    "@testing-library/react": "16.3.3",
+    "@testing-library/user-event": "14.6.7",
+    "@types/node": "22.20.5",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.1.2",
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
+    "eslint": "10.12.0",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "eslint-plugin-react-refresh": "0.5.7",
+    "globals": "17.13.0",
+    "jsdom": "29.1.1",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.71.1",
+    "vite": "8.3.3",
+    "vitest": "5.0.3"
+  }
+}

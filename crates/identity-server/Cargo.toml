@@ -1,0 +1,30 @@
+[package]
+name = "identity-server"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[dependencies]
+identity-core = { path = "../identity-core" }
+identity-store = { path = "../identity-store" }
+axum.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+redis.workspace = true
+ipnet.workspace = true
+base64.workspace = true
+time.workspace = true
+uuid.workspace = true
+zeroize.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+
+[lints]
+workspace = true
+
+[dev-dependencies]
+identity-worker = { path = "../identity-worker" }
+reqwest.workspace = true
+sqlx.workspace = true

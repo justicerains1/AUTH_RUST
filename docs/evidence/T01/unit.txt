@@ -1,0 +1,100 @@
+
+> rust-unified-identity@0.1.0 test:unit
+> node scripts/run.mjs test:unit
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.08s
+     Running unittests src/main.rs (target/debug/deps/demo_bff-844c8609ce1ccc9b)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/identity_admin_cli-dd3e7387cc765d61)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/identity_core-23b3d57cce5435da)
+
+running 8 tests
+test config::tests::canonical_origins_with_optional_root_slash_are_accepted ... ok
+test config::tests::encryption_map_rejects_duplicate_versions_and_invalid_secret_material ... ok
+test config::tests::invalid_environment_rp_or_secret_connection_never_echoes_values ... ok
+test config::tests::secret_debug_is_redacted ... ok
+test config::tests::smtp_credentials_reject_blank_accounts_and_control_characters ... ok
+test config::tests::smtp_host_and_mailbox_are_plain_addresses ... ok
+test config::tests::production_origin_is_fixed_and_https ... ok
+test config::tests::previous_jwks_checks_unsigned_rsa_components_and_public_only_policy ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/identity_server-d6272a32b3e6d473)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/identity_server-5ed6b72a33151f75)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/identity_store-f0f8b976ca566ae7)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/identity_worker-705249fb02d16187)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests identity_core
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests identity_server
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests identity_store
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+ RUN  v5.0.3 /root/code/rust/auth_rust/apps/identity-web
+
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  18:30:23
+   Duration  1.35s (tests 53%, environment 39%, import 6%, transform 2%)
+
+
+ RUN  v5.0.3 /root/code/rust/auth_rust/apps/demo-a
+
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  18:30:24
+   Duration  1.47s (tests 48%, environment 41%, import 7%, transform 3%)
+
+
+ RUN  v5.0.3 /root/code/rust/auth_rust/apps/demo-b
+
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  18:30:26
+   Duration  1.39s (tests 51%, environment 40%, import 6%, transform 2%)
+

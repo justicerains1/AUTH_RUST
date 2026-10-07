@@ -1,0 +1,15 @@
+# T01 Vite image. Each Compose service selects its own npm workspace.
+FROM docker.m.daocloud.io/library/node:22.22.1-bookworm-slim@sha256:4f77a690f2f8946ab16fe1e791a3ac0667ae1c3575c3e4d0d4589e9ed5bfaf3d
+
+WORKDIR /workspace
+COPY package.json package-lock.json ./
+COPY apps/identity-web/package.json ./apps/identity-web/package.json
+COPY apps/demo-a/package.json ./apps/demo-a/package.json
+COPY apps/demo-b/package.json ./apps/demo-b/package.json
+RUN --mount=type=cache,id=auth-rust-npm-cache,target=/root/.npm,sharing=locked npm ci
+
+COPY apps ./apps
+ENV HOST=0.0.0.0
+EXPOSE 5173 5174 5175
+CMD ["npm", "run", "dev", "--workspace", "@identity/identity-web"]
+

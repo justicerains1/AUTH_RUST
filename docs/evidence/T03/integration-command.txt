@@ -1,0 +1,5 @@
+
+> rust-unified-identity@0.1.0 test:integration
+> node scripts/run.mjs test:integration --task=T03
+
+T03 real database migration, constraints, concurrency, rollback, expiry and target rejection passed.

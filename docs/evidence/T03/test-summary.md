@@ -1,0 +1,7 @@
+# T03 实际结果
+
+17实体/31显式索引与SQLx检查摘要迁移已落地，开发库正式迁移退出0，白名单identity_test隔离schema迁移两次、约束和索引验证通过。10并发规范email仅1行，challenge/action单消费且login仅1session，rollback及poisoncommit、严格到期边界均通过。
+
+额外真实仓储测试验证session当前版本/client/grant状态、code原redirect/PKCE绑定兑换、必须完整access/refresh对且重复kind拒绝、family寿命<=grant/session、Replayed区分后提交整family撤销、outbox不同worker及同worker重领旧lease拒绝/成功清密文、disabled账号验证不启用且不发session。生产/非白名单/dbname覆盖测试执行前拒绝，缺TEST_DATABASE_URL专用测试非零无ignored；清理只本轮schema。
+
+初次cargo PATH未加载、SQLx0.9动态DDL安全类型编译问题和审查发现半提交/lease等已修并实测，不删除失败记录。仓储只提供事务原语，实际密码/MFA/OIDC验证与安全审计按后续任务完成。RustSec锁241相关packages扫描0漏洞；check、unit、build及tooling退出0。

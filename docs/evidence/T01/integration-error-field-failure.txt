@@ -1,0 +1,35 @@
+# T01 real service acceptance
+Started: 2026-10-07T10:28:53.057Z
+PASS service postgres: running/healthy
+PASS service redis: running/healthy
+PASS service mailpit: running/healthy
+PASS service api: running/healthy
+PASS service worker: running/healthy
+PASS service identity-web: running/healthy
+PASS service demo-a: running/healthy
+PASS service demo-b: running/healthy
+PASS initial live=200 / ready=200
+PASS frontend 5173: HTTP 200 / T01 title
+PASS frontend 5174: HTTP 200 / T01 title
+PASS frontend 5175: HTTP 200 / T01 title
+PASS same-origin Vite health proxy and Mailpit readiness
+PASS configuration production baseline: exit=0; field=valid
+PASS configuration missing APP_ENV: exit=1; field=APP_ENV
+PASS configuration missing DATABASE_URL: exit=1; field=DATABASE_URL
+PASS configuration missing REDIS_URL: exit=1; field=REDIS_URL
+PASS configuration missing SIGNING_KEY_FILE: exit=1; field=SIGNING_KEY_FILE
+PASS configuration missing SIGNING_KID: exit=1; field=SIGNING_KID
+PASS configuration missing ENCRYPTION_KEYS_FILE: exit=1; field=ENCRYPTION_KEYS_FILE
+PASS configuration missing ACTIVE_ENCRYPTION_KID: exit=1; field=ACTIVE_ENCRYPTION_KID
+PASS configuration missing SMTP_USERNAME: exit=1; field=SMTP_USERNAME
+PASS configuration missing SMTP_PASSWORD_FILE: exit=1; field=SMTP_PASSWORD_FILE
+PASS configuration HTTP issuer: exit=1; field=ISSUER
+PASS configuration issuer path: exit=1; field=ISSUER
+PASS configuration issuer query: exit=1; field=ISSUER
+PASS configuration issuer userinfo: exit=1; field=ISSUER
+PASS configuration normalized path: exit=1; field=ISSUER
+PASS configuration issuer whitespace: exit=1; field=ISSUER
+PASS configuration wrong RP: exit=1; field=RP_ID
+PASS configuration missing key file: exit=1; field=SIGNING_KEY_FILE
+FAIL: invalid AEAD version: error must identify configuration name only
+Exit code: 1

@@ -1,0 +1,5 @@
+
+> rust-unified-identity@0.1.0 test:accessibility
+> node scripts/run.mjs test:accessibility
+
+T16 local browser: four layouts, axe, labels, password, dialog, pagination and 200% text scaling passed.

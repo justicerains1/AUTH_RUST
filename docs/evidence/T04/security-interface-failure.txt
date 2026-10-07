@@ -1,0 +1,9 @@
+
+> rust-unified-identity@0.1.0 test:security
+> node scripts/run.mjs test:security --task=T04
+
+t04_security_boundary failed; child output suppressed to protect secrets.
+
+101 !== 0
+
+/usr/bin/node 退出码 1。

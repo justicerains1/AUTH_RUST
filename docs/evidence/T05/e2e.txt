@@ -1,0 +1,5 @@
+T05 real UI E2E 2026-10-07T15:52:11.966Z
+Playwright: 2 passed / 0 failed; 2 task cases executed.
+PASS T05 real UI registration, Mailpit link, GET safety, confirmation and resend workflow
+Completed 2026-10-07T15:52:24.672Z
+Exit code 0

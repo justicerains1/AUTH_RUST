@@ -1,0 +1,105 @@
+{
+  "formula": "WCAG 2.x relative luminance and contrast ratio",
+  "colors": {
+    "background": "#F7F6F2",
+    "text": "#171A1C",
+    "muted": "#5C6268",
+    "accent": "#2457D6",
+    "border": "#D9DDE2",
+    "control-border": "#70767D",
+    "error": "#B42318",
+    "success": "#17623D",
+    "panel": "#FFFFFF",
+    "blue-wash": "#EDF2FF"
+  },
+  "results": [
+    {
+      "foreground": "#171A1C",
+      "background": "#F7F6F2",
+      "ratio": 16.17,
+      "minimum": 4.5,
+      "pass": true,
+      "use": "text / background"
+    },
+    {
+      "foreground": "#5C6268",
+      "background": "#F7F6F2",
+      "ratio": 5.708,
+      "minimum": 4.5,
+      "pass": true,
+      "use": "muted / background"
+    },
+    {
+      "foreground": "#2457D6",
+      "background": "#F7F6F2",
+      "ratio": 5.696,
+      "minimum": 4.5,
+      "pass": true,
+      "use": "accent / background"
+    },
+    {
+      "foreground": "#FFFFFF",
+      "background": "#2457D6",
+      "ratio": 6.16,
+      "minimum": 4.5,
+      "pass": true,
+      "use": "panel / accent"
+    },
+    {
+      "foreground": "#5C6268",
+      "background": "#FFFFFF",
+      "ratio": 6.173,
+      "minimum": 4.5,
+      "pass": true,
+      "use": "muted / panel"
+    },
+    {
+      "foreground": "#70767D",
+      "background": "#FFFFFF",
+      "ratio": 4.589,
+      "minimum": 3,
+      "pass": true,
+      "use": "control-border / panel"
+    },
+    {
+      "foreground": "#70767D",
+      "background": "#F7F6F2",
+      "ratio": 4.243,
+      "minimum": 3,
+      "pass": true,
+      "use": "control-border / background"
+    },
+    {
+      "foreground": "#B42318",
+      "background": "#FFFFFF",
+      "ratio": 6.574,
+      "minimum": 4.5,
+      "pass": true,
+      "use": "error / panel"
+    },
+    {
+      "foreground": "#17623D",
+      "background": "#FFFFFF",
+      "ratio": 7.366,
+      "minimum": 4.5,
+      "pass": true,
+      "use": "success / panel"
+    },
+    {
+      "foreground": "#2457D6",
+      "background": "#EDF2FF",
+      "ratio": 5.498,
+      "minimum": 4.5,
+      "pass": true,
+      "use": "accent / blue-wash"
+    },
+    {
+      "foreground": "#D9DDE2",
+      "background": "#FFFFFF",
+      "ratio": 1.364,
+      "minimum": 3,
+      "pass": false,
+      "use": "border / panel"
+    }
+  ]
+}

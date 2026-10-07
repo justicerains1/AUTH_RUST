@@ -1,0 +1,17 @@
+# T01 real service acceptance
+Started: 2026-10-07T10:27:33.839Z
+PASS service postgres: running/healthy
+PASS service redis: running/healthy
+PASS service mailpit: running/healthy
+PASS service api: running/healthy
+PASS service worker: running/healthy
+PASS service identity-web: running/healthy
+PASS service demo-a: running/healthy
+PASS service demo-b: running/healthy
+PASS initial live=200 / ready=200
+PASS frontend 5173: HTTP 200 / T01 title
+PASS frontend 5174: HTTP 200 / T01 title
+PASS frontend 5175: HTTP 200 / T01 title
+PASS same-origin Vite health proxy and Mailpit readiness
+FAIL: API image is missing; run npm run dev:up first.
+Exit code: 1

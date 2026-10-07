@@ -1,0 +1,46 @@
+
+> rust-unified-identity@0.1.0 build
+> node scripts/run.mjs build
+
+   Compiling identity-core v0.1.0 (/root/code/rust/auth_rust/crates/identity-core)
+   Compiling identity-store v0.1.0 (/root/code/rust/auth_rust/crates/identity-store)
+   Compiling identity-server v0.1.0 (/root/code/rust/auth_rust/crates/identity-server)
+   Compiling identity-admin-cli v0.1.0 (/root/code/rust/auth_rust/crates/identity-admin-cli)
+   Compiling identity-worker v0.1.0 (/root/code/rust/auth_rust/crates/identity-worker)
+    Finished `release` profile [optimized] target(s) in 11.86s
+vite v8.3.3 building client environment for production...
+transforming...
+✓ 94 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                               0.41 kB │ gzip:  0.31 kB
+dist/assets/index-DuyWQwhO.css                0.29 kB │ gzip:  0.21 kB
+dist/assets/NotFoundPage-HrB1tx9B.js          0.22 kB │ gzip:  0.20 kB
+dist/assets/InitializationPage-CobnEoXa.js    0.35 kB │ gzip:  0.30 kB
+dist/assets/index-CR_0xzZ2.js               257.64 kB │ gzip: 82.01 kB
+
+✓ built in 121ms
+vite v8.3.3 building client environment for production...
+transforming...
+✓ 94 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                               0.41 kB │ gzip:  0.31 kB
+dist/assets/index-DuyWQwhO.css                0.29 kB │ gzip:  0.21 kB
+dist/assets/NotFoundPage-DZ2sbATk.js          0.22 kB │ gzip:  0.20 kB
+dist/assets/InitializationPage-DqNNHS40.js    0.35 kB │ gzip:  0.30 kB
+dist/assets/index-Dtm_7Jn0.js               257.64 kB │ gzip: 82.01 kB
+
+✓ built in 113ms
+vite v8.3.3 building client environment for production...
+transforming...
+✓ 94 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                               0.41 kB │ gzip:  0.31 kB
+dist/assets/index-DuyWQwhO.css                0.29 kB │ gzip:  0.21 kB
+dist/assets/NotFoundPage-B3MP-TiB.js          0.22 kB │ gzip:  0.20 kB
+dist/assets/InitializationPage-CiDNIHAo.js    0.35 kB │ gzip:  0.30 kB
+dist/assets/index-3NqWCkpQ.js               257.64 kB │ gzip: 82.01 kB
+
+✓ built in 113ms

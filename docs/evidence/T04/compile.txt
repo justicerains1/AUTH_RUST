@@ -1,0 +1,58 @@
+ Downloading crates ...
+  Downloaded want v0.3.2
+    Checking crypto-common v0.2.2
+    Checking rustls v0.23.45
+    Checking phc v0.6.1
+    Checking demo-bff v0.1.0 (/root/code/rust/auth_rust/crates/demo-bff)
+    Checking password-hash v0.6.1
+    Checking digest v0.11.3
+    Checking universal-hash v0.6.1
+    Checking cipher v0.5.2
+    Checking aead v0.6.1
+    Checking polyval v0.7.3
+    Checking hmac v0.13.0
+    Checking sha2 v0.11.0
+    Checking blake2 v0.11.0
+    Checking md-5 v0.11.0
+    Checking ghash v0.6.0
+    Checking aes v0.9.3
+    Checking ctr v0.10.1
+    Checking hkdf v0.13.0
+    Checking argon2 v0.6.0
+    Checking aes-gcm v0.11.1
+    Checking identity-core v0.1.0 (/root/code/rust/auth_rust/crates/identity-core)
+    Checking identity-admin-cli v0.1.0 (/root/code/rust/auth_rust/crates/identity-admin-cli)
+    Checking sqlx-core v0.9.0
+    Checking tokio-rustls v0.26.6
+    Checking redis v1.7.1
+    Checking sqlx-postgres v0.9.0
+    Checking sqlx v0.9.0
+    Checking identity-store v0.1.0 (/root/code/rust/auth_rust/crates/identity-store)
+    Checking identity-server v0.1.0 (/root/code/rust/auth_rust/crates/identity-server)
+    Checking identity-worker v0.1.0 (/root/code/rust/auth_rust/crates/identity-worker)
+error[E0433]: cannot find `Script` in `redis`
+   --> crates/identity-server/src/security.rs:191:29
+    |
+191 |         let script = redis::Script::new(LIMIT_SCRIPT);
+    |                             ^^^^^^ could not find `Script` in `redis`
+    |
+note: found an item that was configured out
+   --> /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/redis-1.7.1/src/lib.rs:673:25
+    |
+671 | #[cfg(feature = "script")]
+    |       ------------------ the item is gated behind the `script` feature
+672 | #[cfg_attr(docsrs, doc(cfg(feature = "script")))]
+673 | pub use crate::script::{Script, ScriptInvocation};
+    |                         ^^^^^^
+
+warning: unused import: `Value`
+  --> crates/identity-server/src/security.rs:19:18
+   |
+19 | use serde_json::{Value, json};
+   |                  ^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+For more information about this error, try `rustc --explain E0433`.
+warning: `identity-server` (lib) generated 1 warning
+error: could not compile `identity-server` (lib) due to 1 previous error; 1 warning emitted

@@ -1,0 +1,6 @@
+
+> rust-unified-identity@0.1.0 test:integration
+> node scripts/run.mjs test:integration --task=T01
+
+API image is missing; run npm run dev:up first.
+/usr/bin/node 退出码 1。

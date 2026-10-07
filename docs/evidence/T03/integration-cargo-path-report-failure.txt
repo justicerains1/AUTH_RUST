@@ -1,0 +1,6 @@
+T03 real database acceptance: 2026-10-07T11:45:18.940Z
+PASS real Redis PING and API readiness against PG+Redis
+PASS explicit test target identity_test exists; no non-test database cleanup
+FAIL cargo unavailable; install and enable the documented tool.
+Completed: 2026-10-07T11:45:19.940Z
+Exit code: 1

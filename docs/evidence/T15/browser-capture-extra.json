@@ -1,0 +1,220 @@
+{
+  "date": "2026-10-07T10:27:03.873Z",
+  "browser": "145.0.7632.6",
+  "cases": [
+    {
+      "slug": "edolus",
+      "award": "Site of the Day",
+      "date": "Oct 4, 2026",
+      "site_url": "https://edolus.com/",
+      "official_url": "https://www.awwwards.com/sites/edolus",
+      "visits": [
+        {
+          "kind": "official",
+          "url": "https://www.awwwards.com/sites/edolus",
+          "visitedAt": "2026-10-07T10:27:03.900Z",
+          "status": 200,
+          "finalUrl": "https://www.awwwards.com/sites/edolus",
+          "title": "EDOLUS - Awwwards SOTD",
+          "domContentAndWaitMs": 6374,
+          "text": "The Creative Pass  Watch all courses for just $12/month\nThe Creative Pass  Watch all courses for just $12/month\nThe Creative Pass  Watch all courses for just $12/month\nThe Creative Pass  Watch all courses for just $12/month\nThe Creative Pass  Watch all courses for just $12/month\nThe Creative Pass  Watch all courses for just $12/month\nThe Creative Pass  Watch all courses for just $12/month\nThe Creative Pass  Watch all courses for just $12/month\nThe Creative Pass  Watch all courses for just $12/month\nThe Creative Pass  Watch all courses for just $12/month\nThe Creative Pass  Watch all courses for just $12/month\nExplore\nDirectory\nAcademy\nNew\nJobs\nMarket\nLog in\nSign Up\nBe Pro\nSubmit Website\nEDOLUS\nby\nYann Trevelot / Vertex3D\nSOTD\n7.2\n/10\nSite of the Day - Oct 4, 2026\nEDOLUS\nYann Trevelot / Vertex3D\nElements\nSee the highlights\nof this website.\nvideo\nAI Data Center\nfrom\nMouse Interaction\nvideo\nAutonomous Systems\nfrom\nScroll\nvideo\nOrbital Intelligence\nfrom\nMouse Interaction\nvideo\nPlanetary Network\nfrom\nMouse Interaction\nvideo\nPrimary Compute Node\nfrom\nMouse Interaction\nvideo\nQuantum Intelligence\nfrom\nMouse Interaction\nColor Palette\n\nThis website uses a color\npalette of 1 colors\n\nHEX #000000\nAa\nTechnologies & Tools\nMusic & Sound\nTechnology\nExperimental\nAnimation\nStorytelling\n3D\nInteraction Design\nWebGL\nGSAP\nGLSL\nDescription\nA cinematic WebGL journey into AI infrastructure. Pushing the limits of real-time 3D, immersive UX, and dynamic sound design. Engineered by Vertex3D.\nSOTD / SCORE\n→ 7.2/ 10\nEvaluation System\nDesign\n40%\nUsability\n30%\nCreativity\n20%\nContent\n10%\n7.09 / 10\n7.05 / 10\n7.59 / 10\n7.34 / 10\nVotes\nJury\nCommunity Members\nDesign\nUsability\nCreativity\nContent\nOverall\nEugene Sokolovski from Belarus\nweb designer\n7\n7\n7\n7\n7.00\nDenys Koloskov from Ukraine\nUX/UI designer\n7\n8\n8\n9\n7.70\nBurak Canpolat from Turkey\nIndependent Art Director\n7\n7\n7\n7\n7.00\nIrene Butenko from United States\nUI/UX Designer and Webflow Developer\n7\n7\n7\n8\n7.10\nSunny Rathod from India\nFounder of Trionn Design\n7\n7\n7\n7\n7.00\n•••\nDEV AWARD\n→ 7.82/ 10\nEvaluation System\nSemantics / SEO\nAnimations / Transitions\nAccessibility\nWPO\nResponsive Design\nMarkup / Meta-data\n7.60 / 10\n8.80 / 10\n7.20 / 10\n7.80 / 10\n7.80 / 10\n7.60 / 10\nVotes\nJury\nSemantics\nAnimations\nAccessibility\nWPO\nResponsive Design\nMarkup\nOverall\nGeorges Benjamin from France\nFreelance Developer\n8\n9\n8\n8\n7\n8\n7.95\nAbhay Rohit from India\nVisual designer & developer\n9\n10\n9\n8\n9\n9\n8.95\nRomain Prache from Canada\nTechnical Director\n7\n8\n7\n8\n7\n7\n7.35\nVictor Work from Canada\nCreative Developer & Designer\n7\n9\n6\n8\n8\n7\n7.60\nEtienne Pharabot from France\nFront-end Developer\n7\n8\n6\n7\n8\n7\n7.25\nCollections\nExplore more\ngreat collections.\nHandy Tools and Apps for De...\nfollowed by\n+1054\nWebGL / HTML5 Games\nfollowed by\n+74\nMovie Landing Page Design\nfollowed by\n+181\nDesign & Interactions\nfollowed by\n+346\nInteractive Experience\nfollowed by\n+195\nWebGL Inspiration\nfollowed by\n+147\nVideo and Audio Players\nfollowed by\n+744\nNonProfit Websites\nfollowed by\n+636\nCreator\nFont & Color\nDetails\nScore\nVisit Site\nVote for Awwwards Honors\nThis site has been nominated\nfor the Product Honors\nView all nominees!\nProduct\n\nWebsites\nCollections\nElements\nAcademy\nJobs\nMarket\nDirectory\nConferences\nFAQs\nAbout Us\nContact Us\nCookies Policy\nLegal Terms\nPrivacy Policy\nConnect:\nInstagram\nLinkedIn\nTwitter\nFacebook\nYouTube\nTikTok\nPinterest\n\nThis website uses cookies to ensure you get the best experience on our website. Cookies Policy\n\nGOT IT",
+          "images": 57,
+          "canvas": 0,
+          "video": 8,
+          "fontSamples": [
+            {
+              "tag": "H2",
+              "text": "Site of the Day - Oct 4, 2026",
+              "font": "\"Inter Tight\"",
+              "size": "14px",
+              "color": "rgb(34, 34, 34)"
+            },
+            {
+              "tag": "H1",
+              "text": "EDOLUS",
+              "font": "\"Inter Tight\"",
+              "size": "126.732px",
+              "color": "rgb(34, 34, 34)"
+            },
+            {
+              "tag": "H2",
+              "text": "Elements",
+              "font": "\"Inter Tight\"",
+              "size": "14px",
+              "color": "rgb(34, 34, 34)"
+            },
+            {
+              "tag": "H2",
+              "text": "Color Palette",
+              "font": "\"Inter Tight\"",
+              "size": "14px",
+              "color": "rgb(34, 34, 34)"
+            },
+            {
+              "tag": "P",
+              "text": "This website uses a color\npalette of 1 colors",
+              "font": "\"Inter Tight\"",
+              "size": "18.6479px",
+              "color": "rgb(34, 34, 34)"
+            },
+            {
+              "tag": "H2",
+              "text": "Technologies & Tools",
+              "font": "\"Inter Tight\"",
+              "size": "14px",
+              "color": "rgb(34, 34, 34)"
+            },
+            {
+              "tag": "H2",
+              "text": "Description",
+              "font": "\"Inter Tight\"",
+              "size": "14px",
+              "color": "rgb(34, 34, 34)"
+            },
+            {
+              "tag": "H2",
+              "text": "SOTD / SCORE\n→ 7.2/ 10",
+              "font": "\"Inter Tight\"",
+              "size": "110.845px",
+              "color": "rgb(34, 34, 34)"
+            }
+          ],
+          "finishedRequestCount": 67,
+          "desktopScreenshot": "docs/design/reference-screenshots/edolus-official-desktop.png",
+          "mobileScreenshot": "docs/design/reference-screenshots/edolus-official-mobile.png"
+        },
+        {
+          "kind": "website",
+          "url": "https://edolus.com/",
+          "visitedAt": "2026-10-07T10:27:11.955Z",
+          "status": 200,
+          "finalUrl": "https://edolus.com/",
+          "title": "EDOLUS",
+          "domContentAndWaitMs": 13149,
+          "text": "5\n6\n8\n4\n%\nINTELLIGENCE AT PLANETARY SCALE\nORCHESTRATING THE FOUNDATION OF ARTIFICIAL INTELLIGENCE FROM THE EDGE OF THE ATMOSPHERE.\nINITIATE SYSTEM\nEXPERIENCE WITH HEADPHONES",
+          "images": 0,
+          "canvas": 1,
+          "video": 0,
+          "fontSamples": [],
+          "finishedRequestCount": 11,
+          "desktopScreenshot": "docs/design/reference-screenshots/edolus-website-desktop.png",
+          "mobileScreenshot": "docs/design/reference-screenshots/edolus-website-mobile.png"
+        }
+      ]
+    }
+  ],
+  "mockups": [
+    {
+      "name": "home",
+      "device": "desktop",
+      "width": 1440,
+      "height": 1000,
+      "path": "docs/design/mockups/home-desktop.png",
+      "overflow": false
+    },
+    {
+      "name": "home",
+      "device": "mobile",
+      "width": 390,
+      "height": 844,
+      "path": "docs/design/mockups/home-mobile.png",
+      "overflow": false
+    },
+    {
+      "name": "home",
+      "device": "extra-layout",
+      "width": 360,
+      "overflow": false
+    },
+    {
+      "name": "home",
+      "device": "extra-layout",
+      "width": 768,
+      "overflow": false
+    },
+    {
+      "name": "login",
+      "device": "desktop",
+      "width": 1440,
+      "height": 1000,
+      "path": "docs/design/mockups/login-desktop.png",
+      "overflow": false
+    },
+    {
+      "name": "login",
+      "device": "mobile",
+      "width": 390,
+      "height": 844,
+      "path": "docs/design/mockups/login-mobile.png",
+      "overflow": false
+    },
+    {
+      "name": "login",
+      "device": "extra-layout",
+      "width": 360,
+      "overflow": false
+    },
+    {
+      "name": "login",
+      "device": "extra-layout",
+      "width": 768,
+      "overflow": false
+    },
+    {
+      "name": "account",
+      "device": "desktop",
+      "width": 1440,
+      "height": 1000,
+      "path": "docs/design/mockups/account-desktop.png",
+      "overflow": false
+    },
+    {
+      "name": "account",
+      "device": "mobile",
+      "width": 390,
+      "height": 844,
+      "path": "docs/design/mockups/account-mobile.png",
+      "overflow": false
+    },
+    {
+      "name": "account",
+      "device": "extra-layout",
+      "width": 360,
+      "overflow": false
+    },
+    {
+      "name": "account",
+      "device": "extra-layout",
+      "width": 768,
+      "overflow": false
+    },
+    {
+      "name": "states",
+      "device": "desktop",
+      "width": 1440,
+      "height": 1000,
+      "path": "docs/design/mockups/states-desktop.png",
+      "overflow": false
+    },
+    {
+      "name": "states",
+      "device": "mobile",
+      "width": 390,
+      "height": 844,
+      "path": "docs/design/mockups/states-mobile.png",
+      "overflow": false
+    },
+    {
+      "name": "states",
+      "device": "extra-layout",
+      "width": 360,
+      "overflow": false
+    },
+    {
+      "name": "states",
+      "device": "extra-layout",
+      "width": 768,
+      "overflow": false
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+# T01 development image. Secrets are mounted only when a container starts.
+FROM docker.m.daocloud.io/library/rust:1.98.0-bookworm@sha256:82150a52ec202c1b14d7817e14516c392bb7f5cfebd88f1ed531cb37ebd39922
+
+WORKDIR /workspace
+ENV CARGO_TARGET_DIR=/workspace/target
+
+COPY Cargo.toml Cargo.lock rust-toolchain.toml ./
+COPY crates ./crates
+COPY migrations ./migrations
+COPY data ./data
+
+# BuildKit caches are independent of runtime secrets and never copy .local.
+RUN --mount=type=cache,id=auth-rust-cargo-registry,target=/usr/local/cargo/registry,sharing=locked \
+    --mount=type=cache,id=auth-rust-cargo-git,target=/usr/local/cargo/git,sharing=locked \
+    --mount=type=cache,id=auth-rust-cargo-target-1.98,target=/workspace/target,sharing=locked \
+    cargo build --workspace --locked && \
+    install -m 0755 target/debug/identity-server target/debug/identity-worker \
+      target/debug/identity-admin-cli target/debug/identity-migrate target/debug/demo-bff /usr/local/bin/
+
+EXPOSE 8080 8081
+CMD ["identity-server"]

@@ -1,0 +1,80 @@
+[
+  {
+    "name": "lidar",
+    "url": "https://drone.riotters.com/",
+    "status": 200,
+    "time": "2026-10-07T10:30:49.995Z",
+    "errors": [],
+    "text": "aevion\n\nLidar Drone Scanning\n\nTech Demo By \nRiotters\n\nGMT 10:30 am\n\nmenu\n\nAutonomous LIDAR inspection systems. Precision that secures critical infrastructure.\n\nScroll Down\nDetecting cracks, deformations and structural risks before they become failures.\nDetecting\ncracks,\ndeformations\nand\nstructural risks\nbefore\nthey\nbecome\nfailures.\nGear\nGear\n3\nPAYLOAD\nEngineered around the DJI Zenmuse L2 LiDAR payload. Our system delivers frame-based point cloud acquisition with up to 240,000 pts/s and five simultaneous returns per pulse.\nEngineered around the DJI Zenmuse L2 LiDAR payload.\nOur system delivers frame-based point cloud acquisition with up to 240,000 pts/s and five simultaneous returns per pulse.\n[ \nTECH\n ]\n\n5 returns\n\n[ \nMAX RETURNS\n ]\n\n±2 cm\n\n[ \nDETECTION ACCURACY\n ]\n\n450 m\n\n[ \nMAX RANGE\n ]\nSolutions\nSolutions\n4\nEnergy\nInfrastructure\nIndustry\nGeospatial\nPower grids, wind turbines, and solar arrays span thousands of acres of terrain that ground crews can no longer monitor at scale. LiDAR-equipped UAVs eliminate access risk while cutting inspection cycles from weeks to hours.\nPower grids, wind turbines, and solar arrays span thousands of acres of terrain that ground crews can no longer monitor at scale.\nLiDAR-equipped UAVs eliminate access risk while cutting inspection cycles from weeks to hours.\nWIND TURBINES\nSOLAR FARMS\nPOWER LINES\nSUBSTATIONS\nCapabilities\nCapabilities\n5\n[ TECH ]\nScan\nConnection\nCompactness\n[ TECH ]\n[ STATS ]\n360°\n360°\nFull-hemisphere LiDAR capture at 240,000 points per second across terrain, structures and vegetation in a single pass.\nFull-hemisphere LiDAR capture at 240,000 points per second across terrain, structures and vegetation in a single pass.\n[ STATS ]\nSoftware\nSoftware\n6\nPLATFORM\nOur processing pipeline integrates directly with DJI Terra for automated point cloud generation, quality reporting, and georeferenced output — from raw flight data to deliverable in under 20 minutes.\nOur processing pipeline integrates directly with DJI Terra for automated point cloud generation, quality reporting, and georeferenced output — from raw flight data to deliverable in under 20 minutes.\n01\nStructural Fault Zone\nStructural Fault Zone\n\nSurface\n \ndeformation\n \ndetected\n \nacross\n \na\n \n42\n \nm²\n \nsector.\n \nConfidence\n \nthreshold\n \nexceeded\n \nat\n \n87%.\n\nrisk level:\nmoderate\n02\nSediment Drift\nSediment Drift\n\nGradual\n \ndisplacement\n \nof\n \nloose\n \nmaterial\n \nalong\n \nthe\n \ndrainage\n \nchannel.\n \nWithin\n \nexpected\n \nseasonal\n \nrange.\n\nrisk level:\nlow\n03\nErosion Scarp\nErosion Scarp\n\nExposed\n \ncut\n \nface\n \nretreating\n \nalong\n \nthe\n \nupper\n \nridge.\n \nMaterial\n \nloss\n \ntracked\n \nat\n \n3\n \ncm\n \nper\n \nweek.\n\nrisk level:\nmoderate\n\n[ aevion ]\n\n[ D:02 M:CIF ]\n\n[ aevion ]\n\n[ D:02 M:CIF ]\n\nThis website is a tech demo. Want something similar?\nThis website is a tech demo. Want something similar?\nUse our imagination to accelerate your brand, product or technology.\nUse our imagination to accelerate your brand, product or technology.\nContact Us\n\nTech Stack\n\nNext.js\nThree.js\nWebGL\nTailwind CSS\nPayload CMS\nVercel\n\nRiotters Services\n\n3D Design\nMotion Design\nBranding\nMarketing Design\nProduct Design\nCreative Development\n\n\"DJI\" and \"Mavic 2 Pro\" are trademarks of SZ DJI Technology Co., Ltd. This is a non-commercial technology demo, not affiliated with or endorsed by DJI.\n\n© Riotters 2026. All rights reserved",
+    "fontSamples": [
+      {
+        "tag": "P",
+        "text": "Lidar Drone Scanning",
+        "font": "switzer, \"switzer Fallback\", sans-serif",
+        "size": "14px",
+        "color": "rgba(36, 54, 63, 0.64)"
+      },
+      {
+        "tag": "P",
+        "text": "Tech Demo by RiottersRiotters",
+        "font": "switzer, \"switzer Fallback\", sans-serif",
+        "size": "14px",
+        "color": "rgba(36, 54, 63, 0.64)"
+      },
+      {
+        "tag": "P",
+        "text": "GMT 10:30 am",
+        "font": "switzer, \"switzer Fallback\", sans-serif",
+        "size": "14px",
+        "color": "rgba(36, 54, 63, 0.64)"
+      },
+      {
+        "tag": "P",
+        "text": "Autonomous LIDAR inspection systems. Precision that secures critical infrastructure.",
+        "font": "switzer, \"switzer Fallback\", sans-serif",
+        "size": "20px",
+        "color": "rgb(36, 54, 63)"
+      },
+      {
+        "tag": "H2",
+        "text": "Gear\nGear",
+        "font": "switzer, \"switzer Fallback\", sans-serif",
+        "size": "80px",
+        "color": "rgb(23, 23, 23)"
+      },
+      {
+        "tag": "P",
+        "text": "5 returns",
+        "font": "switzer, \"switzer Fallback\", sans-serif",
+        "size": "40px",
+        "color": "rgb(36, 54, 63)"
+      },
+      {
+        "tag": "P",
+        "text": "±2 cm",
+        "font": "switzer, \"switzer Fallback\", sans-serif",
+        "size": "40px",
+        "color": "rgb(36, 54, 63)"
+      },
+      {
+        "tag": "P",
+        "text": "450 m",
+        "font": "switzer, \"switzer Fallback\", sans-serif",
+        "size": "40px",
+        "color": "rgb(36, 54, 63)"
+      }
+    ]
+  },
+  {
+    "name": "edolus",
+    "url": "https://edolus.com/",
+    "status": 200,
+    "time": "2026-10-07T10:30:53.431Z",
+    "errors": [
+      "pc is not defined",
+      "pc is not defined"
+    ],
+    "text": "",
+    "fontSamples": []
+  }
+]

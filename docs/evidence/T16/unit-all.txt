@@ -1,0 +1,95 @@
+
+> rust-unified-identity@0.1.0 test:unit
+> node scripts/run.mjs test:unit
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.10s
+     Running unittests src/main.rs (target/debug/deps/demo_bff-791480ccf97d945e)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/identity_admin_cli-6d3548c18d673214)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/identity_core-f88d0125a3eb4642)
+
+running 9 tests
+test clock::tests::expiry_is_exclusive_and_independent_of_wall_clock ... ok
+test config::tests::canonical_origins_with_optional_root_slash_are_accepted ... ok
+test config::tests::encryption_map_rejects_duplicate_versions_and_invalid_secret_material ... ok
+test config::tests::invalid_environment_rp_or_secret_connection_never_echoes_values ... ok
+test config::tests::secret_debug_is_redacted ... ok
+test config::tests::production_origin_is_fixed_and_https ... ok
+test config::tests::smtp_credentials_reject_blank_accounts_and_control_characters ... ok
+test config::tests::smtp_host_and_mailbox_are_plain_addresses ... ok
+test config::tests::previous_jwks_checks_unsigned_rsa_components_and_public_only_policy ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/identity_server-aff4ae549e9d7011)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/identity_server-8556f4184bc06ce1)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/identity_store-d76bd1b29a195e49)
+
+running 6 tests
+test migrations::tests::production_migration_requires_explicit_acknowledgement_but_is_supported ... ok
+test migrations::tests::errors_and_debug_do_not_echo_secret_connection_values ... ok
+test repository::tests::digest_requires_exactly_256_bits_and_never_formats_material ... ok
+test migrations::tests::test_database_uses_effective_driver_database_and_rejects_overrides ... ok
+test migrations::tests::test_schema_is_scoped_and_never_interprets_arbitrary_sql ... ok
+test repository::tests::repository_error_never_exposes_internal_diagnostics ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/identity-migrate.rs (target/debug/deps/identity_migrate-bca4f41b776be91e)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/identity_worker-19754661413cf895)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+ RUN  v5.0.3 /root/code/rust/auth_rust/apps/identity-web
+
+
+ Test Files  3 passed (3)
+      Tests  17 passed (17)
+   Start at  20:39:02
+   Duration  1.79s (environment 48%, tests 35%, import 11%, transform 6%)
+
+
+ RUN  v5.0.3 /root/code/rust/auth_rust/apps/demo-a
+
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  20:39:04
+   Duration  1.45s (tests 50%, environment 41%, import 6%, transform 2%)
+
+
+ RUN  v5.0.3 /root/code/rust/auth_rust/apps/demo-b
+
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  20:39:06
+   Duration  1.43s (tests 50%, environment 41%, import 6%, transform 3%)
+

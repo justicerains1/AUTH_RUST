@@ -1,0 +1,178 @@
+
+> rust-unified-identity@0.1.0 dev:up
+> node scripts/run.mjs dev:up
+
+#1 [internal] load local bake definitions
+#1 reading from stdin 2.37kB done
+#1 DONE 0.0s
+
+#2 [identity-web internal] load build definition from Dockerfile.web.dev
+#2 DONE 0.0s
+
+#2 [identity-web internal] load build definition from Dockerfile.web.dev
+#2 transferring dockerfile: 703B done
+#2 DONE 0.1s
+
+#3 [worker internal] load build definition from Dockerfile.dev
+#3 transferring dockerfile: 982B done
+#3 DONE 0.1s
+
+#4 [demo-a internal] load metadata for docker.m.daocloud.io/library/node:22.22.1-bookworm-slim@sha256:4f77a690f2f8946ab16fe1e791a3ac0667ae1c3575c3e4d0d4589e9ed5bfaf3d
+#4 DONE 1.8s
+
+#5 [worker internal] load metadata for docker.m.daocloud.io/library/rust:1.98.0-bookworm@sha256:82150a52ec202c1b14d7817e14516c392bb7f5cfebd88f1ed531cb37ebd39922
+#5 DONE 1.7s
+
+#6 [demo-b internal] load .dockerignore
+#6 transferring context: 230B done
+#6 DONE 0.1s
+
+#7 [api internal] load build context
+#7 DONE 0.0s
+
+#8 [identity-web internal] load build context
+#8 transferring context: 140.05kB done
+#8 DONE 0.2s
+
+#9 [demo-a stage-0 1/8] FROM docker.m.daocloud.io/library/node:22.22.1-bookworm-slim@sha256:4f77a690f2f8946ab16fe1e791a3ac0667ae1c3575c3e4d0d4589e9ed5bfaf3d
+#9 resolve docker.m.daocloud.io/library/node:22.22.1-bookworm-slim@sha256:4f77a690f2f8946ab16fe1e791a3ac0667ae1c3575c3e4d0d4589e9ed5bfaf3d 0.1s done
+#9 ...
+
+#7 [api internal] load build context
+#7 transferring context: 89.63kB done
+#7 DONE 0.3s
+
+#9 [demo-a stage-0 1/8] FROM docker.m.daocloud.io/library/node:22.22.1-bookworm-slim@sha256:4f77a690f2f8946ab16fe1e791a3ac0667ae1c3575c3e4d0d4589e9ed5bfaf3d
+#9 DONE 0.5s
+
+#10 [api stage-0 1/5] FROM docker.m.daocloud.io/library/rust:1.98.0-bookworm@sha256:82150a52ec202c1b14d7817e14516c392bb7f5cfebd88f1ed531cb37ebd39922
+#10 resolve docker.m.daocloud.io/library/rust:1.98.0-bookworm@sha256:82150a52ec202c1b14d7817e14516c392bb7f5cfebd88f1ed531cb37ebd39922 0.1s done
+#10 DONE 0.6s
+
+#11 [api stage-0 2/5] WORKDIR /workspace
+#11 DONE 0.1s
+
+#12 [identity-web stage-0 2/8] WORKDIR /workspace
+#12 DONE 0.1s
+
+#13 [identity-web stage-0 3/8] COPY package.json package-lock.json ./
+#13 DONE 0.2s
+
+#14 [api stage-0 3/5] COPY Cargo.toml Cargo.lock rust-toolchain.toml ./
+#14 DONE 0.2s
+
+#15 [demo-b stage-0 4/8] COPY apps/identity-web/package.json ./apps/identity-web/package.json
+#15 DONE 0.2s
+
+#16 [api stage-0 4/5] COPY crates ./crates
+#16 DONE 0.2s
+
+#17 [demo-a stage-0 5/8] COPY apps/demo-a/package.json ./apps/demo-a/package.json
+#17 DONE 0.2s
+
+#18 [identity-web stage-0 6/8] COPY apps/demo-b/package.json ./apps/demo-b/package.json
+#18 DONE 0.1s
+
+#19 [demo-b stage-0 7/8] RUN --mount=type=cache,id=auth-rust-npm-cache,target=/root/.npm,sharing=locked npm ci
+#19 6.174 
+#19 6.174 added 221 packages, and audited 225 packages in 6s
+#19 6.174 
+#19 6.174 55 packages are looking for funding
+#19 6.174   run `npm fund` for details
+#19 6.174 
+#19 6.174 found 0 vulnerabilities
+#19 6.175 npm notice
+#19 6.175 npm notice New major version of npm available! 10.9.4 -> 12.2.0
+#19 6.175 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+#19 6.175 npm notice To update run: npm install -g npm@12.2.0
+#19 6.175 npm notice
+#19 DONE 6.3s
+
+#20 [identity-web stage-0 8/8] COPY apps ./apps
+#20 DONE 0.1s
+
+#21 [identity-web] exporting to image
+#21 exporting layers
+#21 ...
+
+#22 [api stage-0 5/5] RUN --mount=type=cache,id=auth-rust-cargo-registry,target=/usr/local/cargo/registry,sharing=locked     --mount=type=cache,id=auth-rust-cargo-git,target=/usr/local/cargo/git,sharing=locked     --mount=type=cache,id=auth-rust-cargo-target-1.98,target=/workspace/target,sharing=locked     cargo build --workspace --locked &&     install -m 0755 target/debug/identity-server target/debug/identity-worker       target/debug/identity-admin-cli target/debug/demo-bff /usr/local/bin/
+#22 0.770 info: syncing channel updates for 1.98.0-x86_64-unknown-linux-gnu
+#22 3.850 info: latest update on 2026-08-20 for version 1.98.0 (88d9e12ae 2026-08-18)
+#22 3.860 info: downloading component clippy
+#22 6.314     Updating crates.io index
+#22 ...
+
+#23 [demo-a] exporting to image
+#23 exporting layers 4.1s done
+#23 exporting manifest sha256:11ed96d920f352ee4a76e2965fade395b1be0fcf9b93d49cbb5620a80ed05447 0.1s done
+#23 exporting config sha256:51d7d86d03accde8403d7ddb1cee2cfbbff254a59e7129928c3bd469fafb0c17 0.1s done
+#23 exporting attestation manifest sha256:ee725b876eb23da33ea781bcf7d01e4cafdb9b47433291f598016213133d957e
+#23 exporting attestation manifest sha256:ee725b876eb23da33ea781bcf7d01e4cafdb9b47433291f598016213133d957e 0.1s done
+#23 exporting manifest list sha256:3bd43f8a7984f52392999ed921dbdaaeedb7c43bc4ca060d394abe2cd46ca05a
+#23 exporting manifest list sha256:3bd43f8a7984f52392999ed921dbdaaeedb7c43bc4ca060d394abe2cd46ca05a 0.1s done
+#23 naming to docker.io/library/auth-rust-web:development 0.0s done
+#23 unpacking to docker.io/library/auth-rust-web:development
+#23 ...
+
+#22 [api stage-0 5/5] RUN --mount=type=cache,id=auth-rust-cargo-registry,target=/usr/local/cargo/registry,sharing=locked     --mount=type=cache,id=auth-rust-cargo-git,target=/usr/local/cargo/git,sharing=locked     --mount=type=cache,id=auth-rust-cargo-target-1.98,target=/workspace/target,sharing=locked     cargo build --workspace --locked &&     install -m 0755 target/debug/identity-server target/debug/identity-worker       target/debug/identity-admin-cli target/debug/demo-bff /usr/local/bin/
+#22 11.82 error: cannot update the lock file /workspace/Cargo.lock because --locked was passed to prevent this
+#22 11.82 help: to generate the lock file without accessing the network, remove the --locked flag and use --offline instead.
+#22 ERROR: process "/bin/sh -c cargo build --workspace --locked &&     install -m 0755 target/debug/identity-server target/debug/identity-worker       target/debug/identity-admin-cli target/debug/demo-bff /usr/local/bin/" did not complete successfully: exit code: 101
+
+#21 [identity-web] exporting to image
+#21 exporting layers 4.1s done
+#21 exporting manifest sha256:2f67e9374b041430d99d8e22abb600c3f04ea54ff655bcff41ed8e6550f63845 0.1s done
+#21 exporting config sha256:1532cfb5f68ad72e5c8c2401b86547deaca7f1c9109e0a504d752db6ab18c18d 0.1s done
+#21 exporting attestation manifest sha256:c37e886b5c6bcb9e14c3702fdfe760cf0934898f05a4ada0a49057d87c3e2985 0.1s done
+#21 exporting manifest list sha256:b54db4f46abef66dc28108b9f2a3d3dacc5a3336a0d2b0492e455464b631d13f 0.1s done
+#21 naming to docker.io/library/auth-rust-web:development 0.0s done
+#21 unpacking to docker.io/library/auth-rust-web:development 0.9s done
+#21 CANCELED
+
+#24 [demo-b] exporting to image
+#24 exporting layers 4.1s done
+#24 exporting manifest sha256:77dcdf9ca421007ab95c0f641c3c90b4d3ac65be6c2e0c1ca09abbfdb2e656e4 0.1s done
+#24 exporting config sha256:8f21befc60265952370e71203482ee8aa73834cfa0826c8cb492044fa6fabab4 0.1s done
+#24 exporting attestation manifest sha256:31d5ece9ff1e369f7f657e57921cd413a9909d5e03f02672dc19b6bcdb04f578 0.1s done
+#24 exporting manifest list sha256:31bf816d600cdef0df82cf103ce61fa3b2c9411c261e9edfc332a95f9b7639f7 0.1s done
+#24 naming to docker.io/library/auth-rust-web:development 0.0s done
+#24 unpacking to docker.io/library/auth-rust-web:development 0.9s done
+#24 CANCELED
+
+#23 [demo-a] exporting to image
+#23 unpacking to docker.io/library/auth-rust-web:development 0.9s done
+#23 CANCELED
+------
+ > [api stage-0 5/5] RUN --mount=type=cache,id=auth-rust-cargo-registry,target=/usr/local/cargo/registry,sharing=locked     --mount=type=cache,id=auth-rust-cargo-git,target=/usr/local/cargo/git,sharing=locked     --mount=type=cache,id=auth-rust-cargo-target-1.98,target=/workspace/target,sharing=locked     cargo build --workspace --locked &&     install -m 0755 target/debug/identity-server target/debug/identity-worker       target/debug/identity-admin-cli target/debug/demo-bff /usr/local/bin/:
+0.770 info: syncing channel updates for 1.98.0-x86_64-unknown-linux-gnu
+3.850 info: latest update on 2026-08-20 for version 1.98.0 (88d9e12ae 2026-08-18)
+3.860 info: downloading component clippy
+6.314     Updating crates.io index
+11.82 error: cannot update the lock file /workspace/Cargo.lock because --locked was passed to prevent this
+11.82 help: to generate the lock file without accessing the network, remove the --locked flag and use --offline instead.
+------
+Dockerfile.dev:11
+
+--------------------
+
+  10 |     # BuildKit caches are independent of runtime secrets and never copy .local.
+
+  11 | >>> RUN --mount=type=cache,id=auth-rust-cargo-registry,target=/usr/local/cargo/registry,sharing=locked \
+
+  12 | >>>     --mount=type=cache,id=auth-rust-cargo-git,target=/usr/local/cargo/git,sharing=locked \
+
+  13 | >>>     --mount=type=cache,id=auth-rust-cargo-target-1.98,target=/workspace/target,sharing=locked \
+
+  14 | >>>     cargo build --workspace --locked && \
+
+  15 | >>>     install -m 0755 target/debug/identity-server target/debug/identity-worker \
+
+  16 | >>>       target/debug/identity-admin-cli target/debug/demo-bff /usr/local/bin/
+
+  17 |     
+
+--------------------
+
+target api: failed to solve: process "/bin/sh -c cargo build --workspace --locked &&     install -m 0755 target/debug/identity-server target/debug/identity-worker       target/debug/identity-admin-cli target/debug/demo-bff /usr/local/bin/" did not complete successfully: exit code: 101
+
+docker 退出码 1。

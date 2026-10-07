@@ -1,0 +1,5 @@
+
+> rust-unified-identity@0.1.0 test:security
+> node scripts/run.mjs test:security --task=T04
+
+T04 real security middleware, atomic budgets, CSRF, proxy rejection and dependency failures passed (temporary fixture only).

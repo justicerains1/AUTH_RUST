@@ -1,0 +1,7 @@
+
+> rust-unified-identity@0.1.0 check
+> node scripts/run.mjs check
+
+error: cannot update the lock file /root/code/rust/auth_rust/Cargo.lock because --locked was passed to prevent this
+help: to generate the lock file without accessing the network, remove the --locked flag and use --offline instead.
+cargo 退出码 101。

@@ -1,0 +1,87 @@
+{
+  "date": "2026-10-07T11:17:04.023Z",
+  "labels": [
+    {
+      "id": "example-email",
+      "label": "邮箱地址",
+      "error": null
+    },
+    {
+      "id": "example-code",
+      "label": "验证码",
+      "error": "code-error"
+    }
+  ],
+  "keyboardNext": "example-code",
+  "reducedMotionAnimation": "none",
+  "targets": [
+    {
+      "tag": "BUTTON",
+      "text": "继续",
+      "height": 49.59375,
+      "width": 76.015625
+    },
+    {
+      "tag": "BUTTON",
+      "text": "键盘焦点",
+      "height": 49.59375,
+      "width": 108.015625
+    },
+    {
+      "tag": "BUTTON",
+      "text": "取消",
+      "height": 49.59375,
+      "width": 76.015625
+    },
+    {
+      "tag": "BUTTON",
+      "text": "正在验证",
+      "height": 49.59375,
+      "width": 136.015625
+    },
+    {
+      "tag": "BUTTON",
+      "text": "暂不可用",
+      "height": 49.59375,
+      "width": 108.015625
+    },
+    {
+      "tag": "BUTTON",
+      "text": "撤销会话",
+      "height": 49.59375,
+      "width": 108.015625
+    },
+    {
+      "tag": "INPUT",
+      "text": "",
+      "height": 51.59375,
+      "width": 300
+    },
+    {
+      "tag": "INPUT",
+      "text": "",
+      "height": 53.59375,
+      "width": 300
+    },
+    {
+      "tag": "BUTTON",
+      "text": "重新加载",
+      "height": 48,
+      "width": 100
+    },
+    {
+      "tag": "BUTTON",
+      "text": "取消",
+      "height": 49.59375,
+      "width": 76.015625
+    },
+    {
+      "tag": "BUTTON",
+      "text": "撤销会话",
+      "height": 49.59375,
+      "width": 108.015625
+    }
+  ],
+  "result": "pass",
+  "scope": "Design semantics and motion only; actual dialog focus trap tested in T16."
+}

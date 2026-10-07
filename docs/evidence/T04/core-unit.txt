@@ -1,0 +1,25 @@
+    Blocking waiting for file lock on package cache
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.48s
+     Running unittests src/lib.rs (target/debug/deps/identity_core-492c0cbfc8e5edf5)
+
+running 17 tests
+test clock::tests::expiry_is_exclusive_and_independent_of_wall_clock ... ok
+test config::tests::canonical_origins_with_optional_root_slash_are_accepted ... ok
+test config::tests::encryption_map_rejects_duplicate_versions_and_invalid_secret_material ... ok
+test config::tests::invalid_environment_rp_or_secret_connection_never_echoes_values ... ok
+test config::tests::secret_debug_is_redacted ... ok
+test config::tests::smtp_host_and_mailbox_are_plain_addresses ... ok
+test config::tests::smtp_credentials_reject_blank_accounts_and_control_characters ... ok
+test config::tests::production_origin_is_fixed_and_https ... ok
+test security::tests::duplicate_key_versions_are_rejected_before_crypto_loading ... ok
+test security::tests::email_normalization_preserves_aliases_and_rejects_invalid_domains ... ok
+test security::tests::hmac_matches_rfc4231_and_separates_purpose_boundaries ... ok
+test config::tests::previous_jwks_checks_unsigned_rsa_components_and_public_only_policy ... ok
+test security::tests::aead_authenticates_user_purpose_nonce_ciphertext_and_key_version ... ok
+test security::tests::random_tokens_recovery_and_comparison_have_correct_entropy_and_redaction ... ok
+test security::tests::unicode_password_limits_do_not_trim_or_force_character_classes ... ok
+test security::tests::bundled_weak_list_matches_pinned_raw_bytes_and_rejects_an_allowed_length_entry ... ok
+test security::tests::argon2_real_hash_legacy_verify_dummy_reuse_and_global_queue_budget ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 11.58s
+

@@ -1,0 +1,8 @@
+
+> rust-unified-identity@0.1.0 db:migrate
+> node scripts/run.mjs db:migrate --env=development
+
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.12s
+     Running `target/debug/identity-migrate`
+migration target: environment=development, database=identity_development
+migrations applied successfully (checksummed SQLx migration history)

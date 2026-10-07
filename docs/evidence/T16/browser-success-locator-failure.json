@@ -1,0 +1,71 @@
+{
+  "started": "2026-10-07T12:20:01.134Z",
+  "browser": "153.0.8010.12",
+  "layouts": [
+    {
+      "width": 360,
+      "horizontalOverflow": false,
+      "minimumTarget": 44,
+      "screenshot": "components-360.png",
+      "result": "pass"
+    },
+    {
+      "width": 390,
+      "horizontalOverflow": false,
+      "minimumTarget": 44,
+      "screenshot": "components-390.png",
+      "result": "pass"
+    },
+    {
+      "width": 768,
+      "horizontalOverflow": false,
+      "minimumTarget": 44,
+      "screenshot": "components-768.png",
+      "result": "pass"
+    },
+    {
+      "width": 1440,
+      "horizontalOverflow": false,
+      "minimumTarget": 44,
+      "screenshot": "components-1440.png",
+      "result": "pass"
+    }
+  ],
+  "checks": [],
+  "accessibility": [
+    {
+      "width": 360,
+      "passes": 26,
+      "violations": [],
+      "incompleteRules": [
+        "color-contrast"
+      ]
+    },
+    {
+      "width": 390,
+      "passes": 26,
+      "violations": [],
+      "incompleteRules": [
+        "color-contrast"
+      ]
+    },
+    {
+      "width": 768,
+      "passes": 26,
+      "violations": [],
+      "incompleteRules": [
+        "color-contrast"
+      ]
+    },
+    {
+      "width": 1440,
+      "passes": 26,
+      "violations": [],
+      "incompleteRules": [
+        "color-contrast"
+      ]
+    }
+  ],
+  "exitCode": 1,
+  "failure": "locator.waitFor: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText('输入格式符合示例规则', { exact: true }) to be visible\u001b[22m\n"
+}

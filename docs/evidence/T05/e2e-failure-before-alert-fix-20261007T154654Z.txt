@@ -1,0 +1,7 @@
+T05 real UI E2E 2026-10-07T15:33:19.365Z
+FAIL T05 browser checks failed; private details suppressed.
+
+1 !== 0
+
+Completed 2026-10-07T15:33:36.221Z
+Exit code 1

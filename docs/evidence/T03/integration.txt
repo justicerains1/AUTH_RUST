@@ -1,0 +1,16 @@
+T03 real database acceptance: 2026-10-07T14:03:18.531Z
+PASS real Redis PING and API readiness against PG+Redis
+PASS explicit test target identity_test exists; no non-test database cleanup
+PASS T03-DB-01: migrations twice; 17 tables; PK/UNIQUE/FK/CHECK and cleanup indexes
+PASS T03-DB-02: 10 synchronized normalized-email inserts; exactly one row
+PASS T03-DB-03: challenge and email action each consumed once under 10-way concurrency; one login session
+PASS transaction rollback/failed commit and exclusive expiry timestamps (no expiry sleeps)
+PASS T03 email verification: action and user mutation commit together; standalone calls cannot commit
+PASS T03 disabled account: verification preserves disabled state; session issuance rejected
+PASS T03 repository authority: current version/client/grant checks; bound code exchange; family rotation horizon and replay
+PASS T03 outbox: concurrent workers claim distinct leases; wrong owner rejected; completion clears ciphertext
+PASS T03-DB-04 production: nonzero before connection; no mutations
+PASS T03-DB-04 wrong database: nonzero before connection; no mutations
+PASS T03-DB-04 driver dbname override: nonzero before connection; no mutations
+Completed: 2026-10-07T14:03:22.145Z
+Exit code: 0

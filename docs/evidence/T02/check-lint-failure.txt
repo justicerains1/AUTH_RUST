@@ -1,0 +1,12 @@
+
+> rust-unified-identity@0.1.0 check
+> node scripts/run.mjs check
+
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.15s
+
+/root/code/rust/auth_rust/scripts/verify-openapi.mjs
+  82:61  error  There is no `cause` attached to the symptom error being thrown  preserve-caught-error
+
+✖ 1 problem (1 error, 0 warnings)
+
+/usr/bin/node 退出码 1。

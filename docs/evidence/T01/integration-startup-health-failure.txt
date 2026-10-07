@@ -1,0 +1,10 @@
+# T01 real service acceptance
+Started: 2026-10-07T10:33:58.537Z
+PASS service postgres: running/healthy
+FAIL: redis must be healthy
++ actual - expected
+
++ 'starting'
+- 'healthy'
+
+Exit code: 1

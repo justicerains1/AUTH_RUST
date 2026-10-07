@@ -1,0 +1,570 @@
+
+> rust-unified-identity@0.1.0 dev:up
+> node scripts/run.mjs dev:up
+
+#1 [internal] load local bake definitions
+#1 reading from stdin 2.37kB done
+#1 DONE 0.0s
+
+#2 [demo-a internal] load build definition from Dockerfile.web.dev
+#2 transferring dockerfile: 703B done
+#2 DONE 0.0s
+
+#3 [worker internal] load build definition from Dockerfile.dev
+#3 transferring dockerfile: 982B done
+#3 DONE 0.0s
+
+#4 [demo-a internal] load metadata for docker.m.daocloud.io/library/node:22.22.1-bookworm-slim@sha256:4f77a690f2f8946ab16fe1e791a3ac0667ae1c3575c3e4d0d4589e9ed5bfaf3d
+#4 DONE 0.1s
+
+#5 [api internal] load metadata for docker.m.daocloud.io/library/rust:1.98.0-bookworm@sha256:82150a52ec202c1b14d7817e14516c392bb7f5cfebd88f1ed531cb37ebd39922
+#5 DONE 0.1s
+
+#6 [api internal] load .dockerignore
+#6 transferring context: 33B
+#6 transferring context: 230B done
+#6 DONE 0.0s
+
+#7 [identity-web internal] load build context
+#7 transferring context: 2.08kB done
+#7 DONE 0.0s
+
+#8 [api stage-0 1/5] FROM docker.m.daocloud.io/library/rust:1.98.0-bookworm@sha256:82150a52ec202c1b14d7817e14516c392bb7f5cfebd88f1ed531cb37ebd39922
+#8 resolve docker.m.daocloud.io/library/rust:1.98.0-bookworm@sha256:82150a52ec202c1b14d7817e14516c392bb7f5cfebd88f1ed531cb37ebd39922 0.1s done
+#8 DONE 0.1s
+
+#9 [identity-web stage-0 1/8] FROM docker.m.daocloud.io/library/node:22.22.1-bookworm-slim@sha256:4f77a690f2f8946ab16fe1e791a3ac0667ae1c3575c3e4d0d4589e9ed5bfaf3d
+#9 resolve docker.m.daocloud.io/library/node:22.22.1-bookworm-slim@sha256:4f77a690f2f8946ab16fe1e791a3ac0667ae1c3575c3e4d0d4589e9ed5bfaf3d
+#9 resolve docker.m.daocloud.io/library/node:22.22.1-bookworm-slim@sha256:4f77a690f2f8946ab16fe1e791a3ac0667ae1c3575c3e4d0d4589e9ed5bfaf3d 0.1s done
+#9 DONE 0.1s
+
+#10 [worker internal] load build context
+#10 transferring context: 86.07kB done
+#10 DONE 0.0s
+
+#11 [demo-a stage-0 3/8] COPY package.json package-lock.json ./
+#11 CACHED
+
+#12 [demo-a stage-0 6/8] COPY apps/demo-b/package.json ./apps/demo-b/package.json
+#12 CACHED
+
+#13 [demo-a stage-0 7/8] RUN --mount=type=cache,id=auth-rust-npm-cache,target=/root/.npm,sharing=locked npm ci
+#13 CACHED
+
+#14 [demo-a stage-0 2/8] WORKDIR /workspace
+#14 CACHED
+
+#15 [demo-a stage-0 4/8] COPY apps/identity-web/package.json ./apps/identity-web/package.json
+#15 CACHED
+
+#16 [demo-a stage-0 5/8] COPY apps/demo-a/package.json ./apps/demo-a/package.json
+#16 CACHED
+
+#17 [demo-a stage-0 8/8] COPY apps ./apps
+#17 CACHED
+
+#18 [worker stage-0 2/5] WORKDIR /workspace
+#18 CACHED
+
+#19 [demo-b] exporting to image
+#19 exporting layers done
+#19 exporting manifest sha256:77dcdf9ca421007ab95c0f641c3c90b4d3ac65be6c2e0c1ca09abbfdb2e656e4 0.0s done
+#19 exporting config sha256:8f21befc60265952370e71203482ee8aa73834cfa0826c8cb492044fa6fabab4 0.0s done
+#19 exporting attestation manifest sha256:10347ef1a60350ff08f26bd0a1fd306d52af137353d5837432f40c286beb1b4a
+#19 ...
+
+#20 [api stage-0 3/5] COPY Cargo.toml Cargo.lock rust-toolchain.toml ./
+#20 DONE 0.3s
+
+#19 [demo-b] exporting to image
+#19 exporting attestation manifest sha256:10347ef1a60350ff08f26bd0a1fd306d52af137353d5837432f40c286beb1b4a 0.3s done
+#19 exporting manifest list sha256:5f97b761341e3736c031c37dec4055b6f2e7822bafa653f705297dcb108bd3ce 0.1s done
+#19 naming to docker.io/library/auth-rust-web:development
+#19 naming to docker.io/library/auth-rust-web:development 0.0s done
+#19 unpacking to docker.io/library/auth-rust-web:development
+#19 ...
+
+#21 [worker stage-0 4/5] COPY crates ./crates
+#21 DONE 0.3s
+
+#22 [identity-web] exporting to image
+#22 exporting layers done
+#22 exporting manifest sha256:2f67e9374b041430d99d8e22abb600c3f04ea54ff655bcff41ed8e6550f63845 0.1s done
+#22 exporting config sha256:1532cfb5f68ad72e5c8c2401b86547deaca7f1c9109e0a504d752db6ab18c18d 0.2s done
+#22 exporting attestation manifest sha256:2c8e34552c4f843f8f29f22810fe6214a4c38c8406e4f797fdd9c14cd580f3c5 0.2s done
+#22 exporting manifest list sha256:cbe7ef8b4e53dd463034b1cadbcc1a470bcb54ec9eda14543f7757ac7582e295 0.1s done
+#22 naming to docker.io/library/auth-rust-web:development 0.0s done
+#22 unpacking to docker.io/library/auth-rust-web:development 1.9s done
+#22 DONE 2.5s
+
+#19 [demo-b] exporting to image
+#19 unpacking to docker.io/library/auth-rust-web:development 2.0s done
+#19 DONE 2.5s
+
+#23 [demo-a] exporting to image
+#23 exporting layers done
+#23 exporting manifest sha256:11ed96d920f352ee4a76e2965fade395b1be0fcf9b93d49cbb5620a80ed05447 0.1s done
+#23 exporting config sha256:51d7d86d03accde8403d7ddb1cee2cfbbff254a59e7129928c3bd469fafb0c17 0.2s done
+#23 exporting attestation manifest sha256:2208c78e8cf7f28daf04d54c75ab14afad1281ad17dc226ab8cd29332b757060 0.2s done
+#23 exporting manifest list sha256:bf169e88045415cfac4f280179a924fba944ddca872114ccfa08c810abeb5d07 0.1s done
+#23 naming to docker.io/library/auth-rust-web:development 0.0s done
+#23 unpacking to docker.io/library/auth-rust-web:development 1.8s done
+#23 DONE 2.5s
+
+#24 [api stage-0 5/5] RUN --mount=type=cache,id=auth-rust-cargo-registry,target=/usr/local/cargo/registry,sharing=locked     --mount=type=cache,id=auth-rust-cargo-git,target=/usr/local/cargo/git,sharing=locked     --mount=type=cache,id=auth-rust-cargo-target-1.98,target=/workspace/target,sharing=locked     cargo build --workspace --locked &&     install -m 0755 target/debug/identity-server target/debug/identity-worker       target/debug/identity-admin-cli target/debug/demo-bff /usr/local/bin/
+#24 0.456 info: syncing channel updates for 1.98.0-x86_64-unknown-linux-gnu
+#24 ...
+
+#25 [demo-b] resolving provenance for metadata file
+#25 DONE 0.1s
+
+#26 [identity-web] resolving provenance for metadata file
+#26 DONE 0.1s
+
+#27 [demo-a] resolving provenance for metadata file
+#27 DONE 0.0s
+
+#24 [api stage-0 5/5] RUN --mount=type=cache,id=auth-rust-cargo-registry,target=/usr/local/cargo/registry,sharing=locked     --mount=type=cache,id=auth-rust-cargo-git,target=/usr/local/cargo/git,sharing=locked     --mount=type=cache,id=auth-rust-cargo-target-1.98,target=/workspace/target,sharing=locked     cargo build --workspace --locked &&     install -m 0755 target/debug/identity-server target/debug/identity-worker       target/debug/identity-admin-cli target/debug/demo-bff /usr/local/bin/
+#24 2.485 info: latest update on 2026-08-20 for version 1.98.0 (88d9e12ae 2026-08-18)
+#24 2.494 info: downloading component clippy
+#24 4.843  Downloading crates ...
+#24 6.113   Downloaded atoi v2.0.0
+#24 6.438   Downloaded block-buffer v0.12.1
+#24 6.446   Downloaded num-conv v0.2.2
+#24 6.493   Downloaded idna_adapter v1.2.2
+#24 6.517   Downloaded http-body v1.1.0
+#24 6.537   Downloaded crypto-common v0.1.7
+#24 6.632   Downloaded futures-io v0.3.34
+#24 6.638   Downloaded pem v3.0.6
+#24 6.640   Downloaded futures-core v0.3.34
+#24 6.683   Downloaded event-listener-strategy v0.5.4
+#24 6.695   Downloaded cpufeatures v0.2.17
+#24 6.701   Downloaded cpufeatures v0.3.1
+#24 6.706   Downloaded crc v3.4.0
+#24 6.728   Downloaded generic-array v0.14.7
+#24 6.733   Downloaded parking v2.2.1
+#24 6.734   Downloaded parking_lot_core v0.9.12
+#24 6.737   Downloaded percent-encoding v2.3.2
+#24 6.845   Downloaded atomic-waker v1.1.2
+#24 6.849   Downloaded heck v0.5.0
+#24 6.850   Downloaded matchers v0.2.0
+#24 6.853   Downloaded futures-sink v0.3.34
+#24 6.860   Downloaded potential_utf v0.1.6
+#24 6.862   Downloaded form_urlencoded v1.2.2
+#24 6.875   Downloaded equivalent v1.0.2
+#24 6.878   Downloaded cfg-if v1.0.5
+#24 6.881   Downloaded dunce v1.0.5
+#24 6.884   Downloaded mime v0.3.17
+#24 6.895   Downloaded errno v0.3.14
+#24 6.904   Downloaded itoa v1.0.18
+#24 6.907   Downloaded thread_local v1.1.10
+#24 6.912   Downloaded futures-task v0.3.34
+#24 6.925   Downloaded version_check v0.9.5
+#24 6.991   Downloaded async-lock v3.4.2
+#24 7.006   Downloaded utf8_iter v1.0.4
+#24 7.016   Downloaded time-core v0.1.9
+#24 7.017   Downloaded zeroize_derive v1.5.0
+#24 7.022   Downloaded block-buffer v0.10.4
+#24 7.031   Downloaded byteorder v1.5.0
+#24 7.034   Downloaded tower-service v0.3.3
+#24 7.035   Downloaded displaydoc v0.2.7
+#24 7.037   Downloaded httpdate v1.0.3
+#24 7.039   Downloaded jobserver v0.1.35
+#24 7.041   Downloaded axum-core v0.5.6
+#24 7.044   Downloaded http-body-util v0.1.5
+#24 7.053   Downloaded hex v0.4.3
+#24 7.055   Downloaded tower-layer v0.3.3
+#24 7.060   Downloaded cmov v0.5.4
+#24 7.062   Downloaded fs_extra v1.3.0
+#24 7.065   Downloaded crc-catalog v2.5.0
+#24 7.067   Downloaded find-msvc-tools v0.1.14
+#24 7.071   Downloaded crossbeam-queue v0.3.14
+#24 7.072   Downloaded ipnet v2.12.2
+#24 7.074   Downloaded md-5 v0.11.0
+#24 7.080   Downloaded lazy_static v1.5.1
+#24 7.093   Downloaded nu-ansi-term v0.50.3
+#24 7.096   Downloaded foldhash v0.2.0
+#24 7.097   Downloaded cmake v0.1.58
+#24 7.100   Downloaded arcstr v1.2.0
+#24 7.101   Downloaded digest v0.10.7
+#24 7.103   Downloaded serde_urlencoded v0.7.1
+#24 7.106   Downloaded digest v0.11.3
+#24 7.112   Downloaded powerfmt v0.2.1
+#24 7.165   Downloaded dotenvy v0.15.7
+#24 7.169   Downloaded autocfg v1.5.1
+#24 7.172   Downloaded ctutils v0.4.3
+#24 7.174   Downloaded chacha20 v0.10.2
+#24 7.177   Downloaded num-integer v0.1.47
+#24 7.179   Downloaded lock_api v0.4.14
+#24 7.181   Downloaded litemap v0.8.3
+#24 7.193   Downloaded matchit v0.8.4
+#24 7.196   Downloaded either v1.19.0
+#24 7.198   Downloaded hashlink v0.11.1
+#24 7.201   Downloaded hybrid-array v0.4.15
+#24 7.203   Downloaded crossbeam-utils v0.8.23
+#24 7.207   Downloaded getrandom v0.2.17
+#24 7.210   Downloaded crypto-common v0.2.2
+#24 7.211   Downloaded futures-channel v0.3.34
+#24 7.213   Downloaded hmac v0.13.0
+#24 7.215   Downloaded deranged v0.5.8
+#24 7.217   Downloaded httparse v1.10.1
+#24 7.220   Downloaded once_cell v1.21.4
+#24 7.223   Downloaded zerofrom v0.1.8
+#24 7.224   Downloaded event-listener v5.4.2
+#24 7.227   Downloaded icu_provider v2.3.1
+#24 7.230   Downloaded getrandom v0.4.3
+#24 7.234   Downloaded log v0.4.34
+#24 7.237   Downloaded yoke-derive v0.8.4
+#24 7.238   Downloaded allocator-api2 v0.2.21
+#24 7.241   Downloaded openssl-probe v0.2.1
+#24 7.247   Downloaded base64 v0.22.1
+#24 7.252   Downloaded icu_locale_core v2.3.0
+#24 7.261   Downloaded bytes v1.12.1
+#24 7.265   Downloaded icu_normalizer_data v2.3.0
+#24 7.267   Downloaded jsonwebtoken v11.1.0
+#24 7.273   Downloaded bitflags v2.13.2
+#24 7.277   Downloaded signature v2.2.0
+#24 7.279   Downloaded futures-intrusive v0.5.0
+#24 7.284   Downloaded base64 v0.23.1
+#24 7.289   Downloaded icu_collections v2.3.0
+#24 7.296   Downloaded subtle v2.6.1
+#24 7.298   Downloaded stable_deref_trait v1.2.1
+#24 7.299   Downloaded num-bigint v0.4.8
+#24 7.304   Downloaded combine v4.6.8
+#24 7.307   Downloaded untrusted v0.9.0
+#24 7.310   Downloaded http v1.5.0
+#24 7.314   Downloaded tokio-macros v2.7.2
+#24 7.331   Downloaded mio v1.2.4
+#24 7.348   Downloaded icu_properties v2.3.0
+#24 7.351   Downloaded indexmap v2.14.2
+#24 7.356   Downloaded memchr v2.8.3
+#24 7.364   Downloaded cc v1.6.0
+#24 7.367   Downloaded idna v1.1.0
+#24 7.370   Downloaded hyper-util v0.1.21
+#24 7.380   Downloaded aho-corasick v1.1.5
+#24 7.385   Downloaded hashbrown v0.17.1
+#24 7.391   Downloaded axum v0.8.9
+#24 7.400   Downloaded icu_properties_data v2.3.0
+#24 7.408   Downloaded hyper v1.12.0
+#24 7.416   Downloaded hkdf v0.13.0
+#24 7.419   Downloaded hashbrown v0.16.1
+#24 7.424   Downloaded futures-util v0.3.34
+#24 7.436   Downloaded sync_wrapper v1.0.2
+#24 7.437   Downloaded tracing-serde v0.2.0
+#24 7.438   Downloaded aws-lc-rs v1.18.1
+#24 7.454   Downloaded rand_core v0.10.1
+#24 7.456   Downloaded zerofrom-derive v0.1.8
+#24 7.458   Downloaded pkg-config v0.3.34
+#24 7.460   Downloaded simple_asn1 v0.6.4
+#24 7.462   Downloaded synstructure v0.14.0
+#24 7.463   Downloaded icu_normalizer v2.3.0
+#24 7.471   Downloaded tinystr v0.8.4
+#24 7.473   Downloaded scopeguard v1.2.0
+#24 7.475   Downloaded tokio-rustls v0.26.6
+#24 7.477   Downloaded quote v1.0.47
+#24 7.481   Downloaded thiserror-impl v2.0.21
+#24 7.482   Downloaded stringprep v0.1.5
+#24 7.484   Downloaded untrusted v0.7.1
+#24 7.485   Downloaded whoami v2.1.3
+#24 7.487   Downloaded sqlx-macros v0.9.0
+#24 7.489   Downloaded thiserror v2.0.21
+#24 7.494   Downloaded zerovec-derive v0.11.6
+#24 7.496   Downloaded sha2 v0.10.9
+#24 7.500   Downloaded tracing-log v0.2.0
+#24 7.501   Downloaded libc v0.2.190
+#24 7.587   Downloaded zeroize v1.9.1
+#24 7.588   Downloaded zmij v1.0.23
+#24 7.591   Downloaded slab v0.4.12
+#24 7.592   Downloaded shlex v2.0.1
+#24 7.594   Downloaded writeable v0.6.4
+#24 7.597   Downloaded serde_path_to_error v0.1.20
+#24 7.599   Downloaded pin-project-lite v0.2.17
+#24 7.607   Downloaded time-macros v0.2.32
+#24 7.610   Downloaded unicode-properties v0.1.4
+#24 7.612   Downloaded tokio-stream v0.1.19
+#24 7.617   Downloaded yoke v0.8.3
+#24 7.619   Downloaded tracing-attributes v0.1.31
+#24 7.622   Downloaded rustls-pki-types v1.15.1
+#24 7.624   Downloaded sha2 v0.11.0
+#24 7.629   Downloaded xxhash-rust v0.8.19
+#24 7.631   Downloaded parking_lot v0.12.5
+#24 7.634   Downloaded signal-hook-registry v1.4.8
+#24 7.635   Downloaded rand_core v0.6.4
+#24 7.637   Downloaded sqlx-macros-core v0.9.0
+#24 7.639   Downloaded serde_derive v1.0.229
+#24 7.642   Downloaded unicode-ident v1.0.26
+#24 7.646   Downloaded rustls-native-certs v0.8.4
+#24 7.648   Downloaded proc-macro2 v1.0.107
+#24 7.651   Downloaded serde_core v1.0.229
+#24 7.654   Downloaded ryu v1.0.23
+#24 7.658   Downloaded num-traits v0.2.19
+#24 7.660   Downloaded smallvec v1.16.2
+#24 7.662   Downloaded socket2 v0.6.5
+#24 7.663   Downloaded tracing-core v0.1.36
+#24 7.666   Downloaded tinyvec v1.13.3
+#24 7.670   Downloaded sharded-slab v0.1.7
+#24 7.674   Downloaded aws-lc-sys v0.45.0
+#24 7.892   Downloaded serde v1.0.229
+#24 7.895   Downloaded unicode-bidi v0.3.18
+#24 7.898   Downloaded zerotrie v0.2.5
+#24 7.903   Downloaded rustls-webpki v0.103.15
+#24 7.905   Downloaded rand v0.10.3
+#24 7.909   Downloaded tower v0.5.3
+#24 7.924   Downloaded typenum v1.20.1
+#24 7.927   Downloaded url v2.5.8
+#24 7.929   Downloaded zerovec v0.11.8
+#24 7.935   Downloaded unicode-normalization v0.1.25
+#24 7.939   Downloaded sqlx-core v0.9.0
+#24 7.948   Downloaded tokio-util v0.7.19
+#24 7.956   Downloaded serde_json v1.0.151
+#24 7.963   Downloaded sqlx-postgres v0.9.0
+#24 7.971   Downloaded webpki-roots v1.0.9
+#24 7.974   Downloaded tracing-subscriber v0.3.23
+#24 7.983   Downloaded sqlx v0.9.0
+#24 8.004   Downloaded time v0.3.55
+#24 8.017   Downloaded syn v2.0.119
+#24 8.026   Downloaded syn v3.0.6
+#24 8.035   Downloaded regex-syntax v0.8.11
+#24 8.041   Downloaded rustls v0.23.45
+#24 8.052   Downloaded tracing v0.1.44
+#24 8.063   Downloaded redis v1.7.1
+#24 8.075   Downloaded regex-automata v0.4.18
+#24 8.090   Downloaded tokio v1.53.2
+#24 8.133   Downloaded ring v0.17.14
+#24 8.300    Compiling proc-macro2 v1.0.107
+#24 8.300    Compiling quote v1.0.47
+#24 8.300    Compiling unicode-ident v1.0.26
+#24 8.300    Compiling libc v0.2.190
+#24 8.301    Compiling pin-project-lite v0.2.17
+#24 8.302    Compiling find-msvc-tools v0.1.14
+#24 8.303    Compiling shlex v2.0.1
+#24 8.304    Compiling cfg-if v1.0.5
+#24 8.304    Compiling stable_deref_trait v1.2.1
+#24 8.305    Compiling itoa v1.0.18
+#24 8.306    Compiling smallvec v1.16.2
+#24 8.307    Compiling bytes v1.12.1
+#24 8.307    Compiling futures-core v0.3.34
+#24 8.308    Compiling typenum v1.20.1
+#24 8.309    Compiling once_cell v1.21.4
+#24 8.310    Compiling memchr v2.8.3
+#24 8.403    Compiling writeable v0.6.4
+#24 8.407    Compiling serde_core v1.0.229
+#24 8.408    Compiling litemap v0.8.3
+#24 8.449    Compiling autocfg v1.5.1
+#24 8.469    Compiling icu_properties_data v2.3.0
+#24 8.485    Compiling icu_normalizer_data v2.3.0
+#24 8.499    Compiling utf8_iter v1.0.4
+#24 8.499    Compiling tracing-core v0.1.36
+#24 8.522    Compiling percent-encoding v2.3.2
+#24 8.525    Compiling futures-sink v0.3.34
+#24 8.540    Compiling version_check v0.9.5
+#24 8.564    Compiling serde v1.0.229
+#24 8.568    Compiling log v0.4.34
+#24 8.586    Compiling thiserror v2.0.21
+#24 8.612    Compiling form_urlencoded v1.2.2
+#24 8.630    Compiling zmij v1.0.23
+#24 8.645    Compiling untrusted v0.9.0
+#24 8.683    Compiling dunce v1.0.5
+#24 8.708    Compiling serde_json v1.0.151
+#24 8.715    Compiling slab v0.4.12
+#24 8.718    Compiling pkg-config v0.3.34
+#24 8.733    Compiling cmov v0.5.4
+#24 8.755    Compiling futures-task v0.3.34
+#24 8.759    Compiling generic-array v0.14.7
+#24 8.771    Compiling num-traits v0.2.19
+#24 8.805    Compiling fs_extra v1.3.0
+#24 8.805    Compiling futures-io v0.3.34
+#24 8.832    Compiling parking_lot_core v0.9.12
+#24 8.862    Compiling base64 v0.22.1
+#24 8.877    Compiling futures-util v0.3.34
+#24 8.897    Compiling ctutils v0.4.3
+#24 8.905    Compiling rustls v0.23.45
+#24 8.965    Compiling parking v2.2.1
+#24 8.973    Compiling http v1.5.0
+#24 8.993    Compiling crossbeam-utils v0.8.23
+#24 8.997    Compiling equivalent v1.0.2
+#24 9.005    Compiling scopeguard v1.2.0
+#24 9.019    Compiling subtle v2.6.1
+#24 9.046    Compiling event-listener v5.4.2
+#24 9.062    Compiling time-core v0.1.9
+#24 9.064    Compiling num-conv v0.2.2
+#24 9.097    Compiling hybrid-array v0.4.15
+#24 9.122    Compiling lock_api v0.4.14
+#24 9.129    Compiling cpufeatures v0.3.1
+#24 9.135    Compiling aws-lc-rs v1.18.1
+#24 9.156    Compiling allocator-api2 v0.2.21
+#24 9.169    Compiling syn v3.0.6
+#24 9.170    Compiling syn v2.0.119
+#24 9.191    Compiling httparse v1.10.1
+#24 9.200    Compiling time-macros v0.2.32
+#24 9.209    Compiling foldhash v0.2.0
+#24 9.237    Compiling powerfmt v0.2.1
+#24 9.289    Compiling rand_core v0.10.1
+#24 9.296    Compiling getrandom v0.4.3
+#24 9.338    Compiling deranged v0.5.8
+#24 9.375    Compiling crc-catalog v2.5.0
+#24 9.386    Compiling tinyvec v1.13.3
+#24 9.418    Compiling hashbrown v0.16.1
+#24 9.433    Compiling tower-service v0.3.3
+#24 9.437    Compiling untrusted v0.7.1
+#24 9.485    Compiling num-integer v0.1.47
+#24 9.491    Compiling ryu v1.0.23
+#24 9.515    Compiling crypto-common v0.2.2
+#24 9.541    Compiling block-buffer v0.12.1
+#24 9.552    Compiling crypto-common v0.1.7
+#24 9.598    Compiling jobserver v0.1.35
+#24 9.615    Compiling errno v0.3.14
+#24 9.621    Compiling mio v1.2.4
+#24 9.645    Compiling socket2 v0.6.5
+#24 9.656    Compiling getrandom v0.2.17
+#24 9.717    Compiling signal-hook-registry v1.4.8
+#24 9.763    Compiling cc v1.6.0
+#24 9.777    Compiling http-body v1.1.0
+#24 9.856    Compiling block-buffer v0.10.4
+#24 9.884    Compiling num-bigint v0.4.8
+#24 9.922    Compiling digest v0.10.7
+#24 9.941    Compiling parking_lot v0.12.5
+#24 9.943    Compiling cpufeatures v0.2.17
+#24 9.960    Compiling hashbrown v0.17.1
+#24 9.988    Compiling hashlink v0.11.1
+#24 10.00    Compiling crossbeam-queue v0.3.14
+#24 10.03    Compiling sha2 v0.10.9
+#24 10.08    Compiling digest v0.11.3
+#24 10.10    Compiling unicode-normalization v0.1.25
+#24 10.14    Compiling futures-intrusive v0.5.0
+#24 10.20    Compiling hmac v0.13.0
+#24 10.28    Compiling crc v3.4.0
+#24 10.30    Compiling time v0.3.55
+#24 10.33    Compiling chacha20 v0.10.2
+#24 10.39    Compiling pem v3.0.6
+#24 10.41    Compiling sync_wrapper v1.0.2
+#24 10.41    Compiling unicode-properties v0.1.4
+#24 10.42    Compiling indexmap v2.14.2
+#24 10.45    Compiling signature v2.2.0
+#24 10.52    Compiling httpdate v1.0.3
+#24 10.52    Compiling unicode-bidi v0.3.18
+#24 10.55    Compiling either v1.19.0
+#24 10.55    Compiling tower-layer v0.3.3
+#24 10.56    Compiling atomic-waker v1.1.2
+#24 10.56    Compiling rand v0.10.3
+#24 10.59    Compiling hkdf v0.13.0
+#24 10.63    Compiling md-5 v0.11.0
+#24 10.66    Compiling cmake v0.1.58
+#24 10.68    Compiling sha2 v0.11.0
+#24 10.69    Compiling http-body-util v0.1.5
+#24 10.69    Compiling atoi v2.0.0
+#24 10.70    Compiling event-listener-strategy v0.5.4
+#24 10.76    Compiling futures-channel v0.3.34
+#24 10.76    Compiling ipnet v2.12.2
+#24 10.78    Compiling openssl-probe v0.2.1
+#24 10.88    Compiling stringprep v0.1.5
+#24 10.91    Compiling mime v0.3.17
+#24 10.92    Compiling regex-syntax v0.8.11
+#24 10.94    Compiling dotenvy v0.15.7
+#24 10.97    Compiling bitflags v2.13.2
+#24 11.10    Compiling whoami v2.1.3
+#24 11.11    Compiling byteorder v1.5.0
+#24 11.15    Compiling base64 v0.23.1
+#24 11.20    Compiling hex v0.4.3
+#24 11.22    Compiling async-lock v3.4.2
+#24 11.23    Compiling serde_path_to_error v0.1.20
+#24 11.24    Compiling arcstr v1.2.0
+#24 11.25    Compiling lazy_static v1.5.1
+#24 11.28    Compiling xxhash-rust v0.8.19
+#24 11.29    Compiling matchit v0.8.4
+#24 11.32    Compiling sharded-slab v0.1.7
+#24 11.36    Compiling ring v0.17.14
+#24 11.39    Compiling aws-lc-sys v0.45.0
+#24 11.42    Compiling tracing-log v0.2.0
+#24 11.42    Compiling thread_local v1.1.10
+#24 11.46    Compiling nu-ansi-term v0.50.3
+#24 11.81    Compiling regex-automata v0.4.18
+#24 12.02    Compiling synstructure v0.14.0
+#24 12.39    Compiling zeroize_derive v1.5.0
+#24 12.39    Compiling tracing-attributes v0.1.31
+#24 12.43    Compiling zerofrom-derive v0.1.8
+#24 12.43    Compiling yoke-derive v0.8.4
+#24 12.43    Compiling zerovec-derive v0.11.6
+#24 12.44    Compiling displaydoc v0.2.7
+#24 12.44    Compiling tokio-macros v2.7.2
+#24 12.44    Compiling serde_derive v1.0.229
+#24 12.44    Compiling thiserror-impl v2.0.21
+#24 12.70    Compiling zeroize v1.9.1
+#24 12.82    Compiling rustls-pki-types v1.15.1
+#24 12.88    Compiling tokio v1.53.2
+#24 13.08    Compiling zerofrom v0.1.8
+#24 13.11    Compiling webpki-roots v1.0.9
+#24 13.11    Compiling rustls-native-certs v0.8.4
+#24 13.15    Compiling yoke v0.8.3
+#24 13.15    Compiling tracing v0.1.44
+#24 13.26    Compiling zerovec v0.11.8
+#24 13.27    Compiling zerotrie v0.2.5
+#24 13.29    Compiling axum-core v0.5.6
+#24 13.32    Compiling simple_asn1 v0.6.4
+#24 13.46    Compiling matchers v0.2.0
+#24 13.52    Compiling rustls-webpki v0.103.15
+#24 13.66    Compiling tinystr v0.8.4
+#24 13.67    Compiling potential_utf v0.1.6
+#24 13.72    Compiling icu_collections v2.3.0
+#24 13.77    Compiling icu_locale_core v2.3.0
+#24 14.47    Compiling icu_provider v2.3.1
+#24 14.65    Compiling icu_properties v2.3.0
+#24 14.69    Compiling icu_normalizer v2.3.0
+#24 14.74    Compiling serde_urlencoded v0.7.1
+#24 14.79    Compiling tracing-serde v0.2.0
+#24 14.88    Compiling tracing-subscriber v0.3.23
+#24 15.50    Compiling idna_adapter v1.2.2
+#24 15.58    Compiling idna v1.1.0
+#24 15.87    Compiling url v2.5.8
+#24 16.32    Compiling tokio-stream v0.1.19
+#24 16.33    Compiling tokio-util v0.7.19
+#24 16.34    Compiling hyper v1.12.0
+#24 16.34    Compiling tower v0.5.3
+#24 16.63    Compiling sqlx-core v0.9.0
+#24 16.64    Compiling tokio-rustls v0.26.6
+#24 16.81    Compiling combine v4.6.8
+#24 17.00    Compiling hyper-util v0.1.21
+#24 17.21    Compiling axum v0.8.9
+#24 18.35    Compiling sqlx-postgres v0.9.0
+#24 19.36    Compiling redis v1.7.1
+#24 19.63    Compiling demo-bff v0.1.0 (/workspace/crates/demo-bff)
+#24 20.13    Compiling jsonwebtoken v11.1.0
+#24 20.15    Compiling sqlx v0.9.0
+#24 20.72    Compiling identity-core v0.1.0 (/workspace/crates/identity-core)
+#24 21.08    Compiling identity-admin-cli v0.1.0 (/workspace/crates/identity-admin-cli)
+#24 23.34    Compiling identity-store v0.1.0 (/workspace/crates/identity-store)
+#24 23.50    Compiling identity-server v0.1.0 (/workspace/crates/identity-server)
+#24 23.82    Compiling identity-worker v0.1.0 (/workspace/crates/identity-worker)
+#24 25.53     Finished `dev` profile [unoptimized + debuginfo] target(s) in 20.74s
+#24 DONE 26.0s
+
+#28 [api] exporting to image
+#28 exporting layers
+#28 exporting layers 5.5s done
+#28 exporting manifest sha256:677280c2c9dadb5ac6f547846e08820f8b6cd01bea9e36843a9845b035658c93 0.0s done
+#28 exporting config sha256:2d3a15b6347d56c64689fbcb44bd729c1074bf30b99aed327df07eb1d1326d25 0.0s done
+#28 exporting attestation manifest sha256:e161bee2cd3b6919d688896be5fb5ab94bf3edf1ed4023572b4cbff5fdb9bf04 0.1s done
+#28 exporting manifest list sha256:bae67c0d67a1a56e19dbcca3cfdd6692202f84e1b0f83e5d961088f88a86d8f0
+#28 ...
+
+#29 [worker] exporting to image
+#29 exporting layers 5.5s done
+#29 exporting manifest sha256:1b6a47d2cb37e7645745d04e5d3b7b8f64af45fe162ee4b15d5cac2b1d3df557 0.1s done
+#29 exporting config sha256:ef2b4aa8509f03f041a652dfcf5ba375c330e015c9942f5779cba325e4e04a85 0.1s done
+#29 exporting attestation manifest sha256:8814b50bdbbfa757ebcca0fda4040c47c81b83a462e530ddef5de9aee7de47c2 0.1s done
+#29 exporting manifest list sha256:542897a4540b9e5bfb26f0658509fd9e51759426ddf8aaa37585a70d15361054 0.0s done
+#29 naming to docker.io/library/auth-rust-backend:development done
+#29 ERROR: image "docker.io/library/auth-rust-backend:development": already exists
+
+#28 [api] exporting to image
+#28 exporting manifest list sha256:bae67c0d67a1a56e19dbcca3cfdd6692202f84e1b0f83e5d961088f88a86d8f0 0.0s done
+#28 naming to docker.io/library/auth-rust-backend:development 0.0s done
+#28 unpacking to docker.io/library/auth-rust-backend:development
+#28 unpacking to docker.io/library/auth-rust-backend:development 0.2s done
+#28 CANCELED
+------
+ > [worker] exporting to image:
+------
+target worker: failed to solve: image "docker.io/library/auth-rust-backend:development": already exists
+
+docker 退出码 1。

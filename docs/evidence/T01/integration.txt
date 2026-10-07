@@ -1,0 +1,60 @@
+# T01 real service acceptance
+Started: 2026-10-07T10:34:34.622Z
+PASS service postgres: running/healthy
+PASS service redis: running/healthy
+PASS service mailpit: running/healthy
+PASS service api: running/healthy
+PASS service worker: running/healthy
+PASS service identity-web: running/healthy
+PASS service demo-a: running/healthy
+PASS service demo-b: running/healthy
+PASS initial live=200 / ready=200
+PASS frontend 5173: HTTP 200 / T01 title
+PASS frontend 5174: HTTP 200 / T01 title
+PASS frontend 5175: HTTP 200 / T01 title
+PASS same-origin Vite health proxy and Mailpit readiness
+PASS configuration production baseline: exit=0; field=valid
+PASS configuration missing APP_ENV: exit=1; field=APP_ENV
+PASS configuration missing DATABASE_URL: exit=1; field=DATABASE_URL
+PASS configuration missing REDIS_URL: exit=1; field=REDIS_URL
+PASS configuration missing SIGNING_KEY_FILE: exit=1; field=SIGNING_KEY_FILE
+PASS configuration missing SIGNING_KID: exit=1; field=SIGNING_KID
+PASS configuration missing ENCRYPTION_KEYS_FILE: exit=1; field=ENCRYPTION_KEYS_FILE
+PASS configuration missing ACTIVE_ENCRYPTION_KID: exit=1; field=ACTIVE_ENCRYPTION_KID
+PASS configuration missing SMTP_USERNAME: exit=1; field=SMTP_USERNAME
+PASS configuration missing SMTP_PASSWORD_FILE: exit=1; field=SMTP_PASSWORD_FILE
+PASS configuration HTTP issuer: exit=1; field=ISSUER
+PASS configuration issuer path: exit=1; field=ISSUER
+PASS configuration issuer query: exit=1; field=ISSUER
+PASS configuration issuer userinfo: exit=1; field=ISSUER
+PASS configuration normalized path: exit=1; field=ISSUER
+PASS configuration issuer whitespace: exit=1; field=ISSUER
+PASS configuration wrong RP: exit=1; field=RP_ID
+PASS configuration missing key file: exit=1; field=SIGNING_KEY_FILE
+PASS configuration invalid AEAD version: exit=1; field=ACTIVE_ENCRYPTION_KID
+PASS configuration plaintext SMTP: exit=1; field=SMTP_TLS
+PASS configuration whitespace SMTP username: exit=1; field=SMTP_USERNAME
+PASS configuration SMTP host credentials: exit=1; field=SMTP_HOST
+PASS configuration invalid SMTP from: exit=1; field=SMTP_FROM
+PASS configuration TLS verification disabled: exit=1; field=SMTP_TLS_VERIFY
+PASS configuration insecure cookie: exit=1; field=COOKIE_SECURE
+PASS configuration script-readable cookie: exit=1; field=COOKIE_HTTP_ONLY
+PASS configuration cookie Domain: exit=1; field=COOKIE_DOMAIN
+PASS configuration cookie path: exit=1; field=COOKIE_PATH
+PASS configuration cookie SameSite: exit=1; field=COOKIE_SAME_SITE
+PASS configuration development seed: exit=1; field=DEV_SEED
+PASS configuration debug routes: exit=1; field=DEBUG_ROUTES
+PASS configuration unbounded hash tasks: exit=1; field=ARGON2_PARALLELISM_LIMIT
+PASS configuration invalid trusted proxy: exit=1; field=TRUSTED_PROXY_CIDRS
+PASS configuration invalid private key: exit=1; field=SIGNING_KEY_FILE
+PASS configuration all-zero AEAD key: exit=1; field=ENCRYPTION_KEYS_FILE
+PASS configuration duplicate AEAD key version: exit=1; field=ENCRYPTION_KEYS_FILE
+PASS configuration invalid public material: exit=1; field=JWKS_PREVIOUS_FILE
+PASS configuration private JWKS field: exit=1; field=JWKS_PREVIOUS_FILE
+PASS configuration duplicate signing kid: exit=1; field=JWKS_PREVIOUS_FILE
+PASS redis stopped: live=200 / ready=503
+PASS redis restored: live=200 / ready=200
+PASS postgres stopped: live=200 / ready=503
+PASS postgres restored: live=200 / ready=200
+Completed: 2026-10-07T10:35:01.858Z
+Exit code: 0

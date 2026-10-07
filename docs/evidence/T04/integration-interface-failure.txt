@@ -1,0 +1,7 @@
+T04 security primitives; real dependencies; 2026-10-07T13:47:43.068Z
+FAIL t04_security_boundary failed; child output suppressed to protect secrets.
+
+101 !== 0
+
+Completed 2026-10-07T13:47:45.994Z
+Exit code 1

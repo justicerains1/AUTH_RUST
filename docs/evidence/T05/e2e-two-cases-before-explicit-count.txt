@@ -1,0 +1,4 @@
+T05 real UI E2E 2026-10-07T15:46:54.468Z
+PASS T05 real UI registration, Mailpit link, GET safety, confirmation and resend workflow
+Completed 2026-10-07T15:47:07.172Z
+Exit code 0
