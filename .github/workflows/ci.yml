@@ -54,5 +54,7 @@ jobs:
       - run: npm run test:integration -- --task=T05
       - run: node node_modules/playwright/cli.js install --with-deps chromium
       - run: npm run test:e2e -- --task=T05
+      - run: npm run test:integration -- --task=T06
+      - run: npm run test:e2e -- --task=T06
       - if: always()
         run: npm run dev:down

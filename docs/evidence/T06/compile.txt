@@ -1,0 +1,59 @@
+    Checking identity-core v0.1.0 (/root/code/rust/auth_rust/crates/identity-core)
+    Checking identity-store v0.1.0 (/root/code/rust/auth_rust/crates/identity-store)
+    Checking identity-admin-cli v0.1.0 (/root/code/rust/auth_rust/crates/identity-admin-cli)
+    Checking identity-worker v0.1.0 (/root/code/rust/auth_rust/crates/identity-worker)
+    Checking identity-server v0.1.0 (/root/code/rust/auth_rust/crates/identity-server)
+error[E0308]: mismatched types
+   --> crates/identity-server/src/sessions.rs:182:13
+    |
+182 |             preauth_hash,
+    |             ^^^^^^^^^^^^ expected `Option<Digest>`, found `Digest`
+    |
+    = note: expected enum `std::option::Option<Digest>`
+             found struct `Digest`
+help: try wrapping the expression in `Some`
+    |
+182 |             preauth_hash: Some(preauth_hash),
+    |             +++++++++++++++++++            +
+
+error[E0308]: mismatched types
+   --> crates/identity-server/src/sessions.rs:259:13
+    |
+259 |         .me(&hash)
+    |          -- ^^^^^ expected `Digest`, found `&Digest`
+    |          |
+    |          arguments to this method are incorrect
+    |
+note: method defined here
+   --> crates/identity-store/src/sessions.rs:339:18
+    |
+339 |     pub async fn me(&self, hash: Digest) -> Result<Option<MeView>, SessionError> {
+    |                  ^^
+help: consider removing the borrow
+    |
+259 -         .me(&hash)
+259 +         .me(hash)
+    |
+
+error[E0631]: type mismatch in function arguments
+   --> crates/identity-server/src/sessions.rs:281:14
+    |
+281 |         .map(url::form_urlencoded::parse)
+    |          --- ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |          |   |
+    |          |   expected due to this
+    |          |   found signature defined here
+    |          required by a bound introduced by this call
+    |
+    = note: expected function signature `fn(&str) -> _`
+               found function signature `fn(&[u8]) -> _`
+note: required by a bound in `std::option::Option::<T>::map`
+   --> /rustc/88d9e12ae178fab0fb5cc050a94da85685d449ea/library/core/src/option.rs:1158:4
+help: consider wrapping the function in a closure
+    |
+281 |         .map(|arg0: &str| url::form_urlencoded::parse(/* &[u8] */))
+    |              ++++++++++++                            +++++++++++++
+
+Some errors have detailed explanations: E0308, E0631.
+For more information about an error, try `rustc --explain E0308`.
+error: could not compile `identity-server` (lib) due to 3 previous errors

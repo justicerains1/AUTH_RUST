@@ -1,0 +1,54 @@
+
+> rust-unified-identity@0.1.0 check
+> node scripts/run.mjs check
+
+    Checking identity-admin-cli v0.1.0 (/root/code/rust/auth_rust/crates/identity-admin-cli)
+    Checking identity-core v0.1.0 (/root/code/rust/auth_rust/crates/identity-core)
+    Checking identity-store v0.1.0 (/root/code/rust/auth_rust/crates/identity-store)
+error: large size difference between variants
+   --> crates/identity-store/src/sessions.rs:98:1
+    |
+ 98 | /   pub enum LoginOutcome {
+ 99 | | /     Authenticated {
+100 | | |         user: UserView,
+101 | | |         session: SessionView,
+102 | | |     },
+    | | |_____- the largest variant contains at least 264 bytes
+103 | | /     MfaRequired {
+104 | | |         challenge_id: Uuid,
+105 | | |         expires_at: OffsetDateTime,
+106 | | |         methods: Vec<String>,
+107 | | |     },
+    | | |_____- the second-largest variant contains at least 56 bytes
+108 | |   }
+    | |___^ the entire enum is at least 264 bytes
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#large_enum_variant
+    = note: `-D clippy::large-enum-variant` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::large_enum_variant)]`
+help: consider boxing the large fields or introducing indirection in some other way to reduce the total size of the enum
+    |
+101 -         session: SessionView,
+101 +         session: Box<SessionView>,
+    |
+
+error: this function has too many arguments (8/7)
+   --> crates/identity-store/src/sessions.rs:583:1
+    |
+583 | / async fn audit(
+584 | |     tx: &mut Transaction<'_, Postgres>,
+585 | |     user: Uuid,
+586 | |     event: AuditEvent,
+...   |
+591 | |     now: OffsetDateTime,
+592 | | ) -> Result<(), SessionError> {
+    | |_____________________________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#too_many_arguments
+    = note: `-D clippy::too-many-arguments` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::too_many_arguments)]`
+
+error: could not compile `identity-store` (lib) due to 2 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `identity-store` (lib test) due to 2 previous errors
+cargo 退出码 101。

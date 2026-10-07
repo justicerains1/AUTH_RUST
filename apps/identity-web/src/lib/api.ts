@@ -5,11 +5,20 @@ const utc = z.iso.datetime({ offset: true });
 const nextSchema = z.object({ status: z.literal('reauth_required'), required_strength: z.enum(['password', 'strong']), methods: z.array(z.enum(['password', 'totp', 'passkey', 'recovery_code'])) });
 const errorSchema = z.object({ error: z.object({ code: z.string().min(1), message: z.string(), request_id: uuid }), next: nextSchema.optional() });
 const csrfSchema = z.object({ csrf_token: z.string().min(43).max(512) });
+export const userSchema = z.object({ id: uuid, sub: uuid, email: z.email(), email_verified: z.boolean(), display_name: z.string().optional(), status: z.enum(['active', 'disabled']), created_at: utc });
+export const sessionSchema = z.object({ id: uuid, amr: z.array(z.enum(['pwd', 'otp', 'rcv', 'user', 'hwk'])).min(1), auth_time: utc, strong_at: utc.nullable(), expires_at: utc, created_at: utc, user_agent: z.string().max(256).optional(), current: z.boolean() });
 export const meSchema = z.object({
-  user: z.object({ id: uuid, sub: uuid, email: z.email(), email_verified: z.boolean(), display_name: z.string().optional(), status: z.enum(['active', 'disabled']), created_at: utc }),
-  session: z.object({ id: uuid, amr: z.array(z.enum(['pwd', 'otp', 'rcv', 'user', 'hwk'])), auth_time: utc, strong_at: utc.nullable(), expires_at: utc, created_at: utc, current: z.boolean() }),
+  user: userSchema,
+  session: sessionSchema,
   security: z.object({ totp_enabled: z.boolean(), passkey_count: z.number().int().min(0).max(10), recovery_codes_remaining: z.number().int().min(0).max(10), is_admin: z.boolean(), admin_binding_only: z.boolean() }),
 });
+export const passwordLoginSchema = z.discriminatedUnion('status', [
+  z.object({ status: z.literal('authenticated'), user: userSchema, session: sessionSchema, csrf_token: z.string().min(43).max(512) }),
+  z.object({ status: z.literal('mfa_required'), challenge_id: uuid, purpose: z.literal('login'), methods: z.array(z.enum(['totp', 'recovery_code'])).min(1).max(2), expires_at: utc }),
+]);
+export type PasswordLogin = z.infer<typeof passwordLoginSchema>;
+export const sessionPageSchema = z.object({ items: z.array(sessionSchema).max(100), next_cursor: z.string().max(2048).nullable() });
+export const noContentSchema = z.undefined();
 export type Me = z.infer<typeof meSchema>;
 export const acceptedSchema = z.object({ status: z.literal('accepted'), message: z.string() });
 export const emailVerifiedSchema = z.object({ status: z.literal('verified') });

@@ -1,6 +1,6 @@
 # Rust 统一身份中心
 
-实现依据为 [plan.md](plan.md) 和 [acceptance.md](acceptance.md)。按任务依赖推进，每个任务写实际运行证据。已完成 **T01～T05、T15～T16**：工程、配置与健康、接口契约、数据库与事务原语、安全基础、经确认的设计及前端基础；T05注册、验证邮件和Worker已通过真实验收。按用户要求，已停止继续推进，等待下一次指令。任务状态见 [TASK_PROGRESS.md](TASK_PROGRESS.md)。账号、MFA、OAuth/OIDC、后台和生产部署仍由后续任务实现，当前版本不能用于用户身份认证。
+实现依据为 [plan.md](plan.md) 和 [acceptance.md](acceptance.md)。按任务依赖推进，每个任务写实际运行证据。已完成 **T01～T05、T15～T16**：工程、配置与健康、接口契约、数据库与事务原语、安全基础、经确认的设计及前端基础；T05注册、验证邮件和Worker已通过真实验收。用户已恢复后续实施；当前T06进行中，模块验收后逐次推送。任务状态见 [TASK_PROGRESS.md](TASK_PROGRESS.md)。账号、MFA、OAuth/OIDC、后台和生产部署仍由后续任务实现，当前版本不能用于用户身份认证。
 
 ## 环境
 
@@ -76,8 +76,12 @@ CI 复用相同根脚本，分别配置 Linux/Windows 构建，以及 Linux Comp
 
 `identity-core` 负责规则/配置，`identity-store` 负责 SQLx 和依赖连接，`identity-server` 负责 Axum，`identity-worker` 后续处理 outbox，`identity-admin-cli` 在 T14 实现初始化，`demo-bff` 在 T13 实现两个独立客户端实例。三个前端保留空路由，T15视觉稿已获用户确认，T16组件与路由基础已完成；真实业务页在T17～T19接入。
 
-T01～T04已通过当前Linux真实验收；完整OpenAPI包括未来端点契约，已实现端点以任务验收记录为准。当前只提交已完成代码与进度记录，不开始T06。文档后续页面和跨模块验收的依赖问题已记录于 [T00 审计](docs/evidence/T00/document-audit.md)，进入相关任务前同步修订，不通过跳过测试消除依赖。
+T01～T04已通过当前Linux真实验收；完整OpenAPI包括未来端点契约，已实现端点以任务验收记录为准。当前继续T06密码登录与会话；对应任务全部必要验收通过后推进下一任务。文档后续页面和跨模块验收的依赖问题已记录于 [T00 审计](docs/evidence/T00/document-audit.md)，进入相关任务前同步修订，不通过跳过测试消除依赖。
 
 ## 前端基础与数据库测试
 
 `npm run test:integration -- --task=T03`使用真实identity_test隔离schema，验证迁移/并发/原语并只清理本轮schema；生产及非白名单先拒绝。`npm run test:accessibility`自动启动本机5190 Vite组件页并运行Playwright+axe，浏览器先执行`npx playwright install chromium`；development `/dev/components`不进入production构建。T16_BASE_URL可显式本机测试地址，源码里guard仅页面体验，API独立校验权限。
+
+## 完整检查与总结
+
+`npm run test:full`依次执行npm ci、文档/契约/工具检查、check、unit、全部integration/e2e/security/accessibility及build。任一失败仍执行剩余项，整体返回非零，生成`TEST_SUMMARY.md`及带时间戳的`docs/evidence/full-test/`报告。原始进程输出只保存到受限的`.local/full-test/`，避免把秘密写入提交。尚未实现的全量套件会如实失败；此命令不代替性能、真实设备或生产恢复验收。

@@ -1,0 +1,5 @@
+
+> rust-unified-identity@0.1.0 test:integration
+> node scripts/run.mjs test:integration --task=T06
+
+T06 real session API checks passed; token/password values and browser traces were suppressed.

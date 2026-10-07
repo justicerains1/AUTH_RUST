@@ -2,7 +2,7 @@
 
 更新时间：2026-10-08（Asia/Shanghai）；功能验收于2026-10-07完成，仓库提交前检查于2026-10-08完成。实现基准：[plan.md](plan.md)、[acceptance.md](acceptance.md)。代码版本为本次初始化提交，由 Git 记录。仓库：https://github.com/justicerains1/AUTH_RUST ，分支 `main`。
 
-用户要求本轮在 T05 收尾后停止推进，并初始化 Git、提交进度及推送代码。当前只完成已授权的收尾、验收记录与仓库发布；没有开始新业务任务。Git 推送是代码发布，不是生产部署。
+用户已恢复推进：按文档依赖继续，每完成一个模块并通过相应测试后提交推送。最终运行完整测试；若仍有失败，按用户要求推送并提供总结，失败不标通过。Git推送不等于生产部署。
 
 ## 当前任务状态
 
@@ -14,7 +14,8 @@
 | T03 | 通过 | 迁移、约束/索引、仓储、统一锁序、原子消费、可控时钟与测试库隔离；[结果](docs/evidence/T03/test-summary.md)、[事务边界](docs/transactions.md) |
 | T04 | 通过 | 邮箱/密码规则、受控 Argon2id、随机摘要、AEAD、CSRF/Origin、可信代理、Redis 原子限流、审计；[结果](docs/evidence/T04/test-summary.md) |
 | T05 | 通过 | 注册、邮箱确认、重发、加密 outbox、Worker、SMTP 与真实页面；最终两例 E2E 2 passed / 0 failed；[结果](docs/evidence/T05/test-summary.md)、[浏览器证据](docs/evidence/T05/e2e.txt) |
-| T06～T14 | 未开始 | 密码登录、找回/修改、MFA、Passkey、OAuth/OIDC、BFF SSO、管理 API |
+| T06 | 通过 | 密码登录、本人账号/设备及派生授权撤销；真实并发与2E2E通过，[证据](docs/evidence/T06/test-summary.md) |
+| T07～T14 | 未开始 | 找回/修改、MFA、Passkey、OAuth/OIDC、BFF SSO、管理 API |
 | T15 | 通过 | 官方设计研究、视觉稿与状态规范；用户明确采用方案并进入 T16；[用户确认](docs/evidence/T15/user-review.md) |
 | T16 | 通过 | 设计组件、响应式布局、API/CSRF 客户端、可访问基础路由与保护提示；[结果](docs/evidence/T16/test-summary.md)、[UI 模块记录](docs/evidence/T16/ui-summary.md) |
 | T17～T24 | 未开始 | 完整认证/账号/后台产品页面、全面安全验收、性能、生产部署、发布与高可用 |
@@ -23,7 +24,7 @@ T05 最终收尾记录：
 
 - 最后两例 E2E 结果：2 passed / 0 failed，已同步 acceptance.md。
 - T05 最终结论：通过（当前Linux真实开发服务及浏览器验收）。
-- 本轮停止点：T05 收尾；后续实施等待用户重新授权。
+- T05已提交推送 `7f736ac`；T06当前模块已通过，后续遵循前置验收。
 
 ## 已实现能力
 
@@ -72,6 +73,14 @@ T05 新 Cargo.lock 的在线 RustSec 公告更新失败已记录；随后 `cargo
 
 具体来源与影响见 [T00 审计](docs/evidence/T00/document-audit.md)、[T04 校正](docs/evidence/T04/document-revisions.md)、[分阶段验证](docs/evidence/T04/phase-validation.md)。
 
+## 外部验收条件
+
+用户已明确回复生产域名、部署主机、SMTP服务和独立备份“暂未准备”。本地开发及独立测试继续；T22/T23的真实生产部署、送达与恢复演练保持待验收，不能通过模拟结果放行。
+
+## 完整测试编排模块
+
+已增加 `npm run test:full`：完整安装、各类检查/测试与构建逐项执行，任何失败仍继续并生成 `TEST_SUMMARY.md`。3个行为测试和ESLint实际通过；这是编排模块验收，不是系统完整测试通过。原始诊断只保存在`.local/full-test/`，不进入Git。
+
 ## 重跑与接续
 
 在仓库根目录按 [README](README.md) 准备 Rust、Node/npm、Docker Compose 与 OpenSSL。首次本地启动：
@@ -102,4 +111,4 @@ npm run dev:down
 
 `dev:down` 保留开发卷。未实现的任务套件不能返回伪成功；测试库与临时 schema 清理不会指向 production。不要把 `.local`、密码、邮件链接、私钥、token、Cookie 或含这些值的浏览器 trace 提交 Git。
 
-下一次用户明确继续后，核对本次记录，再从 T06 密码登录/会话开始，按前置顺序推进 T07～T14。T17～T19产品流程整合依赖相应真实后端；T20～T23完成后才能评估生产发布。当前按用户要求停止推进。
+当前从 T06 密码登录/会话开始，按前置顺序推进 T07～T14。T17～T19产品流程整合依赖相应真实后端；T20～T23完成后才能评估生产发布。每个模块验收后提交推送，完整任务结束时生成最终测试总结。

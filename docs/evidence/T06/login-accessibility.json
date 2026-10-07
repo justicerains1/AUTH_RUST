@@ -1,0 +1,6 @@
+{
+  "date": "2026-10-07T16:26:13.964Z",
+  "browser": "153.0.8010.12",
+  "violations": [],
+  "scope": "Rendered login form only; actual authentication covered by T06 real integration/E2E."
+}

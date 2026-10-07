@@ -282,8 +282,17 @@ impl PasswordService {
     }
 
     pub async fn hash(&self, password: &Password) -> Result<Zeroizing<String>, SecurityError> {
+        self.hash_verified(password.expose()).await
+    }
+
+    /// Re-encode an already verified legacy password without applying new-password policy.
+    /// Login must verify the current PHC first; creation/reset/change still require Password::new.
+    pub async fn hash_verified(&self, password: &str) -> Result<Zeroizing<String>, SecurityError> {
+        if password.len() > 512 || password.chars().count() > 128 {
+            return Err(SecurityError::PasswordLength);
+        }
         let permit = self.permit().await?;
-        let input = Zeroizing::new(password.expose().as_bytes().to_vec());
+        let input = Zeroizing::new(password.as_bytes().to_vec());
         let metrics = self.metrics.clone();
         tokio::task::spawn_blocking(move || {
             let _permit = permit;
@@ -845,6 +854,18 @@ mod tests {
                 .await
                 .is_err()
         );
+        // Successful legacy login can upgrade a short historical password without accepting
+        // it for new registrations. Encoding upgrades never change credential_version.
+        assert!(Password::new("legacy-short").is_err());
+        let upgraded = service.hash_verified("legacy-short").await?;
+        assert!(service.verify("legacy-short", &upgraded).await?.valid);
+        assert!(
+            !service
+                .verify("legacy-short", &upgraded)
+                .await?
+                .needs_upgrade
+        );
+        assert!(service.hash_verified(&"a".repeat(129)).await.is_err());
         let dummy_before = token_digest(&service.dummy_hash);
         service
             .verify_unknown("unknown account password phrase")

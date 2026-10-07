@@ -73,7 +73,7 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 | T03 | 数据库迁移、仓储与事务原语 | 通过 | T02 | docs/evidence/T03/test-summary.md |
 | T04 | 安全基础、密码服务、限流与审计 | 通过 | T03 | docs/evidence/T04/test-summary.md |
 | T05 | 注册、邮箱验证与 outbox 邮件 | 通过 | T04 | docs/evidence/T05/test-summary.md |
-| T06 | 密码登录、账号查询和会话撤销 | 未开始 | T05 | 待提供 |
+| T06 | 密码登录、账号查询和会话撤销 | 通过 | T05 | docs/evidence/T06/test-summary.md |
 | T07 | 找回密码、密码修改与安全通知 | 未开始 | T06 | 待提供 |
 | T08 | TOTP、恢复码与近期认证 | 未开始 | T06、T07 | 待提供 |
 | T09 | Passkey 注册、登录和管理 | 未开始 | T06、T08 | 待提供 |
@@ -300,30 +300,30 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 
 | 案例 | 前置状态 | 操作步骤 | 预期结果 | 实际结果 | 状态 | 证据 |
 |---|---|---|---|---|---|---|
-| T06-SES-01 | 已验证用户 | 密码登录并检查 Cookie/me | 正确身份；HttpOnly、Path、SameSite 等符合环境 | 待填写 | 未执行 | 待提供：HTTP/Cookie 脱敏证据 |
-| T06-SES-02 | 预设旧会话 | 登录，尝试复用旧会话 | 新 Cookie 不同，旧流程不可冒用 | 待填写 | 未执行 | 待提供：固定攻击测试 |
-| T06-SES-03 | 用户两设备及另一用户 | 撤销本人的设备，尝试撤销他人 ID | 目标设备下次拒绝，他人操作 404/403 | 待填写 | 未执行 | 待提供：多会话测试 |
-| T06-SES-04 | 登录与禁用并发 | 用同步屏障交错执行 | 禁用提交后无新有效会话 | 待填写 | 未执行 | 待提供：并发测试 |
+| T06-SES-01 | 已验证用户 | 密码登录并检查 Cookie/me | 正确身份；HttpOnly、Path、SameSite 等符合环境 | 真实密码登录、me、12h期限及Cookieflags成功；未知/错密/未验证/禁用统一401，MFA只有限挑战 | 通过 | docs/evidence/T06/integration.txt、e2e.txt |
+| T06-SES-02 | 预设旧会话 | 登录，尝试复用旧会话 | 新 Cookie 不同，旧流程不可冒用 | Cookie/CSRF轮换；旧预auth无效；main-only重新登录与OAuth事务绑定同提交，MFA新预auth不发普通会话 | 通过 | docs/evidence/T06/integration.txt、e2e.txt |
+| T06-SES-03 | 用户两设备及另一用户 | 撤销本人的设备，尝试撤销他人 ID | 目标设备下次拒绝，他人操作 404/403 | 本人两设备及另一用户；跨用户404/403，目标及派生grant/token立即无效，分页/全部/重复退出通过 | 通过 | docs/evidence/T06/integration.txt、e2e.txt |
+| T06-SES-04 | 登录与禁用并发 | 用同步屏障交错执行 | 禁用提交后无新有效会话 | 真实HTTP密码POST在用户行锁等待，禁用先提交后不签发session；过期由数据库时间构造 | 通过 | docs/evidence/T06/integration.txt、e2e.txt |
 
 **实现子步骤检查：**
 
-- [ ] T06.01：按规范邮箱查询，校验密码，未存在用 dummy hash，统一错误；检查 verified/status。
-- [ ] T06.02：密码验证后在事务重读账号版本和状态，避免验证期间禁用仍生成会话。
-- [ ] T06.03：无 TOTP 创建普通会话；有 TOTP 只返回有限 challenge，禁止设置主会话 Cookie。
-- [ ] T06.04：轮换 Cookie/CSRF，并安全转移当前授权事务到新会话。
-- [ ] T06.05：实现 me 和分页会话列表，脱敏 UA，只返回本人会话。
-- [ ] T06.06：实现当前退出、指定设备退出、全部退出；对应 grant 在同事务撤销。
-- [ ] T06.07：GET 只读，DELETE/POST 必须认证和 CSRF；重复退出幂等。
-- [ ] T06.08：为 Cookie flags、会话固定、过期、他人会话 ID 和禁用竞争测试。
+- [x] T06.01：按规范邮箱查询，校验密码，未存在用 dummy hash，统一错误；检查 verified/status。
+- [x] T06.02：密码验证后在事务重读账号版本和状态，避免验证期间禁用仍生成会话。
+- [x] T06.03：无 TOTP 创建普通会话；有 TOTP 只返回有限 challenge，禁止设置主会话 Cookie。
+- [x] T06.04：轮换 Cookie/CSRF，并安全转移当前授权事务到新会话。
+- [x] T06.05：实现 me 和分页会话列表，脱敏 UA，只返回本人会话。
+- [x] T06.06：实现当前退出、指定设备退出、全部退出；对应 grant 在同事务撤销。
+- [x] T06.07：GET 只读，DELETE/POST 必须认证和 CSRF；重复退出幂等。
+- [x] T06.08：为 Cookie flags、会话固定、过期、他人会话 ID 和禁用竞争测试。
 
 **验收记录：**
 
-- 代码版本：待填写。
-- 环境与时间：待填写。
-- 命令退出码：待填写。
-- 失败/阻塞项：待填写。
-- 修复与复测：待填写。
-- 任务结论：未开始。
+- 代码版本：本次模块Git提交（父提交2fce25e）；source-sha256.txt。
+- 环境与时间：2026-10-08 Linux/WSL2；environment.md。
+- 命令退出码：check/unit/build/integrationT06/e2eT06/verify/tooling均0；22前端测试、62脚本测试、2E2E通过。
+- 失败/阻塞项：接口Option/queryparse、Clippy枚举/审计参数已修；已有远端Windowsunit/T03CI失败原因未取得，不宣称CI全绿。
+- 修复与复测：docs/evidence/T06/test-summary.md。
+- 任务结论：通过。
 
 ### T07 — 找回密码、密码修改与安全通知
 

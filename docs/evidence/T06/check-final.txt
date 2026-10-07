@@ -1,0 +1,7 @@
+
+> rust-unified-identity@0.1.0 check
+> node scripts/run.mjs check
+
+    Checking identity-store v0.1.0 (/root/code/rust/auth_rust/crates/identity-store)
+    Checking identity-worker v0.1.0 (/root/code/rust/auth_rust/crates/identity-worker)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.76s

@@ -1036,6 +1036,7 @@ dependencies = [
  "tokio",
  "tracing",
  "tracing-subscriber",
+ "url",
  "uuid",
  "zeroize",
 ]
@@ -1044,6 +1045,7 @@ dependencies = [
 name = "identity-store"
 version = "0.1.0"
 dependencies = [
+ "base64 0.23.1",
  "identity-core",
  "redis",
  "serde",

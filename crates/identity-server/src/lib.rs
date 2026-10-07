@@ -1,6 +1,7 @@
 //! Startup and dependency health routes only. Authentication routes belong to later tasks.
 pub mod accounts;
 pub mod security;
+pub mod sessions;
 use axum::{Json, Router, extract::State, http::StatusCode, routing::get};
 use identity_store::Dependencies;
 use serde_json::{Value, json};

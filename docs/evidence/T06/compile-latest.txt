@@ -1,0 +1,18 @@
+    Checking identity-store v0.1.0 (/root/code/rust/auth_rust/crates/identity-store)
+    Checking identity-worker v0.1.0 (/root/code/rust/auth_rust/crates/identity-worker)
+    Checking identity-server v0.1.0 (/root/code/rust/auth_rust/crates/identity-server)
+error[E0308]: mismatched types
+   --> crates/identity-server/src/sessions.rs:182:13
+    |
+182 |             preauth_hash,
+    |             ^^^^^^^^^^^^ expected `Option<Digest>`, found `Digest`
+    |
+    = note: expected enum `std::option::Option<Digest>`
+             found struct `Digest`
+help: try wrapping the expression in `Some`
+    |
+182 |             preauth_hash: Some(preauth_hash),
+    |             +++++++++++++++++++            +
+
+For more information about this error, try `rustc --explain E0308`.
+error: could not compile `identity-server` (lib) due to 1 previous error

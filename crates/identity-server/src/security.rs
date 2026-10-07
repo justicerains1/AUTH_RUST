@@ -69,6 +69,10 @@ impl IntoResponse for ApiError {
             "RATE_LIMITED" => "请求较频繁，请稍后重试",
             "RESOURCE_NOT_FOUND" => "请求的资源不存在",
             "INPUT_INVALID" => "输入无效，请检查后重试",
+            "AUTH_SESSION_REQUIRED" => "请先登录再继续",
+            "AUTH_INVALID_CREDENTIALS" => "凭证无效，请重试",
+            "AUTH_ACCOUNT_DISABLED" => "凭证无效，请重试",
+            "AUTH_EMAIL_UNVERIFIED" => "请先完成邮箱验证",
             "AUTH_ACTION_INVALID" => "验证链接无效，请重新申请验证邮件",
             "AUTH_ACTION_EXPIRED" => "验证链接已过期，请重新申请验证邮件",
             "AUTH_ACTION_CONSUMED" => "验证链接已使用或已被新邮件替换，请使用最新邮件",
@@ -135,6 +139,49 @@ impl SecurityState {
     }
     pub fn cookie_names(&self) -> (&'static str, &'static str) {
         (self.0.session_cookie, self.0.preauth_cookie)
+    }
+    pub fn identity_digest(
+        &self,
+        headers: &HeaderMap,
+    ) -> Result<Option<Digest>, BoundaryUnavailable> {
+        cookie_digest(headers, self.0.session_cookie).map_err(|_| BoundaryUnavailable)
+    }
+    pub fn preauth_digest(
+        &self,
+        headers: &HeaderMap,
+    ) -> Result<Option<Digest>, BoundaryUnavailable> {
+        cookie_digest(headers, self.0.preauth_cookie).map_err(|_| BoundaryUnavailable)
+    }
+    pub fn cursor_key(&self) -> [u8; 32] {
+        keyed_account_digest(
+            &self.0.limit_key,
+            "session-cursor-v1",
+            "created_at_desc_id_desc",
+        )
+    }
+    pub fn identity_cookie(&self, token: &str) -> Result<HeaderValue, BoundaryUnavailable> {
+        self.cookie(self.0.session_cookie, token, 43_200)
+    }
+    pub fn preauth_cookie(&self, token: &str) -> Result<HeaderValue, BoundaryUnavailable> {
+        self.cookie(self.0.preauth_cookie, token, 600)
+    }
+    pub fn clear_identity_cookie(&self) -> Result<HeaderValue, BoundaryUnavailable> {
+        self.cookie(self.0.session_cookie, "", 0)
+    }
+    fn cookie(
+        &self,
+        name: &str,
+        token: &str,
+        age: u32,
+    ) -> Result<HeaderValue, BoundaryUnavailable> {
+        if age > 0 {
+            token_hash(token).map_err(|_| BoundaryUnavailable)?;
+        }
+        HeaderValue::from_str(&format!(
+            "{name}={token}; Path=/; HttpOnly; SameSite=Lax; Max-Age={age}{}",
+            if self.0.secure { "; Secure" } else { "" }
+        ))
+        .map_err(|_| BoundaryUnavailable)
     }
     pub fn origin(&self) -> &str {
         &self.0.origin

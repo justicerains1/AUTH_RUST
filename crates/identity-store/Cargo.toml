@@ -6,6 +6,7 @@ rust-version.workspace = true
 publish.workspace = true
 
 [dependencies]
+base64.workspace = true
 identity-core = { path = "../identity-core" }
 redis.workspace = true
 sqlx.workspace = true

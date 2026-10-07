@@ -58,7 +58,7 @@ RFC 9700 正文已成功读取。Awwwards 页面本次访问未成功，没有�
 
 初始规划轮不创建代码、依赖清单、部署服务或运行测试，当时两个 Markdown 文件是唯一交付物。
 
-2026-10-07 开始实施，实际目录为 `/root/code/rust/auth_rust`，Linux/WSL2。初始执行环境 Node 22.22.1、npm 9.2.0，未安装 Rust/Docker；现已安装文档指定 Rust 1.98.0、Docker/Compose 并进行 T01 实测。原 Node 24 环境记录不表示当前环境；本次选用同技术路线且经过兼容核查的 Node 22.22.1/npm 9.2.0，精确锁文件与依据见 `docs/adr/0001-toolchain-dependencies.md`。T01 已通过当前 Linux/Compose 工程基线验收；T03 数据基础及 T15/T16 设计和前端基础已通过；用户确认视觉方案，T04安全基础及T05注册/验证/邮件已通过；按用户要求停止后续推进，仅初始化Git和提交进度。密码登录等后续任务未开始。
+2026-10-07 开始实施，实际目录为 `/root/code/rust/auth_rust`，Linux/WSL2。初始执行环境 Node 22.22.1、npm 9.2.0，未安装 Rust/Docker；现已安装文档指定 Rust 1.98.0、Docker/Compose 并进行 T01 实测。原 Node 24 环境记录不表示当前环境；本次选用同技术路线且经过兼容核查的 Node 22.22.1/npm 9.2.0，精确锁文件与依据见 `docs/adr/0001-toolchain-dependencies.md`。T01 已通过当前 Linux/Compose 工程基线验收；T03 数据基础及 T15/T16 设计和前端基础已通过；用户确认视觉方案，T04安全基础及T05注册/验证/邮件已通过；用户已恢复推进，按模块验收后提交推送；当前T06密码登录与会话进行中，其余后续任务按依赖实施。
 
 ## 3. 如何把本文交给实现模型
 
@@ -197,6 +197,7 @@ T01 创建跨平台 Node 脚本；Windows/ Linux 同名命令行为一致。后�
 | npm ci | 按 package-lock 安装 |
 | npm run check | cargo fmt --check、clippy -D warnings、TS、ESLint |
 | npm run test:unit | Rust 单元测试与前端 Vitest |
+| npm run test:full | 顺序运行完整安装、检查、单元、集成、E2E、安全、可访问性和构建；失败不中断其余检查，生成 TEST_SUMMARY.md，整体非零 |
 | npm run test:integration -- --task=Txx | 真实 Postgres/Redis/API 测试，按任务筛选 |
 | npm run test:e2e -- --task=Txx | Playwright 任务标签测试 |
 | npm run test:security [-- --task=Txx] | 按任务运行已实现安全与协议负向测试；全量未完整时拒绝伪成功 |

@@ -3,6 +3,7 @@ pub mod accounts;
 pub mod migrations;
 pub mod repository;
 pub mod security;
+pub mod sessions;
 use identity_core::config::Config;
 use sqlx::postgres::PgPoolOptions;
 use std::time::Duration;

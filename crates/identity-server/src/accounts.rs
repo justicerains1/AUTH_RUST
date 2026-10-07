@@ -32,11 +32,12 @@ use zeroize::{Zeroize, Zeroizing};
 #[derive(Clone)]
 pub struct AuthAppState {
     pub security: SecurityState,
-    inner: Arc<AccountsInner>,
+    pub(crate) inner: Arc<AccountsInner>,
+    pub(crate) sessions: identity_store::sessions::SessionService,
 }
-struct AccountsInner {
+pub(crate) struct AccountsInner {
     store: AccountsStore,
-    passwords: PasswordService,
+    pub(crate) passwords: PasswordService,
     keys: AeadKeyRing,
     issuer: String,
 }
@@ -51,6 +52,10 @@ impl AuthAppState {
             .map_err(|_| "password service unavailable")?;
         Ok(Self {
             security,
+            sessions: identity_store::sessions::SessionService::new(
+                dependencies.postgres.clone(),
+                Arc::new(identity_core::clock::SystemClock),
+            ),
             inner: Arc::new(AccountsInner {
                 store: AccountsStore::new(dependencies.postgres),
                 passwords,
@@ -94,7 +99,12 @@ pub fn accounts_router(state: AuthAppState, existing: Router) -> Router {
             post(confirm_verification),
         )
         .with_state(state.clone());
-    security_router(state.security, existing.merge(accounts))
+    security_router(
+        state.security.clone(),
+        existing
+            .merge(accounts)
+            .merge(crate::sessions::session_routes(state)),
+    )
 }
 
 fn context(request: &Request) -> Result<(Uuid, std::net::IpAddr), ApiError> {
