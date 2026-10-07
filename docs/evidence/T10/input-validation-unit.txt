@@ -1,0 +1,12 @@
+   Compiling identity-core v0.1.0 (/root/code/rust/auth_rust/crates/identity-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.28s
+     Running unittests src/lib.rs (target/debug/deps/identity_core-c5f69f828e497d2b)
+
+running 4 tests
+test oauth::tests::callbacks_require_exact_safe_registration_and_loopback_http_only ... ok
+test oauth::tests::pkce_matches_rfc7636_and_enforces_verifier_charset ... ok
+test oauth::tests::valid_authorization_is_typed_and_secret_debug_is_redacted ... ok
+test oauth::tests::rejects_duplicate_parameters_weak_pkce_and_invalid_prompt ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 19 filtered out; finished in 0.00s
+
