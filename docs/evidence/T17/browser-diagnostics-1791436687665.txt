@@ -1,0 +1,57 @@
+
+Running 6 tests using 1 worker
+·F··F·
+
+  1) tests/e2e/T17.spec.ts:16:1 › @T17 new account registration uses real mail and explicit confirmation before login
+
+    Error: Actual mail delivery missing.
+
+       6 | async function material(query = ''): Promise<{ secret: string; recovery: string; seconds: number }> { const key = process.env.T17_CLOCK_KEY; if (!key) throw new Error('Private test key required.'); return (await fetch(`http://127.0.0.1:5197/__test/material${query}`, { headers: { 'x-test-key': key } })).json() as Promise<{ secret: string; recovery: string; seconds: number }>; }
+       7 | function code(secret: string, seconds: number): string { const bytes: number[] = []; let buffer = 0, bits = 0; for (const c of secret) { const value = '[TOTP_SECRET]'.indexOf(c); buffer = buffer << 5 | value; bits += 5; if (bits >= 8) { bits -= 8; bytes.push(buffer >> bits & 255); buffer &= (1 << bits) - 1; } } const counter = Buffer.alloc(8); counter.writeBigUInt64BE(BigInt(Math.floor(seconds / 30))); const mac = createHmac('sha1', Buffer.from(bytes)).update(counter).digest(); return String((mac.readUInt32BE((mac[19] ?? 0) & 15) & 0x7fffffff) % 1_000_000).padStart(6, '0'); }
+    >  8 | async function mail(email: string): Promise<string> { for (let attempt = 0; attempt < 100; attempt += 1) { const list = await (await fetch('http://127.0.0.1:8025/api/v1/messages')).json() as { messages: { ID: string; To: { Address: string }[] }[] }; for (const item of list.messages) { if (!item.To.some((to) => to.Address === email)) continue; const detail = await (await fetch(`http://127.0.0.1:8025/api/v1/message/${item.ID}`)).json() as { Text: string }; const token = /#token=([A-Za-z0-9_-]{43})/u.exec(detail.Text)?.[1]; if (token) return token; } await new Promise((done) => setTimeout(done, 100)); } throw new Error('Actual mail delivery missing.'); }
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ^
+       9 |
+      10 | test('@T17 four-width public pages have accessible keyboard layouts and reduced motion', async ({ page }) => {
+      11 |   await page.emulateMedia({ reducedMotion: 'reduce' }); await mkdir(resolve('docs/evidence/T17/screenshots'), { recursive: true });
+        at mail (/root/code/rust/auth_rust/tests/e2e/T17.spec.ts:8:615)
+        at /root/code/rust/auth_rust/tests/e2e/T17.spec.ts:19:17
+
+    Error Context: .local/t17-browser-results/[OPAQUE]/error-context.md
+
+  2) tests/e2e/T17.spec.ts:36:1 › @T17 expired MFA challenge restarts and cancellation falls back to password
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('status').filter({ hasText: '通行密钥验证已取消' })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('status').filter({ hasText: '通行密钥验证已取消' }) with timeout 5000ms
+      - waiting for getByRole('status').filter({ hasText: '通行密钥验证已取消' })
+
+
+      43 |     navigator.credentials.get = (options) => { const controller = new AbortController(); setTimeout(() => { controller.abort(); }, 1000); return original({ ...options, signal: controller.signal }); };
+      44 |   });
+    > 45 |   try { await page.getByRole('button', { name: '使用通行密钥登录', exact: true }).click(); await expect(page.getByRole('status').filter({ hasText: '通行密钥验证已取消' })).toBeVisible(); await page.getByRole('button', { name: '改用密码登录', exact: true }).click(); await expect(page.getByLabel('密码', { exact: true })).toBeFocused(); }
+         |                                                                                                                                                            ^
+      46 |   finally { await cdp.send('WebAuthn.[OPAQUE]', { authenticatorId: auth.authenticatorId }); await cdp.detach(); }
+      47 | });
+      48 |
+        at /root/code/rust/auth_rust/tests/e2e/T17.spec.ts:45:156
+
+    Error Context: .local/t17-browser-results/[OPAQUE]/error-context.md
+
+  2 failed
+    tests/e2e/T17.spec.ts:16:1 › @T17 new account registration uses real mail and explicit confirmation before login
+    tests/e2e/T17.spec.ts:36:1 › @T17 expired MFA challenge restarts and cancellation falls back to password
+  4 passed (1.1m)
+[WebServer] (node:3171784) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+(node:3171906) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:3174038) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:3175273) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

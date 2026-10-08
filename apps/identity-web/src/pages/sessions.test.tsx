@@ -26,12 +26,12 @@ describe('T06 登录与会话控件边界', () => {
     expect((await screen.findByRole('alert')).textContent).toContain('凭证无效');
     expect(password.value).toBe('');
     expect(screen.getByLabelText<HTMLInputElement>('邮箱地址').value).toBe('user@example.test');
-    expect(request).toHaveBeenCalledTimes(1);
+    expect(request.mock.calls.filter(([path]) => path === '/auth/login/password')).toHaveLength(1);
   });
 
   it('有限MFA分支清CSRF缓存且不呈现已登录账号', async () => {
     const user = userEvent.setup();
-    vi.spyOn(api, 'request').mockResolvedValue({ status: 'mfa_required', challenge_id: uuid, purpose: 'login', methods: ['totp', 'recovery_code'], expires_at: '2026-10-08T12:05:00Z' });
+    vi.spyOn(api, 'request').mockImplementation((path) => path === '/me' ? Promise.reject(new ApiError(401, 'AUTH_SESSION_REQUIRED', '请登录')) : Promise.resolve({ status: 'mfa_required', challenge_id: uuid, purpose: 'login', methods: ['totp', 'recovery_code'], expires_at: new Date(Date.now() + 60_000).toISOString() }));
     const reset = vi.spyOn(api, 'resetCsrf');
     page(<LoginPage />);
     await user.type(screen.getByLabelText('邮箱地址'), 'user@example.test');
@@ -50,8 +50,8 @@ describe('T06 登录与会话控件边界', () => {
     await user.type(screen.getByLabelText('邮箱地址'), 'user@example.test');
     await user.type(screen.getByLabelText('密码'), 'uncommon candidate password');
     await user.click(screen.getByRole('button', { name: '登录' }));
-    expect((await screen.findByRole('status')).textContent).toContain('60秒后重试');
-    expect(request).toHaveBeenCalledTimes(1);
+    expect((await screen.findByRole('status')).textContent).toContain('60 秒后可以重试');
+    expect(request.mock.calls.filter(([path]) => path === '/auth/login/password')).toHaveLength(1);
   });
 
   it('会话撤销取消不调用API，确认后只撤销选中ID', async () => {

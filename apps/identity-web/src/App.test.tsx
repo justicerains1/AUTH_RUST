@@ -13,13 +13,13 @@ function route(path: string) {
 }
 
 describe('可访问基础路由', () => {
-  it('首页保留初始化状态和统一身份品牌', async () => {
+  it('首页展示已确认品牌与真实账号入口', async () => {
     route('/');
     const title = await screen.findByRole('heading', { level: 1 });
-    expect(title.textContent).toContain('统一身份中心');
-    expect(title.textContent).toContain('T01 初始化');
+    expect(title.textContent).toContain('一个身份');
+    expect(screen.getByRole('link', { name: '登录账号' }).getAttribute('href')).toBe('/login');
     expect(screen.getByRole('main')).toBe(document.activeElement);
-    expect(document.title).toBe('T01 初始化 · 统一身份中心');
+    expect(document.title).toBe('一个身份，安心连接 · 统一身份中心');
   });
 
   it('未知路径显示未找到边界且可返回首页', async () => {

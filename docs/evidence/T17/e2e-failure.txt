@@ -1,0 +1,7 @@
+T17 real public-flow validation 2026-10-08T05:27:49.807Z
+FAIL T17 real public-flow/accessibility tests failed.
+
+1 !== 0
+
+Completed 2026-10-08T05:28:53.231Z
+Exit code 1

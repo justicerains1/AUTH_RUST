@@ -25,7 +25,8 @@
 | T14 | 通过 | 真实初始化CLI、13管理API、强认证、最后管理员/因素与审计事务；[结果](docs/evidence/T14/test-summary.md) |
 | T15 | 通过 | 官方设计研究、视觉稿与状态规范；用户明确采用方案并进入 T16；[用户确认](docs/evidence/T15/user-review.md) |
 | T16 | 通过 | 设计组件、响应式布局、API/CSRF 客户端、可访问基础路由与保护提示；[结果](docs/evidence/T16/test-summary.md)、[UI 模块记录](docs/evidence/T16/ui-summary.md) |
-| T17～T24 | 未开始 | 完整认证/账号/后台产品页面、全面安全验收、性能、生产部署、发布与高可用 |
+| T17 | 待验收 | 6真实E2E与四宽20axe通过，前置T09实体设备未验收；[结果](docs/evidence/T17/test-summary.md) |
+| T18～T24 | 未开始 | 账号/后台产品、全面安全、性能、生产发布与高可用 |
 
 T05 最终收尾记录：
 
@@ -147,3 +148,11 @@ WindowsOpenSSL构建前置已按实际MSVC失败诊断修复并推送3a06d16，�
 ## 最近完成：T14
 
 真实双CLI并发初始化、13后台API强认证、最后管理员及因素并发保护、即时撤销/secret轮换/审计rollback通过；T08/T09回归0，T09设备仍待验收。f44afd7截至T13远端Linux/Windows及全部集成CI成功，run37718112029。下一进入T17完整认证产品页，再T18账号/同意及T19管理UI，[T14记录](docs/evidence/T14/test-summary.md)。
+
+## T19 查询子模块
+
+前置T14通过后，T19.01/.05的服务端精确邮箱/状态过滤及最多31天审计窗口已独立真实验证并推送17da861；cursor绑定过滤摘要，非法/重复与跨过滤复用拒绝。管理UI仍未开始，此子模块不标整体T19通过。[记录](docs/evidence/T19/filter-test-summary.md)。
+
+## 最近完成：T17
+
+T17实现与6真实认证E2E、20个四宽页面axe、键盘/降低动态通过；原依赖T09实体设备未验收，T17整体保留待验收。旧T05/T06/T07/T09各2E2E回归0，50身份与12演示UI测试及构建检查通过。T09实体设备/全量发布限制仍保留，下一T18账号整合与T19后台界面。[记录](docs/evidence/T17/test-summary.md)。

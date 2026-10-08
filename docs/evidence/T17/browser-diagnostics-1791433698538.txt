@@ -1,0 +1,63 @@
+
+Running 4 tests using 1 worker
+FT··
+
+  1) tests/e2e/T17.spec.ts:10:1 › @T17 four-width public pages have accessible keyboard layouts and reduced motion
+
+    Error: expect(locator).toBeFocused() failed
+
+    Locator:  getByRole('link', { name: '跳到主要内容' })
+    Expected: focused
+    Received: inactive
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toBeFocused" getByRole('link', { name: '跳到主要内容' }) with timeout 5000ms
+      - waiting for getByRole('link', { name: '跳到主要内容' })
+        10 × locator resolved to <a class="skip-link" href="#main-content">跳到主要内容</a>
+           - unexpected value "inactive"
+
+
+      11 |   await page.emulateMedia({ reducedMotion: 'reduce' }); await mkdir(resolve('docs/evidence/T17/screenshots'), { recursive: true });
+      12 |   for (const width of [360, 390, 768, 1440]) { await page.setViewportSize({ width, height: 1000 }); for (const path of ['/', '/login', '/register', '/password-reset', '/email-verification']) { await page.goto(path); const overflow = await page.evaluate(() => document.documentElement.scrollWidth > innerWidth); expect(overflow).toBe(false); const axe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze(); expect(axe.violations.map((violation) => violation.id)).toEqual([]); } await page.goto('/'); await page.screenshot({ path: resolve(`docs/evidence/T17/screenshots/home-${String(width)}.png`), fullPage: true }); }
+    > 13 |   await page.goto('/login'); await page.keyboard.press('Tab'); await expect(page.getByRole('link', { name: '跳到主要内容' })).toBeFocused();
+         |                                                                                                                         ^
+      14 | });
+      15 |
+      16 | test('@T17 new account registration uses real mail and explicit confirmation before login', async ({ page }) => {
+        at /root/code/rust/auth_rust/tests/e2e/T17.spec.ts:13:121
+
+    Error Context: .local/t17-browser-results/[OPAQUE]/error-context.md
+
+  2) tests/e2e/T17.spec.ts:16:1 › @T17 new account registration uses real mail and explicit confirmation before login
+
+    Test timeout of 60000ms exceeded.
+
+    Error: locator.click: Test timeout of 60000ms exceeded.
+    Call log:
+      - waiting for getByRole('link', { name: '创建账号', exact: true })
+
+
+      16 | test('@T17 new account registration uses real mail and explicit confirmation before login', async ({ page }) => {
+      17 |   const email = `public-${randomBytes(12).toString('hex')}@example.test`; const password = process.env.T17_BROWSER_PASSWORD; if (!password) throw new Error('Private test password required.');
+    > 18 |   await page.goto('/'); await page.getByRole('link', { name: '创建账号', exact: true }).click(); await page.getByLabel('邮箱地址').fill(email); await page.getByLabel('密码', { exact: true }).fill(password); await page.getByRole('button', { name: '创建账号', exact: true }).click(); await expect(page.getByRole('status').filter({ hasText: '请检查邮箱' })).toBeVisible();
+         |                                                                                     ^
+      19 |   const token = await mail(email); await page.goto('/email-verification'); await page.evaluate((secret) => { globalThis.location.hash = `token=${secret}`; }, token); await page.reload(); await expect(page).toHaveURL(/\/email-verification$/u); await page.getByRole('button', { name: '确认验证邮箱', exact: true }).click(); await expect(page.getByRole('status').filter({ hasText: '邮箱验证完成' })).toBeVisible();
+      20 |   await page.goto('/login'); await page.getByLabel('邮箱地址').fill(email); await page.getByLabel('密码', { exact: true }).fill(password); await page.getByRole('button', { name: '登录', exact: true }).click(); await expect(page).toHaveURL(/\/me$/u);
+      21 | });
+        at /root/code/rust/auth_rust/tests/e2e/T17.spec.ts:18:85
+
+    Error Context: .local/t17-browser-results/[OPAQUE]/error-context.md
+
+  2 failed
+    tests/e2e/T17.spec.ts:10:1 › @T17 four-width public pages have accessible keyboard layouts and reduced motion
+    tests/e2e/T17.spec.ts:16:1 › @T17 new account registration uses real mail and explicit confirmation before login
+  2 passed (1.4m)
+[WebServer] (node:3023960) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+(node:3024042) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:3024839) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:3027878) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

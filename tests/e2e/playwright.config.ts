@@ -1,7 +1,7 @@
 import { defineConfig } from '@playwright/test';
 import { resolve } from 'node:path';
 const task = process.env.E2E_TASK ?? 'T05';
-if (!['T05', 'T06', 'T07', 'T08', 'T09', 'T10', 'T12', 'T13'].includes(task)) throw new Error('Unsupported explicit E2E task.');
+if (!['T05', 'T06', 'T07', 'T08', 'T09', 'T10', 'T12', 'T13', 'T17'].includes(task)) throw new Error('Unsupported explicit E2E task.');
 export default defineConfig({
   testDir: '.', testMatch: `${task}.spec.ts`, workers: 1, fullyParallel: false, timeout: 60_000,
   reporter: [['dot']], outputDir: `../../.local/${task.toLowerCase()}-browser-results`,

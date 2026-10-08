@@ -30,7 +30,7 @@ test('@T09 virtual CTAP2 authenticator registers and discovers a strong identity
   try {
     await passwordLogin(page, 'browser-passkey@example.test'); await registration(page); await logout(page);
     const optionsResponse = page.waitForResponse((response) => response.url().endsWith('/auth/passkeys/options'));
-    await page.getByRole('button', { name: '使用Passkey登录', exact: true }).click();
+    await page.getByRole('button', { name: '使用通行密钥登录', exact: true }).click();
     const options = await (await optionsResponse).json() as { publicKey?: Record<string, unknown> };
     console.log('T09 safe assertion-option shape', JSON.stringify(Object.fromEntries(Object.entries(options.publicKey ?? {}).map(([key, value]) => [key, value === null ? 'null' : Array.isArray(value) ? 'array' : typeof value]))));
     await expect(page).toHaveURL(/\/me$/u);
@@ -52,7 +52,7 @@ test('@T09 signed assertion is single-use and user verification cannot be bypass
     await passwordLogin(page, 'browser-passkey-negative@example.test'); await registration(page); await logout(page);
     let captured: unknown;
     await page.route('**/api/v1/auth/passkeys/verify', async (route) => { captured = route.request().postDataJSON() as unknown; await route.abort(); });
-    await page.getByRole('button', { name: '使用Passkey登录', exact: true }).click();
+    await page.getByRole('button', { name: '使用通行密钥登录', exact: true }).click();
     await expect(page.getByRole('alert').or(page.getByRole('status')).filter({ hasText: '登录未完成' })).toBeVisible();
     await page.unroute('**/api/v1/auth/passkeys/verify');
     if (!captured) throw new Error('A real signed assertion was not captured.');
@@ -79,7 +79,7 @@ test('@T09 signed assertion is single-use and user verification cannot be bypass
     await logout(page);
     captured = undefined;
     await page.route('**/api/v1/auth/passkeys/verify', async (route) => { captured = route.request().postDataJSON() as unknown; await route.abort(); });
-    await page.getByRole('button', { name: '使用Passkey登录', exact: true }).click();
+    await page.getByRole('button', { name: '使用通行密钥登录', exact: true }).click();
     await expect(page.getByRole('status').or(page.getByRole('alert')).filter({ hasText: '登录未完成' })).toBeVisible();
     await page.unroute('**/api/v1/auth/passkeys/verify');
     if (!captured) throw new Error('Fresh virtual-authenticator assertion was not captured.');

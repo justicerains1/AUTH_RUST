@@ -1,0 +1,66 @@
+
+Running 6 tests using 1 worker
+·F··F·
+
+  1) tests/e2e/T17.spec.ts:16:1 › @T17 new account registration uses real mail and explicit confirmation before login
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('status').filter({ hasText: '请检查邮箱' })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('status').filter({ hasText: '请检查邮箱' }) with timeout 5000ms
+      - waiting for getByRole('status').filter({ hasText: '请检查邮箱' })
+
+
+      16 | test('@T17 new account registration uses real mail and explicit confirmation before login', async ({ page }) => {
+      17 |   const email = `public-${randomBytes(12).toString('hex')}@example.test`; const password = process.env.T17_BROWSER_PASSWORD; if (!password) throw new Error('Private test password required.');
+    > 18 |   await page.goto('/'); await page.getByRole('link', { name: /登录账号/u }).click(); await page.getByRole('link', { name: '创建账号', exact: true }).click(); await page.getByLabel('邮箱地址').fill(email); await page.getByLabel('密码', { exact: true }).fill(password); await expect(page.getByLabel('邮箱地址')).toHaveValue(email); await expect(page.getByLabel('密码', { exact: true })).toHaveValue(password); await page.getByRole('button', { name: '创建账号', exact: true }).click(); await expect(page.getByRole('status').filter({ hasText: '请检查邮箱' })).toBeVisible();
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ^
+      19 |   const token = await mail(email); await page.goto('/email-verification'); await page.evaluate((secret) => { globalThis.location.hash = `token=${secret}`; }, token); await page.reload(); await expect(page).toHaveURL(/\/email-verification$/u); await page.getByRole('button', { name: '确认验证邮箱', exact: true }).click(); await expect(page.getByRole('status').filter({ hasText: '邮箱验证完成' })).toBeVisible();
+      20 |   await page.goto('/login'); await page.getByLabel('邮箱地址').fill(email); await page.getByLabel('密码', { exact: true }).fill(password); await page.getByRole('button', { name: '登录', exact: true }).click(); await expect(page).toHaveURL(/\/me$/u);
+      21 | });
+        at /root/code/rust/auth_rust/tests/e2e/T17.spec.ts:18:528
+
+    Error Context: .local/t17-browser-results/[OPAQUE]/error-context.md
+
+  2) tests/e2e/T17.spec.ts:36:1 › @T17 expired MFA challenge restarts and cancellation falls back to password
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('alert').filter({ hasText: '验证已过期' })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('alert').filter({ hasText: '验证已过期' }) with timeout 5000ms
+      - waiting for getByRole('alert').filter({ hasText: '验证已过期' })
+
+
+      37 |   const password = process.env.T17_BROWSER_PASSWORD; if (!password) throw new Error('Private test password required.');
+      38 |   await page.goto('/login'); await page.getByLabel('邮箱地址').fill('browser-public@example.test'); await page.getByLabel('密码', { exact: true }).fill(password); await page.getByRole('button', { name: '登录', exact: true }).click(); await expect(page.getByRole('status').filter({ hasText: '第二因素' })).toBeVisible();
+    > 39 |   const value = await material('?expire=1'); await page.getByLabel('验证码', { exact: true }).fill(code(value.secret, value.seconds)); await page.getByRole('button', { name: '验证并登录', exact: true }).click(); await expect(page.getByRole('alert').filter({ hasText: '验证已过期' })).toBeVisible(); await page.getByRole('button', { name: '重新开始登录', exact: true }).click(); await expect(page.getByLabel('密码', { exact: true })).toBeVisible();
+         |                                                                                                                                                                                                                                                                                ^
+      40 |   const cdp = await page.context().newCDPSession(page); await cdp.send('WebAuthn.enable'); const auth = await cdp.send('WebAuthn.[OPAQUE]', { options: { protocol: 'ctap2', transport: 'internal', hasResidentKey: true, hasUserVerification: true, isUserVerified: true, [OPAQUE]: false } });
+      41 |   await page.evaluate(() => {
+      42 |     const original = navigator.credentials.get.bind(navigator.credentials);
+        at /root/code/rust/auth_rust/tests/e2e/T17.spec.ts:39:272
+
+    Error Context: .local/t17-browser-results/[OPAQUE]/error-context.md
+
+  2 failed
+    tests/e2e/T17.spec.ts:16:1 › @T17 new account registration uses real mail and explicit confirmation before login
+    tests/e2e/T17.spec.ts:36:1 › @T17 expired MFA challenge restarts and cancellation falls back to password
+  4 passed (37.6s)
+[WebServer] (node:3105730) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+(node:3105776) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:3106667) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:3107941) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

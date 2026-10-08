@@ -1,0 +1,72 @@
+
+> rust-unified-identity@0.1.0 build
+> node scripts/run.mjs build
+
+   Compiling identity-store v0.1.0 (/root/code/rust/auth_rust/crates/identity-store)
+   Compiling identity-server v0.1.0 (/root/code/rust/auth_rust/crates/identity-server)
+   Compiling identity-worker v0.1.0 (/root/code/rust/auth_rust/crates/identity-worker)
+   Compiling identity-admin-cli v0.1.0 (/root/code/rust/auth_rust/crates/identity-admin-cli)
+    Finished `release` profile [optimized] target(s) in 38.43s
+vite v8.3.3 building client environment for production...
+transforming...
+✓ 332 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                  0.56 kB │ gzip:  0.34 kB
+dist/assets/index-CJ-kdO-m.css                  10.82 kB │ gzip:  2.95 kB
+dist/assets/PageTitle-wMF_C01F.js                0.21 kB │ gzip:  0.19 kB
+dist/assets/NotFoundPage-BEtmJvvV.js             0.43 kB │ gzip:  0.32 kB
+dist/assets/CursorPagination-CRnoArKb.js         0.47 kB │ gzip:  0.34 kB
+dist/assets/AdminPage-CnBpwKGd.js                0.55 kB │ gzip:  0.40 kB
+dist/assets/Password-Crl0MDZG.js                 0.82 kB │ gzip:  0.49 kB
+dist/assets/mail-action-CjTmAZmi.js              0.90 kB │ gzip:  0.49 kB
+dist/assets/TotpQrCode-DLiZpvcn.js               0.94 kB │ gzip:  0.65 kB
+dist/assets/PasskeyReauth-au7Or6MX.js            1.18 kB │ gzip:  0.73 kB
+dist/assets/LogoutPage-B7Qusty-.js               1.74 kB │ gzip:  1.09 kB
+dist/assets/AuthTransactionNotice-Bk5a0zll.js    2.27 kB │ gzip:  1.25 kB
+dist/assets/GrantsPage-DkbaZoO0.js               2.30 kB │ gzip:  1.32 kB
+dist/assets/ConsentPage-DYTv3QTO.js              2.47 kB │ gzip:  1.41 kB
+dist/assets/HomePage-UtBEAis6.js                 2.95 kB │ gzip:  1.17 kB
+dist/assets/RegisterPage-B8kIltOz.js             3.02 kB │ gzip:  1.65 kB
+dist/assets/AccountPage-CCZz124O.js              3.32 kB │ gzip:  1.43 kB
+dist/assets/SessionsPage-DaivRq22.js             3.49 kB │ gzip:  1.79 kB
+dist/assets/EmailVerificationPage-C9UfPeyI.js    3.53 kB │ gzip:  1.76 kB
+dist/assets/dist-BB1DXrID.js                     3.67 kB │ gzip:  1.66 kB
+dist/assets/PasswordChangePage-CdCGNyDJ.js       3.99 kB │ gzip:  2.03 kB
+dist/assets/PasswordResetPage-C7f2sVzl.js        4.24 kB │ gzip:  2.13 kB
+dist/assets/PasskeysPage-B322Bdvq.js             5.13 kB │ gzip:  2.32 kB
+dist/assets/LoginPage-DhUa9L8e.js                5.75 kB │ gzip:  2.76 kB
+dist/assets/MfaPage-D5GG42tJ.js                  6.70 kB │ gzip:  2.88 kB
+dist/assets/jsx-runtime-Dk72oS4N.js              8.77 kB │ gzip:  3.33 kB
+dist/assets/passkeyAuth-CYOj1ppw.js              9.92 kB │ gzip:  3.92 kB
+dist/assets/qrcode-DtWdxa9d.js                  20.62 kB │ gzip:  7.29 kB
+dist/assets/Input-DgKcRAk3.js                   32.18 kB │ gzip: 11.87 kB
+dist/assets/ConfirmDialog-BfgskJmx.js           36.48 kB │ gzip: 12.51 kB
+dist/assets/Status-Dst0o-8V.js                  95.17 kB │ gzip: 27.60 kB
+dist/assets/index-B0DjalP9.js                  289.60 kB │ gzip: 91.54 kB
+
+✓ built in 178ms
+vite v8.3.3 building client environment for production...
+transforming...
+✓ 94 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                               0.42 kB │ gzip:  0.32 kB
+dist/assets/index-CJkDuFYv.css                0.81 kB │ gzip:  0.46 kB
+dist/assets/NotFoundPage-CwSXcjfE.js          0.21 kB │ gzip:  0.20 kB
+dist/assets/InitializationPage-B0_bjW0r.js    2.98 kB │ gzip:  1.31 kB
+dist/assets/index-BNh23Gpl.js               257.70 kB │ gzip: 82.03 kB
+
+✓ built in 117ms
+vite v8.3.3 building client environment for production...
+transforming...
+✓ 94 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                               0.42 kB │ gzip:  0.31 kB
+dist/assets/index-CJkDuFYv.css                0.81 kB │ gzip:  0.46 kB
+dist/assets/NotFoundPage-OCc4L1fY.js          0.21 kB │ gzip:  0.20 kB
+dist/assets/InitializationPage-qwECkMGw.js    2.98 kB │ gzip:  1.31 kB
+dist/assets/index-Dpg-SaKC.js               257.70 kB │ gzip: 82.03 kB
+
+✓ built in 116ms

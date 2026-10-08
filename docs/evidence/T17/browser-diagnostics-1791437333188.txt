@@ -1,0 +1,38 @@
+
+Running 6 tests using 1 worker
+····F·
+
+  1) tests/e2e/T17.spec.ts:36:1 › @T17 expired MFA challenge restarts and cancellation falls back to password
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('通行密钥验证已取消', { exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText('通行密钥验证已取消', { exact: true }) with timeout 5000ms
+      - waiting for getByText('通行密钥验证已取消', { exact: true })
+
+
+      43 |     navigator.credentials.get = (options) => { const controller = new AbortController(); setTimeout(() => { controller.abort(); }, 1000); return original({ ...options, signal: controller.signal }); };
+      44 |   });
+    > 45 |   try { await page.getByRole('button', { name: '使用通行密钥登录', exact: true }).click(); await expect(page.getByText('通行密钥验证已取消', { exact: true })).toBeVisible(); await page.getByRole('button', { name: '改用密码登录', exact: true }).click(); await expect(page.getByLabel('密码', { exact: true })).toBeFocused(); }
+         |                                                                                                                                               ^
+      46 |   finally { await cdp.send('WebAuthn.[OPAQUE]', { authenticatorId: auth.authenticatorId }); await cdp.detach(); }
+      47 | });
+      48 |
+        at /root/code/rust/auth_rust/tests/e2e/T17.spec.ts:45:143
+
+    Error Context: .local/t17-browser-results/[OPAQUE]/error-context.md
+
+  1 failed
+    tests/e2e/T17.spec.ts:36:1 › @T17 expired MFA challenge restarts and cancellation falls back to password
+  5 passed (57.3s)
+[WebServer] (node:3203940) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+(node:3204000) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:3207033) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

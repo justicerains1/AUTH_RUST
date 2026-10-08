@@ -37,6 +37,8 @@ test('@T07 reset request uses real mail and explicit confirmation before new log
   await expect(page).toHaveURL(/\/password-reset$/u);
   await page.getByLabel('新密码', { exact: true }).fill(replacement);
   await page.getByRole('button', { name: '重置密码', exact: true }).click();
+  await expect(page.getByRole('status').filter({ hasText: '新密码已设置' })).toBeVisible();
+  await page.getByRole('link', { name: '前往登录', exact: true }).click();
   await expect(page).toHaveURL(/\/login$/u);
   await page.goto('/me');
   await expect(page).toHaveURL(/\/login$/u);

@@ -1,42 +1,44 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router';
 import { z } from 'zod';
-import { api, acceptedSchema, ApiError } from '../lib/api';
+import { api, acceptedSchema } from '../lib/api';
+import type { ApiError } from '../lib/api';
+import { asApiError, useRetryAfter } from '../lib/auth-feedback';
+import { useAuthTransaction } from '../lib/auth-flow';
 import { Button } from '../components/Button';
 import { Input } from '../components/Input';
 import { Password } from '../components/Password';
 import { Status } from '../components/Status';
+import { RequestFeedback } from '../components/RequestFeedback';
+import { PublicAuthLayout } from '../components/PublicAuthLayout';
+import { AuthTransactionNotice } from '../components/AuthTransactionNotice';
 import { PageTitle } from './PageTitle';
 
-const inputSchema = z.object({ email: z.email('请输入有效邮箱地址'), password: z.string().min(15, '密码至少需要15个字符').max(128, '密码最多128个字符') });
+const passwordSchema = z.string().refine((value) => Array.from(value).length >= 15, '密码至少需要15个字符').refine((value) => Array.from(value).length <= 128, '密码最多128个字符').refine((value) => new TextEncoder().encode(value).length <= 512, '密码长度超出限制');
+const inputSchema = z.object({ email: z.email('请输入有效邮箱地址'), password: passwordSchema });
 type FormInput = z.infer<typeof inputSchema>;
 
 export default function RegisterPage() {
+  const flow = useAuthTransaction();
+  const retry = useRetryAfter();
+  const pending = useRef(false);
   const { register, handleSubmit, setError, resetField, formState: { errors, isSubmitting } } = useForm<FormInput>();
-  const [result, setResult] = useState<'idle' | 'success' | 'error' | 'limited' | 'unavailable'>('idle');
-  const [message, setMessage] = useState(''); const [requestId, setRequestId] = useState<string>();
+  const [failure, setFailure] = useState<ApiError | null>(null);
+  const [message, setMessage] = useState('');
   async function submit(values: FormInput) {
+    if (pending.current || retry.remaining > 0 || flow.blocked) return;
     const parsed = inputSchema.safeParse(values);
     if (!parsed.success) {
       for (const issue of parsed.error.issues) { const field = issue.path[0]; if (field === 'email' || field === 'password') setError(field, { message: issue.message }); }
       resetField('password', { keepError: true }); return;
     }
-    setResult('idle'); setRequestId(undefined);
+    pending.current = true; setFailure(null); setMessage('');
     try {
       const response = await api.request('/auth/register', acceptedSchema, { method: 'POST', body: parsed.data });
-      setResult('success'); setMessage(response.message);
-    } catch (error) {
-      setResult(error instanceof ApiError && error.status === 429 ? 'limited' : error instanceof ApiError && (error.status === 503 || error.status === 0) ? 'unavailable' : 'error');
-      setMessage(error instanceof ApiError ? error.message : '请求暂未完成，请重试');
-      if (error instanceof ApiError) setRequestId(error.requestId);
-    } finally { resetField('password'); }
+      setMessage(response.message);
+    } catch (error) { const failure = asApiError(error); setFailure(failure); retry.start(failure); }
+    finally { resetField('password'); pending.current = false; }
   }
-  return <><PageTitle title="创建账号" /><div className="foundation-grid"><div><p className="eyebrow">ACCOUNT / REGISTER</p><h1>创建你的账号。</h1><p className="lead">通过邮箱验证，开始使用统一身份中心。</p></div><section className="panel form-panel"><h2>创建账号</h2><form noValidate onSubmit={(event) => { void handleSubmit(submit)(event); }}>
-    <Input label="邮箱地址" type="email" autoComplete="username" {...register('email')} error={errors.email?.message} />
-    <Password label="密码" autoComplete="new-password" {...register('password')} error={errors.password?.message} />
-    <p className="muted">15至128个字符，允许空格和粘贴。</p>
-    <Button type="submit" variant="primary" loading={isSubmitting} loadingLabel="正在提交…" className="form-submit">创建账号</Button></form>
-    {result !== 'idle' && <Status kind={result} title={result === 'success' ? '请检查邮箱' : '申请暂未完成'} description={message} requestId={requestId} />}
-    <p><Link to="/email-verification">验证邮件或重新发送</Link></p><p>已有账号？<Link to="/login">前往登录</Link></p></section></div></>;
+  return <><PageTitle title="创建账号" /><PublicAuthLayout eyebrow="YOUR ACCOUNT STARTS HERE" title="创建你的账号。" description="用一个账号，连接你的应用。验证邮箱后，就可以开始登录。" note={<><h2>从安全的第一步开始</h2><p>使用你可以接收邮件的地址。密码支持空格、粘贴和密码管理器。</p></>}><h2>创建账号</h2><p className="muted">请使用你的账号邮箱。</p><AuthTransactionNotice flow={flow} /><form noValidate onSubmit={(event) => { void handleSubmit(submit)(event); }}><Input label="邮箱地址" type="email" autoComplete="username" autoCapitalize="none" spellCheck={false} {...register('email')} error={errors.email?.message} /><Password label="密码" autoComplete="new-password" {...register('password')} error={errors.password?.message} aria-describedby="register-password-hint" /><p id="register-password-hint" className="field-hint password-hint">15 至 128 个字符，允许空格和粘贴。</p><Button type="submit" variant="primary" loading={isSubmitting} disabled={flow.blocked || retry.remaining > 0} loadingLabel="正在提交…" className="form-submit">创建账号</Button></form>{message && <Status kind="success" title="请检查邮箱" description={message} />}<RequestFeedback error={failure} title="申请暂未完成" remaining={retry.remaining} /><div className="auth-links"><Link to={flow.link('/email-verification')}>验证邮件或重新发送</Link><p>已有账号？<Link to={flow.link('/login')}>前往登录</Link></p></div></PublicAuthLayout></>;
 }
