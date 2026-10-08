@@ -1,10 +1,11 @@
 // Explicit test-only database plus real accounts/worker/SMTP. No trace or secret output.
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
-import { mkdir, rm, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { randomBytes } from 'node:crypto';
 import { resolve } from 'node:path';
 import { localEnvironment, validateDatabaseTarget } from '../../scripts/database-target.mjs';
+import { sanitizeBrowserDiagnostic } from '../../scripts/ci-e2e-diagnostics.mjs';
 
 const root = resolve(import.meta.dirname, '../..');
 const e2e = process.argv.includes('--e2e');
@@ -12,6 +13,25 @@ const privateDirectory = resolve(root, '.local', `t05-${randomBytes(8).toString(
 const evidence = resolve(root, 'docs/evidence/T05');
 const lines = [`T05 ${e2e ? 'real UI E2E' : 'real account/SMTP integration'} ${new Date().toISOString()}`];
 const composeArgs = ['compose', '--env-file', resolve(root, '.local/dev.env'), '-f', resolve(root, 'infra/compose.dev.yaml')];
+let diagnosticEnvironment = process.env;
+let fixturePasswords = [];
+function safeDiagnostic(value) {
+  let safe = sanitizeBrowserDiagnostic(value, diagnosticEnvironment);
+  for (const password of fixturePasswords) {
+    safe = safe.replaceAll(password, '[PASSWORD]');
+    const bytes = [...Buffer.from(password, 'utf8')].map(String).join(',');
+    if (bytes) safe = safe.replace(new RegExp(`\\[\\s*${bytes.replaceAll(',', ',\\s*')}\\s*\\]`, 'gu'), '[REDACTED PASSWORD BYTES]');
+  }
+  return safe
+    .replace(/(#(?:token|code|state|nonce)=)[^&\s"'<>]+/giu, '$1[REDACTED]')
+    .replace(/\b[0-9a-f]{8}-[0-9a-f-]{27}\b/giu, '[REDACTED UUID]');
+}
+async function preserveFailure(stage, result) {
+  const stamp = new Date().toISOString().replaceAll(':', '-').replaceAll('.', '-');
+  const safe = safeDiagnostic(`${result.stdout}${result.stderr}`);
+  await mkdir(evidence, { recursive: true });
+  await writeFile(resolve(evidence, `${e2e ? 'e2e' : 'integration'}-diagnostics-${stage}-${stamp}.txt`), `T05 current ${stage} failure; exit=${result.code}; generated=${new Date().toISOString()}\n${safe}\n`, { flag: 'wx' });
+}
 function spawnCapture(program, args, env = process.env, input = 'ignore') {
   const child = spawn(program, args, { cwd: root, env, shell: false, windowsHide: true, stdio: [input, 'pipe', 'pipe'] });
   let stdout = ''; let stderr = '';
@@ -40,13 +60,23 @@ async function prepare() {
   const key = randomBytes(32).toString('base64'); const keyPath = resolve(privateDirectory, 'keys.json');
   await writeFile(keyPath, JSON.stringify({ 't05-fixture': key }), { mode: 0o600 });
   const redis = new URL(local.REDIS_URL); redis.hostname = '127.0.0.1';
+  const rust = await readFile(resolve(root, 'crates/identity-server/tests/t05_accounts.rs'), 'utf8');
+  const browser = await readFile(resolve(root, 'tests/e2e/T05.spec.ts'), 'utf8');
+  fixturePasswords = [
+    ...rust.matchAll(/const SAFE_PASSWORD: &str = "([^"]+)"/gu),
+    ...rust.matchAll(/"password"\s*:\s*"([^"]+)"/gu),
+    ...browser.matchAll(/getByLabel\('密码'[^\n]*?\.fill\('([^']+)'\)/gu),
+  ].map((match) => match[1]);
+  diagnosticEnvironment = { ...process.env, ...local, T05_GENERATED_ENCRYPTION_SECRET: key, T05_SIGNING_PRIVATE_KEY: await readFile(resolve(root, '.local/signing.pem'), 'utf8') };
   return { ...process.env, APP_ENV: 'test', DATABASE_URL: url.toString(), TEST_DATABASE_URL: url.toString(), REDIS_URL: redis.toString(), T05_SIGNING_KEY_FILE: resolve(root, '.local/signing.pem'), T05_ENCRYPTION_KEYS_FILE: keyPath, T05_ACTIVE_ENCRYPTION_KID: 't05-fixture' };
 }
 async function main() {
   const env = await prepare();
+  diagnosticEnvironment = { ...diagnosticEnvironment, ...env };
   const args = ['test', '--package', 'identity-server', '--test', 't05_accounts', '--locked', '--', '--exact', e2e ? 't05_browser_harness' : 't05_real_accounts', '--nocapture'];
   if (!e2e) {
     const result = await command('cargo', args, env);
+    if (result.code !== 0) await preserveFailure('rust', result);
     assert.equal(result.code, 0, 'T05 real integration failed; output suppressed to protect passwords/tokens.');
     assert.match(result.stdout, /1 passed/u); for (const line of result.stdout.split('\n')) if (line.startsWith('PASS T05')) lines.push(line);
   } else {
@@ -58,12 +88,12 @@ async function main() {
         if (harness.child.exitCode !== null) break;
         await new Promise((resolveDelay) => setTimeout(resolveDelay, 100));
       }
+      if (!ready) await preserveFailure('startup', { code: harness.child.exitCode ?? 1, stdout: harness.output(), stderr: '' });
       assert.ok(ready, 'T05 browser harness failed to start (diagnostics suppressed).');
       const result = await command(process.execPath, [resolve(root, 'node_modules/@playwright/test/cli.js'), 'test', '--config', 'tests/e2e/playwright.config.ts', '--grep', '@T05'], { ...env, IDENTITY_API_PROXY: 'http://127.0.0.1:5191' });
       if (result.code !== 0) {
         // Scrub transient diagnostics before persisting a failure report.
-        const safe = `${result.stdout}${result.stderr}`.replace(/#token=[A-Za-z0-9_-]+/gu, '#token=[REDACTED]').replace(/\b[A-Za-z0-9_-]{43}\b/gu, '[REDACTED]').replace(/[A-Za-z0-9_.+-]+@example\.test/gu, '[EMAIL]').replace(/Browser fixture unique passphrase 89431/gu, '[PASSWORD]');
-        await writeFile(resolve(evidence, 'e2e-diagnostics-sanitized.txt'), safe);
+        await preserveFailure('browser', result);
       }
       assert.equal(result.code, 0, 'T05 browser checks failed; private details suppressed.');
       const passedMatch = /(?:^|\n)\s*(\d+) passed\b/u.exec(result.stdout);
@@ -72,6 +102,7 @@ async function main() {
       lines.push('PASS T05 real UI registration, Mailpit link, GET safety, confirmation and resend workflow');
     } finally {
       harness.child.stdin?.end('stop\n'); const result = await harness.completion;
+      if (result.code !== 0) await preserveFailure('cleanup', result);
       assert.equal(result.code, 0, 'T05 harness cleanup failed; diagnostics suppressed.');
     }
   }

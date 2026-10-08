@@ -1,0 +1,8 @@
+T05 real account/SMTP integration 2026-10-08T18:47:49.095Z
+PASS T05-MAIL-01 real register/outbox/Mailpit delivery; GET does not consume; confirmation single-use; no session; payload cleared
+PASS T05-MAIL-02 resend invalidates old action; new action can confirm exactly once
+PASS T05-MAIL-04 existing/unknown unified202 body; account mail cap retains202 and does not expose existence
+PASS T05 negative boundaries: weak/extra input, expiry/purpose, disabled state, no extra mail and forced audit rollback
+PASS T05-MAIL-03 actual SMTP stop retains outbox/retry; dependency restored and explicit retry timestamp delivers without expiry sleep
+Completed 2026-10-08T18:48:06.828Z
+Exit code 0
