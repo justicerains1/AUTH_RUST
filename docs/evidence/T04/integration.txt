@@ -1,4 +1,4 @@
-T04 security primitives; real dependencies; 2026-10-08T12:57:31.229Z
+T04 security primitives; real dependencies; 2026-10-08T13:43:35.636Z
 PASS T04 current session/credential-version CSRF authority; preauth cannot bypass; audit failure rolls back security mutation
 PASS T04 HTTPS __Host/Secure/HttpOnly/Path preauth flags and valid session CSRF rotation; no login business claim
 PASS T04-SEC-02 CSRF/Origin/body limit/safe errors and untrusted forwarding header; temporary fixture only
@@ -8,5 +8,5 @@ PASS T04-SEC-04 real AEAD wrong AAD/key/ciphertext rejected; full crypto boundar
 PASS T04 durable preauth expiry enforced at explicit database timestamp; no expiry sleep
 PASS T04-SEC-03 stopped real Redis: limiter and preauth HTTP fail 503; no authentication bypass
 PASS T04 stopped real PostgreSQL: preauth persistence unavailable returns503 with safe envelope
-Completed 2026-10-08T12:57:48.320Z
+Completed 2026-10-08T13:43:53.229Z
 Exit code 0

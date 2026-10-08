@@ -1,4 +1,4 @@
-T07 real password integration 2026-10-08T13:33:43.529Z
+T07 real password integration 2026-10-08T13:44:45.079Z
 PASS T07-PWD-01 actual reset SMTP/GET safety/new password; all old sessions and derived grants/tokens revoked; no automatic login; notice delivered/cleared
 PASS T07-PWD-02 ten synchronized real reset requests produce one success; verification-purpose token cannot reset password
 PASS T07-PWD-03 real reset retains TOTP and existing Passkey; new password yields limited MFA challenge, never ordinary session
@@ -6,5 +6,5 @@ PASS T07-PWD-04 password change requires same-session recent password proof; exa
 PASS T07 forced audit failure rolls back hash/action/session revocation and notification transaction
 PASS T07 reset request existing/unknown uniform202; sensitive credentials never in test output
 PASS T07-E08 actual TOTP enrollment survives real Mailpit reset; both sessions and grant/access/refresh revoked immediately; new password remains MFA-limited until original factor completes a fresh step; no automatic login
-Completed 2026-10-08T13:34:40.590Z
+Completed 2026-10-08T13:45:48.824Z
 Exit code 0

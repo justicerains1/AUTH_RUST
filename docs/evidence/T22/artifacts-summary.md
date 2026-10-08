@@ -20,3 +20,6 @@
 - Compose验证副本只把未提供production.env替成已有本地env用于`config --quiet`，退出0；未运行生产Compose或向外部域名发部署操作。
 
 这些只证明制品构建和配置有效，不证明TLS真实申请、SMTP生产投递、备份/WAL恢复、轮换或告警可达。真实发布应使用版本镜像digest、受控秘密权限和独立备份，按 [single-host-deployment.md](../../runbooks/single-host-deployment.md) 顺序执行。
+
+
+最新制品已从提交1c0c9ea重新归档构建并按完整权限约束实测，runtime六命令及Caddy启动通过，见[T23最终镜像](../T23/final-artifacts.md)。上述早期摘要继续只代表历史快照；生产部署和注册表发布仍未执行。

@@ -12,4 +12,6 @@
 
 本干净结果仍只标实际执行的319f30c提交，不能声称最终SHA本身在该worktree执行了七stage。edge最终镜像的源码归档构建与规定运行限制见 [独立制品报告](../final-artifacts.md)，不从本机release/dist校验推定相同镜像digest。最终提交的全部harness/E2E/安全回归由根最新完整运行报告另行记录。
 
+随后补齐 E08 同一 MFA 用户重置、E12 错误 nonce 与 E16 同一用户禁用后的凭证组合，最终测试提交为 `bc742d10368d8255e3e54cb56539ad207cbb527b`。[新 Git 对照](source-equivalence-319f30c-bc742d1.json) 确认生产 Rust/前端/锁文件/迁移/data仍相同，T07/T13/T14测试harness、T07/T13入口、T13 E2E及T11互操作测试已变化。新增案例已分别真实局部执行：E12 用同一实际兑换的有效RS256响应，错误expectedNonce准确nonce claim拒绝后正确nonce成功；E16 先证实同一fresh access/refresh active，再实际管理员禁用后拒绝同会话、两原token与current refresh，且无新token。它们不由此前319f30c干净测试或更早全套结果推定通过；包含全部新增测试的最终完整运行按根报告记录，本次只读审计时尚在运行，随后bc742d1最终完整十一阶段于2026-10-08T13:56:28Z全0，见[永久全量结果](../../full-test/2026-10-08T13-41-49-384Z.md)。
+
 这是安装/静态/单元/构建子模块通过，不等于完整 T23、远端 CI 或生产发布。根的完整 integration/e2e/security/accessibility/fault 为独立运行；真实 Passkey、五类浏览器人工矩阵、正式生产域名/邮件/独立恢复/密钥分发/告警和24小时高峰观察仍按 [剩余验收](../remaining-verification.md) 执行。

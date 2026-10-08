@@ -778,7 +778,7 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 
 | 案例 | 前置状态 | 操作步骤 | 预期结果 | 实际结果 | 状态 | 证据 |
 |---|---|---|---|---|---|---|
-| T20-AUDIT-01 | 全部服务 | 运行威胁矩阵与安全测试 | 关键场景全过，确认 High/Critical 为零 | 第三轮完整11阶段全0（0f190e6干净起点），前两轮失败留存；E08/E12/E16组合已补测0，含新案例完整回归待执行，原前置/发布未放行 | 失败 | [汇总](docs/evidence/T20/cross-module-summary.md)、[真实记录](docs/evidence/T20/test-summary.md) |
+| T20-AUDIT-01 | 全部服务 | 运行威胁矩阵与安全测试 | 关键场景全过，确认 High/Critical 为零 | bc742d1干净起点完整11阶段全0，18集成/11E2E/6安全均0，包含E08/E12/E16新增组合；原前置/生产未放行 | 通过 | [汇总](docs/evidence/T20/cross-module-summary.md)、[真实记录](docs/evidence/T20/test-summary.md) |
 | T20-AUDIT-02 | 真实依赖 | 停止并恢复各依赖 | 无认证旁路，邮件不丢 | 本次T04/T05/T12真实PG/Redis/SMTP停机恢复均0，失败关闭/outbox重试且healthy | 通过 | [汇总](docs/evidence/T20/cross-module-summary.md)、[真实记录](docs/evidence/T20/test-summary.md) |
 | T20-AUDIT-03 | 独立客户端 | 完成协议验证和非法 token 测试 | 互操作通过，非法声明拒绝 | 成熟OIDC/JOSE已有真实互操作，新跨模块clientrotation/code/user/RP绑定四场景0，未宣称官方认证 | 通过 | [汇总](docs/evidence/T20/cross-module-summary.md)、[真实记录](docs/evidence/T20/test-summary.md) |
 
@@ -791,16 +791,16 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 - [x] T20.05：真实停止 PG/Redis/SMTP，验证失败关闭或 outbox 重试。
 - [x] T20.06：ZAP 对测试站点 authenticated/unauthenticated 扫描，禁止攻击生产。
 - [x] T20.07：运行维护中 OIDC client 互操作；能运行 OpenID conformance suite 则记录实际模块，未认证不得宣称认证。
-- [ ] T20.08：高危/严重问题全部修复再复测；残留低/中风险明确影响和是否阻塞。
+- [x] T20.08：高危/严重问题全部修复再复测；残留低/中风险明确影响和是否阻塞。
 
 **验收记录：**
 
-- 代码版本：本次安全模块Git提交（父10067a5）。
+- 代码版本：最终自动回归bc742d1，历史模块及失败修复记录保留。
 - 环境与时间：2026-10-08 Linux/Rust1.98/Node22、PG17/Redis7.4/Mailpit、ZAP2.17.0/Gitleaks8.30.1/cargo-deny0.20.2。
-- 命令退出码：历史六阶段security为0；首次完整test:full于2026-10-08T12:29Z实际退出1，11阶段全部运行；修复后unit/check、T13/T19真实流程及T22集成0，第二完整回归仅T13旧组合集成退出1，后续新六case E2E、安全、accessibility/build均0；最终复跑待执行。
-- 失败/阻塞项：原ZAP/私有工具lint/worker审计DTO及本次测试夹具/故障恢复/秘密误报已修；第三轮完整11阶段全0，必要组合已补测0，含新案例完整回归待执行，T18设备前置与参考性能/生产条件未放行。
+- 命令退出码：历史六阶段security为0；首次完整test:full于2026-10-08T12:29Z实际退出1，11阶段全部运行；修复后unit/check、T13/T19真实流程及T22集成0，第二完整回归仅旧T13组合集成1；0f190e6与最终bc742d1完整11阶段均0，最终完成2026-10-08T13:56:28Z。
+- 失败/阻塞项：原ZAP/私有工具lint/worker审计DTO及本次测试夹具/故障恢复/秘密误报已修；最终完整11阶段均0且含新增组合；T18设备前置与参考性能/生产条件未放行。
 - 修复与复测：[T20记录](docs/evidence/T20/test-summary.md)、[威胁映射](docs/evidence/T20/cross-module-summary.md)、[ZAP分诊](docs/evidence/T20/zap/triage.md)。
-- 任务结论：待验收（首次完整回归失败证据保留，修复后复跑中，原前置未放行）。
+- 任务结论：待验收（本地完整自动检查通过，原设备前置及生产必要条件未放行）。
 
 
 ### T21 — 性能、容量和交互优化
@@ -826,7 +826,7 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 - [ ] T21.06：监测 API/PG/Redis CPU/内存/连接池/排队，定位瓶颈后只优化相关路径。
 - [x] T21.07：按固定移动设备网络跑至少五次前端测量，报告体积、LCP/CLS 与交互。
 - [x] T21.08：保留失败原始报告，修复后重测；不改阈值掩盖失败。
-- [ ] T21.09：记录容量边界及何时拆分数据库/增加 API/降低外部流量，禁止凭空保证无限扩容。
+- [x] T21.09：记录容量边界及何时拆分数据库/增加 API/降低外部流量，禁止凭空保证无限扩容。
 
 **验收记录：**
 
@@ -834,7 +834,7 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 - 环境与时间：2026-10-08 WSL2Linux/Ryzen7700X16logical/15.217GiB，同机k6/API/PG/Redis，不匹配8vCPU参考。
 - 命令退出码：四场完整k6退出0、准确目标counts，phase边界单元/Clippy/ESLint0；前端完整测量0。
 - 失败/阻塞项：状态首次560/第二15drops未通过，测试负载器修复后完整重测0；参考硬件/完整容量/原T20前置未验。
-- 修复与复测：[四场及前端结果](docs/evidence/T21/test-summary.md)、[负载方法](docs/evidence/T21/load-method.md)、[前端方法](docs/evidence/T21/frontend-measurement.md)。
+- 修复与复测：[四场及前端结果](docs/evidence/T21/test-summary.md)、[容量与热SQL边界](docs/evidence/T21/capacity-and-query-boundaries.md)、[负载方法](docs/evidence/T21/load-method.md)、[前端方法](docs/evidence/T21/frontend-measurement.md)。
 - 任务结论：待验收（本机四个完整实验通过，参考环境/完整容量与前置未放行）。
 
 
@@ -885,29 +885,29 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 
 | 案例 | 前置状态 | 操作步骤 | 预期结果 | 实际结果 | 状态 | 证据 |
 |---|---|---|---|---|---|---|
-| T23-REL-01 | 干净环境 | 完整安装/测试/构建 | 全套真实检查成功，无 skipped 关键测试 | 首两轮失败留证；319f30c干净7阶段均0、53制品SHA一致；0f190e6第三完整11阶段均0，必要组合/外部条件仍未放行 | 失败 | [完整报告](TEST_SUMMARY.md)、[干净首轮](docs/evidence/T23/clean-checkout/2026-10-08T12-11-26-363Z.md) |
+| T23-REL-01 | 干净环境 | 完整安装/测试/构建 | 全套真实检查成功，无 skipped 关键测试 | 首两轮失败留证；319f30c干净7阶段0/53制品SHA一致；最终bc742d1含新增组合完整11阶段0，源码一致范围明确 | 通过 | [完整报告](TEST_SUMMARY.md)、[干净验证与历史失败](docs/evidence/T23/clean-checkout/test-summary.md) |
 | T23-REL-02 | 五类浏览器 | 完整主要流程、键盘与 reduced-motion | 无阻塞体验问题 | Chromium真实自动化/四宽axe已有证据；实体Passkey及五类浏览器人工矩阵未准备 | 阻塞 | [剩余条件](docs/evidence/T23/remaining-verification.md) |
 | T23-REL-03 | 生产部署 | 冒烟并观察 24 小时/高峰 | 认证/撤销/邮件健康，指标无异常 | 用户明确生产域名/主机/SMTP/独立备份暂未准备；未部署、未开始24小时观察 | 阻塞 | [运维审计](docs/evidence/T23/ops-release-audit.md)、[剩余条件](docs/evidence/T23/remaining-verification.md) |
 
 **实现子步骤检查：**
 
 - [x] T23.01：从干净 checkout/锁文件安装构建，不依赖开发机缓存秘密。
-- [ ] T23.02：跑全部 check/unit/integration/e2e/security/accessibility，核对必要证据。
+- [x] T23.02：跑全部 check/unit/integration/e2e/security/accessibility，核对必要证据。
 - [ ] T23.03：手测当前稳定 Chrome/Firefox/Safari、移动 Safari/Chrome，真实 Passkey 至少一组。
 - [ ] T23.04：检查生产禁用调试/seed、按钮无占位、邮件/回调/错误页真实有效。
 - [ ] T23.05：确认域名、SMTP、独立备份、恢复演练及监控全部可用。
-- [ ] T23.06：检查 High/Critical 为零，未解决项写明风险/影响；关键场景未通过则禁止发布。
-- [ ] T23.07：生成版本、构建制品校验、变更说明、部署与 rollback 指令。
+- [x] T23.06：检查 High/Critical 为零，未解决项写明风险/影响；关键场景未通过则禁止发布。
+- [x] T23.07：生成版本、构建制品校验、变更说明、部署与 rollback 指令。
 - [ ] T23.08：部署后冒烟：注册→验证→密码/MFA/Passkey→A/B SSO→全部退出→禁用检查。
 - [ ] T23.09：上线观察至少 24 小时及一个实际业务高峰；异常按 runbook 回滚，不删除证据。
 
 **验收记录：**
 
-- 代码版本：首轮add1400；修复7a6e203/946dbb0/319f30c/1c0c9ea，最终报告记录实际SHA。
+- 代码版本：最终完整测试bc742d1；实际干净构建319f30c、最终镜像1c0c9ea，生产源码/锁一致性另记录，测试变化由最终整套执行。
 - 环境与时间：2026-10-08 UTC，WSL2Linux/Rust1.98.0/Node22.22.1、PG17/Redis7.4/Mailpit/Chromium；生产未部署。
-- 命令退出码：首轮干净checkout7阶段overall1（unit1，其余0）；319f30c第二干净七阶段全0；首轮完整test:full整体1（unit/integration/e2e/security1，其余0），第二完整复跑整体1（仅旧T13组合集成1）；0f190e6第三完整11阶段均0，必要组合补测后需新完整结果。
+- 命令退出码：首轮干净checkout7阶段overall1（unit1，其余0）；319f30c第二干净七阶段全0；首轮完整test:full整体1（unit/integration/e2e/security1，其余0），第二完整复跑整体1（仅旧T13组合集成1）；0f190e6第三完整11阶段0；bc742d1最终含新增组合完整11阶段0，18集成/11E2E/6安全均0，完成2026-10-08T13:56:28Z。
 - 失败/阻塞项：首次失败已定位修复并保留证据；实体设备/五浏览器、参考性能/容量、生产域名/SMTP/独立恢复/告警与24小时观察未验。
-- 修复与复测：[测试修复](docs/evidence/tooling/final-regression-fixtures/test-summary.md)、[运维修复](docs/evidence/T23/ops-repair-summary.md)、[Caddy权限](docs/evidence/tooling/caddy-capabilities/test-summary.md)；最终完整复跑结果另记录。
+- 修复与复测：[测试修复](docs/evidence/tooling/final-regression-fixtures/test-summary.md)、[运维修复](docs/evidence/T23/ops-repair-summary.md)、[Caddy权限](docs/evidence/tooling/caddy-capabilities/test-summary.md)；[最终完整结果](TEST_SUMMARY.md)、[版本/制品与部署回滚说明](docs/release-notes.md)。
 - 任务结论：待验收（独立本地检查及制品已推进，生产发布/原前置未放行）。
 
 ### T24 — 后续高可用升级
@@ -945,38 +945,39 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 
 ## 5. 跨任务端到端验收矩阵
 
-这些案例在 T23 完整回归，并在相关任务提前执行。每项必须保存后端结果及必要的 UI 证据。
+2026-10-08最终bc742d1完整回归实际全0。下表“通过”仅指文档要求的本地HTTP/数据库/自动浏览器断言；生产域名、真实邮件与外部设备仍另有发布关卡。E09/E20/E21/E22/E23缺完整实体/生产/人工条件保持阻塞，不把局部结果放行。每项具体测试、实际证明和限制见[E01～E28映射](docs/evidence/T23/e2e-release-matrix.md)，最终报告见[TEST_SUMMARY](TEST_SUMMARY.md)。
 
 | 编号 | 操作 | 预期 | 关联任务 | 当前 |
 |---|---|---|---|---|
-| E01 | 注册→收信→点击确认→登录 | 验证前拒绝、验证后成功 | T05/T06/T17 | 未执行 |
-| E02 | 已有/不存在邮箱注册与找回 | 响应不泄露存在性 | T04/T05/T07 | 未执行 |
-| E03 | 连续错误登录及伪造代理 | 限流有效，不能绕过 IP 预算 | T04/T20 | 未执行 |
-| E04 | 旧预认证 Cookie→成功登录 | 会话/CSRF 轮换，事务安全迁移 | T06/T10 | 未执行 |
-| E05 | TOTP 开启后密码登录 | 第二因素前无普通会话 | T08 | 未执行 |
-| E06 | 同 TOTP 时间步重复提交 | 最多一次成功 | T08 | 未执行 |
-| E07 | 同恢复码并发消费 | 最多一次成功 | T08 | 未执行 |
-| E08 | 邮箱重置 MFA 账号 | 新密码生效，MFA 保留，全会话失效 | T07/T08 | 未执行 |
-| E09 | 真实 Passkey 注册与登录 | UV 成功后强认证 | T09 | 未执行 |
-| E10 | 错 origin/无 UV/重复 challenge | 拒绝，不签发会话 | T09 | 未执行 |
-| E11 | 登录 A→访问 B | SSO 复用，首次同意按规则 | T13 | 未执行 |
-| E12 | 换回调/verifier/client/nonce | 标准拒绝，不能窃取授权 | T10/T11 | 未执行 |
-| E13 | 同 code 并发交换 | 仅一个成功 | T11 | 未执行 |
-| E14 | 重用轮换前 refresh | 家族撤销且提交保留 | T12 | 未执行 |
-| E15 | 全设备退出→访问 A/B | 下一次身份检查无效 | T12/T13 | 未执行 |
-| E16 | 管理员禁用→旧凭证/刷新 | 立即拒绝，不发新 token | T12/T14 | 未执行 |
-| E17 | 普通用户请求 admin API | 403，无敏感数据 | T14/T19 | 未执行 |
-| E18 | introspection 数据服务故障 | BFF 保护请求 503，无旁路 | T12/T13/T20 | 未执行 |
-| E19 | SMTP 故障后恢复 | outbox 重试，不丢动作 | T05/T22 | 未执行 |
-| E20 | 独立主机备份恢复 | 数据与密钥可用，实际 RPO/RTO | T22 | 未执行 |
-| E21 | 签名及 AEAD 密钥轮换 | 新正常、旧窗口兼容、TOTP 不丢 | T22 | 未执行 |
-| E22 | 键盘/屏幕阅读器/reduced-motion | 关键流程可完成，不依赖动效 | T16～T19 | 未执行 |
-| E23 | 手机完整注册/MFA/Passkey | 无布局阻塞，输入与返回正确 | T17/T23 | 未执行 |
-| E24 | GET 邮件链接/退出地址 | GET 不消费、不撤销 | T05/T07/T12 | 未执行 |
-| E25 | 用户撤销与刷新并发 | 撤销提交后无新有效凭证 | T12/T20 | 未执行 |
-| E26 | token 跨客户端 introspect/revoke | 不泄露、不越权撤销 | T12 | 未执行 |
-| E27 | 删除/禁用最后管理员 | 拒绝并保持可管理状态 | T14 | 未执行 |
-| E28 | 生产弱配置/开发 seed | 拒绝启动/运行 | T01/T03/T23 | 未执行 |
+| E01 | 注册→收信→点击确认→登录 | 验证前拒绝、验证后成功 | T05/T06/T17 | 通过 |
+| E02 | 已有/不存在邮箱注册与找回 | 响应不泄露存在性 | T04/T05/T07 | 通过 |
+| E03 | 连续错误登录及伪造代理 | 限流有效，不能绕过 IP 预算 | T04/T20 | 通过 |
+| E04 | 旧预认证 Cookie→成功登录 | 会话/CSRF 轮换，事务安全迁移 | T06/T10 | 通过 |
+| E05 | TOTP 开启后密码登录 | 第二因素前无普通会话 | T08 | 通过 |
+| E06 | 同 TOTP 时间步重复提交 | 最多一次成功 | T08 | 通过 |
+| E07 | 同恢复码并发消费 | 最多一次成功 | T08 | 通过 |
+| E08 | 邮箱重置 MFA 账号 | 新密码生效，MFA 保留，全会话失效 | T07/T08 | 通过 |
+| E09 | 真实 Passkey 注册与登录 | UV 成功后强认证 | T09 | 阻塞 |
+| E10 | 错 origin/无 UV/重复 challenge | 拒绝，不签发会话 | T09 | 通过 |
+| E11 | 登录 A→访问 B | SSO 复用，首次同意按规则 | T13 | 通过 |
+| E12 | 换回调/verifier/client/nonce | 标准拒绝，不能窃取授权 | T10/T11 | 通过 |
+| E13 | 同 code 并发交换 | 仅一个成功 | T11 | 通过 |
+| E14 | 重用轮换前 refresh | 家族撤销且提交保留 | T12 | 通过 |
+| E15 | 全设备退出→访问 A/B | 下一次身份检查无效 | T12/T13 | 通过 |
+| E16 | 管理员禁用→旧凭证/刷新 | 立即拒绝，不发新 token | T12/T14 | 通过 |
+| E17 | 普通用户请求 admin API | 403，无敏感数据 | T14/T19 | 通过 |
+| E18 | introspection 数据服务故障 | BFF 保护请求 503，无旁路 | T12/T13/T20 | 通过 |
+| E19 | SMTP 故障后恢复 | outbox 重试，不丢动作 | T05/T22 | 通过 |
+| E20 | 独立主机备份恢复 | 数据与密钥可用，实际 RPO/RTO | T22 | 阻塞 |
+| E21 | 签名及 AEAD 密钥轮换 | 新正常、旧窗口兼容、TOTP 不丢 | T22 | 阻塞 |
+| E22 | 键盘/屏幕阅读器/reduced-motion | 关键流程可完成，不依赖动效 | T16～T19 | 阻塞 |
+| E23 | 手机完整注册/MFA/Passkey | 无布局阻塞，输入与返回正确 | T17/T23 | 阻塞 |
+| E24 | GET 邮件链接/退出地址 | GET 不消费、不撤销 | T05/T07/T12 | 通过 |
+| E25 | 用户撤销与刷新并发 | 撤销提交后无新有效凭证 | T12/T20 | 通过 |
+| E26 | token 跨客户端 introspect/revoke | 不泄露、不越权撤销 | T12 | 通过 |
+| E27 | 删除/禁用最后管理员 | 拒绝并保持可管理状态 | T14 | 通过 |
+| E28 | 生产弱配置/开发 seed | 拒绝启动/运行 | T01/T03/T23 | 通过 |
+
 
 ## 6. 浏览器与交互验收
 
@@ -994,15 +995,15 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 
 | 项目 | 门槛 | 实际 | 结果 | 证据 |
 |---|---|---|---|---|
-| introspection | 300 RPS/15 分钟；p95≤100ms、p99≤250ms | 待测 | 未执行 | 待提供 |
-| 普通账号查询 | 100 RPS；p95≤200ms | 待测 | 未执行 | 待提供 |
-| 密码登录 | 5 RPS；p95≤1s | 待测 | 未执行 | 待提供 |
-| 综合 | 300+50+5 RPS；非预期 5xx<0.1% | 待测 | 未执行 | 待提供 |
-| 登录 JS gzip | ≤200KiB | 待测 | 未执行 | 待提供 |
-| 首页 JS gzip | ≤300KiB | 待测 | 未执行 | 待提供 |
-| 移动冷加载 | LCP≤2.5s、CLS≤0.1 | 待测 | 未执行 | 待提供 |
-| 本地反馈/实验室交互 | ≤100ms / p75≤200ms | 待测 | 未执行 | 待提供 |
-| 生产 RUM INP | 样本充足后 p75≤200ms | 待测 | 未执行 | 待提供 |
+| introspection | 300 RPS/15 分钟；p95≤100ms、p99≤250ms | 本机270000请求/900s、p95=4ms/p99=5ms、drop0；参考硬件不同 | 阻塞 | [本机四场](docs/evidence/T21/load-summary.md) |
+| 普通账号查询 | 100 RPS；p95≤200ms | 本机90000请求/900s、p95=1ms、drop0；参考硬件不同 | 阻塞 | [本机四场](docs/evidence/T21/load-summary.md) |
+| 密码登录 | 5 RPS；p95≤1s | 本机4500请求/900s、CSRF+POST p95=132ms、drop0；参考硬件不同 | 阻塞 | [本机四场](docs/evidence/T21/load-summary.md) |
+| 综合 | 300+50+5 RPS；非预期 5xx<0.1% | 本机319500请求/900s、错误/drop/正常429=0；p95=5/2/157ms；参考硬件不同 | 阻塞 | [资源/容量边界](docs/evidence/T21/capacity-and-query-boundaries.md) |
+| 登录 JS gzip | ≤200KiB | 151.79KiB | 通过 | [固定前端实验](docs/evidence/T21/frontend-measurement.md) |
+| 首页 JS gzip | ≤300KiB | 149.17KiB | 通过 | [固定前端实验](docs/evidence/T21/frontend-measurement.md) |
+| 移动冷加载 | LCP≤2.5s、CLS≤0.1 | 固定Chrome/390×844/CPU4x/指定网络各5次：首页/登录LCP1624/1632ms、CLS0 | 通过 | [实际报告](docs/evidence/T21/frontend-2026-10-08T08-04-18-937Z.json) |
+| 本地反馈/实验室交互 | ≤100ms / p75≤200ms | 指定反馈本地max31.1ms、实验室p75max30.1ms；不当生产RUM | 通过 | [方法/范围](docs/evidence/T21/frontend-measurement.md) |
+| 生产 RUM INP | 样本充足后 p75≤200ms | 无生产部署或足量RUM样本 | 阻塞 | [剩余条件](docs/evidence/T23/remaining-verification.md) |
 
 固定数据/硬件/浏览器/网络条件见 plan.md。必须同时记录 CPU、内存、hash 参数、连接池和错误分类。令牌池过期、压测客户机饱和、额外网络延迟应说明，不能删掉失败样本。
 
