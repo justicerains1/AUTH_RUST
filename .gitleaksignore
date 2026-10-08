@@ -85,3 +85,7 @@ c0230e29332eee164d1c0a1aa6a95efcb29411cd:docs/evidence/T21/sql-probe-2026-10-08T
 c0230e29332eee164d1c0a1aa6a95efcb29411cd:docs/evidence/T21/sql-probe-2026-10-08T16-26-52-869Z.json:generic-api-key:4550
 c0230e29332eee164d1c0a1aa6a95efcb29411cd:docs/evidence/T21/sql-probe-2026-10-08T17-01-50-867Z.json:generic-api-key:4617
 c0230e29332eee164d1c0a1aa6a95efcb29411cd:docs/evidence/T21/sql-probe-2026-10-08T17-01-50-867Z.json:generic-api-key:4622
+
+# Reviewed second capacity report public integrity digests.
+2c9c712c4fb83ebbb5d7e59fd97fcf9ef3b8777c:docs/evidence/T21/load-capacity-2026-10-08T17-04-23-472Z-failure.json:generic-api-key:56996
+2c9c712c4fb83ebbb5d7e59fd97fcf9ef3b8777c:docs/evidence/T21/load-capacity-2026-10-08T17-04-23-472Z-failure.json:generic-api-key:57002

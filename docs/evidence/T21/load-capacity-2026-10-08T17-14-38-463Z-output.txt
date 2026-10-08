@@ -1,0 +1,1 @@
+time="2026-10-09T01:22:53+08:00" level=error msg="thresholds on metrics 'capacity_requests{endpoint:introspection,multiplier:8}, capacity_unexpected_errors{endpoint:password,multiplier:8}, dropped_iterations' have been crossed"
