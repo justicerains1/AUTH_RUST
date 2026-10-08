@@ -1,0 +1,63 @@
+
+Running 2 tests using 1 worker
+FF
+
+  1) tests/e2e/T12.spec.ts:5:1 › @T12 account grants can be revoked through an explicit confirmation
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('还没有授权应用', { exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText('还没有授权应用', { exact: true }) with timeout 5000ms
+      - waiting for getByText('还没有授权应用', { exact: true })
+
+
+      4 |
+      5 | test('@T12 account grants can be revoked through an explicit confirmation', async ({ page }) => {
+    > 6 |   await login(page); await grant(page); await page.goto('/me/grants'); await page.getByRole('button', { name: '撤销授权', exact: true }).first().click(); await page.getByRole('dialog').getByRole('button', { name: '确认撤销', exact: true }).click(); await expect(page.getByText('还没有授权应用', { exact: true })).toBeVisible();
+        |                                                                                                                                                                                                                                                                                                           ^
+      7 | });
+      8 | test('@T12 RP logout entry waits for confirmation and supports cancellation', async ({ page }) => {
+      9 |   await login(page); await page.goto('/oauth/logout'); await expect(page).toHaveURL(/\/logout\?confirmation=[0-9a-f-]{36}$/u); await page.getByRole('button', { name: '取消', exact: true }).click(); await page.goto('/me'); await expect(page).toHaveURL(/\/me$/u);
+        at /root/code/rust/auth_rust/tests/e2e/T12.spec.ts:6:299
+
+    Error Context: .local/t12-browser-results/[OPAQUE]/error-context.md
+
+  2) tests/e2e/T12.spec.ts:8:1 › @T12 RP logout entry waits for confirmation and supports cancellation
+
+    Error: expect(page).toHaveURL(expected) failed
+
+    Expected pattern: /\/logout\?confirmation=[0-9a-f-]{36}$/u
+    Received string:  "http://localhost:5190/oauth/logout"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toHaveURL" with timeout 5000ms
+        14 × locator resolved to <html>…</html>
+           - unexpected value "http://localhost:5190/oauth/logout"
+
+
+       7 | });
+       8 | test('@T12 RP logout entry waits for confirmation and supports cancellation', async ({ page }) => {
+    >  9 |   await login(page); await page.goto('/oauth/logout'); await expect(page).toHaveURL(/\/logout\?confirmation=[0-9a-f-]{36}$/u); await page.getByRole('button', { name: '取消', exact: true }).click(); await page.goto('/me'); await expect(page).toHaveURL(/\/me$/u);
+         |                                                                           ^
+      10 |   await page.goto('/oauth/logout'); await page.getByRole('button', { name: '确认退出', exact: true }).click(); await expect(page).toHaveURL(/\/login$/u); await page.goto('/me'); await expect(page).toHaveURL(/\/login$/u);
+      11 | });
+      12 |
+        at /root/code/rust/auth_rust/tests/e2e/T12.spec.ts:9:75
+
+    Error Context: .local/t12-browser-results/[OPAQUE]/error-context.md
+
+  2 failed
+    tests/e2e/T12.spec.ts:5:1 › @T12 account grants can be revoked through an explicit confirmation
+    tests/e2e/T12.spec.ts:8:1 › @T12 RP logout entry waits for confirmation and supports cancellation
+[WebServer] (node:1721366) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+(node:1721409) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1721928) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

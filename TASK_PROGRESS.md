@@ -20,7 +20,8 @@
 | T09 | 待验收 | 实现/真实PG策略及2个虚拟签名E2E通过，外部真实设备阻塞；[记录](docs/evidence/T09/test-summary.md) |
 | T10 | 通过 | 受管理client/授权同意、严格PKCE和浏览器绑定；真实API/2E2E通过，[结果](docs/evidence/T10/test-summary.md) |
 | T11 | 通过 | 原子授权码交换、RS256及旧公钥、scope Userinfo、成熟OIDC互操作与真实并发/故障；[结果](docs/evidence/T11/test-summary.md) |
-| T12～T14 | 未开始 | 刷新撤销、BFF SSO、管理 API |
+| T12 | 通过 | 刷新重放家族撤销、权威introspection/RP确认、scope限制、真实并发/故障及2E2E；[结果](docs/evidence/T12/test-summary.md) |
+| T13～T14 | 未开始 | 双BFF SSO、管理API |
 | T15 | 通过 | 官方设计研究、视觉稿与状态规范；用户明确采用方案并进入 T16；[用户确认](docs/evidence/T15/user-review.md) |
 | T16 | 通过 | 设计组件、响应式布局、API/CSRF 客户端、可访问基础路由与保护提示；[结果](docs/evidence/T16/test-summary.md)、[UI 模块记录](docs/evidence/T16/ui-summary.md) |
 | T17～T24 | 未开始 | 完整认证/账号/后台产品页面、全面安全验收、性能、生产部署、发布与高可用 |
@@ -120,7 +121,7 @@ npm run dev:down
 
 `dev:down` 保留开发卷。未实现的任务套件不能返回伪成功；测试库与临时 schema 清理不会指向 production。不要把 `.local`、密码、邮件链接、私钥、token、Cookie 或含这些值的浏览器 trace 提交 Git。
 
-当前T11已完成并推送83d1de3，按前置顺序推进T12刷新/撤销、T13双BFF及T14管理API。T17～T19产品流程整合依赖相应真实后端；T20～T23完成后才能评估生产发布。每个模块验收后提交推送，完整任务结束时生成最终测试总结。
+T11已推送83d1de3；当前T12已完成，提交后推进T13双BFF及T14管理API。T17～T19产品流程整合依赖相应真实后端；T20～T23完成后才能评估生产发布。每个模块验收后提交推送，完整任务结束时生成最终测试总结。
 
 ## 最近完成：T11
 
@@ -129,3 +130,9 @@ npm run dev:down
 ## CI 恢复修复
 
 T01→T03的顺序失败已在本地真实复现并修复：API就绪早于Docker健康探针，恢复结束需等待容器healthy。顺序复测两项退出0；新增脱敏CI诊断保留原检查和失败状态。Windowscheck具体原因仍待下一远端诊断，[结果](docs/evidence/tooling/ci-recovery/test-summary.md)。
+
+WindowsOpenSSL构建前置已按实际MSVC失败诊断修复并推送3a06d16，严格核对官方预装版本及开发库；Windows远端check/unit/build仍等待实测。CI恢复修复39f5b83后远端T03已过，集成继续到T07浏览器失败，仍保留未通过状态。
+
+## 最近完成：T12
+
+刷新轮换/重放审计、scope限制、即时撤销、RP确认、真实PG/Redis停机和2个浏览器流程通过。锁内时间修复覆盖普通退出/密码变化，真实竞争验证及受影响回归通过；[记录](docs/evidence/T12/test-summary.md)。

@@ -288,6 +288,7 @@ impl SecurityState {
             LimitPolicy::Challenge => (30, 60),
             LimitPolicy::Preauth => (30, 60),
             LimitPolicy::Token => (30, 60),
+            LimitPolicy::Status => (60_000, 60),
         };
         budgets.push((
             self.limit_key(&format!("{}:ip", policy.key()), &source.to_string()),
@@ -295,13 +296,15 @@ impl SecurityState {
             seconds,
         ));
         if let Some(account) = account {
-            let normalized = if matches!(policy, LimitPolicy::Token) {
+            let normalized = if matches!(policy, LimitPolicy::Token | LimitPolicy::Status) {
                 account.to_string()
             } else {
                 normalize_email(account).map_err(|_| BoundaryUnavailable)?
             };
             let (limit, seconds) = if matches!(policy, LimitPolicy::Mail) {
                 (3, 3600)
+            } else if matches!(policy, LimitPolicy::Status) {
+                (60_000, 60)
             } else if matches!(policy, LimitPolicy::Token) {
                 (30, 60)
             } else {
@@ -373,6 +376,7 @@ pub enum LimitPolicy {
     Challenge,
     Preauth,
     Token,
+    Status,
 }
 impl LimitPolicy {
     fn key(self) -> &'static str {
@@ -382,6 +386,7 @@ impl LimitPolicy {
             Self::Challenge => "mfa",
             Self::Preauth => "preauth",
             Self::Token => "token",
+            Self::Status => "status",
         }
     }
 }
@@ -644,7 +649,7 @@ async fn browser_boundary(
     let result = async {
         let source = state.source(&request)?;
         request.extensions_mut().insert(TrustedSource(source));
-        if path.starts_with("/api/v1/")
+        if (path.starts_with("/api/v1/") || path == "/oauth/logout/confirm")
             && !matches!(method, Method::GET | Method::HEAD | Method::OPTIONS)
         {
             if unique_header(request.headers(), "origin")

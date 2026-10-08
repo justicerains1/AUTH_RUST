@@ -1,0 +1,52 @@
+
+running 1 test
+test t12_real_revocation ... FAILED
+
+failures:
+
+failures:
+    t12_real_revocation
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1 filtered out; finished in 4.90s
+
+warning: unused imports: `jose::Signer` and `token_digest`
+ --> crates/identity-server/tests/t12_revocation.rs:6:5
+  |
+6 |     jose::Signer,
+  |     ^^^^^^^^^^^^
+7 |     oauth::{Scope, pkce_s256},
+8 |     security::{Password, PasswordService, token_digest},
+  |                                           ^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `repository::Digest`
+  --> crates/identity-server/tests/t12_revocation.rs:15:5
+   |
+15 |     repository::Digest,
+   |     ^^^^^^^^^^^^^^^^^^
+
+warning: function `userinfo` is never used
+   --> crates/identity-server/tests/t12_revocation.rs:347:10
+    |
+347 | async fn userinfo(browser: &Browser, token: &str) -> TestResult<reqwest::Response> {
+    |          ^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: method `get` is never used
+   --> crates/identity-server/tests/t12_revocation.rs:414:14
+    |
+413 | impl Browser {
+    | ------------ method in this implementation
+414 |     async fn get(&self, path: &str) -> TestResult<reqwest::Response> {
+    |              ^^^
+
+warning: `identity-server` (test "t12_revocation") generated 4 warnings (run `cargo fix --test "t12_revocation" -p identity-server` to apply 2 suggestions)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+     Running tests/t12_revocation.rs (target/debug/deps/t12_revocation-83aba55ae1d259b0)
+
+thread 't12_real_revocation' (1710847) panicked at crates/identity-server/tests/t12_revocation.rs:486:5:
+assertion failed: audit > 0
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+error: test failed, to rerun pass `-p identity-server --test t12_revocation`

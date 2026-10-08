@@ -1,0 +1,4 @@
+T12 real OIDC integration 2026-10-07T21:02:17.381Z
+Playwright: 2 passed / 0 failed; real grants and RP logout browser flows.
+Completed 2026-10-07T21:02:32.515Z
+Exit code 0

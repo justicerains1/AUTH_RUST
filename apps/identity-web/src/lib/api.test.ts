@@ -78,3 +78,22 @@ describe('API transport and CSRF boundaries', () => {
     expect(transport).not.toHaveBeenCalled();
   });
 });
+
+describe('RP logout protocol boundaries', () => {
+  it('uses the fixed protocol path, invalidates CSRF on403 and does not replay automatically', async () => {
+    let csrfCalls = 0; let confirms = 0;
+    const transport = vi.fn<typeof fetch>().mockImplementation((input) => {
+      if (inputPath(input).endsWith('/csrf')) { csrfCalls += 1; return Promise.resolve(json({ csrf_token: token })); }
+      confirms += 1;
+      return Promise.resolve(confirms === 1 ? json({ error: 'invalid_request' }, 403, { 'X-Request-ID': 'c09d1bb5-0018-4f9b-8d39-3f48e22f3007', 'Retry-After': '60' }) : json({ status: 'completed', redirect_to: null }));
+    });
+    const client = new ApiClient(transport);
+    const result = z.object({ status: z.literal('completed'), redirect_to: z.string().nullable() });
+    const body = { confirmation_id: 'c09d1bb5-0018-4f9b-8d39-3f48e22f3007', decision: 'logout' as const };
+    await expect(client.requestProtocol('/oauth/logout/confirm', result, body)).rejects.toMatchObject({ code: 'invalid_request', status: 403, retryAfter: 60, requestId: body.confirmation_id });
+    expect(confirms).toBe(1);
+    await client.requestProtocol('/oauth/logout/confirm', result, body);
+    expect(csrfCalls).toBe(2);
+    expect(inputPath(transport.mock.calls[1]?.[0] ?? '')).toBe('/oauth/logout/confirm');
+  });
+});

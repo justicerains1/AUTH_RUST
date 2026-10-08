@@ -10729,7 +10729,7 @@
             }
           }
         },
-        "x-implementation-status": "planned",
+        "x-implementation-status": "implemented",
         "x-task": "T12",
         "x-auth-level": "authenticated",
         "x-auth-policy": "有效且邮箱已验证/账号active的当前身份会话，每次读取权威状态。",
@@ -11036,7 +11036,7 @@
             }
           }
         },
-        "x-implementation-status": "planned",
+        "x-implementation-status": "implemented",
         "x-task": "T12",
         "x-auth-level": "authenticated",
         "x-auth-policy": "有效且邮箱已验证/账号active的当前身份会话，每次读取权威状态。",
@@ -15474,7 +15474,7 @@
             }
           }
         },
-        "x-implementation-status": "planned",
+        "x-implementation-status": "implemented",
         "x-task": "T11",
         "x-auth-level": "public",
         "x-auth-policy": "公开元数据或已预注册client请求；回调完整精确验证前不得回跳。",
@@ -15606,7 +15606,7 @@
             }
           }
         },
-        "x-implementation-status": "planned",
+        "x-implementation-status": "implemented",
         "x-task": "T11",
         "x-auth-level": "public",
         "x-auth-policy": "公开元数据或已预注册client请求；回调完整精确验证前不得回跳。",
@@ -16252,7 +16252,7 @@
             }
           }
         },
-        "x-implementation-status": "planned",
+        "x-implementation-status": "implemented",
         "x-task": "T11",
         "x-auth-level": "oidc-client",
         "x-auth-policy": "仅预注册机密BFF client_secret_basic，未知或停用client拒绝，token归属本client。",
@@ -16490,7 +16490,7 @@
             }
           }
         },
-        "x-implementation-status": "planned",
+        "x-implementation-status": "implemented",
         "x-task": "T11",
         "x-auth-level": "authenticated",
         "x-auth-policy": "Bearer不透明access token；每次读取PG权威user/session/grant/client/token状态，不用active缓存。",
@@ -16681,7 +16681,7 @@
             }
           }
         },
-        "x-implementation-status": "planned",
+        "x-implementation-status": "implemented",
         "x-task": "T12",
         "x-auth-level": "oidc-client",
         "x-auth-policy": "仅预注册机密BFF client_secret_basic，未知或停用client拒绝，token归属本client。",
@@ -16888,7 +16888,7 @@
             }
           }
         },
-        "x-implementation-status": "planned",
+        "x-implementation-status": "implemented",
         "x-task": "T12",
         "x-auth-level": "oidc-client",
         "x-auth-policy": "仅预注册机密BFF client_secret_basic，未知或停用client拒绝，token归属本client。",
@@ -17089,7 +17089,7 @@
             }
           }
         },
-        "x-implementation-status": "planned",
+        "x-implementation-status": "implemented",
         "x-task": "T12",
         "x-auth-level": "preauth",
         "x-auth-policy": "当前浏览器preauth/session绑定流程；GET/POST入口均仅建立待确认流程。",
@@ -17235,7 +17235,7 @@
             }
           }
         },
-        "x-implementation-status": "planned",
+        "x-implementation-status": "implemented",
         "x-task": "T12",
         "x-auth-level": "preauth",
         "x-auth-policy": "当前浏览器preauth/session绑定流程；GET/POST入口均仅建立待确认流程。",
@@ -17286,7 +17286,7 @@
       "post": {
         "operationId": "confirmRpLogout",
         "summary": "用户确认后执行RP退出",
-        "description": "Origin/CSRF与当前浏览器绑定confirmation_id，确认原子撤销当前sid派生grant；只注册post_logout_redirect带回state；cancel不撤销。 标准OAuth/OIDC格式；拒绝重复关键参数，不开放浏览器CORS；form/协议体上限64KiB，秘密不放URL或日志。",
+        "description": "Origin/CSRF与当前浏览器绑定confirmation_id，确认原子撤销当前sid派生grant；只注册post_logout_redirect带回state；cancel不撤销。成功返回JSON completed与已验证redirect_to，页面随后执行跳转。标准OAuth/OIDC错误格式；拒绝重复关键参数，不开放浏览器CORS；协议体上限64KiB，秘密不放URL或日志。",
         "tags": [
           "OIDC"
         ],
@@ -17308,7 +17308,7 @@
         ],
         "responses": {
           "200": {
-            "description": "标准协议响应；不套用平台中文error envelope。",
+            "description": "浏览器确认成功；已提交撤销或取消，返回已验证跳转地址（无外部回调时null）。",
             "headers": {
               "X-Request-ID": {
                 "$ref": "#/components/headers/RequestId"
@@ -17321,32 +17321,24 @@
               }
             },
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProtocolHtml"
-                }
-              }
-            }
-          },
-          "302": {
-            "description": "只有回调完整匹配才可跳转；错误回调携带标准error与原state；否则仅身份域安全错误页。",
-            "headers": {
-              "Location": {
-                "$ref": "#/components/headers/Location"
-              },
-              "X-Request-ID": {
-                "$ref": "#/components/headers/RequestId"
-              },
-              "Cache-Control": {
-                "$ref": "#/components/headers/NoStore"
-              }
-            },
-            "content": {
-              "text/html": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProtocolHtml"
+                  "$ref": "#/components/schemas/LogoutConfirmationResponse"
                 },
-                "example": ""
+                "examples": {
+                  "local": {
+                    "value": {
+                      "status": "completed",
+                      "redirect_to": null
+                    }
+                  },
+                  "rp": {
+                    "value": {
+                      "status": "completed",
+                      "redirect_to": "https://app-a.example/logout/callback?state=logout_state_example_1234"
+                    }
+                  }
+                }
               }
             }
           },
@@ -17458,7 +17450,7 @@
             }
           }
         },
-        "x-implementation-status": "planned",
+        "x-implementation-status": "implemented",
         "x-task": "T12",
         "x-auth-level": "preauth",
         "x-auth-policy": "当前浏览器preauth/session绑定流程；GET/POST入口均仅建立待确认流程。",
@@ -21279,6 +21271,28 @@
             "code": "000000"
           }
         ]
+      },
+      "LogoutConfirmationResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "status",
+          "redirect_to"
+        ],
+        "properties": {
+          "status": {
+            "type": "string",
+            "const": "completed"
+          },
+          "redirect_to": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 4096,
+            "description": "仅数据库已验证完整注册回调携带原state；无有效hint或本地退出为null。"
+          }
+        }
       }
     },
     "parameters": {

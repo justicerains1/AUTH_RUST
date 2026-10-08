@@ -474,7 +474,7 @@ async fn derived_grant(pool: &PgPool, user: Uuid, session: Uuid) -> TestResult<D
     let grant = Uuid::new_v4();
     sqlx::query("INSERT INTO oauth_grants(id,user_id,client_id,session_id,scopes,expires_at) VALUES($1,$2,$3,$4,ARRAY['openid'],CURRENT_TIMESTAMP+INTERVAL '1 hour')").bind(grant).bind(user).bind(client).bind(session).execute(pool).await?;
     let digest = Digest::from_bytes([21_u8; 32]);
-    sqlx::query("INSERT INTO oauth_tokens(id,token_hash,kind,grant_id,family_id,family_expires_at,expires_at) VALUES($1,$2,'refresh',$3,$4,CURRENT_TIMESTAMP+INTERVAL '1 hour',CURRENT_TIMESTAMP+INTERVAL '1 hour')").bind(Uuid::new_v4()).bind(digest.as_bytes()).bind(grant).bind(Uuid::new_v4()).execute(pool).await?;
+    sqlx::query("INSERT INTO oauth_tokens(id,token_hash,kind,grant_id,family_id,family_expires_at,expires_at,scopes) SELECT $1,$2,'refresh',$3,$4,CURRENT_TIMESTAMP+INTERVAL '1 hour',CURRENT_TIMESTAMP+INTERVAL '1 hour',g.scopes FROM oauth_grants g WHERE g.id=$3").bind(Uuid::new_v4()).bind(digest.as_bytes()).bind(grant).bind(Uuid::new_v4()).execute(pool).await?;
     Ok(digest)
 }
 async fn concurrent_and_purpose(

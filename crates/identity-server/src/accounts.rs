@@ -157,7 +157,9 @@ pub fn accounts_router(state: AuthAppState, existing: Router) -> Router {
             .merge(crate::mfa::mfa_routes(state.clone()))
             .merge(crate::passkeys::passkey_routes(state.clone()))
             .merge(crate::oauth::oauth_routes(state.clone()))
-            .merge(crate::oidc::oidc_routes(state)),
+            .merge(crate::oidc::oidc_routes(state.clone()))
+            .merge(crate::rp_logout::logout_routes(state.clone()))
+            .merge(crate::grants::grant_routes(state)),
     )
 }
 

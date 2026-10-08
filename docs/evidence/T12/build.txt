@@ -1,0 +1,69 @@
+
+> rust-unified-identity@0.1.0 build
+> node scripts/run.mjs build
+
+   Compiling identity-store v0.1.0 (/root/code/rust/auth_rust/crates/identity-store)
+   Compiling identity-worker v0.1.0 (/root/code/rust/auth_rust/crates/identity-worker)
+   Compiling identity-server v0.1.0 (/root/code/rust/auth_rust/crates/identity-server)
+    Finished `release` profile [optimized] target(s) in 29.89s
+vite v8.3.3 building client environment for production...
+transforming...
+✓ 324 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                  0.58 kB │ gzip:   0.37 kB
+dist/assets/index-BcCfukHY.css                   6.72 kB │ gzip:   2.06 kB
+dist/assets/PageTitle-BDivwDdP.js                0.21 kB │ gzip:   0.20 kB
+dist/assets/QueryClientProvider-C6QQ48P3.js      0.38 kB │ gzip:   0.27 kB
+dist/assets/NotFoundPage-C3G6rx7H.js             0.43 kB │ gzip:   0.33 kB
+dist/assets/CursorPagination-BRGGG3MG.js         0.47 kB │ gzip:   0.34 kB
+dist/assets/AdminPage-DLKVDqOf.js                0.55 kB │ gzip:   0.40 kB
+dist/assets/Password-Ck3vVGEy.js                 0.82 kB │ gzip:   0.49 kB
+dist/assets/TotpQrCode-BWscGcCi.js               0.94 kB │ gzip:   0.66 kB
+dist/assets/InitializationPage-yLZdopwI.js       1.12 kB │ gzip:   0.65 kB
+dist/assets/PasskeyReauth-D1YXDD5b.js            1.38 kB │ gzip:   0.91 kB
+dist/assets/LogoutPage-cUsxpGXv.js               1.75 kB │ gzip:   1.10 kB
+dist/assets/GrantsPage-0j-XLH2I.js               2.31 kB │ gzip:   1.34 kB
+dist/assets/ConsentPage-CGQ-t9We.js              2.44 kB │ gzip:   1.40 kB
+dist/assets/RegisterPage-BfWFUB1f.js             2.51 kB │ gzip:   1.38 kB
+dist/assets/EmailVerificationPage-Ccma3TFk.js    2.90 kB │ gzip:   1.50 kB
+dist/assets/AccountPage-BQZ_4bNl.js              3.34 kB │ gzip:   1.44 kB
+dist/assets/PasswordResetPage-CEKN3FCs.js        3.49 kB │ gzip:   1.88 kB
+dist/assets/SessionsPage-B0rFXJmZ.js             3.50 kB │ gzip:   1.81 kB
+dist/assets/dist-Cb9TgJZ0.js                     3.67 kB │ gzip:   1.66 kB
+dist/assets/PasswordChangePage-CM-HeWNm.js       4.01 kB │ gzip:   2.05 kB
+dist/assets/LoginPage-DStx205s.js                4.39 kB │ gzip:   2.11 kB
+dist/assets/PasskeysPage-DManiRRB.js             5.14 kB │ gzip:   2.34 kB
+dist/assets/MfaPage-DXnhkPrr.js                  6.73 kB │ gzip:   2.89 kB
+dist/assets/webauthn-C_bRLC15.js                 6.86 kB │ gzip:   2.78 kB
+dist/assets/jsx-runtime-Dk72oS4N.js              8.77 kB │ gzip:   3.33 kB
+dist/assets/qrcode-DtWdxa9d.js                  20.62 kB │ gzip:   7.29 kB
+dist/assets/Input-C15p_AY9.js                   31.57 kB │ gzip:  11.54 kB
+dist/assets/ConfirmDialog-CKuEYOt6.js           36.45 kB │ gzip:  12.50 kB
+dist/assets/index-D3YLT89s.js                  384.63 kB │ gzip: 118.58 kB
+
+✓ built in 215ms
+vite v8.3.3 building client environment for production...
+transforming...
+✓ 94 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                               0.41 kB │ gzip:  0.31 kB
+dist/assets/index-DuyWQwhO.css                0.29 kB │ gzip:  0.21 kB
+dist/assets/NotFoundPage-DZ2sbATk.js          0.22 kB │ gzip:  0.20 kB
+dist/assets/InitializationPage-DqNNHS40.js    0.35 kB │ gzip:  0.30 kB
+dist/assets/index-Dtm_7Jn0.js               257.64 kB │ gzip: 82.01 kB
+
+✓ built in 111ms
+vite v8.3.3 building client environment for production...
+transforming...
+✓ 94 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                               0.41 kB │ gzip:  0.31 kB
+dist/assets/index-DuyWQwhO.css                0.29 kB │ gzip:  0.21 kB
+dist/assets/NotFoundPage-B3MP-TiB.js          0.22 kB │ gzip:  0.20 kB
+dist/assets/InitializationPage-CiDNIHAo.js    0.35 kB │ gzip:  0.30 kB
+dist/assets/index-3NqWCkpQ.js               257.64 kB │ gzip: 82.01 kB
+
+✓ built in 111ms

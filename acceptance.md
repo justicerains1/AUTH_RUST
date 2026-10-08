@@ -4,7 +4,7 @@
 编写日期：2026-10-07  
 关联计划：[plan.md](plan.md)
 
-> 初始交付仅为文档；用户已于 2026-10-07 授权开始代码实施并要求多 agent 分模块并行。当前T11模块通过，后续按前置顺序继续，逐项记录真实执行结果。原第 11 节保留为历史文档交付记录，不能作为系统实现验收。
+> 初始交付仅为文档；用户已于 2026-10-07 授权开始代码实施并要求多 agent 分模块并行。当前T12模块通过，后续按前置顺序继续，逐项记录真实执行结果。原第 11 节保留为历史文档交付记录，不能作为系统实现验收。
 
 ## 1. 验收规则
 
@@ -79,7 +79,7 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 | T09 | Passkey 注册、登录和管理 | 待验收 | T06、T08 | docs/evidence/T09/test-summary.md |
 | T10 | 受管理客户端与授权/同意事务 | 通过 | T06、T02 | docs/evidence/T10/test-summary.md |
 | T11 | 授权码交换、ID Token、Discovery 和 Userinfo | 通过 | T10 | docs/evidence/T11/test-summary.md |
-| T12 | 刷新轮换、Introspection、撤销与 RP 退出 | 未开始 | T11 | 待提供 |
+| T12 | 刷新轮换、Introspection、撤销与 RP 退出 | 通过 | T11 | docs/evidence/T12/test-summary.md |
 | T13 | 两个 BFF 演示应用与接入指南 | 未开始 | T12 | 待提供 |
 | T14 | 管理员初始化与管理 API | 未开始 | T08、T10、T12 | 待提供 |
 | T15 | Awwwards 研究、设计稿与视觉规范 | 通过 | T00；可与后端并行 | docs/evidence/T15/user-review.md |
@@ -504,31 +504,32 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 
 | 案例 | 前置状态 | 操作步骤 | 预期结果 | 实际结果 | 状态 | 证据 |
 |---|---|---|---|---|---|---|
-| T12-REV-01 | 有效 grant/token | 退出事务提交后立即检查 | active=false，无正缓存延迟 | 待填写 | 未执行 | 待提供：时间线与测试 |
-| T12-REV-02 | 已轮换 refresh | 再次提交旧 refresh | 整个 family 无效，审计保留 | 待填写 | 未执行 | 待提供：重放输出 |
-| T12-REV-03 | 客户端 B、A token | B introspect/revoke A token | 不暴露、不撤销 A 授权 | 待填写 | 未执行 | 待提供：隔离测试 |
-| T12-REV-04 | RP 退出请求 | GET/POST form入口、非法回调、合法确认 POST | GET/POST form入口不撤销；非法不跳转；确认后撤销 | 待填写 | 未执行 | 待提供：跳转和状态证据 |
-| T12-REV-05 | 退出和刷新同步屏障 | 并发交错执行 | 撤销提交后没有新有效凭证 | 待填写 | 未执行 | 待提供：并发输出 |
+| T12-REV-01 | 有效 grant/token | 退出事务提交后立即检查 | active=false，无正缓存延迟 | grant/refresh及真实logout提交后立即introspection失效，无正缓存；实际PG/Redis停机503 | 通过 | [integration](docs/evidence/T12/integration.txt)、[E2E](docs/evidence/T12/e2e.txt) |
+| T12-REV-02 | 已轮换 refresh | 再次提交旧 refresh | 整个 family 无效，审计保留 | 旧refresh串行/双并发重放提交家族撤销及审计；签名失败原子回滚 | 通过 | [integration](docs/evidence/T12/integration.txt)、[E2E](docs/evidence/T12/e2e.txt) |
+| T12-REV-03 | 客户端 B、A token | B introspect/revoke A token | 不暴露、不撤销 A 授权 | B introspect A仅false且revoke不影响A；unknown hint忽略；scope仅缩小 | 通过 | [integration](docs/evidence/T12/integration.txt)、[E2E](docs/evidence/T12/e2e.txt) |
+| T12-REV-04 | RP 退出请求 | GET/POST form入口、非法回调、合法确认 POST | GET/POST form入口不撤销；非法不跳转；确认后撤销 | GET/POSTform仅确认；非法callback不外跳；过期准确hint可确认，缺CSRF不撤；跨sid拒 | 通过 | [integration](docs/evidence/T12/integration.txt)、[E2E](docs/evidence/T12/e2e.txt) |
+| T12-REV-05 | 退出和刷新同步屏障 | 并发交错执行 | 撤销提交后没有新有效凭证 | 锁屏障撤销先提交刷新拒，反向新token退出即无效；等待logout后新token时间合法且撤销 | 通过 | [integration](docs/evidence/T12/integration.txt)、[E2E](docs/evidence/T12/e2e.txt) |
 
 **实现子步骤检查：**
 
-- [ ] T12.01：按统一锁顺序验证 refresh 所属用户/会话/grant/client，消费旧 token 后轮换。
-- [ ] T12.02：重放旧 refresh 时提交家族撤销及审计，然后返回标准错误；不能错误 rollback 撤销。
-- [ ] T12.03：introspection 做 Basic 验证并核对归属，直接查询权威状态；unknown/inactive 返回 active=false。
-- [ ] T12.04：revoke 按第 6.1 节行为实现幂等，禁止其他客户端撤销。
-- [ ] T12.05：完善当前/全部/单应用撤销，使既有 code 和 tokens 一并失效。
-- [ ] T12.06：RP logout GET 校验 hint/回调/state，显示确认；POST 检查 CSRF 后撤销当前 sid。
-- [ ] T12.07：检查刷新/退出、登录/禁用、introspection/撤销竞争，精确定义事务提交边界。
-- [ ] T12.08：测试 Postgres/Redis 不可用时错误，不返回伪 active。
+- [x] T12.01：按统一锁顺序验证 refresh 所属用户/会话/grant/client，消费旧 token 后轮换。
+- [x] T12.02：重放旧 refresh 时提交家族撤销及审计，然后返回标准错误；不能错误 rollback 撤销。
+- [x] T12.03：introspection 做 Basic 验证并核对归属，直接查询权威状态；unknown/inactive 返回 active=false。
+- [x] T12.04：revoke 按第 6.1 节行为实现幂等，禁止其他客户端撤销。
+- [x] T12.05：完善当前/全部/单应用撤销，使既有 code 和 tokens 一并失效。
+- [x] T12.06：RP logout GET 校验 hint/回调/state，显示确认；POST 检查 CSRF 后撤销当前 sid。
+- [x] T12.07：检查刷新/退出、登录/禁用、introspection/撤销竞争，精确定义事务提交边界。
+- [x] T12.08：测试 Postgres/Redis 不可用时错误，不返回伪 active。
 
 **验收记录：**
 
-- 代码版本：待填写。
-- 环境与时间：待填写。
-- 命令退出码：待填写。
-- 失败/阻塞项：待填写。
-- 修复与复测：待填写。
-- 任务结论：未开始。
+- 代码版本：本模块Git提交（父3a06d16）。
+- 环境与时间：2026-10-08 Linux/Rust1.98/Node22、真实PG17/Redis7.4、Chromium153。
+- 命令退出码：integration/E2E/check/unit/build/docs/openapi/tooling均0；2E2E、65工具及44前端测试通过；T03/T06/T07/T11回归0。
+- 失败/阻塞项：空form/测试pool超时/审计字典已修；初次并发异常严格复测通过，失败保留；远端Windows与T07E2E尚未全绿。
+- 修复与复测：[T12总结](docs/evidence/T12/test-summary.md)、[事务契约](docs/revocation-transactions.md)。
+- 任务结论：通过（真实本地模块验收，未放行全量生产）。
+
 
 ### T13 — 两个 BFF 演示应用与接入指南
 

@@ -157,7 +157,7 @@ impl Repository {
         digest: Digest,
         client_id: &str,
     ) -> Result<Option<TokenAuthority>, RepositoryError> {
-        let row = sqlx::query("SELECT t.id AS token_id,u.id AS user_id,s.id AS session_id,g.id AS grant_id,c.client_id,g.scopes AS scope,LEAST(t.expires_at,g.expires_at,s.expires_at) AS expires_at,t.created_at AS issued_at FROM oauth_tokens t JOIN oauth_grants g ON g.id=t.grant_id JOIN sessions s ON s.id=g.session_id JOIN users u ON u.id=g.user_id AND u.id=s.user_id JOIN oauth_clients c ON c.id=g.client_id WHERE t.token_hash=$1 AND c.client_id=$2 AND t.revoked_at IS NULL AND t.consumed_at IS NULL AND t.expires_at>$3 AND g.revoked_at IS NULL AND g.expires_at>$3 AND s.revoked_at IS NULL AND s.expires_at>$3 AND s.credential_version=u.credential_version AND u.verified AND u.status='active' AND c.enabled")
+        let row = sqlx::query("SELECT t.id AS token_id,u.id AS user_id,s.id AS session_id,g.id AS grant_id,c.client_id,t.scopes AS scope,LEAST(t.expires_at,g.expires_at,s.expires_at) AS expires_at,t.created_at AS issued_at FROM oauth_tokens t JOIN oauth_grants g ON g.id=t.grant_id JOIN sessions s ON s.id=g.session_id JOIN users u ON u.id=g.user_id AND u.id=s.user_id JOIN oauth_clients c ON c.id=g.client_id WHERE t.token_hash=$1 AND c.client_id=$2 AND t.revoked_at IS NULL AND t.consumed_at IS NULL AND t.expires_at>$3 AND g.revoked_at IS NULL AND g.expires_at>$3 AND s.revoked_at IS NULL AND s.expires_at>$3 AND s.credential_version=u.credential_version AND u.verified AND u.status='active' AND c.enabled")
             .bind(digest.as_bytes()).bind(client_id).bind(self.clock.now()).fetch_optional(&self.pool).await?;
         row.map(|r| {
             Ok(TokenAuthority {
@@ -764,7 +764,7 @@ impl SecurityTransaction<'_> {
                 return Err(RepositoryError::InvalidState);
             }
         }
-        sqlx::query("INSERT INTO oauth_tokens(id,token_hash,kind,grant_id,family_id,family_expires_at,expires_at,created_at) SELECT $1,$2,$3,g.id,$4,$5,$6,$7 FROM oauth_grants g JOIN sessions s ON s.id=g.session_id WHERE g.id=$8 AND g.revoked_at IS NULL AND s.revoked_at IS NULL AND $6<=g.expires_at AND $5<=g.expires_at AND $5<=s.expires_at")
+        sqlx::query("INSERT INTO oauth_tokens(id,token_hash,kind,grant_id,family_id,family_expires_at,expires_at,created_at,scopes) SELECT $1,$2,$3,g.id,$4,$5,$6,$7,g.scopes FROM oauth_grants g JOIN sessions s ON s.id=g.session_id WHERE g.id=$8 AND g.revoked_at IS NULL AND s.revoked_at IS NULL AND $6<=g.expires_at AND $5<=g.expires_at AND $5<=s.expires_at")
             .bind(input.id).bind(input.token_hash.as_bytes()).bind(input.kind.as_str()).bind(input.family_id).bind(input.family_expires_at).bind(input.expires_at).bind(now).bind(grant_id).execute(&mut *self.transaction).await.and_then(|r|if r.rows_affected()==1{Ok(r)}else{Err(sqlx::Error::RowNotFound)})?;
         self.token_inserted = true;
         self.issued_family_id = Some(input.family_id);

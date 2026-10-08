@@ -1,0 +1,17 @@
+T12 real OIDC integration 2026-10-07T20:58:34.901Z
+PASS T12-REV-02 real refresh rotation; old token replay commits whole-family revocation and persistent audit
+PASS T12-REV-03 client B cannot inspect/revoke client A token; unknown token and unknown hint remain safely inactive/idempotent
+PASS T12-REV-01 committed grant/refresh revocation is immediately visible to introspection without cache delay
+PASS T12 two synchronized refresh requests rotate once; losing replay revokes the entire family
+PASS T12 GET and POST form entry do not revoke; illegal callback stays local; expired but valid current-session signed hint can request confirmation
+PASS T12-REV-04 valid signed RP hint enters confirmation without revocation; absent CSRF cannot revoke; explicit valid POST revokes
+PASS T12-REV-05 refresh waits on authoritative user lock; committed revocation prevents new credentials
+PASS T12 reverse commit order: refresh issues first, real logout then commits and makes newly issued credentials inactive
+PASS T12 closed PostgreSQL dependency yields503 instead of fabricated inactive/active response
+PASS T12-OIDC-01 mature openid-client discovery/Basic/PKCE/nonce exchange plus independent jose RS256 claims validation.
+PASS T12 independent JOSE rejects none/HS256, wrong issuer/audience/key and expiry without printing tokens.
+PASS T12 mature OIDC client rotates refresh without replaying nonce; old-refresh replay makes entire family inactive.
+PASS T12 real redis container stopped: introspection503 and no fabricated active status.
+FAIL The operation was aborted due to timeout
+Completed 2026-10-07T20:59:17.009Z
+Exit code 1

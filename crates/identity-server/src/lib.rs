@@ -1,10 +1,12 @@
 //! Startup and dependency health routes only. Authentication routes belong to later tasks.
 pub mod accounts;
+pub mod grants;
 pub mod mfa;
 pub mod oauth;
 pub mod oidc;
 pub mod passkeys;
 pub mod passwords;
+pub mod rp_logout;
 pub mod security;
 pub mod sessions;
 use axum::{Json, Router, extract::State, http::StatusCode, routing::get};

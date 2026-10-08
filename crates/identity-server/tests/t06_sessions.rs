@@ -585,7 +585,7 @@ async fn derived_grant(
     let grant = Uuid::new_v4();
     let digest = Digest::from_bytes([22_u8; 32]);
     sqlx::query("INSERT INTO oauth_grants(id,user_id,client_id,session_id,scopes,expires_at) VALUES($1,$2,$3,$4,ARRAY['openid'],CURRENT_TIMESTAMP+INTERVAL '1 hour')").bind(grant).bind(user).bind(client).bind(session).execute(pool).await?;
-    sqlx::query("INSERT INTO oauth_tokens(id,token_hash,kind,grant_id,family_id,family_expires_at,expires_at) VALUES($1,$2,'access',$3,$4,CURRENT_TIMESTAMP+INTERVAL '1 hour',CURRENT_TIMESTAMP+INTERVAL '5 minutes')").bind(Uuid::new_v4()).bind(digest.as_bytes()).bind(grant).bind(Uuid::new_v4()).execute(pool).await?;
+    sqlx::query("INSERT INTO oauth_tokens(id,token_hash,kind,grant_id,family_id,family_expires_at,expires_at,scopes) SELECT $1,$2,'access',$3,$4,CURRENT_TIMESTAMP+INTERVAL '1 hour',CURRENT_TIMESTAMP+INTERVAL '5 minutes',g.scopes FROM oauth_grants g WHERE g.id=$3").bind(Uuid::new_v4()).bind(digest.as_bytes()).bind(grant).bind(Uuid::new_v4()).execute(pool).await?;
     Ok(digest)
 }
 async fn disable_race(

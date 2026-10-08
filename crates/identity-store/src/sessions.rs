@@ -205,9 +205,9 @@ impl SessionService {
         {
             return Err(SessionError::InvalidInput);
         }
-        let now = self.clock.now();
         let mut tx = self.pool.begin().await?;
         let row=sqlx::query("SELECT id,email,display_name,verified,status,credential_version,created_at FROM users WHERE id=$1 FOR UPDATE").bind(input.user_id).fetch_optional(&mut *tx).await?.ok_or(SessionError::InvalidCredentials)?;
+        let now = self.clock.now();
         let verified: bool = row.try_get("verified")?;
         let status: String = row.try_get("status")?;
         let version: i64 = row.try_get("credential_version")?;
@@ -418,8 +418,8 @@ impl SessionService {
         &self,
         input: &SessionRevocationInput,
     ) -> Result<bool, SessionError> {
+        let (mut tx, user, current) = self.lock_current(input.current_hash).await?;
         let now = self.clock.now();
-        let (mut tx, user, current) = self.lock_current(input.current_hash, now).await?;
         let ids = if current == input.target_id {
             vec![current]
         } else {
@@ -458,12 +458,12 @@ impl SessionService {
         let Some(hash) = input.current_hash else {
             return Ok(false);
         };
-        let now = self.clock.now();
-        let (mut tx, user, current) = match self.lock_current(hash, now).await {
+        let (mut tx, user, current) = match self.lock_current(hash).await {
             Ok(value) => value,
             Err(SessionError::NotAuthenticated) => return Ok(false),
             Err(error) => return Err(error),
         };
+        let now = self.clock.now();
         let ids: Vec<Uuid> = if input.all {
             sqlx::query_scalar("SELECT id FROM sessions WHERE user_id=$1 ORDER BY id")
                 .bind(user)
@@ -504,7 +504,6 @@ impl SessionService {
     async fn lock_current(
         &self,
         hash: Digest,
-        now: OffsetDateTime,
     ) -> Result<(Transaction<'_, Postgres>, Uuid, Uuid), SessionError> {
         let user: Option<Uuid> =
             sqlx::query_scalar("SELECT user_id FROM sessions WHERE token_hash=$1")
@@ -514,6 +513,7 @@ impl SessionService {
         let user = user.ok_or(SessionError::NotAuthenticated)?;
         let mut tx = self.pool.begin().await?;
         let valid:Option<i64>=sqlx::query_scalar("SELECT credential_version FROM users WHERE id=$1 AND verified AND status='active' FOR UPDATE").bind(user).fetch_optional(&mut *tx).await?;
+        let now = self.clock.now();
         let version = valid.ok_or(SessionError::NotAuthenticated)?;
         let current:Option<Uuid>=sqlx::query_scalar("SELECT id FROM sessions WHERE token_hash=$1 AND user_id=$2 AND credential_version=$3 AND revoked_at IS NULL AND expires_at>$4").bind(hash.as_bytes()).bind(user).bind(version).bind(now).fetch_optional(&mut *tx).await?;
         Ok((tx, user, current.ok_or(SessionError::NotAuthenticated)?))

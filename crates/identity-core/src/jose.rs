@@ -112,6 +112,59 @@ mod tests {
         );
         Ok(())
     }
+    #[test]
+    fn expired_hint_is_only_accepted_for_exact_current_browser_identity()
+    -> Result<(), Box<dyn std::error::Error>> {
+        let pem = Zeroizing::new(Rsa::generate(2048)?.private_key_to_pem()?);
+        let signer = Signer::from_pem(
+            "https://identity.example".into(),
+            "hint-unit".into(),
+            &pem,
+            None,
+        )?;
+        let now = time::OffsetDateTime::now_utc().unix_timestamp();
+        let sid = Uuid::new_v4();
+        let sub = Uuid::new_v4();
+        let claims = IdTokenClaims {
+            iss: signer.issuer().into(),
+            sub,
+            aud: "demo-a".into(),
+            exp: now - 10,
+            iat: now - 100,
+            nonce: None,
+            auth_time: now - 100,
+            amr: vec!["pwd".into()],
+            sid,
+        };
+        let token = signer.sign(&claims)?;
+        assert!(signer.verify(&token, "demo-a").is_err());
+        assert!(
+            signer
+                .verify_logout_hint(&token, "demo-a", sid, sub, now)
+                .is_ok()
+        );
+        assert!(
+            signer
+                .verify_logout_hint(&token, "demo-b", sid, sub, now)
+                .is_err()
+        );
+        assert!(
+            signer
+                .verify_logout_hint(&token, "demo-a", Uuid::new_v4(), sub, now)
+                .is_err()
+        );
+        assert!(
+            signer
+                .verify_logout_hint(&token, "demo-a", sid, Uuid::new_v4(), now)
+                .is_err()
+        );
+        assert!(
+            signer
+                .verify_logout_hint(&token, "demo-a", sid, sub, now + 43_320)
+                .is_err()
+        );
+        Ok(())
+    }
 }
 impl fmt::Display for JoseError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -316,6 +369,53 @@ impl Signer {
                 .amr
                 .iter()
                 .any(|method| !matches!(method.as_str(), "pwd" | "otp" | "rcv" | "user" | "hwk"))
+        {
+            return Err(JoseError::InvalidToken);
+        }
+        Ok(claims)
+    }
+    /// Only RP logout may ignore exp, and only for the exact current browser sid/user/client.
+    pub fn verify_logout_hint(
+        &self,
+        token: &str,
+        audience: &str,
+        sid: Uuid,
+        subject: Uuid,
+        now: i64,
+    ) -> Result<IdTokenClaims, JoseError> {
+        let header = jsonwebtoken::decode_header(token).map_err(|_| JoseError::InvalidToken)?;
+        if header.alg != Algorithm::RS256 {
+            return Err(JoseError::InvalidToken);
+        }
+        let key = self
+            .verification
+            .get(header.kid.as_deref().ok_or(JoseError::InvalidToken)?)
+            .ok_or(JoseError::InvalidToken)?;
+        let mut validation = Validation::new(Algorithm::RS256);
+        validation.validate_exp = false;
+        validation.leeway = 0;
+        validation.set_issuer(&[&self.issuer]);
+        validation.set_audience(&[audience]);
+        validation.set_required_spec_claims(&["iss", "sub", "aud", "exp", "iat"]);
+        let claims = jsonwebtoken::decode::<IdTokenClaims>(token, key, &validation)
+            .map_err(|_| JoseError::InvalidToken)?
+            .claims;
+        if claims.sid != sid
+            || claims.sub != subject
+            || claims.aud != audience
+            || claims.iat < 0
+            || claims.iat > now.saturating_add(120)
+            || claims.auth_time < 0
+            || claims.auth_time > claims.iat
+            || claims
+                .auth_time
+                .checked_add(43_320)
+                .is_none_or(|deadline| deadline < now)
+            || claims.exp <= claims.iat
+            || claims
+                .iat
+                .checked_add(300)
+                .is_none_or(|limit| claims.exp > limit)
         {
             return Err(JoseError::InvalidToken);
         }

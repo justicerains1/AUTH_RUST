@@ -1,4 +1,4 @@
-T03 real database acceptance: 2026-10-07T20:32:18.772Z
+T03 real database acceptance: 2026-10-08T00:07:49.973Z
 PASS real Redis PING and API readiness against PG+Redis
 PASS explicit test target identity_test exists; no non-test database cleanup
 PASS T03-DB-01: migrations twice; 17 tables; PK/UNIQUE/FK/CHECK and cleanup indexes
@@ -12,5 +12,5 @@ PASS T03 outbox: concurrent workers claim distinct leases; wrong owner rejected;
 PASS T03-DB-04 production: nonzero before connection; no mutations
 PASS T03-DB-04 wrong database: nonzero before connection; no mutations
 PASS T03-DB-04 driver dbname override: nonzero before connection; no mutations
-Completed: 2026-10-07T20:32:24.083Z
+Completed: 2026-10-08T00:07:54.354Z
 Exit code: 0

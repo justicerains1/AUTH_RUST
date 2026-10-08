@@ -1,6 +1,6 @@
 # Rust 统一身份中心
 
-实现依据为 [plan.md](plan.md) 和 [acceptance.md](acceptance.md)。按任务依赖推进，每个任务写实际运行证据。已完成 **T01～T05、T15～T16**：工程、配置与健康、接口契约、数据库与事务原语、安全基础、经确认的设计及前端基础；T05注册、验证邮件和Worker已通过真实验收。用户已恢复后续实施；当前T06进行中，模块验收后逐次推送。任务状态见 [TASK_PROGRESS.md](TASK_PROGRESS.md)。账号、MFA、OAuth/OIDC、后台和生产部署仍由后续任务实现，当前版本不能用于用户身份认证。
+实现依据为 [plan.md](plan.md) 和 [acceptance.md](acceptance.md)，按依赖实施并记录真实证据。T01～T08、T10～T11及T15～T16已通过本地模块验收；T09实现与虚拟认证器测试通过，实体设备待验收。T12刷新/撤销与退出确认已通过本地模块验收，后续双BFF、管理后台、完整产品与生产验收继续。每个模块验收后提交推送；最新状态见 [TASK_PROGRESS.md](TASK_PROGRESS.md)。当前尚不具备生产发布条件。
 
 ## 环境
 
@@ -9,7 +9,7 @@
 - Docker Engine / Docker Desktop，Compose **v2**。Linux 当前验证 29.1.3 / 2.40.3。
 - OpenSSL 3，用于本地 RSA 私钥生成。Linux 需要 C 编译工具链与 CMake（JOSE 的 aws-lc 后端）；Windows 安装 Visual Studio Build Tools C++ 和 CMake。生产镜像及发布属于 T22。
 
-Linux 可用 rustup 官方安装程序安装 Rust；Windows 使用 rustup-init 并安装 Docker Desktop 的 Linux containers。两个平台均在仓库根目录执行以下 npm 命令。安装后确认 `cargo`、`node`、`npm`、`docker`、`openssl` 可从终端运行。
+Linux 可用 rustup 官方安装程序安装 Rust；Windows 使用 rustup-init 并安装 Docker Desktop 的 Linux containers。两个平台均在仓库根目录执行以下 npm 命令。安装后确认 `cargo`、`node`、`npm`、`docker`、`openssl` 可从终端运行。Windows MSVC还需完整OpenSSL开发头文件、导入库及运行DLL；当前CI严格核对预装3.6.4并设置动态链接，见 [Windows环境配置](infra/windows/README.md)。
 
 ## 安装与开发启动
 
@@ -25,14 +25,14 @@ Compose 创建 PostgreSQL 17、Redis 7.4、Mailpit、API、Worker 和三个前�
 
 | 服务 | 地址 | 当前行为 |
 |---|---|---|
-| 身份页面 | http://localhost:5173 | 已确认设计的路由/组件、注册与邮箱验证；密码登录待T06 |
+| 身份页面 | http://localhost:5173 | 已确认设计、真实注册/验证、密码/MFA/Passkey与账号安全页面 |
 | 演示 A / B | http://localhost:5174 / http://localhost:5175 | 开发应用空路由，尚无 SSO |
 | API liveness | http://localhost:8080/health/live | 进程存活返回 200 |
 | API readiness | http://localhost:8080/health/ready | PG/Redis 均可用 200，否则 503 |
 | Worker liveness | http://localhost:8081/health/live | 真实 outbox SMTP Worker，开发环境 Mailpit |
 | Mailpit | http://localhost:8025 | 开发 SMTP 捕获；SMTP 端口 1025 |
 
-身份前端将 `/api`、`/health` 转发给 API，浏览器保持同源。开发模式由 `HOST=0.0.0.0`、`IDENTITY_API_PROXY=http://api:8080` 支持容器；在主机上可用 `npm run dev --workspace apps/identity-web`，默认绑定 127.0.0.1、代理 127.0.0.1:8080。演示应用可分别以 `--workspace apps/demo-a`、`--workspace apps/demo-b` 启动。
+身份前端将 `/api`、`/health` 和精确OAuth协议路径转发给API（同意页面路径仍由前端处理），浏览器保持同源。开发模式由 `HOST=0.0.0.0`、`IDENTITY_API_PROXY=http://api:8080` 支持容器；在主机上可用 `npm run dev --workspace apps/identity-web`，默认绑定 127.0.0.1、代理 127.0.0.1:8080。演示应用可分别以 `--workspace apps/demo-a`、`--workspace apps/demo-b` 启动。
 
 ```text
 npm run dev:down
@@ -44,7 +44,7 @@ npm run dev:down
 
 `.env.example` 是无秘密参考，程序通过环境变量解析，不自动加载文件。Compose 使用 `.local/dev.env`；主机运行需自行设置环境和主机连接地址。私钥、SMTP 密码、AEAD key 使用文件路径，错误只指出配置名，不输出内容。
 
-`APP_ENV` 必须为 development/test/production。固定 `ISSUER` 只能是 origin，`RP_ID` 必须等于 host；HTTP 仅支持本机开发。生产要求 HTTPS、有效 RSA 私钥、完整版本化 AEAD key、SMTP 账号及密码文件、`SMTP_TLS=required`。禁用 TLS 校验、Cookie 降级或启用开发 seed/debug 会拒绝启动。Cookie 的安全策略作为不变量保留；T01 不签发会话 Cookie。
+`APP_ENV` 必须为 development/test/production。固定 `ISSUER` 只能是 origin，`RP_ID` 必须等于 host；HTTP 仅支持本机开发。生产要求 HTTPS、有效 RSA 私钥、完整版本化 AEAD key、SMTP 账号及密码文件、`SMTP_TLS=required`。禁用 TLS 校验、Cookie 降级或启用开发 seed/debug 会拒绝启动。Cookie安全策略为不变量，真实会话由后续已实现认证端点签发。
 
 `SMTP_TLS` 补齐文档原配置表的显式 TLS 模式：`required` 要求验证证书；`disabled` 仅允许开发/test 的 localhost/loopback/Mailpit。真实 SMTP transport 实现在 T05。默认不信任转发头，可信 CIDR 仅负责解析配置，代理和限流行为在 T04 验收。
 
@@ -74,9 +74,9 @@ CI 复用相同根脚本，分别配置 Linux/Windows 构建，以及 Linux Comp
 
 ## 目录与下一任务
 
-`identity-core` 负责规则/配置，`identity-store` 负责 SQLx 和依赖连接，`identity-server` 负责 Axum，`identity-worker` 后续处理 outbox，`identity-admin-cli` 在 T14 实现初始化，`demo-bff` 在 T13 实现两个独立客户端实例。三个前端保留空路由，T15视觉稿已获用户确认，T16组件与路由基础已完成；真实业务页在T17～T19接入。
+`identity-core` 负责规则/配置，`identity-store` 负责 SQLx 和依赖连接，`identity-server` 负责 Axum，`identity-worker`负责真实outbox发送/重试，`identity-admin-cli` 在 T14 实现初始化，`demo-bff` 在 T13 实现两个独立客户端实例。身份前端已有最小真实认证/账号/同意流程；完整产品体验在T17～T19整合，A/B的实际BFF/SSO在T13实现。T15视觉稿获用户确认，T16基础已完成。
 
-T01～T04已通过当前Linux真实验收；完整OpenAPI包括未来端点契约，已实现端点以任务验收记录为准。当前继续T06密码登录与会话；对应任务全部必要验收通过后推进下一任务。文档后续页面和跨模块验收的依赖问题已记录于 [T00 审计](docs/evidence/T00/document-audit.md)，进入相关任务前同步修订，不通过跳过测试消除依赖。
+当前通过与待验收任务见进度表；完整OpenAPI包括未来端点契约，端点能力以真实任务证据为准。当前继续T13双BFF；对应任务全部必要验收通过后推进下一任务。文档后续页面和跨模块验收的依赖问题已记录于 [T00 审计](docs/evidence/T00/document-audit.md)，进入相关任务前同步修订，不通过跳过测试消除依赖。
 
 ## 前端基础与数据库测试
 

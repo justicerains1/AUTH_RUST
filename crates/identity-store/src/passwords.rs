@@ -111,7 +111,6 @@ impl PasswordStore {
         source: Digest,
         request_id: Uuid,
     ) -> Result<(), PasswordError> {
-        let now = self.clock.now();
         let mut tx = self.pool.begin().await?;
         let user = sqlx::query("SELECT id,email FROM users WHERE email=$1 FOR UPDATE")
             .bind(email)
@@ -121,6 +120,7 @@ impl PasswordStore {
             tx.rollback().await?;
             return Ok(());
         };
+        let now = self.clock.now();
         let id: Uuid = user.try_get("id")?;
         sqlx::query("SELECT id FROM email_actions WHERE user_id=$1 AND purpose='reset' ORDER BY id FOR UPDATE").bind(id).fetch_all(&mut *tx).await?;
         sqlx::query("UPDATE email_actions SET consumed_at=COALESCE(consumed_at,$2) WHERE user_id=$1 AND purpose='reset'").bind(id).bind(now).execute(&mut *tx).await?;
@@ -175,10 +175,10 @@ impl PasswordStore {
         &self,
         input: &ReauthCommitInput,
     ) -> Result<ReauthOutcome, PasswordError> {
-        let now = self.clock.now();
         let (mut tx, user, session) = self
-            .lock_session(input.session_hash, input.expected_credential_version, now)
+            .lock_session(input.session_hash, input.expected_credential_version)
             .await?;
+        let now = self.clock.now();
         let id: Uuid = user.try_get("id")?;
         let methods = factor_methods(&mut tx, id).await?;
         if methods.is_empty() {
@@ -234,7 +234,6 @@ impl PasswordStore {
         input: &ResetCommitInput,
         keys: &AeadKeyRing,
     ) -> Result<(), PasswordError> {
-        let now = self.clock.now();
         let id: Option<Uuid> = sqlx::query_scalar(
             "SELECT user_id FROM email_actions WHERE token_hash=$1 AND purpose='reset'",
         )
@@ -248,6 +247,7 @@ impl PasswordStore {
                 .bind(id)
                 .fetch_one(&mut *tx)
                 .await?;
+        let now = self.clock.now();
         let sessions: Vec<Uuid> =
             sqlx::query_scalar("SELECT id FROM sessions WHERE user_id=$1 ORDER BY id")
                 .bind(id)
@@ -295,10 +295,10 @@ impl PasswordStore {
         input: &ChangeCommitInput,
         keys: &AeadKeyRing,
     ) -> Result<(), PasswordError> {
-        let now = self.clock.now();
         let (mut tx, user, current) = self
-            .lock_session(input.session_hash, input.expected_credential_version, now)
+            .lock_session(input.session_hash, input.expected_credential_version)
             .await?;
+        let now = self.clock.now();
         let id: Uuid = user.try_get("id")?;
         let methods = factor_methods(&mut tx, id).await?;
         let strong = !methods.is_empty();
@@ -353,7 +353,6 @@ impl PasswordStore {
         &self,
         hash: Digest,
         expected: i64,
-        now: OffsetDateTime,
     ) -> Result<(Transaction<'_, Postgres>, PgRow, Uuid), PasswordError> {
         let user: Option<Uuid> =
             sqlx::query_scalar("SELECT user_id FROM sessions WHERE token_hash=$1")
@@ -368,6 +367,7 @@ impl PasswordStore {
         .bind(id)
         .fetch_one(&mut *tx)
         .await?;
+        let now = self.clock.now();
         if !user.try_get::<bool, _>("verified")?
             || user.try_get::<String, _>("status")? != "active"
             || user.try_get::<i64, _>("credential_version")? != expected

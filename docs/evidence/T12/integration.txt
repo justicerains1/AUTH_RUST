@@ -1,0 +1,22 @@
+T12 real OIDC integration 2026-10-08T00:18:06.930Z
+PASS T12-REV-02 real refresh rotation; old token replay commits whole-family revocation and persistent audit
+PASS T12-REV-03 client B cannot inspect/revoke client A token; unknown token and unknown hint remain safely inactive/idempotent
+PASS T12 refresh scope narrows per token; userinfo/introspection never restore email and later widening returns invalid_scope
+PASS T12 refresh signing failure rolls back old-token consumption and inserts no new token pair
+PASS T12-REV-01 committed grant/refresh revocation is immediately visible to introspection without cache delay
+PASS T12 two synchronized refresh requests rotate once; losing replay revokes the entire family
+PASS T12 logout hint bad signature/audience/user/sid rejected; invalid hint cannot authorize external callback or revoke on GET
+PASS T12 GET and POST form entry do not revoke; illegal callback stays local; expired but valid current-session signed hint can request confirmation
+PASS T12-REV-04 valid signed RP hint enters confirmation without revocation; absent CSRF cannot revoke; explicit valid POST revokes
+PASS T12-REV-05 refresh waits on authoritative user lock; committed revocation prevents new credentials
+PASS T12 reverse commit order: refresh issues first, real logout then commits and makes newly issued credentials inactive
+PASS T12 confirmation cannot upgrade a preauth binding to a new identity or revoke a different browser session
+PASS T12 blocked real logout rereads commit time after user lock; credentials created while it waits are revoked with valid timestamps
+PASS T12 closed PostgreSQL dependency yields503 instead of fabricated inactive/active response
+PASS T12-OIDC-01 mature openid-client discovery/Basic/PKCE/nonce exchange plus independent jose RS256 claims validation.
+PASS T12 independent JOSE rejects none/HS256, wrong issuer/audience/key and expiry without printing tokens.
+PASS T12 mature OIDC client rotates refresh without replaying nonce; old-refresh replay makes entire family inactive.
+PASS T12 real redis container stopped: introspection503 and no fabricated active status.
+PASS T12 real postgres container stopped: introspection503 and no fabricated active status.
+Completed 2026-10-08T00:18:42.330Z
+Exit code 0

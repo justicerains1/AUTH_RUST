@@ -35,6 +35,8 @@ export type MfaVerification = z.infer<typeof mfaVerificationSchema>;
 export type TotpEnrollment = z.infer<typeof totpEnrollmentSchema>;
 export const authorizationTransactionSchema = z.object({ id: z.uuid(), client: z.object({ client_id: z.string().min(1).max(128), name: z.string().min(1).max(100) }), requested_scopes: z.array(z.enum(['openid', 'profile', 'email'])).min(1), previously_approved_scopes: z.array(z.enum(['openid', 'profile', 'email'])), expires_at: z.iso.datetime({ offset: true }), status: z.enum(['login_required', 'consent_required']) });
 export const authorizationDecisionSchema = z.object({ status: z.literal('completed'), redirect_to: z.url() });
+export const grantPageSchema = z.object({ items: z.array(z.object({ id: z.uuid(), client_id: z.string(), client_name: z.string(), scope: z.array(z.enum(['openid', 'profile', 'email'])), created_at: z.iso.datetime({ offset: true }), expires_at: z.iso.datetime({ offset: true }) })).max(100), next_cursor: z.string().nullable() });
+export const logoutCompletedSchema = z.object({ status: z.literal('completed'), redirect_to: z.url().nullable() });
 export type Me = z.infer<typeof meSchema>;
 export const acceptedSchema = z.object({ status: z.literal('accepted'), message: z.string() });
 export const emailVerifiedSchema = z.object({ status: z.literal('verified') });
@@ -85,6 +87,15 @@ export class ApiClient {
     });
     this.csrfRequest = pending;
     try { return await pending; } finally { if (generation === this.generation) this.csrfRequest = undefined; }
+  }
+
+  async requestProtocol<T>(path: '/oauth/logout/confirm', schema: z.ZodType<T>, body: { confirmation_id: string; decision: 'logout' | 'cancel' }): Promise<T> {
+    const csrf = await this.getCsrf();
+    let response: Response;
+    try { response = await this.transport(path, { method: 'POST', headers: { Accept: 'application/json', 'Content-Type': 'application/json', 'X-CSRF-Token': csrf }, credentials: 'same-origin', cache: 'no-store', body: JSON.stringify(body) }); } catch { throw new ApiError(0, 'CLIENT_NETWORK_UNAVAILABLE', '网络暂不可用，请重试'); }
+    let value: unknown; try { value = await response.json(); } catch { throw new ApiError(response.status, 'CLIENT_INVALID_RESPONSE', '服务返回了无法处理的结果'); }
+    if (!response.ok) { const protocol = z.object({ error: z.string().min(1) }).safeParse(value); const detail = errorSchema.safeParse(value); if ([401, 403].includes(response.status) || detail.success && detail.data.error.code === 'AUTH_CSRF_INVALID') this.resetCsrf(); const retry = response.headers.get('Retry-After'); const requestId = detail.success ? detail.data.error.request_id : response.headers.get('X-Request-ID') ?? undefined; throw new ApiError(response.status, protocol.success ? protocol.data.error : detail.success ? detail.data.error.code : 'CLIENT_INVALID_RESPONSE', '退出请求暂未完成，请重新开始', { ...(requestId === undefined ? {} : { requestId }), ...(retry !== null && /^\d+$/u.test(retry) ? { retryAfter: Number(retry) } : {}) }); }
+    const parsed = schema.safeParse(value); if (!parsed.success) throw new ApiError(response.status, 'CLIENT_INVALID_RESPONSE', '服务返回了无法处理的结果'); return parsed.data;
   }
 
   async request<T>(path: string, schema: z.ZodType<T>, options: RequestOptions = {}): Promise<T> {
