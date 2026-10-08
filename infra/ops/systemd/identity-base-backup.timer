@@ -1,0 +1,13 @@
+# Example only. No production schedule has been installed or observed.
+[Unit]
+Description=Daily verified encrypted identity database backup
+
+[Timer]
+OnCalendar=*-*-* 02:00:00 UTC
+Persistent=true
+RandomizedDelaySec=5m
+AccuracySec=1m
+Unit=identity-base-backup.service
+
+[Install]
+WantedBy=timers.target

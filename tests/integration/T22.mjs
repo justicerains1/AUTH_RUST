@@ -34,6 +34,11 @@ await writeFile(resolve(privateDirectory, 'release-order.txt'), releaseOrder.dia
 const releaseDrill = await runStage(process.execPath, [resolve(root, 'tests/ops/release-local.mjs')], { cwd: root, env: opsEnvironment });
 await writeFile(resolve(privateDirectory, 'release-local.txt'), releaseDrill.diagnostic, { mode: 0o600 });
 results.push({ name: 'release-and-compatible-rollback', exitCode: releaseOrder.exitCode || releaseDrill.exitCode });
+const retention = await runStage(process.execPath, ['--test', resolve(root, 'tests/ops/backup-retention.test.mjs')], { cwd: root, env: opsEnvironment });
+await writeFile(resolve(privateDirectory, 'backup-retention.txt'), retention.diagnostic, { mode: 0o600 });
+const catalog = await runStage(process.execPath, [resolve(root, 'tests/ops/backup-catalog.mjs')], { cwd: root, env: opsEnvironment });
+await writeFile(resolve(privateDirectory, 'backup-catalog.txt'), catalog.diagnostic, { mode: 0o600 });
+results.push({ name: 'verified-backup-catalog-and-conservative-retention', exitCode: retention.exitCode || catalog.exitCode });
 const evidence = resolve(root, 'docs/evidence/T22'); await mkdir(evidence, { recursive: true });
 const code = results.some((result) => result.exitCode !== 0) ? 1 : 0;
 await writeFile(resolve(evidence, 'integration.json'), JSON.stringify({ completed: new Date().toISOString(), results, exitCode: code, scope: 'Local metrics, PostgreSQL key maintenance, isolated encrypted backup/WAL, full identity snapshot recovery with virtual Passkey, signing rollout with real BFF and offline production configuration; not production acceptance.' }, null, 2)+'\n');

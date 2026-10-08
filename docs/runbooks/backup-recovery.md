@@ -12,6 +12,31 @@ Compose显式设置`archive_timeout=300s`，避免低流量时等待16MiB段写�
 
 保留策略须保留至少14天内可恢复的基础备份及其连续WAL；窗口起点之前的必要基础备份及该备份以来WAL不能按mtime直接删除。每日调度、失败告警和删除前恢复链核对仍需运维系统实际执行。WAL锁目录在进程异常退出后可能遗留；确认没有活动归档任务且旧对象状态完整后再受控清理，不能自动绕过锁覆盖对象。
 
+## 每日调度与保守基础备份保留
+
+`infra/ops/systemd/identity-base-backup.service`和`.timer`是待安装示例：每天UTC02:00触发，Persistent补触发、最多5分钟随机延迟，同一个oneshot服务不重叠；服务UMask0077、受控identity-backup账号、owner-only `/etc/identity/backup.env`及独立挂载目录。安装前改为真实绝对目录/工具路径/账号，核对PG17客户端、age1.3.2与PGPASSFILE权限，配置已测试的OnFailure通知override和空间/备份陈旧告警。`RequiresMountsFor`不证明独立故障域，须实际检查挂载和故障域。`systemd-analyze verify`只验语法，不表示计时器已经运行、邮件通知可达或14天历史已经存在。timer不自动执行删除。
+
+新`backup-retention.mjs`提供`catalog`、`plan`和显式`apply`。配置是0600受控JSON，包含规范绝对`backupDirectory`、`workDirectory`、`restoreScript`、`ageIdentityFile`、`ageBinary`、`pgControlData`与`keepDays`（最低14）；工作目录仅备份管理员可读，解密的临时数据用完删除。`catalog`读取当前真实完成receipt，调用现restore-base/age/pg_verifybackup，再提取PG manifest v2的System-Identifier（保留64bit十进制原值）、Manifest-Checksum、Start/End LSN/Timeline、backup_label START TIME和pg_controldata WAL段大小。它重新验证选中密文，原子写`<backup_name>.catalog.json`，不以mtime或文件名时间替代可信元信息；失败没有新catalog。
+
+```sh
+node /opt/identity/infra/ops/backup-retention.mjs catalog /absolute/owner-only-retention.json
+node /opt/identity/infra/ops/backup-retention.mjs plan /absolute/owner-only-retention.json
+```
+
+保留计划按`cutoff=now-max(keepDays,14)天`判断。只支持已验证的同cluster单timeline，选择**完成时间不晚于cutoff**的最近基础备份作为候选锚点，保留该备份及全部更晚备份；备份在cutoff时尚未完成不能作为锚点。多cluster、timeline分叉/多范围、段大小矛盾、未知/缺失/损坏catalog、future时间或活跃/中断backup/restore标记均hold全部，不尝试推断分支可删。所有WAL段、`.history`/`.backup`和密钥始终保留，不实现自动WAL剪裁，因此存储空间可能持续增长、没有总空间上限；必须按真实增长配置容量告警，不能为腾空间直接删恢复链。
+
+候选锚点必须还有0600 `<backup_name>.restore-proof.json`：真实恢复验证生成，绑定backup名/密文SHA/manifestSHA/System-Identifier，记录`pg_verifybackup_passed=true`、实际恢复timeline/replayed_lsn、恢复到达的真实时间点及完成时间、`postgres-recovery`/`business-validation`检查。目标时间必须覆盖cutoff，重放LSN至少包含该备份End-LSN；仅写true、合成旧时间、一次数据库启动或无摘要绑定不构成恢复证明。当前工具不会自动制造这份证明；由已经审查的真实恢复演练写入，无法证明则只能保留。正常新备份不足14天历史时`plan`明确hold且`apply`拒绝，不能改时间让删除变绿。
+
+删除只在已确认备份/恢复任务静止的独占维护窗口执行，配置明确`exclusiveMaintenanceAcknowledged=true`；每个正在使用的备份预先写0600 `<backup_name>.pin`，恢复期间设置`.restore-active`，不能依靠清理工具自己的锁阻止另一个未配合进程。先审查plan和其`plan_sha256`，再显式：
+
+```sh
+node /opt/identity/infra/ops/backup-retention.mjs apply /absolute/owner-only-retention.json <exact-reviewed-plan-sha256>
+```
+
+工具重新验证实际对象、恢复proof和pin，计划变化拒绝。仅将更早的选中基础密文及同名sha/catalog/proof移入受控quarantine，同步后删除；不删除锚点、更新备份、pin对象、WAL、key或活动PGDATA。中断/错误可能留下quarantine，需核对并受控恢复，禁止自动移除残留后重试。此保守机制保持至少14天窗口所需锚点，但不能替代连续WAL/独立故障域/实际生产恢复验收。
+
+本地验证见[备份catalog及保留证据](../evidence/T22/backup-retention-summary.md)。纯文件算法测试与真实PGcatalog测试分开，真实当前两份备份只证明元信息/还原和无14天历史时拒绝删除；不宣称已实际生产保留14天或达到RPO/RTO。
+
 恢复前核对backup版本与checksum，通过restore-base.sh解密到新空目录并pg_verifybackup，绝不覆盖活动PGDATA。设置restore_command调用restore-wal.sh，指定recovery_target_time或已记录restore-point、recovery_target_action=promote，创建recovery.signal；启动前先恢复签名/AEAD/配置的独立受控备份。restore-wal只解密到临时目标，验证内容后替换，损坏/缺失返回失败。
 
 新基础备份checksum只含单行SHA256与密文basename，搬迁后恢复只对调用参数指定的密文计算摘要，不跟随manifest路径。历史含绝对或目录路径的manifest明确拒绝：先在受控流程核对原manifest摘要、备份ID/可信清单及搬迁密文的真实摘要一致，再只把文件名改成对应basename；不得对未知对象直接重算摘要后宣称可信。缺失、多行、错误文件名/摘要、损坏age或无效PG备份均失败，解密/解包/verify失败不会发布目标PGDATA。checksum是完整性辅助，age认证不能替代可信备份版本清单或密钥保管。

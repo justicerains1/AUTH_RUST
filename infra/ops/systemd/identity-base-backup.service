@@ -1,0 +1,22 @@
+# Example only. Review absolute paths, credentials, mount and service account before installation.
+[Unit]
+Description=Verified encrypted identity PostgreSQL base backup
+RequiresMountsFor=/mnt/identity-backup
+After=network-online.target
+Wants=network-online.target
+# Add an existing tested local failure-notification unit through a controlled override.
+
+[Service]
+Type=oneshot
+User=identity-backup
+Group=identity-backup
+UMask=0077
+EnvironmentFile=/etc/identity/backup.env
+ExecStart=/bin/sh /opt/identity/infra/ops/base-backup.sh
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/mnt/identity-backup
+TimeoutStartSec=1h
+# No automatic retention apply. Backup/ciphertext verification failures return nonzero.

@@ -1,0 +1,20 @@
+{
+  "started": "2026-10-08T18:32:24.098Z",
+  "scope": "Local actual pg_basebackup/age/pg_verifybackup catalog and restored probe; no fourteen-day history, no real deletion or production RPO",
+  "checks": [
+    "Two actual encrypted PostgreSQL backups yield owner-only catalogs bound to ciphertext and pg_verifybackup manifest metadata.",
+    "Selected latest ciphertext really restores to the same cluster/timeline and both actual committed probe rows; LSN/time proof remains bound to that object.",
+    "With no real fourteen-day history the actual catalog inventory holds every backup and apply refuses; no timestamps or proofs are aged to obtain deletion."
+  ],
+  "sourceSha256": {
+    "infra/ops/backup-retention.mjs": "8e5ea974670b9f167a56e78af453bb17ae7eb56a4b9057943ed49deaacfc67c0",
+    "tests/ops/backup-catalog.mjs": "72ae12f6105a61ede7ea7878809d095f97a8479c858eb81a3cfb68c8fdd145e1",
+    "infra/ops/base-backup.sh": "c1d53de508cef5df69b34bb199c0665daefe30ab7bf9bd8fff8b6d46d8ee3786",
+    "infra/ops/restore-base.sh": "8bce1c8d7ac88cb2fc0d3f0ba9e6cc820d1b64d4c8c8db85079468ba3cbb9130"
+  },
+  "exitCode": 0,
+  "catalogCount": 2,
+  "restoreProofCreated": true,
+  "actualApply": "refused-no-fourteen-day-anchor",
+  "completed": "2026-10-08T18:32:35.942Z"
+}
