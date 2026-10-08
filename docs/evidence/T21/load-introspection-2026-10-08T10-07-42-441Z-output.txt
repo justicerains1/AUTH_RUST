@@ -1,0 +1,1 @@
+time="2026-10-08T18:24:56+08:00" level=error msg="thresholds on metrics 'dropped_iterations, measurement_requests{endpoint:introspection}' have been crossed"

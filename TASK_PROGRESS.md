@@ -29,7 +29,7 @@
 | T18 | 待验收 | 账号/会话/授权与统一认证4E2E通过；原前置T17仍待设备验收；[结果](docs/evidence/T18/test-summary.md) |
 | T19 | 通过 | 四后台页面、13API、单次secret/权限、十万用户分页与3E2E；[结果](docs/evidence/T19/test-summary.md) |
 | T20 | 待验收 | 六阶段安全/真实故障/新协议竞争通过，全量回归与T18前置未放行；[结果](docs/evidence/T20/test-summary.md) |
-| T21 | 进行中 | 前端独立测量达标；后端300RPS首次dropped560未达，修负载器并复测 |
+| T21 | 待验收 | 前端及四场15min本机实测阈值通过；原参考环境/完整容量及T20前置未验；[结果](docs/evidence/T21/test-summary.md) |
 | T22 | 待验收 | 本地制品/指标/PITR/AEAD维护通过；生产恢复/SMTP/独立存储与告警未验；[记录](docs/evidence/T22/test-summary.md) |
 | T23～T24 | 未开始 | 第一版发布/真实设备与生产条件未满足，高可用后续独立阶段 |
 
@@ -181,3 +181,7 @@ T21状态检查正式复测已通过：15分钟270000请求精确300RPS、drop0/
 ## T22 本地制品与运维模块
 
 固定非root镜像/Caddy、指标与规则语法、age归档边界、独立小probePITR及全AEAD重加密CLI真实验证通过。原生产资源未准备、完整恢复/每日独立备份/可达告警/签名分发仍待验收，T22不放行。[记录](docs/evidence/T22/test-summary.md)。
+
+## T21完整本机负载实验
+
+四个2min预热+15min场景实际目标counts全完成、drop0/业务错误0，mixed319500请求；原失败修复与报告保留。当前硬件不同参考基准且完整容量/前置未验，任务保持待验收。负载已释放，随后开始用户要求的完整test:full与cleancheckout验证。[结果](docs/evidence/T21/test-summary.md)。

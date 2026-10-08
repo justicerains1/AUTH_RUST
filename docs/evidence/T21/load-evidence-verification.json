@@ -1,0 +1,38 @@
+{
+  "verified": "2026-10-08T12:06:48.217Z",
+  "overallT21Passed": false,
+  "results": [
+    {
+      "scenario": "introspection",
+      "report": "docs/evidence/T21/load-introspection-2026-10-08T10-29-20-020Z.json",
+      "measurementRequests": 270000,
+      "measurementSeconds": 900,
+      "warmupSeconds": 120,
+      "exitCode": 0
+    },
+    {
+      "scenario": "account",
+      "report": "docs/evidence/T21/load-account-2026-10-08T11-05-59-379Z.json",
+      "measurementRequests": 90000,
+      "measurementSeconds": 900,
+      "warmupSeconds": 120,
+      "exitCode": 0
+    },
+    {
+      "scenario": "password",
+      "report": "docs/evidence/T21/load-password-2026-10-08T11-24-05-797Z.json",
+      "measurementRequests": 4500,
+      "measurementSeconds": 900,
+      "warmupSeconds": 120,
+      "exitCode": 0
+    },
+    {
+      "scenario": "mixed",
+      "report": "docs/evidence/T21/load-mixed-2026-10-08T11-44-37-116Z.json",
+      "measurementRequests": 319500,
+      "measurementSeconds": 900,
+      "warmupSeconds": 120,
+      "exitCode": 0
+    }
+  ]
+}

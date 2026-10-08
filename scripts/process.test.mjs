@@ -18,11 +18,13 @@ test('shell metacharacters remain literal arguments', async () => {
   assert.equal(result.stdout, input);
 });
 
-for (const command of ['test:load', 'seed:acceptance']) {
-  test(`${command} cannot report success before implementation`, async () => {
-    await assert.rejects(runCommand(command), (error) => error instanceof CommandError && error.exitCode !== 0 && /尚未实现/u.test(error.message));
-  });
-}
+test('load tests require an explicit valid scenario without spawning a process', async () => {
+  await assert.rejects(runCommand('test:load'), /要求明确/u);
+  await assert.rejects(runCommand('test:load', ['--scenario=production']), /要求明确/u);
+});
+test('seed refuses extra target or production selectors before starting', async () => {
+  await assert.rejects(runCommand('seed:acceptance', ['--env=production']), /不接受额外参数/u);
+});
 
 test('unsupported complete suite selectors fail without running a child', async () => {
   await assert.rejects(runCommand('test:security', ['--task=T23']), /只接受已实现/u);

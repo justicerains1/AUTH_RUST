@@ -9,10 +9,6 @@ import { runSuiteManifest } from './suite-manifest.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const APPS = ['identity-web', 'demo-a', 'demo-b'];
-const FUTURE_COMMANDS = {
-  'test:load': 'T21 的 k6 场景、真实数据种子和阈值尚未实现。',
-  'seed:acceptance': 'T03/T21 的种子及 production/测试库白名单拒绝规则尚未实现。',
-};
 
 async function requireFile(path, hint) {
   try { await access(path); } catch { throw new CommandError(hint); }
@@ -42,7 +38,14 @@ async function integration(args) {
 
 /** The same entry points are used by local npm commands and CI. */
 export async function runCommand(command, args = []) {
-  if (FUTURE_COMMANDS[command]) throw new CommandError(`${FUTURE_COMMANDS[command]} 该命令返回失败，按 plan.md 实施后再验收。`);
+  if (command === 'seed:acceptance') {
+    noArguments(command, args);
+    return runProcess(process.execPath, [resolve(ROOT, 'tests/load/run.mjs'), '--seed-only'], { cwd: ROOT });
+  }
+  if (command === 'test:load') {
+    if (args.length !== 1 || !/^--scenario=(introspection|account|password|mixed)$/u.test(args[0])) throw new CommandError('test:load要求明确 --scenario=introspection|account|password|mixed。');
+    return runProcess(process.execPath, [resolve(ROOT, 'tests/load/run.mjs'), args[0]], { cwd: ROOT });
+  }
   if (command === 'test:integration') return integration(args);
   if (command === 'test:e2e') {
     if (args.length === 0) { const code = await runSuiteManifest('e2e'); if (code !== 0) throw new CommandError('完整E2E套件包含失败，请检查逐模块实际报告。', code); return; }

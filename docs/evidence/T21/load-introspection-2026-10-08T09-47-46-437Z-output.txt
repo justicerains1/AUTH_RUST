@@ -1,0 +1,1 @@
+time="2026-10-08T17:52:03+08:00" level=error msg="test run was aborted because k6 received a 'terminated' signal"

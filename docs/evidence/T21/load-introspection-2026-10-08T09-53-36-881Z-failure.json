@@ -1,0 +1,1698 @@
+{
+  "kind": "T21 load independent submodule, not overall acceptance",
+  "scenario": "introspection",
+  "started": "2026-10-08T09:53:36.881Z",
+  "environment": {
+    "os": "linux 6.18.40.1-microsoft-standard-WSL2",
+    "cpuModel": "AMD Ryzen 7 7700X 8-Core Processor",
+    "logicalCpus": 16,
+    "memoryGiB": 15.217361450195312,
+    "referenceMatches": false,
+    "note": "Same-host WSL2 Ryzen7700X16logical15.2GiB differs from Linux8vCPU16GiBSSD reference; load generator shares CPU with API/PG/Redis."
+  },
+  "warmupSeconds": 120,
+  "measurementSeconds": 900,
+  "resources": [
+    {
+      "at": "2026-10-08T09:53:50.109Z",
+      "service": {
+        "refreshes": 0,
+        "refresh_failures": 0,
+        "password_hashes": 1,
+        "password_verifications": 0,
+        "password_queue_timeouts": 0,
+        "password_hash_nanoseconds": 103956198,
+        "password_verification_nanoseconds": 0,
+        "argon2_memory_kib": 65536,
+        "argon2_iterations": 3,
+        "argon2_lanes": 1,
+        "pool_size": 2,
+        "pool_idle": 1,
+        "database_active_connections": 1
+      },
+      "containers": [
+        {
+          "BlockIO": "3.83MB / 1.38GB",
+          "CPUPerc": "1.30%",
+          "Container": "auth-rust-development-postgres-1",
+          "ID": "3bf879589022",
+          "MemPerc": "1.29%",
+          "MemUsage": "201.3MiB / 15.22GiB",
+          "Name": "auth-rust-development-postgres-1",
+          "NetIO": "499MB / 274MB",
+          "PIDs": "11"
+        },
+        {
+          "BlockIO": "43MB / 89.7MB",
+          "CPUPerc": "0.23%",
+          "Container": "auth-rust-development-redis-1",
+          "ID": "06d9f610aee7",
+          "MemPerc": "0.12%",
+          "MemUsage": "18.87MiB / 15.22GiB",
+          "Name": "auth-rust-development-redis-1",
+          "NetIO": "326MB / 140MB",
+          "PIDs": "7"
+        }
+      ],
+      "apiHarness": {
+        "fields": [
+          "VmHWM:\t   77256 kB",
+          "VmRSS:\t   23028 kB",
+          "Threads:\t3"
+        ],
+        "userCpuTicks": 127,
+        "systemCpuTicks": 35
+      },
+      "loadGenerator": {}
+    },
+    {
+      "at": "2026-10-08T09:54:06.311Z",
+      "service": {
+        "refreshes": 0,
+        "refresh_failures": 0,
+        "password_hashes": 1,
+        "password_verifications": 0,
+        "password_queue_timeouts": 0,
+        "password_hash_nanoseconds": 103956198,
+        "password_verification_nanoseconds": 0,
+        "argon2_memory_kib": 65536,
+        "argon2_iterations": 3,
+        "argon2_lanes": 1,
+        "pool_size": 15,
+        "pool_idle": 14,
+        "database_active_connections": 1
+      },
+      "containers": [
+        {
+          "BlockIO": "3.83MB / 1.38GB",
+          "CPUPerc": "10.75%",
+          "Container": "auth-rust-development-postgres-1",
+          "ID": "3bf879589022",
+          "MemPerc": "1.52%",
+          "MemUsage": "237.4MiB / 15.22GiB",
+          "Name": "auth-rust-development-postgres-1",
+          "NetIO": "502MB / 277MB",
+          "PIDs": "24"
+        },
+        {
+          "BlockIO": "43MB / 90.8MB",
+          "CPUPerc": "5.84%",
+          "Container": "auth-rust-development-redis-1",
+          "ID": "06d9f610aee7",
+          "MemPerc": "0.13%",
+          "MemUsage": "19.88MiB / 15.22GiB",
+          "Name": "auth-rust-development-redis-1",
+          "NetIO": "330MB / 142MB",
+          "PIDs": "7"
+        }
+      ],
+      "apiHarness": {
+        "fields": [
+          "VmHWM:\t   77256 kB",
+          "VmRSS:\t   25848 kB",
+          "Threads:\t3"
+        ],
+        "userCpuTicks": 207,
+        "systemCpuTicks": 192
+      },
+      "loadGenerator": {
+        "fields": [
+          "VmHWM:\t  482200 kB",
+          "VmRSS:\t  482200 kB",
+          "Threads:\t21"
+        ],
+        "userCpuTicks": 318,
+        "systemCpuTicks": 138
+      }
+    },
+    {
+      "at": "2026-10-08T09:54:22.316Z",
+      "service": {
+        "refreshes": 0,
+        "refresh_failures": 0,
+        "password_hashes": 1,
+        "password_verifications": 0,
+        "password_queue_timeouts": 0,
+        "password_hash_nanoseconds": 103956198,
+        "password_verification_nanoseconds": 0,
+        "argon2_memory_kib": 65536,
+        "argon2_iterations": 3,
+        "argon2_lanes": 1,
+        "pool_size": 15,
+        "pool_idle": 13,
+        "database_active_connections": 1
+      },
+      "containers": [
+        {
+          "BlockIO": "3.83MB / 1.53GB",
+          "CPUPerc": "10.67%",
+          "Container": "auth-rust-development-postgres-1",
+          "ID": "3bf879589022",
+          "MemPerc": "1.52%",
+          "MemUsage": "237.3MiB / 15.22GiB",
+          "Name": "auth-rust-development-postgres-1",
+          "NetIO": "505MB / 281MB",
+          "PIDs": "24"
+        },
+        {
+          "BlockIO": "43.1MB / 91.8MB",
+          "CPUPerc": "5.99%",
+          "Container": "auth-rust-development-redis-1",
+          "ID": "06d9f610aee7",
+          "MemPerc": "0.13%",
+          "MemUsage": "19.5MiB / 15.22GiB",
+          "Name": "auth-rust-development-redis-1",
+          "NetIO": "334MB / 144MB",
+          "PIDs": "7"
+        }
+      ],
+      "apiHarness": {
+        "fields": [
+          "VmHWM:\t   77256 kB",
+          "VmRSS:\t   25848 kB",
+          "Threads:\t3"
+        ],
+        "userCpuTicks": 279,
+        "systemCpuTicks": 351
+      },
+      "loadGenerator": {
+        "fields": [
+          "VmHWM:\t  528732 kB",
+          "VmRSS:\t  528732 kB",
+          "Threads:\t21"
+        ],
+        "userCpuTicks": 487,
+        "systemCpuTicks": 236
+      }
+    },
+    {
+      "at": "2026-10-08T09:54:37.310Z",
+      "service": {
+        "refreshes": 0,
+        "refresh_failures": 0,
+        "password_hashes": 1,
+        "password_verifications": 0,
+        "password_queue_timeouts": 0,
+        "password_hash_nanoseconds": 103956198,
+        "password_verification_nanoseconds": 0,
+        "argon2_memory_kib": 65536,
+        "argon2_iterations": 3,
+        "argon2_lanes": 1,
+        "pool_size": 15,
+        "pool_idle": 13,
+        "database_active_connections": 1
+      },
+      "containers": [
+        {
+          "BlockIO": "3.83MB / 1.54GB",
+          "CPUPerc": "11.41%",
+          "Container": "auth-rust-development-postgres-1",
+          "ID": "3bf879589022",
+          "MemPerc": "1.56%",
+          "MemUsage": "243.7MiB / 15.22GiB",
+          "Name": "auth-rust-development-postgres-1",
+          "NetIO": "508MB / 284MB",
+          "PIDs": "24"
+        },
+        {
+          "BlockIO": "43.2MB / 92.8MB",
+          "CPUPerc": "6.01%",
+          "Container": "auth-rust-development-redis-1",
+          "ID": "06d9f610aee7",
+          "MemPerc": "0.13%",
+          "MemUsage": "20.23MiB / 15.22GiB",
+          "Name": "auth-rust-development-redis-1",
+          "NetIO": "338MB / 145MB",
+          "PIDs": "7"
+        }
+      ],
+      "apiHarness": {
+        "fields": [
+          "VmHWM:\t   77256 kB",
+          "VmRSS:\t   25848 kB",
+          "Threads:\t3"
+        ],
+        "userCpuTicks": 350,
+        "systemCpuTicks": 498
+      },
+      "loadGenerator": {
+        "fields": [
+          "VmHWM:\t  531680 kB",
+          "VmRSS:\t  531680 kB",
+          "Threads:\t21"
+        ],
+        "userCpuTicks": 648,
+        "systemCpuTicks": 340
+      }
+    },
+    {
+      "at": "2026-10-08T09:54:52.322Z",
+      "service": {
+        "refreshes": 0,
+        "refresh_failures": 0,
+        "password_hashes": 1,
+        "password_verifications": 0,
+        "password_queue_timeouts": 0,
+        "password_hash_nanoseconds": 103956198,
+        "password_verification_nanoseconds": 0,
+        "argon2_memory_kib": 65536,
+        "argon2_iterations": 3,
+        "argon2_lanes": 1,
+        "pool_size": 15,
+        "pool_idle": 13,
+        "database_active_connections": 1
+      },
+      "containers": [
+        {
+          "BlockIO": "3.83MB / 1.55GB",
+          "CPUPerc": "13.00%",
+          "Container": "auth-rust-development-postgres-1",
+          "ID": "3bf879589022",
+          "MemPerc": "1.62%",
+          "MemUsage": "252.9MiB / 15.22GiB",
+          "Name": "auth-rust-development-postgres-1",
+          "NetIO": "511MB / 287MB",
+          "PIDs": "27"
+        },
+        {
+          "BlockIO": "43.2MB / 93.9MB",
+          "CPUPerc": "6.80%",
+          "Container": "auth-rust-development-redis-1",
+          "ID": "06d9f610aee7",
+          "MemPerc": "0.13%",
+          "MemUsage": "20.86MiB / 15.22GiB",
+          "Name": "auth-rust-development-redis-1",
+          "NetIO": "341MB / 147MB",
+          "PIDs": "7"
+        }
+      ],
+      "apiHarness": {
+        "fields": [
+          "VmHWM:\t   77256 kB",
+          "VmRSS:\t   28928 kB",
+          "Threads:\t3"
+        ],
+        "userCpuTicks": 424,
+        "systemCpuTicks": 658
+      },
+      "loadGenerator": {
+        "fields": [
+          "VmHWM:\t  570316 kB",
+          "VmRSS:\t  570316 kB",
+          "Threads:\t21"
+        ],
+        "userCpuTicks": 834,
+        "systemCpuTicks": 428
+      }
+    },
+    {
+      "at": "2026-10-08T09:55:07.316Z",
+      "service": {
+        "refreshes": 0,
+        "refresh_failures": 0,
+        "password_hashes": 1,
+        "password_verifications": 0,
+        "password_queue_timeouts": 0,
+        "password_hash_nanoseconds": 103956198,
+        "password_verification_nanoseconds": 0,
+        "argon2_memory_kib": 65536,
+        "argon2_iterations": 3,
+        "argon2_lanes": 1,
+        "pool_size": 18,
+        "pool_idle": 17,
+        "database_active_connections": 1
+      },
+      "containers": [
+        {
+          "BlockIO": "3.83MB / 1.55GB",
+          "CPUPerc": "10.95%",
+          "Container": "auth-rust-development-postgres-1",
+          "ID": "3bf879589022",
+          "MemPerc": "1.62%",
+          "MemUsage": "253.1MiB / 15.22GiB",
+          "Name": "auth-rust-development-postgres-1",
+          "NetIO": "514MB / 290MB",
+          "PIDs": "27"
+        },
+        {
+          "BlockIO": "43.3MB / 95MB",
+          "CPUPerc": "5.99%",
+          "Container": "auth-rust-development-redis-1",
+          "ID": "06d9f610aee7",
+          "MemPerc": "0.13%",
+          "MemUsage": "20.06MiB / 15.22GiB",
+          "Name": "auth-rust-development-redis-1",
+          "NetIO": "345MB / 149MB",
+          "PIDs": "7"
+        }
+      ],
+      "apiHarness": {
+        "fields": [
+          "VmHWM:\t   77256 kB",
+          "VmRSS:\t   28928 kB",
+          "Threads:\t3"
+        ],
+        "userCpuTicks": 497,
+        "systemCpuTicks": 809
+      },
+      "loadGenerator": {
+        "fields": [
+          "VmHWM:\t  627636 kB",
+          "VmRSS:\t  627636 kB",
+          "Threads:\t21"
+        ],
+        "userCpuTicks": 989,
+        "systemCpuTicks": 525
+      }
+    },
+    {
+      "at": "2026-10-08T09:55:22.312Z",
+      "service": {
+        "refreshes": 0,
+        "refresh_failures": 0,
+        "password_hashes": 1,
+        "password_verifications": 0,
+        "password_queue_timeouts": 0,
+        "password_hash_nanoseconds": 103956198,
+        "password_verification_nanoseconds": 0,
+        "argon2_memory_kib": 65536,
+        "argon2_iterations": 3,
+        "argon2_lanes": 1,
+        "pool_size": 18,
+        "pool_idle": 17,
+        "database_active_connections": 1
+      },
+      "containers": [
+        {
+          "BlockIO": "3.83MB / 1.55GB",
+          "CPUPerc": "10.88%",
+          "Container": "auth-rust-development-postgres-1",
+          "ID": "3bf879589022",
+          "MemPerc": "1.62%",
+          "MemUsage": "252.1MiB / 15.22GiB",
+          "Name": "auth-rust-development-postgres-1",
+          "NetIO": "517MB / 293MB",
+          "PIDs": "27"
+        },
+        {
+          "BlockIO": "43.3MB / 96MB",
+          "CPUPerc": "5.98%",
+          "Container": "auth-rust-development-redis-1",
+          "ID": "06d9f610aee7",
+          "MemPerc": "0.13%",
+          "MemUsage": "19.78MiB / 15.22GiB",
+          "Name": "auth-rust-development-redis-1",
+          "NetIO": "349MB / 150MB",
+          "PIDs": "7"
+        }
+      ],
+      "apiHarness": {
+        "fields": [
+          "VmHWM:\t   77256 kB",
+          "VmRSS:\t   28928 kB",
+          "Threads:\t3"
+        ],
+        "userCpuTicks": 560,
+        "systemCpuTicks": 966
+      },
+      "loadGenerator": {
+        "fields": [
+          "VmHWM:\t  633460 kB",
+          "VmRSS:\t  633460 kB",
+          "Threads:\t21"
+        ],
+        "userCpuTicks": 1149,
+        "systemCpuTicks": 623
+      }
+    },
+    {
+      "at": "2026-10-08T09:55:37.313Z",
+      "service": {
+        "refreshes": 0,
+        "refresh_failures": 0,
+        "password_hashes": 1,
+        "password_verifications": 0,
+        "password_queue_timeouts": 0,
+        "password_hash_nanoseconds": 103956198,
+        "password_verification_nanoseconds": 0,
+        "argon2_memory_kib": 65536,
+        "argon2_iterations": 3,
+        "argon2_lanes": 1,
+        "pool_size": 18,
+        "pool_idle": 17,
+        "database_active_connections": 1
+      },
+      "containers": [
+        {
+          "BlockIO": "3.83MB / 1.55GB",
+          "CPUPerc": "10.99%",
+          "Container": "auth-rust-development-postgres-1",
+          "ID": "3bf879589022",
+          "MemPerc": "1.62%",
+          "MemUsage": "251.8MiB / 15.22GiB",
+          "Name": "auth-rust-development-postgres-1",
+          "NetIO": "519MB / 296MB",
+          "PIDs": "27"
+        },
+        {
+          "BlockIO": "43.4MB / 97MB",
+          "CPUPerc": "6.09%",
+          "Container": "auth-rust-development-redis-1",
+          "ID": "06d9f610aee7",
+          "MemPerc": "0.13%",
+          "MemUsage": "19.63MiB / 15.22GiB",
+          "Name": "auth-rust-development-redis-1",
+          "NetIO": "353MB / 152MB",
+          "PIDs": "7"
+        }
+      ],
+      "apiHarness": {
+        "fields": [
+          "VmHWM:\t   77256 kB",
+          "VmRSS:\t   28928 kB",
+          "Threads:\t3"
+        ],
+        "userCpuTicks": 629,
+        "systemCpuTicks": 1120
+      },
+      "loadGenerator": {
+        "fields": [
+          "VmHWM:\t  669044 kB",
+          "VmRSS:\t  669044 kB",
+          "Threads:\t21"
+        ],
+        "userCpuTicks": 1315,
+        "systemCpuTicks": 723
+      }
+    },
+    {
+      "at": "2026-10-08T09:55:52.321Z",
+      "service": {
+        "refreshes": 283,
+        "refresh_failures": 0,
+        "password_hashes": 1,
+        "password_verifications": 0,
+        "password_queue_timeouts": 0,
+        "password_hash_nanoseconds": 103956198,
+        "password_verification_nanoseconds": 0,
+        "argon2_memory_kib": 65536,
+        "argon2_iterations": 3,
+        "argon2_lanes": 1,
+        "pool_size": 18,
+        "pool_idle": 16,
+        "database_active_connections": 2
+      },
+      "containers": [
+        {
+          "BlockIO": "3.83MB / 1.56GB",
+          "CPUPerc": "35.64%",
+          "Container": "auth-rust-development-postgres-1",
+          "ID": "3bf879589022",
+          "MemPerc": "1.80%",
+          "MemUsage": "281MiB / 15.22GiB",
+          "Name": "auth-rust-development-postgres-1",
+          "NetIO": "524MB / 300MB",
+          "PIDs": "41"
+        },
+        {
+          "BlockIO": "43.5MB / 98.1MB",
+          "CPUPerc": "5.74%",
+          "Container": "auth-rust-development-redis-1",
+          "ID": "06d9f610aee7",
+          "MemPerc": "0.13%",
+          "MemUsage": "19.96MiB / 15.22GiB",
+          "Name": "auth-rust-development-redis-1",
+          "NetIO": "357MB / 154MB",
+          "PIDs": "7"
+        }
+      ],
+      "apiHarness": {
+        "fields": [
+          "VmHWM:\t   77256 kB",
+          "VmRSS:\t   34224 kB",
+          "Threads:\t3"
+        ],
+        "userCpuTicks": 768,
+        "systemCpuTicks": 1312
+      },
+      "loadGenerator": {
+        "fields": [
+          "VmHWM:\t  671984 kB",
+          "VmRSS:\t  671984 kB",
+          "Threads:\t21"
+        ],
+        "userCpuTicks": 1493,
+        "systemCpuTicks": 809
+      }
+    },
+    {
+      "at": "2026-10-08T09:56:07.324Z",
+      "service": {
+        "refreshes": 512,
+        "refresh_failures": 0,
+        "password_hashes": 1,
+        "password_verifications": 0,
+        "password_queue_timeouts": 0,
+        "password_hash_nanoseconds": 103956198,
+        "password_verification_nanoseconds": 0,
+        "argon2_memory_kib": 65536,
+        "argon2_iterations": 3,
+        "argon2_lanes": 1,
+        "pool_size": 32,
+        "pool_idle": 31,
+        "database_active_connections": 1
+      },
+      "containers": [
+        {
+          "BlockIO": "3.83MB / 1.57GB",
+          "CPUPerc": "13.44%",
+          "Container": "auth-rust-development-postgres-1",
+          "ID": "3bf879589022",
+          "MemPerc": "1.89%",
+          "MemUsage": "294.3MiB / 15.22GiB",
+          "Name": "auth-rust-development-postgres-1",
+          "NetIO": "528MB / 303MB",
+          "PIDs": "41"
+        },
+        {
+          "BlockIO": "43.5MB / 99.3MB",
+          "CPUPerc": "5.75%",
+          "Container": "auth-rust-development-redis-1",
+          "ID": "06d9f610aee7",
+          "MemPerc": "0.13%",
+          "MemUsage": "19.88MiB / 15.22GiB",
+          "Name": "auth-rust-development-redis-1",
+          "NetIO": "361MB / 155MB",
+          "PIDs": "7"
+        }
+      ],
+      "apiHarness": {
+        "fields": [
+          "VmHWM:\t   77256 kB",
+          "VmRSS:\t   34312 kB",
+          "Threads:\t3"
+        ],
+        "userCpuTicks": 843,
+        "systemCpuTicks": 1462
+      },
+      "loadGenerator": {
+        "fields": [
+          "VmHWM:\t  672384 kB",
+          "VmRSS:\t  672384 kB",
+          "Threads:\t21"
+        ],
+        "userCpuTicks": 1666,
+        "systemCpuTicks": 890
+      }
+    },
+    {
+      "at": "2026-10-08T09:56:22.314Z",
+      "service": {
+        "refreshes": 512,
+        "refresh_failures": 0,
+        "password_hashes": 1,
+        "password_verifications": 0,
+        "password_queue_timeouts": 0,
+        "password_hash_nanoseconds": 103956198,
+        "password_verification_nanoseconds": 0,
+        "argon2_memory_kib": 65536,
+        "argon2_iterations": 3,
+        "argon2_lanes": 1,
+        "pool_size": 32,
+        "pool_idle": 30,
+        "database_active_connections": 1
+      },
+      "containers": [
+        {
+          "BlockIO": "3.83MB / 1.57GB",
+          "CPUPerc": "15.75%",
+          "Container": "auth-rust-development-postgres-1",
+          "ID": "3bf879589022",
+          "MemPerc": "1.89%",
+          "MemUsage": "294.4MiB / 15.22GiB",
+          "Name": "auth-rust-development-postgres-1",
+          "NetIO": "532MB / 306MB",
+          "PIDs": "41"
+        },
+        {
+          "BlockIO": "43.6MB / 100MB",
+          "CPUPerc": "5.85%",
+          "Container": "auth-rust-development-redis-1",
+          "ID": "06d9f610aee7",
+          "MemPerc": "0.13%",
+          "MemUsage": "19.71MiB / 15.22GiB",
+          "Name": "auth-rust-development-redis-1",
+          "NetIO": "365MB / 157MB",
+          "PIDs": "7"
+        }
+      ],
+      "apiHarness": {
+        "fields": [
+          "VmHWM:\t   77256 kB",
+          "VmRSS:\t   34324 kB",
+          "Threads:\t3"
+        ],
+        "userCpuTicks": 928,
+        "systemCpuTicks": 1603
+      },
+      "loadGenerator": {
+        "fields": [
+          "VmHWM:\t  687976 kB",
+          "VmRSS:\t  687976 kB",
+          "Threads:\t21"
+        ],
+        "userCpuTicks": 1811,
+        "systemCpuTicks": 985
+      }
+    },
+    {
+      "at": "2026-10-08T09:56:37.312Z",
+      "service": {
+        "refreshes": 512,
+        "refresh_failures": 0,
+        "password_hashes": 1,
+        "password_verifications": 0,
+        "password_queue_timeouts": 0,
+        "password_hash_nanoseconds": 103956198,
+        "password_verification_nanoseconds": 0,
+        "argon2_memory_kib": 65536,
+        "argon2_iterations": 3,
+        "argon2_lanes": 1,
+        "pool_size": 32,
+        "pool_idle": 30,
+        "database_active_connections": 2
+      },
+      "containers": [
+        {
+          "BlockIO": "3.83MB / 1.57GB",
+          "CPUPerc": "11.92%",
+          "Container": "auth-rust-development-postgres-1",
+          "ID": "3bf879589022",
+          "MemPerc": "1.94%",
+          "MemUsage": "302MiB / 15.22GiB",
+          "Name": "auth-rust-development-postgres-1",
+          "NetIO": "536MB / 309MB",
+          "PIDs": "41"
+        },
+        {
+          "BlockIO": "43.6MB / 101MB",
+          "CPUPerc": "6.28%",
+          "Container": "auth-rust-development-redis-1",
+          "ID": "06d9f610aee7",
+          "MemPerc": "0.12%",
+          "MemUsage": "19.47MiB / 15.22GiB",
+          "Name": "auth-rust-development-redis-1",
+          "NetIO": "368MB / 159MB",
+          "PIDs": "7"
+        }
+      ],
+      "apiHarness": {
+        "fields": [
+          "VmHWM:\t   77256 kB",
+          "VmRSS:\t   34328 kB",
+          "Threads:\t3"
+        ],
+        "userCpuTicks": 1002,
+        "systemCpuTicks": 1759
+      },
+      "loadGenerator": {
+        "fields": [
+          "VmHWM:\t  699688 kB",
+          "VmRSS:\t  699688 kB",
+          "Threads:\t21"
+        ],
+        "userCpuTicks": 1982,
+        "systemCpuTicks": 1084
+      }
+    },
+    {
+      "at": "2026-10-08T09:56:51.319Z",
+      "service": {
+        "refreshes": 512,
+        "refresh_failures": 0,
+        "password_hashes": 1,
+        "password_verifications": 0,
+        "password_queue_timeouts": 0,
+        "password_hash_nanoseconds": 103956198,
+        "password_verification_nanoseconds": 0,
+        "argon2_memory_kib": 65536,
+        "argon2_iterations": 3,
+        "argon2_lanes": 1,
+        "pool_size": 32,
+        "pool_idle": 31,
+        "database_active_connections": 1
+      },
+      "containers": [
+        {
+          "BlockIO": "3.83MB / 1.57GB",
+          "CPUPerc": "15.73%",
+          "Container": "auth-rust-development-postgres-1",
+          "ID": "3bf879589022",
+          "MemPerc": "1.94%",
+          "MemUsage": "301.8MiB / 15.22GiB",
+          "Name": "auth-rust-development-postgres-1",
+          "NetIO": "540MB / 312MB",
+          "PIDs": "41"
+        },
+        {
+          "BlockIO": "43.7MB / 102MB",
+          "CPUPerc": "6.32%",
+          "Container": "auth-rust-development-redis-1",
+          "ID": "06d9f610aee7",
+          "MemPerc": "0.13%",
+          "MemUsage": "20.04MiB / 15.22GiB",
+          "Name": "auth-rust-development-redis-1",
+          "NetIO": "372MB / 160MB",
+          "PIDs": "7"
+        }
+      ],
+      "apiHarness": {
+        "fields": [
+          "VmHWM:\t   77256 kB",
+          "VmRSS:\t   34368 kB",
+          "Threads:\t3"
+        ],
+        "userCpuTicks": 1072,
+        "systemCpuTicks": 1910
+      },
+      "loadGenerator": {
+        "fields": [
+          "VmHWM:\t  701960 kB",
+          "VmRSS:\t  701960 kB",
+          "Threads:\t21"
+        ],
+        "userCpuTicks": 2146,
+        "systemCpuTicks": 1169
+      }
+    },
+    {
+      "at": "2026-10-08T09:57:07.316Z",
+      "service": {
+        "refreshes": 512,
+        "refresh_failures": 0,
+        "password_hashes": 1,
+        "password_verifications": 0,
+        "password_queue_timeouts": 0,
+        "password_hash_nanoseconds": 103956198,
+        "password_verification_nanoseconds": 0,
+        "argon2_memory_kib": 65536,
+        "argon2_iterations": 3,
+        "argon2_lanes": 1,
+        "pool_size": 32,
+        "pool_idle": 31,
+        "database_active_connections": 1
+      },
+      "containers": [
+        {
+          "BlockIO": "3.83MB / 1.57GB",
+          "CPUPerc": "11.39%",
+          "Container": "auth-rust-development-postgres-1",
+          "ID": "3bf879589022",
+          "MemPerc": "1.94%",
+          "MemUsage": "302.5MiB / 15.22GiB",
+          "Name": "auth-rust-development-postgres-1",
+          "NetIO": "544MB / 315MB",
+          "PIDs": "41"
+        },
+        {
+          "BlockIO": "43.8MB / 103MB",
+          "CPUPerc": "6.14%",
+          "Container": "auth-rust-development-redis-1",
+          "ID": "06d9f610aee7",
+          "MemPerc": "0.13%",
+          "MemUsage": "19.65MiB / 15.22GiB",
+          "Name": "auth-rust-development-redis-1",
+          "NetIO": "376MB / 162MB",
+          "PIDs": "7"
+        }
+      ],
+      "apiHarness": {
+        "fields": [
+          "VmHWM:\t   77256 kB",
+          "VmRSS:\t   34372 kB",
+          "Threads:\t3"
+        ],
+        "userCpuTicks": 1152,
+        "systemCpuTicks": 2082
+      },
+      "loadGenerator": {
+        "fields": [
+          "VmHWM:\t  703132 kB",
+          "VmRSS:\t  703132 kB",
+          "Threads:\t21"
+        ],
+        "userCpuTicks": 2328,
+        "systemCpuTicks": 1280
+      }
+    },
+    {
+      "at": "2026-10-08T09:57:22.315Z",
+      "service": {
+        "refreshes": 512,
+        "refresh_failures": 0,
+        "password_hashes": 1,
+        "password_verifications": 0,
+        "password_queue_timeouts": 0,
+        "password_hash_nanoseconds": 103956198,
+        "password_verification_nanoseconds": 0,
+        "argon2_memory_kib": 65536,
+        "argon2_iterations": 3,
+        "argon2_lanes": 1,
+        "pool_size": 32,
+        "pool_idle": 31,
+        "database_active_connections": 1
+      },
+      "containers": [
+        {
+          "BlockIO": "3.83MB / 1.57GB",
+          "CPUPerc": "0.29%",
+          "Container": "auth-rust-development-postgres-1",
+          "ID": "3bf879589022",
+          "MemPerc": "1.94%",
+          "MemUsage": "302MiB / 15.22GiB",
+          "Name": "auth-rust-development-postgres-1",
+          "NetIO": "548MB / 318MB",
+          "PIDs": "41"
+        },
+        {
+          "BlockIO": "43.8MB / 104MB",
+          "CPUPerc": "5.22%",
+          "Container": "auth-rust-development-redis-1",
+          "ID": "06d9f610aee7",
+          "MemPerc": "0.13%",
+          "MemUsage": "19.72MiB / 15.22GiB",
+          "Name": "auth-rust-development-redis-1",
+          "NetIO": "380MB / 164MB",
+          "PIDs": "7"
+        }
+      ],
+      "apiHarness": {
+        "fields": [
+          "VmHWM:\t   77256 kB",
+          "VmRSS:\t   34372 kB",
+          "Threads:\t3"
+        ],
+        "userCpuTicks": 1218,
+        "systemCpuTicks": 2224
+      },
+      "loadGenerator": {}
+    },
+    {
+      "at": "2026-10-08T09:57:23.319Z",
+      "service": {
+        "refreshes": 512,
+        "refresh_failures": 0,
+        "password_hashes": 1,
+        "password_verifications": 0,
+        "password_queue_timeouts": 0,
+        "password_hash_nanoseconds": 103956198,
+        "password_verification_nanoseconds": 0,
+        "argon2_memory_kib": 65536,
+        "argon2_iterations": 3,
+        "argon2_lanes": 1,
+        "pool_size": 32,
+        "pool_idle": 31,
+        "database_active_connections": 1
+      },
+      "containers": [
+        {
+          "BlockIO": "3.83MB / 1.57GB",
+          "CPUPerc": "0.16%",
+          "Container": "auth-rust-development-postgres-1",
+          "ID": "3bf879589022",
+          "MemPerc": "1.94%",
+          "MemUsage": "302MiB / 15.22GiB",
+          "Name": "auth-rust-development-postgres-1",
+          "NetIO": "548MB / 318MB",
+          "PIDs": "41"
+        },
+        {
+          "BlockIO": "43.8MB / 104MB",
+          "CPUPerc": "0.21%",
+          "Container": "auth-rust-development-redis-1",
+          "ID": "06d9f610aee7",
+          "MemPerc": "0.12%",
+          "MemUsage": "18.65MiB / 15.22GiB",
+          "Name": "auth-rust-development-redis-1",
+          "NetIO": "380MB / 164MB",
+          "PIDs": "7"
+        }
+      ],
+      "apiHarness": {
+        "fields": [
+          "VmHWM:\t   77256 kB",
+          "VmRSS:\t   34372 kB",
+          "Threads:\t3"
+        ],
+        "userCpuTicks": 1218,
+        "systemCpuTicks": 2224
+      },
+      "loadGenerator": {}
+    }
+  ],
+  "errors": [
+    "Interrupted before completing the required measurement; not a full performance result."
+  ],
+  "seed": {
+    "users": 100000,
+    "clients": 20,
+    "active_grants": 100000,
+    "token_pool": 512,
+    "session_pool": 2048,
+    "argon2_memory_kib": 65536,
+    "argon2_iterations": 3,
+    "argon2_lanes": 1,
+    "hash_parallelism": 4,
+    "database_pool_max": 32,
+    "schema_isolation": true
+  },
+  "queryPlans": {
+    "account_equivalent_index_path": [
+      {
+        "Plan": {
+          "Node Type": "Nested Loop",
+          "Parallel Aware": false,
+          "Async Capable": false,
+          "Join Type": "Inner",
+          "Startup Cost": 0.83,
+          "Total Cost": 16.88,
+          "Plan Rows": 1,
+          "Plan Width": 81,
+          "Actual Startup Time": 0.018,
+          "Actual Total Time": 0.018,
+          "Actual Rows": 1,
+          "Actual Loops": 1,
+          "Inner Unique": false,
+          "Shared Hit Blocks": 8,
+          "Shared Read Blocks": 0,
+          "Shared Dirtied Blocks": 0,
+          "Shared Written Blocks": 0,
+          "Local Hit Blocks": 0,
+          "Local Read Blocks": 0,
+          "Local Dirtied Blocks": 0,
+          "Local Written Blocks": 0,
+          "Temp Read Blocks": 0,
+          "Temp Written Blocks": 0,
+          "Plans": [
+            {
+              "Node Type": "Index Only Scan",
+              "Parent Relationship": "Outer",
+              "Parallel Aware": false,
+              "Async Capable": false,
+              "Scan Direction": "Forward",
+              "Index Name": "sessions_active_user_idx",
+              "Relation Name": "sessions",
+              "Alias": "s",
+              "Startup Cost": 0.42,
+              "Total Cost": 8.44,
+              "Plan Rows": 1,
+              "Plan Width": 24,
+              "Actual Startup Time": 0.013,
+              "Actual Total Time": 0.013,
+              "Actual Rows": 1,
+              "Actual Loops": 1,
+              "Index Cond": "(user_id = '3c4784ce-bde1-4fa0-bff3-7dd0c33ca64c'::uuid)",
+              "Rows Removed by Index Recheck": 0,
+              "Heap Fetches": 1,
+              "Shared Hit Blocks": 4,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0
+            },
+            {
+              "Node Type": "Index Scan",
+              "Parent Relationship": "Inner",
+              "Parallel Aware": false,
+              "Async Capable": false,
+              "Scan Direction": "Forward",
+              "Index Name": "users_pkey",
+              "Relation Name": "users",
+              "Alias": "u",
+              "Startup Cost": 0.42,
+              "Total Cost": 8.44,
+              "Plan Rows": 1,
+              "Plan Width": 73,
+              "Actual Startup Time": 0.004,
+              "Actual Total Time": 0.004,
+              "Actual Rows": 1,
+              "Actual Loops": 1,
+              "Index Cond": "(id = '3c4784ce-bde1-4fa0-bff3-7dd0c33ca64c'::uuid)",
+              "Rows Removed by Index Recheck": 0,
+              "Filter": "(verified AND (status = 'active'::text))",
+              "Rows Removed by Filter": 0,
+              "Shared Hit Blocks": 4,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0
+            }
+          ]
+        },
+        "Planning": {
+          "Shared Hit Blocks": 24,
+          "Shared Read Blocks": 0,
+          "Shared Dirtied Blocks": 0,
+          "Shared Written Blocks": 0,
+          "Local Hit Blocks": 0,
+          "Local Read Blocks": 0,
+          "Local Dirtied Blocks": 0,
+          "Local Written Blocks": 0,
+          "Temp Read Blocks": 0,
+          "Temp Written Blocks": 0
+        },
+        "Planning Time": 0.11,
+        "Triggers": [],
+        "Execution Time": 0.025
+      }
+    ],
+    "introspection_equivalent_join_path": [
+      {
+        "Plan": {
+          "Node Type": "Nested Loop",
+          "Parallel Aware": false,
+          "Async Capable": false,
+          "Join Type": "Inner",
+          "Startup Cost": 5.57,
+          "Total Cost": 37,
+          "Plan Rows": 5,
+          "Plan Width": 32,
+          "Actual Startup Time": 0.025,
+          "Actual Total Time": 0.026,
+          "Actual Rows": 2,
+          "Actual Loops": 1,
+          "Inner Unique": false,
+          "Shared Hit Blocks": 16,
+          "Shared Read Blocks": 0,
+          "Shared Dirtied Blocks": 0,
+          "Shared Written Blocks": 0,
+          "Local Hit Blocks": 0,
+          "Local Read Blocks": 0,
+          "Local Dirtied Blocks": 0,
+          "Local Written Blocks": 0,
+          "Temp Read Blocks": 0,
+          "Temp Written Blocks": 0,
+          "Plans": [
+            {
+              "Node Type": "Nested Loop",
+              "Parent Relationship": "Outer",
+              "Parallel Aware": false,
+              "Async Capable": false,
+              "Join Type": "Inner",
+              "Startup Cost": 1.25,
+              "Total Cost": 18.91,
+              "Plan Rows": 1,
+              "Plan Width": 32,
+              "Actual Startup Time": 0.017,
+              "Actual Total Time": 0.018,
+              "Actual Rows": 1,
+              "Actual Loops": 1,
+              "Inner Unique": true,
+              "Join Filter": "(g.client_id = c.id)",
+              "Rows Removed by Join Filter": 16,
+              "Shared Hit Blocks": 13,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0,
+              "Plans": [
+                {
+                  "Node Type": "Nested Loop",
+                  "Parent Relationship": "Outer",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Join Type": "Inner",
+                  "Startup Cost": 1.25,
+                  "Total Cost": 17.46,
+                  "Plan Rows": 1,
+                  "Plan Width": 48,
+                  "Actual Startup Time": 0.013,
+                  "Actual Total Time": 0.013,
+                  "Actual Rows": 1,
+                  "Actual Loops": 1,
+                  "Inner Unique": true,
+                  "Join Filter": "(g.session_id = s.id)",
+                  "Rows Removed by Join Filter": 0,
+                  "Shared Hit Blocks": 12,
+                  "Shared Read Blocks": 0,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0,
+                  "Plans": [
+                    {
+                      "Node Type": "Nested Loop",
+                      "Parent Relationship": "Outer",
+                      "Parallel Aware": false,
+                      "Async Capable": false,
+                      "Join Type": "Inner",
+                      "Startup Cost": 0.83,
+                      "Total Cost": 16.87,
+                      "Plan Rows": 1,
+                      "Plan Width": 80,
+                      "Actual Startup Time": 0.009,
+                      "Actual Total Time": 0.009,
+                      "Actual Rows": 1,
+                      "Actual Loops": 1,
+                      "Inner Unique": true,
+                      "Shared Hit Blocks": 8,
+                      "Shared Read Blocks": 0,
+                      "Shared Dirtied Blocks": 0,
+                      "Shared Written Blocks": 0,
+                      "Local Hit Blocks": 0,
+                      "Local Read Blocks": 0,
+                      "Local Dirtied Blocks": 0,
+                      "Local Written Blocks": 0,
+                      "Temp Read Blocks": 0,
+                      "Temp Written Blocks": 0,
+                      "Plans": [
+                        {
+                          "Node Type": "Index Scan",
+                          "Parent Relationship": "Outer",
+                          "Parallel Aware": false,
+                          "Async Capable": false,
+                          "Scan Direction": "Forward",
+                          "Index Name": "oauth_grants_pkey",
+                          "Relation Name": "oauth_grants",
+                          "Alias": "g",
+                          "Startup Cost": 0.42,
+                          "Total Cost": 8.44,
+                          "Plan Rows": 1,
+                          "Plan Width": 64,
+                          "Actual Startup Time": 0.005,
+                          "Actual Total Time": 0.005,
+                          "Actual Rows": 1,
+                          "Actual Loops": 1,
+                          "Index Cond": "(id = '0000313f-eda4-4b63-9a2e-1164a1cad5f1'::uuid)",
+                          "Rows Removed by Index Recheck": 0,
+                          "Filter": "(revoked_at IS NULL)",
+                          "Rows Removed by Filter": 0,
+                          "Shared Hit Blocks": 4,
+                          "Shared Read Blocks": 0,
+                          "Shared Dirtied Blocks": 0,
+                          "Shared Written Blocks": 0,
+                          "Local Hit Blocks": 0,
+                          "Local Read Blocks": 0,
+                          "Local Dirtied Blocks": 0,
+                          "Local Written Blocks": 0,
+                          "Temp Read Blocks": 0,
+                          "Temp Written Blocks": 0
+                        },
+                        {
+                          "Node Type": "Index Scan",
+                          "Parent Relationship": "Inner",
+                          "Parallel Aware": false,
+                          "Async Capable": false,
+                          "Scan Direction": "Forward",
+                          "Index Name": "users_pkey",
+                          "Relation Name": "users",
+                          "Alias": "u",
+                          "Startup Cost": 0.42,
+                          "Total Cost": 8.44,
+                          "Plan Rows": 1,
+                          "Plan Width": 16,
+                          "Actual Startup Time": 0.003,
+                          "Actual Total Time": 0.003,
+                          "Actual Rows": 1,
+                          "Actual Loops": 1,
+                          "Index Cond": "(id = g.user_id)",
+                          "Rows Removed by Index Recheck": 0,
+                          "Filter": "(verified AND (status = 'active'::text))",
+                          "Rows Removed by Filter": 0,
+                          "Shared Hit Blocks": 4,
+                          "Shared Read Blocks": 0,
+                          "Shared Dirtied Blocks": 0,
+                          "Shared Written Blocks": 0,
+                          "Local Hit Blocks": 0,
+                          "Local Read Blocks": 0,
+                          "Local Dirtied Blocks": 0,
+                          "Local Written Blocks": 0,
+                          "Temp Read Blocks": 0,
+                          "Temp Written Blocks": 0
+                        }
+                      ]
+                    },
+                    {
+                      "Node Type": "Index Only Scan",
+                      "Parent Relationship": "Inner",
+                      "Parallel Aware": false,
+                      "Async Capable": false,
+                      "Scan Direction": "Forward",
+                      "Index Name": "sessions_active_user_idx",
+                      "Relation Name": "sessions",
+                      "Alias": "s",
+                      "Startup Cost": 0.42,
+                      "Total Cost": 0.58,
+                      "Plan Rows": 1,
+                      "Plan Width": 32,
+                      "Actual Startup Time": 0.003,
+                      "Actual Total Time": 0.003,
+                      "Actual Rows": 1,
+                      "Actual Loops": 1,
+                      "Index Cond": "(user_id = u.id)",
+                      "Rows Removed by Index Recheck": 0,
+                      "Heap Fetches": 1,
+                      "Shared Hit Blocks": 4,
+                      "Shared Read Blocks": 0,
+                      "Shared Dirtied Blocks": 0,
+                      "Shared Written Blocks": 0,
+                      "Local Hit Blocks": 0,
+                      "Local Read Blocks": 0,
+                      "Local Dirtied Blocks": 0,
+                      "Local Written Blocks": 0,
+                      "Temp Read Blocks": 0,
+                      "Temp Written Blocks": 0
+                    }
+                  ]
+                },
+                {
+                  "Node Type": "Seq Scan",
+                  "Parent Relationship": "Inner",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Relation Name": "oauth_clients",
+                  "Alias": "c",
+                  "Startup Cost": 0,
+                  "Total Cost": 1.2,
+                  "Plan Rows": 20,
+                  "Plan Width": 16,
+                  "Actual Startup Time": 0.003,
+                  "Actual Total Time": 0.004,
+                  "Actual Rows": 17,
+                  "Actual Loops": 1,
+                  "Filter": "enabled",
+                  "Rows Removed by Filter": 0,
+                  "Shared Hit Blocks": 1,
+                  "Shared Read Blocks": 0,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0
+                }
+              ]
+            },
+            {
+              "Node Type": "Bitmap Heap Scan",
+              "Parent Relationship": "Inner",
+              "Parallel Aware": false,
+              "Async Capable": false,
+              "Relation Name": "oauth_tokens",
+              "Alias": "t",
+              "Startup Cost": 4.32,
+              "Total Cost": 18.04,
+              "Plan Rows": 5,
+              "Plan Width": 32,
+              "Actual Startup Time": 0.007,
+              "Actual Total Time": 0.007,
+              "Actual Rows": 2,
+              "Actual Loops": 1,
+              "Recheck Cond": "(grant_id = '0000313f-eda4-4b63-9a2e-1164a1cad5f1'::uuid)",
+              "Rows Removed by Index Recheck": 0,
+              "Exact Heap Blocks": 1,
+              "Lossy Heap Blocks": 0,
+              "Shared Hit Blocks": 3,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0,
+              "Plans": [
+                {
+                  "Node Type": "Bitmap Index Scan",
+                  "Parent Relationship": "Outer",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Index Name": "oauth_tokens_grant_idx",
+                  "Startup Cost": 0,
+                  "Total Cost": 4.31,
+                  "Plan Rows": 5,
+                  "Plan Width": 0,
+                  "Actual Startup Time": 0.002,
+                  "Actual Total Time": 0.002,
+                  "Actual Rows": 2,
+                  "Actual Loops": 1,
+                  "Index Cond": "(grant_id = '0000313f-eda4-4b63-9a2e-1164a1cad5f1'::uuid)",
+                  "Shared Hit Blocks": 2,
+                  "Shared Read Blocks": 0,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0
+                }
+              ]
+            }
+          ]
+        },
+        "Planning": {
+          "Shared Hit Blocks": 88,
+          "Shared Read Blocks": 0,
+          "Shared Dirtied Blocks": 0,
+          "Shared Written Blocks": 0,
+          "Local Hit Blocks": 0,
+          "Local Read Blocks": 0,
+          "Local Dirtied Blocks": 0,
+          "Local Written Blocks": 0,
+          "Temp Read Blocks": 0,
+          "Temp Written Blocks": 0
+        },
+        "Planning Time": 0.451,
+        "Triggers": [],
+        "Execution Time": 0.042
+      }
+    ],
+    "note": "SQL constants deliberately omit secret token digests; actual endpoints are timed separately."
+  },
+  "k6": "k6 v2.3.0 (commit/e088784614, go1.26.8, linux/amd64)",
+  "k6ExecutableSha256": "e001bbf39ba67424a85c9c8516440ba5c73ecf7a6021be96c76194380c15f260",
+  "k6ExitCode": 105,
+  "summary": {
+    "scenario": "introspection",
+    "warmupSeconds": 120,
+    "measurementSeconds": 900,
+    "rates": {
+      "introspection": 300
+    },
+    "thresholds": {
+      "unexpected_errors": [
+        "rate<0.001"
+      ],
+      "invalid_authority": [
+        "count==0"
+      ],
+      "rate_limited_requests": [
+        "count==0"
+      ],
+      "dropped_iterations": [
+        "count==0"
+      ],
+      "measurement_requests{endpoint:introspection}": [
+        "count>=270000"
+      ],
+      "introspection_duration": [
+        "p(95)<=100",
+        "p(99)<=250"
+      ]
+    },
+    "metrics": {
+      "measurement_requests": {
+        "type": "counter",
+        "contains": "default",
+        "values": {
+          "rate": 0,
+          "count": 0
+        }
+      },
+      "data_received": {
+        "type": "counter",
+        "contains": "data",
+        "values": {
+          "count": 54550494,
+          "rate": 258708.97164748952
+        }
+      },
+      "unexpected_errors": {
+        "type": "rate",
+        "contains": "default",
+        "values": {
+          "rate": 0,
+          "passes": 0,
+          "fails": 0
+        },
+        "thresholds": {
+          "rate<0.001": {
+            "ok": true
+          }
+        }
+      },
+      "http_req_failed": {
+        "type": "rate",
+        "contains": "default",
+        "values": {
+          "rate": 0,
+          "passes": 0,
+          "fails": 63624
+        }
+      },
+      "iteration_duration": {
+        "type": "trend",
+        "contains": "time",
+        "values": {
+          "max": 1657.801598,
+          "p(75)": 2.0261,
+          "p(95)": 4.055034999999999,
+          "p(99)": 5.046701000000007,
+          "avg": 5.0171492750505715,
+          "min": 1.4117,
+          "med": 1.7128
+        }
+      },
+      "invalid_authority": {
+        "contains": "default",
+        "values": {
+          "rate": 0,
+          "count": 0
+        },
+        "thresholds": {
+          "count==0": {
+            "ok": true
+          }
+        },
+        "type": "counter"
+      },
+      "introspection_duration": {
+        "type": "trend",
+        "contains": "time",
+        "values": {
+          "med": 0,
+          "max": 0,
+          "p(75)": 0,
+          "p(95)": 0,
+          "p(99)": 0,
+          "avg": 0,
+          "min": 0
+        },
+        "thresholds": {
+          "p(95)<=100": {
+            "ok": true
+          },
+          "p(99)<=250": {
+            "ok": true
+          }
+        }
+      },
+      "http_req_blocked": {
+        "contains": "time",
+        "values": {
+          "min": 0.0014,
+          "med": 0.0037,
+          "max": 27.5345,
+          "p(75)": 0.0042,
+          "p(95)": 0.0054,
+          "p(99)": 0.0122,
+          "avg": 0.008130966333458691
+        },
+        "type": "trend"
+      },
+      "http_req_tls_handshaking": {
+        "type": "trend",
+        "contains": "time",
+        "values": {
+          "p(75)": 0,
+          "p(95)": 0,
+          "p(99)": 0,
+          "avg": 0,
+          "min": 0,
+          "med": 0,
+          "max": 0
+        }
+      },
+      "data_sent": {
+        "type": "counter",
+        "contains": "data",
+        "values": {
+          "count": 21758052,
+          "rate": 103188.85944410702
+        }
+      },
+      "iterations": {
+        "contains": "default",
+        "values": {
+          "count": 63232,
+          "rate": 299.88153169087815
+        },
+        "type": "counter"
+      },
+      "vus_max": {
+        "type": "gauge",
+        "contains": "default",
+        "values": {
+          "min": 128,
+          "max": 135,
+          "value": 135
+        }
+      },
+      "dropped_iterations": {
+        "type": "counter",
+        "contains": "default",
+        "values": {
+          "count": 16,
+          "rate": 0.0758809543752222
+        },
+        "thresholds": {
+          "count==0": {
+            "ok": false
+          }
+        }
+      },
+      "measurement_requests{endpoint:introspection}": {
+        "type": "counter",
+        "contains": "default",
+        "values": {
+          "count": 0,
+          "rate": 0
+        },
+        "thresholds": {
+          "count>=270000": {
+            "ok": false
+          }
+        }
+      },
+      "rate_limited_requests": {
+        "thresholds": {
+          "count==0": {
+            "ok": true
+          }
+        },
+        "type": "counter",
+        "contains": "default",
+        "values": {
+          "count": 0,
+          "rate": 0
+        }
+      },
+      "http_req_connecting": {
+        "type": "trend",
+        "contains": "time",
+        "values": {
+          "min": 0,
+          "med": 0,
+          "max": 27.4903,
+          "p(75)": 0,
+          "p(95)": 0,
+          "p(99)": 0,
+          "avg": 0.003967848626304541
+        }
+      },
+      "http_req_duration": {
+        "type": "trend",
+        "contains": "time",
+        "values": {
+          "max": 1568.483198,
+          "p(75)": 1.825725,
+          "p(95)": 3.8621,
+          "p(99)": 4.833378999999991,
+          "avg": 4.812156546507643,
+          "min": 0.3764,
+          "med": 1.5455
+        }
+      },
+      "http_reqs": {
+        "type": "counter",
+        "contains": "default",
+        "values": {
+          "count": 63624,
+          "rate": 301.74061507307107
+        }
+      },
+      "http_req_sending": {
+        "type": "trend",
+        "contains": "time",
+        "values": {
+          "med": 0.0238,
+          "max": 8.4613,
+          "p(75)": 0.0261,
+          "p(95)": 0.0322,
+          "p(99)": 0.0425,
+          "avg": 0.024879800216898753,
+          "min": 0.0063
+        }
+      },
+      "http_req_waiting": {
+        "values": {
+          "p(95)": 3.7829,
+          "p(99)": 4.722585999999994,
+          "avg": 4.742738590736201,
+          "min": 0.3153,
+          "med": 1.4772,
+          "max": 1568.366998,
+          "p(75)": 1.7434
+        },
+        "type": "trend",
+        "contains": "time"
+      },
+      "vus": {
+        "type": "gauge",
+        "contains": "default",
+        "values": {
+          "value": 1,
+          "min": 0,
+          "max": 129
+        }
+      },
+      "http_req_receiving": {
+        "contains": "time",
+        "values": {
+          "p(75)": 0.0506,
+          "p(95)": 0.068,
+          "p(99)": 0.0862,
+          "avg": 0.04453815555450847,
+          "min": 0.0122,
+          "med": 0.0436,
+          "max": 0.4826
+        },
+        "type": "trend"
+      }
+    },
+    "state": {
+      "isStdOutTTY": false,
+      "isStdErrTTY": false,
+      "testRunDurationMs": 210856.599416
+    },
+    "note": "Aggregate timing only. Raw HTTP bodies, credentials and token values deliberately excluded."
+  },
+  "actualMeasurementRequests": 0,
+  "actualAverageMeasurementRps": 0,
+  "completed": "2026-10-08T09:57:23.501Z",
+  "exitCode": 1
+}

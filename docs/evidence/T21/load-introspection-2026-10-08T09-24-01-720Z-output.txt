@@ -1,0 +1,2 @@
+time="2026-10-08T17:26:52+08:00" level=warning msg="Insufficient VUs, reached 256 active VUs and cannot initialize more" executor=constant-arrival-rate scenario=introspection_measurement
+time="2026-10-08T17:41:52+08:00" level=error msg="thresholds on metrics 'dropped_iterations, measurement_requests{endpoint:introspection}' have been crossed"
