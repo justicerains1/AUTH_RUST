@@ -1,0 +1,25 @@
+{
+  "started": "2026-10-08T14:58:18.554Z",
+  "kind": "Local full identity base snapshot recovery, virtual WebAuthn; not production RPO/RTO",
+  "postgresImage": "docker.m.daocloud.io/library/postgres:17.11-bookworm@sha256:3645570cccdfa447589da9f57dd740faa29b30938e861289a5574b6ca6b03826",
+  "checks": [
+    "Before backup: real password/TOTP and virtual Passkey enrollment, live OAuth family, and separately revoked OAuth family.",
+    "Recovered different-directory database and separately copied signing/AEAD keys: active session, live access/refresh and revoked family preserved.",
+    "Recovered original password plus original TOTP completes a new step; fresh virtual-authenticator challenge and signature complete strong Passkey login.",
+    "After recovery, real logout-all immediately makes refreshed OAuth access inactive."
+  ],
+  "sourceSha256": {
+    "crates/identity-server/tests/t22_identity_restore.rs": "00c6706a46265ee9c07295a377d835758de70df66caff997f7b39533d23dd43f",
+    "tests/ops/identity-restore.mjs": "ed4fc084d4d5afd7622d6defaa6bc537ce813520af921e508caff85067b566ed",
+    "tests/ops/identity-ceremonies.mjs": "223d4e0e7885f9e82eb519fee5a2a2141c2d0f98ed5dfeb849788c180866186a",
+    "infra/ops/base-backup.sh": "6ebf0606e1c4f5a47e47b932d20db5220038d9d46dbfbe54be4b84d2e886d919",
+    "infra/ops/restore-base.sh": "8bce1c8d7ac88cb2fc0d3f0ba9e6cc820d1b64d4c8c8db85079468ba3cbb9130",
+    "Cargo.lock": "47ffcb0545416af76dd26346f42a3f583f60d6a4f5f84f8fd6a1f36dea6539d8"
+  },
+  "exitCode": 0,
+  "backupId": "20261008T145833Z-129",
+  "encryptedBackupSha256": "9eeab4d8c4317844c17a229bdaa67feeee44368eb92d4ea6808e697561dd0e6a",
+  "localRestoreSeconds": 8.016848363000001,
+  "commit": "eefeb65f5754eb5f39bf04ec7e4bdb26252857be",
+  "completed": "2026-10-08T14:58:48.278Z"
+}

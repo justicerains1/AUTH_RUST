@@ -1,0 +1,11 @@
+SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4224:19)
+    at successSteps (node:internal/deps/undici/undici:6847:27)
+    at readAllBytes (node:internal/deps/undici/undici:5772:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.17s
+     Running tests/t22_identity_restore.rs (target/debug/deps/t22_identity_restore-68a27f84007add36)
+
+running 1 test
+T22_IDENTITY_RESTORE_READY

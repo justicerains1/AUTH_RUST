@@ -1,0 +1,14 @@
+{
+  "started": "2026-10-08T14:56:07.292Z",
+  "kind": "Local full identity base snapshot recovery, virtual WebAuthn; not production RPO/RTO",
+  "postgresImage": "docker.m.daocloud.io/library/postgres:17.11-bookworm@sha256:3645570cccdfa447589da9f57dd740faa29b30938e861289a5574b6ca6b03826",
+  "checks": [
+    "Before backup: real password/TOTP and virtual Passkey enrollment, live OAuth family, and separately revoked OAuth family."
+  ],
+  "sourceSha256": {},
+  "exitCode": 1,
+  "backupId": "20261008T145620Z-129",
+  "encryptedBackupSha256": "d0ca15666bdb8ab44b45a104c2901bc818c60f147fdbcff2dfbf25522fa28a0f",
+  "failure": "Expected values to be strictly equal:\n\nfalse !== true\n",
+  "completed": "2026-10-08T14:56:34.197Z"
+}

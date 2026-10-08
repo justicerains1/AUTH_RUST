@@ -1,0 +1,13 @@
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+204 !== 200
+
+    at file:///root/code/rust/auth_rust/tests/ops/identity-restore.mjs:103:10
+    at runNextTicks (node:internal/process/task_queues:64:5)
+    at process.processImmediate (node:internal/timers:452:9)
+    at process.callbackTrampoline (node:internal/async_hooks:130:17)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.22s
+     Running tests/t22_identity_restore.rs (target/debug/deps/t22_identity_restore-68a27f84007add36)
+
+running 1 test
+T22_IDENTITY_RESTORE_READY

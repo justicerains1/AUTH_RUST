@@ -1,0 +1,12 @@
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+201 !== 200
+
+    at Object.passkey (file:///root/code/rust/auth_rust/tests/ops/identity-ceremonies.mjs:47:149)
+    at async file:///root/code/rust/auth_rust/tests/ops/identity-restore.mjs:98:3
+   Compiling identity-server v0.1.0 (/root/code/rust/auth_rust/crates/identity-server)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.54s
+     Running tests/t22_identity_restore.rs (target/debug/deps/t22_identity_restore-68a27f84007add36)
+
+running 1 test
+T22_IDENTITY_RESTORE_READY

@@ -26,7 +26,10 @@ results.push({ name: 'backup-wal-production-config', exitCode: opsPassed ? 0 : o
 const signing = await runStage(process.execPath, [resolve(root, 'tests/integration/t22-signing.mjs')], { cwd: root, env });
 await writeFile(resolve(privateDirectory, 'signing-rotation.txt'), signing.diagnostic, { mode: 0o600 });
 results.push({ name: 'signing-rotation', exitCode: signing.exitCode });
+const recovery = await runStage(process.execPath, [resolve(root, 'tests/ops/identity-restore.mjs')], { cwd: root, env: opsEnvironment });
+await writeFile(resolve(privateDirectory, 'full-identity-recovery.txt'), recovery.diagnostic, { mode: 0o600 });
+results.push({ name: 'full-identity-recovery', exitCode: recovery.exitCode });
 const evidence = resolve(root, 'docs/evidence/T22'); await mkdir(evidence, { recursive: true });
 const code = results.some((result) => result.exitCode !== 0) ? 1 : 0;
-await writeFile(resolve(evidence, 'integration.json'), JSON.stringify({ completed: new Date().toISOString(), results, exitCode: code, scope: 'Local metrics, PostgreSQL key maintenance, isolated encrypted backup/WAL, signing rollout with real BFF and offline production configuration; not production acceptance.' }, null, 2)+'\n');
+await writeFile(resolve(evidence, 'integration.json'), JSON.stringify({ completed: new Date().toISOString(), results, exitCode: code, scope: 'Local metrics, PostgreSQL key maintenance, isolated encrypted backup/WAL, full identity snapshot recovery with virtual Passkey, signing rollout with real BFF and offline production configuration; not production acceptance.' }, null, 2)+'\n');
 process.exitCode = code;
