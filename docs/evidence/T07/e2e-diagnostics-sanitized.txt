@@ -1,0 +1,38 @@
+
+Running 2 tests using 1 worker
+F·
+
+  1) tests/e2e/T07.spec.ts:23:1 › @T07 reset request uses real mail and explicit confirmation before new login
+
+    Error: expect(page).toHaveURL(expected) failed
+
+    Expected pattern: /\/login$/u
+    Received string:  "http://localhost:5190/password-reset"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toHaveURL" with timeout 5000ms
+        14 × locator resolved to <html lang="zh-CN">…</html>
+           - unexpected value "http://localhost:5190/password-reset"
+
+
+      35 |   await page.getByLabel('新密码', { exact: true }).fill(replacement);
+      36 |   await page.getByRole('button', { name: '重置密码', exact: true }).click();
+    > 37 |   await expect(page).toHaveURL(/\/login$/u);
+         |                      ^
+      38 |   await page.goto('/me');
+      39 |   await expect(page).toHaveURL(/\/login$/u);
+      40 |   await login(page, '[EMAIL]', replacement);
+        at /root/code/rust/auth_rust/tests/e2e/T07.spec.ts:37:22
+
+    Error Context: .local/t07-browser-results/[REDACTED]-before-new-login/error-context.md
+
+  1 failed
+    tests/e2e/T07.spec.ts:23:1 › @T07 reset request uses real mail and explicit confirmation before new login
+  1 passed (18.3s)
+[WebServer] (node:2299701) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+(node:2299741) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2300112) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

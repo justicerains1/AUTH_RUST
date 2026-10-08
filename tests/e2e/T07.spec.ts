@@ -1,8 +1,9 @@
 import { test, expect, type Page } from '@playwright/test';
-async function resetToken(email: string): Promise<string> {
+async function resetToken(email: string, previousMessages: ReadonlySet<string>): Promise<string> {
   for (let attempt = 0; attempt < 100; attempt += 1) {
     const list = await (await fetch('http://127.0.0.1:8025/api/v1/messages')).json() as { messages: { ID: string; To: { Address: string }[] }[] };
     for (const mail of list.messages) {
+      if (previousMessages.has(mail.ID)) continue;
       if (!mail.To.some((to) => to.Address === email)) continue;
       const detail = await (await fetch(`http://127.0.0.1:8025/api/v1/message/${mail.ID}`)).json() as { Text: string };
       const token = /\/password-reset#token=([A-Za-z0-9_-]{43})/u.exec(detail.Text)?.[1];
@@ -24,11 +25,13 @@ test('@T07 reset request uses real mail and explicit confirmation before new log
   const password = process.env.T07_BROWSER_PASSWORD;
   if (!password) throw new Error('Private test password is required.');
   const replacement = `${password} revised`;
+  const existing = await (await fetch('http://127.0.0.1:8025/api/v1/messages')).json() as { messages: { ID: string }[] };
+  const previousMessages = new Set(existing.messages.map((message) => message.ID));
   await page.goto('/password-reset');
   await page.getByLabel('邮箱地址').fill('browser-reset@example.test');
   await page.getByRole('button', { name: '发送重置邮件', exact: true }).click();
   await expect(page.getByRole('status').filter({ hasText: '请检查邮箱' })).toBeVisible();
-  const token = await resetToken('browser-reset@example.test');
+  const token = await resetToken('browser-reset@example.test', previousMessages);
   await page.evaluate((secret) => { globalThis.location.hash = `token=${secret}`; }, token);
   await page.reload();
   await expect(page).toHaveURL(/\/password-reset$/u);

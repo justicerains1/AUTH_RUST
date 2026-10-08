@@ -1,0 +1,7 @@
+T07 real UI E2E 2026-10-08T00:30:59.003Z
+FAIL T07 browser checks failed; private details suppressed.
+
+1 !== 0
+
+Completed 2026-10-08T00:31:21.866Z
+Exit code 1
