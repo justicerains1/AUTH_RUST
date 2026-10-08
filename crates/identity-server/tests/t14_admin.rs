@@ -421,6 +421,69 @@ async fn cases(config: &Config, pool: &PgPool, base: String) -> TestResult {
         admin.get("/admin/audit-events").await?.status(),
         StatusCode::OK
     );
+    let filtered = admin
+        .get("/admin/users?email=ordinary%40example.test&status=active")
+        .await?;
+    assert_eq!(filtered.status(), StatusCode::OK);
+    let filtered: Value = filtered.json().await?;
+    assert_eq!(
+        filtered["items"]
+            .as_array()
+            .ok_or("filtered users missing")?
+            .len(),
+        1
+    );
+    assert_eq!(filtered["items"][0]["email"], "ordinary@example.test");
+    assert_eq!(
+        admin.get("/admin/users?status=invalid").await?.status(),
+        StatusCode::BAD_REQUEST
+    );
+    assert_eq!(
+        admin
+            .get("/admin/users?email=ordinary%40example.test&email=other%40example.test")
+            .await?
+            .status(),
+        StatusCode::BAD_REQUEST
+    );
+    let old_cursor = users["next_cursor"].as_str().ok_or("cursor missing")?;
+    assert_eq!(
+        admin
+            .get(&format!(
+                "/admin/users?limit=1&status=active&cursor={old_cursor}"
+            ))
+            .await?
+            .status(),
+        StatusCode::BAD_REQUEST
+    );
+    let now = time::OffsetDateTime::now_utc();
+    let from =
+        (now - time::Duration::hours(1)).format(&time::format_description::well_known::Rfc3339)?;
+    let to =
+        (now + time::Duration::hours(1)).format(&time::format_description::well_known::Rfc3339)?;
+    let query = url::form_urlencoded::Serializer::new(String::new())
+        .extend_pairs([("from", from.as_str()), ("to", to.as_str())])
+        .finish();
+    let audit = admin.get(&format!("/admin/audit-events?{query}")).await?;
+    assert_eq!(audit.status(), StatusCode::OK);
+    let audit: Value = audit.json().await?;
+    assert!(!audit["items"].as_array().ok_or("audit missing")?.is_empty());
+    assert_eq!(
+        admin
+            .get(&format!("/admin/audit-events?from={from}"))
+            .await?
+            .status(),
+        StatusCode::BAD_REQUEST
+    );
+    assert_eq!(
+        admin
+            .get("/admin/audit-events?from=2026-01-01T00%3A00%3A00Z&to=2026-10-01T00%3A00%3A00Z")
+            .await?
+            .status(),
+        StatusCode::BAD_REQUEST
+    );
+    println!(
+        "PASS T19.01/T19.05 real exact user filters and bounded audit window; duplicate/invalid parameters and cursor filter reuse rejected"
+    );
     println!(
         "PASS T14-ADM-02 ordinary and unbound bootstrap cannot access management; current strong-factor administrator can query all management groups"
     );

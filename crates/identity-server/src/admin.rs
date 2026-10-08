@@ -16,7 +16,9 @@ use axum::{
 };
 use identity_core::{config::Environment, oauth::Scope};
 use identity_store::{
-    admin::{AdminContext, AdminError, ClientCreateInput, ClientUpdateInput},
+    admin::{
+        AdminContext, AdminError, AuditWindow, ClientCreateInput, ClientUpdateInput, UserFilter,
+    },
     sessions::{MeView, SessionError},
 };
 use serde::{Deserialize, Deserializer, de::DeserializeOwned};
@@ -243,9 +245,19 @@ async fn authorize(
     Ok(context)
 }
 fn page(request: &Request, id: Uuid) -> Result<(u32, Option<String>), ApiError> {
+    let (limit, cursor, _) = filtered_page(request, id, &[])?;
+    Ok((limit, cursor))
+}
+type FilteredPage = (
+    u32,
+    Option<String>,
+    std::collections::BTreeMap<String, String>,
+);
+fn filtered_page(request: &Request, id: Uuid, allowed: &[&str]) -> Result<FilteredPage, ApiError> {
     let mut limit = 20;
     let mut limit_seen = false;
     let mut cursor = None;
+    let mut filters = std::collections::BTreeMap::new();
     let query = request.uri().query().unwrap_or("");
     if query.len() > 4096 || !valid_percent(query) {
         return Err(invalid(id));
@@ -262,13 +274,21 @@ fn page(request: &Request, id: Uuid) -> Result<(u32, Option<String>), ApiError> 
             "cursor" if cursor.is_none() && !value.is_empty() && value.len() <= 2048 => {
                 cursor = Some(value.into_owned())
             }
+            name if allowed.contains(&name) && !value.is_empty() && value.len() <= 254 => {
+                if filters
+                    .insert(name.to_owned(), value.into_owned())
+                    .is_some()
+                {
+                    return Err(invalid(id));
+                }
+            }
             _ => return Err(invalid(id)),
         }
     }
     if !(1..=100).contains(&limit) {
         return Err(invalid(id));
     }
-    Ok((limit, cursor))
+    Ok((limit, cursor, filters))
 }
 fn valid_percent(value: &str) -> bool {
     let bytes = value.as_bytes();
@@ -342,15 +362,31 @@ async fn users(State(state): State<AuthAppState>, request: Request) -> Result<Re
         Ok(context) => context,
         Err(response) => return Ok(*response),
     };
-    let (limit, cursor) = page(&request, context.request_id)?;
+    let (limit, cursor, filters) =
+        filtered_page(&request, context.request_id, &["email", "status"])?;
+    let email = filters
+        .get("email")
+        .map(|email| {
+            identity_core::security::normalize_email(email).map_err(|_| invalid(context.request_id))
+        })
+        .transpose()?;
+    let status = filters.get("status").cloned();
+    if status
+        .as_ref()
+        .is_some_and(|value| !matches!(value.as_str(), "active" | "disabled"))
+    {
+        return Err(invalid(context.request_id));
+    }
+    let filter = UserFilter { email, status };
     Ok(
         match state
             .admin
-            .users(
+            .filtered_users(
                 context,
                 limit,
                 cursor.as_deref(),
                 &state.security.cursor_key(),
+                &filter,
             )
             .await
         {
@@ -584,15 +620,34 @@ async fn audit_events(
         Ok(context) => context,
         Err(response) => return Ok(*response),
     };
-    let (limit, cursor) = page(&request, context.request_id)?;
+    let (limit, cursor, filters) = filtered_page(&request, context.request_id, &["from", "to"])?;
+    let timestamp = |name: &str| {
+        filters
+            .get(name)
+            .map(|value| {
+                time::OffsetDateTime::parse(value, &time::format_description::well_known::Rfc3339)
+                    .map_err(|_| invalid(context.request_id))
+            })
+            .transpose()
+    };
+    let window = AuditWindow {
+        from: timestamp("from")?,
+        to: timestamp("to")?,
+    };
+    match (window.from, window.to) {
+        (Some(from), Some(to)) if from < to && to - from <= time::Duration::days(31) => {}
+        (None, None) => {}
+        _ => return Err(invalid(context.request_id)),
+    }
     Ok(
         match state
             .admin
-            .audit_events(
+            .filtered_audit_events(
                 context,
                 limit,
                 cursor.as_deref(),
                 &state.security.cursor_key(),
+                &window,
             )
             .await
         {

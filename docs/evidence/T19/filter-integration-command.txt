@@ -1,0 +1,5 @@
+
+> rust-unified-identity@0.1.0 test:integration
+> node scripts/run.mjs test:integration --task=T14
+
+T14 real administrator CLI/API checks passed without secret output.

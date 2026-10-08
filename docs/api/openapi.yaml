@@ -11103,7 +11103,7 @@
       "get": {
         "operationId": "adminListUsers",
         "summary": "后台用户分页",
-        "description": "固定created_at DESC,id DESC；第一版没有任意SQL排序参数。 普通JSON上限32KiB；认证/凭证/WebAuthn上限64KiB。时间UTC；秘密不得记录或浏览器持久化。",
+        "description": "固定created_at DESC,id DESC；第一版没有任意SQL排序参数。 普通JSON上限32KiB；认证/凭证/WebAuthn上限64KiB。时间UTC；秘密不得记录或浏览器持久化。 可选完整email和status精确过滤；拒重复/未知参数，cursor绑定相同过滤。",
         "tags": [
           "Admin"
         ],
@@ -11118,6 +11118,24 @@
           },
           {
             "$ref": "#/components/parameters/Limit"
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "required": false,
+            "description": "完整邮箱精确查询，ASCII规范化小写，保留点号和+tag；不执行通配符搜索。",
+            "schema": {
+              "$ref": "#/components/schemas/Email"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "description": "仅active或disabled，与完整邮箱过滤同时生效；cursor绑定相同过滤条件。",
+            "schema": {
+              "$ref": "#/components/schemas/UserStatus"
+            }
           }
         ],
         "responses": {
@@ -15083,7 +15101,7 @@
       "get": {
         "operationId": "adminListAuditEvents",
         "summary": "后台审计分页",
-        "description": "固定occurred_at DESC,id DESC；180天保留，无secret/token/TOTP seed/原始email。 普通JSON上限32KiB；认证/凭证/WebAuthn上限64KiB。时间UTC；秘密不得记录或浏览器持久化。",
+        "description": "固定occurred_at DESC,id DESC；180天保留，无secret/token/TOTP seed/原始email。 普通JSON上限32KiB；认证/凭证/WebAuthn上限64KiB。时间UTC；秘密不得记录或浏览器持久化。 可选from/to必须成对、正向且最长31天，游标绑定相同窗口；无时间过滤时仍严格分页。",
         "tags": [
           "Admin"
         ],
@@ -15098,6 +15116,28 @@
           },
           {
             "$ref": "#/components/parameters/Limit"
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "description": "RFC3339固定时间窗口；from/to同时提供，from含边界、to不含，最长31天；cursor绑定窗口。",
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "maxLength": 64
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "description": "RFC3339固定时间窗口；from/to同时提供，from含边界、to不含，最长31天；cursor绑定窗口。",
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "maxLength": 64
+            }
           }
         ],
         "responses": {

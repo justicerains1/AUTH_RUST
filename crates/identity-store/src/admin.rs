@@ -118,6 +118,16 @@ pub struct AdminPage<T: Serialize> {
     pub items: Vec<T>,
     pub next_cursor: Option<String>,
 }
+#[derive(Default)]
+pub struct UserFilter {
+    pub email: Option<String>,
+    pub status: Option<String>,
+}
+#[derive(Default)]
+pub struct AuditWindow {
+    pub from: Option<OffsetDateTime>,
+    pub to: Option<OffsetDateTime>,
+}
 #[derive(Serialize)]
 pub struct AuditView {
     pub id: Uuid,
@@ -575,25 +585,37 @@ impl AdminStore {
         cursor: Option<&str>,
         key: &[u8; 32],
     ) -> Result<AdminPage<UserView>, AdminError> {
+        self.filtered_users(context, limit, cursor, key, &UserFilter::default())
+            .await
+    }
+    pub async fn filtered_users(
+        &self,
+        context: AdminContext,
+        limit: u32,
+        cursor: Option<&str>,
+        key: &[u8; 32],
+        filter: &UserFilter,
+    ) -> Result<AdminPage<UserView>, AdminError> {
+        if filter
+            .email
+            .as_ref()
+            .is_some_and(|email| identity_core::security::normalize_email(email).is_err())
+            || filter
+                .status
+                .as_ref()
+                .is_some_and(|status| !matches!(status.as_str(), "active" | "disabled"))
+        {
+            return Err(AdminError::InvalidInput);
+        }
+        let route = filter_route(
+            "admin/users",
+            &(filter.email.as_deref(), filter.status.as_deref()),
+        )?;
         let mut tx = self.pool.begin().await?;
         let actor = authorize(&mut tx, context.session_hash, self.clock.now()).await?;
-        let position = page_position(
-            limit,
-            cursor,
-            key,
-            actor.user_id,
-            "admin/users",
-            self.clock.now(),
-        )?;
-        let rows=sqlx::query("SELECT id,email,display_name,verified,status,created_at FROM users WHERE ($1::timestamptz IS NULL OR (created_at,id)<($1,$2::uuid)) ORDER BY created_at DESC,id DESC LIMIT $3").bind(position.as_ref().map(|p|p.created_at)).bind(position.as_ref().map(|p|p.id)).bind(i64::from(limit)+1).fetch_all(&mut *tx).await?;
-        let next = page_cursor(
-            &rows,
-            limit,
-            key,
-            actor.user_id,
-            "admin/users",
-            self.clock.now(),
-        )?;
+        let position = page_position(limit, cursor, key, actor.user_id, &route, self.clock.now())?;
+        let rows=sqlx::query("SELECT id,email,display_name,verified,status,created_at FROM users WHERE ($1::timestamptz IS NULL OR (created_at,id)<($1,$2::uuid)) AND ($4::text IS NULL OR email=$4) AND ($5::text IS NULL OR status=$5) ORDER BY created_at DESC,id DESC LIMIT $3").bind(position.as_ref().map(|p|p.created_at)).bind(position.as_ref().map(|p|p.id)).bind(i64::from(limit)+1).bind(filter.email.as_deref()).bind(filter.status.as_deref()).fetch_all(&mut *tx).await?;
+        let next = page_cursor(&rows, limit, key, actor.user_id, &route, self.clock.now())?;
         let items = rows
             .iter()
             .take(limit as usize)
@@ -682,25 +704,28 @@ impl AdminStore {
         cursor: Option<&str>,
         key: &[u8; 32],
     ) -> Result<AdminPage<AuditView>, AdminError> {
+        self.filtered_audit_events(context, limit, cursor, key, &AuditWindow::default())
+            .await
+    }
+    pub async fn filtered_audit_events(
+        &self,
+        context: AdminContext,
+        limit: u32,
+        cursor: Option<&str>,
+        key: &[u8; 32],
+        window: &AuditWindow,
+    ) -> Result<AdminPage<AuditView>, AdminError> {
+        match (window.from, window.to) {
+            (Some(from), Some(to)) if from < to && to - from <= Duration::days(31) => {}
+            (None, None) => {}
+            _ => return Err(AdminError::InvalidInput),
+        }
+        let route = filter_route("admin/audit", &(window.from, window.to))?;
         let mut tx = self.pool.begin().await?;
         let actor = authorize(&mut tx, context.session_hash, self.clock.now()).await?;
-        let position = page_position(
-            limit,
-            cursor,
-            key,
-            actor.user_id,
-            "admin/audit",
-            self.clock.now(),
-        )?;
-        let rows=sqlx::query("SELECT id,event,actor_id,target_type,target_id,result,request_id,source,occurred_at,occurred_at AS created_at FROM audit_events WHERE ($1::timestamptz IS NULL OR (occurred_at,id)<($1,$2::uuid)) ORDER BY occurred_at DESC,id DESC LIMIT $3").bind(position.as_ref().map(|p|p.created_at)).bind(position.as_ref().map(|p|p.id)).bind(i64::from(limit)+1).fetch_all(&mut *tx).await?;
-        let next = page_cursor(
-            &rows,
-            limit,
-            key,
-            actor.user_id,
-            "admin/audit",
-            self.clock.now(),
-        )?;
+        let position = page_position(limit, cursor, key, actor.user_id, &route, self.clock.now())?;
+        let rows=sqlx::query("SELECT id,event,actor_id,target_type,target_id,result,request_id,source,occurred_at,occurred_at AS created_at FROM audit_events WHERE ($1::timestamptz IS NULL OR (occurred_at,id)<($1,$2::uuid)) AND ($4::timestamptz IS NULL OR occurred_at >= $4) AND ($5::timestamptz IS NULL OR occurred_at < $5) ORDER BY occurred_at DESC,id DESC LIMIT $3").bind(position.as_ref().map(|p|p.created_at)).bind(position.as_ref().map(|p|p.id)).bind(i64::from(limit)+1).bind(window.from).bind(window.to).fetch_all(&mut *tx).await?;
+        let next = page_cursor(&rows, limit, key, actor.user_id, &route, self.clock.now())?;
         let mut items = Vec::new();
         for row in rows.iter().take(limit as usize) {
             items.push(AuditView {
@@ -932,6 +957,14 @@ struct PagePosition {
     id: Uuid,
     created_at: OffsetDateTime,
     expires_at: OffsetDateTime,
+}
+fn filter_route<T: Serialize>(route: &str, filters: &T) -> Result<String, AdminError> {
+    use base64::Engine;
+    let serialized = serde_json::to_string(filters).map_err(|_| AdminError::InvalidInput)?;
+    Ok(format!(
+        "{route}/{}",
+        base64::prelude::BASE64_URL_SAFE_NO_PAD.encode(token_digest(&serialized))
+    ))
 }
 fn page_position(
     limit: u32,
