@@ -4,7 +4,7 @@
 编写日期：2026-10-07  
 关联计划：[plan.md](plan.md)
 
-> 初始交付仅为文档；用户已于 2026-10-07 授权开始代码实施并要求多 agent 分模块并行。当前T12模块通过，后续按前置顺序继续，逐项记录真实执行结果。原第 11 节保留为历史文档交付记录，不能作为系统实现验收。
+> 初始交付仅为文档；用户已于 2026-10-07 授权严格按文档实施并要求多 agent 分模块并行。功能模块及本地运维制品已实现并逐模块推送，最终完整回归正在收尾。实体设备、规定性能环境及真实生产验收未完成；当前状态以下表及实际证据为准。原第 11 节保留为历史文档交付记录，不能作为系统实现验收。
 
 ## 1. 验收规则
 
@@ -90,7 +90,7 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 | T20 | 安全、协议、并发和故障全面验收 | 待验收 | T13、T18、T19 | docs/evidence/T20/test-summary.md |
 | T21 | 性能、容量和交互优化 | 待验收 | T20 | docs/evidence/T21/test-summary.md |
 | T22 | 单机生产、监控、备份和密钥轮换 | 待验收 | T20、T21 | docs/evidence/T22/test-summary.md |
-| T23 | 第一版发布与总体验收 | 未开始 | T00～T22 全通过 | 待提供 |
+| T23 | 第一版发布与总体验收 | 待验收 | T00～T22 全通过 | docs/evidence/T23/remaining-verification.md、TEST_SUMMARY.md |
 | T24 | 后续高可用升级 | 未开始 | T23；不阻塞第一版 | 待提供 |
 
 ## 4. 逐任务验收
@@ -778,7 +778,7 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 
 | 案例 | 前置状态 | 操作步骤 | 预期结果 | 实际结果 | 状态 | 证据 |
 |---|---|---|---|---|---|---|
-| T20-AUDIT-01 | 全部服务 | 运行威胁矩阵与安全测试 | 关键场景全过，确认 High/Critical 为零 | 六阶段扫描及威胁映射实际完成，High/Critical0；全量manifest回归待执行，不能提前放行 | 未执行 | [汇总](docs/evidence/T20/cross-module-summary.md)、[真实记录](docs/evidence/T20/test-summary.md) |
+| T20-AUDIT-01 | 全部服务 | 运行威胁矩阵与安全测试 | 关键场景全过，确认 High/Critical 为零 | 首次完整回归实际失败（unit/T13/T19/秘密误报），修复后局部复测0；第二完整回归进行中，不能提前放行 | 失败 | [汇总](docs/evidence/T20/cross-module-summary.md)、[真实记录](docs/evidence/T20/test-summary.md) |
 | T20-AUDIT-02 | 真实依赖 | 停止并恢复各依赖 | 无认证旁路，邮件不丢 | 本次T04/T05/T12真实PG/Redis/SMTP停机恢复均0，失败关闭/outbox重试且healthy | 通过 | [汇总](docs/evidence/T20/cross-module-summary.md)、[真实记录](docs/evidence/T20/test-summary.md) |
 | T20-AUDIT-03 | 独立客户端 | 完成协议验证和非法 token 测试 | 互操作通过，非法声明拒绝 | 成熟OIDC/JOSE已有真实互操作，新跨模块clientrotation/code/user/RP绑定四场景0，未宣称官方认证 | 通过 | [汇总](docs/evidence/T20/cross-module-summary.md)、[真实记录](docs/evidence/T20/test-summary.md) |
 
@@ -797,10 +797,10 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 
 - 代码版本：本次安全模块Git提交（父10067a5）。
 - 环境与时间：2026-10-08 Linux/Rust1.98/Node22、PG17/Redis7.4/Mailpit、ZAP2.17.0/Gitleaks8.30.1/cargo-deny0.20.2。
-- 命令退出码：六阶段security、check/unit/build/docs/openapi/tooling已执行退出0；全量manifest回归尚待依赖窗口。
-- 失败/阻塞项：原ZAP/私有工具lint/worker审计DTO已修；T18设备前置待验收，全面manifest回归待执行，性能调度失败未放行。
+- 命令退出码：历史六阶段security为0；首次完整test:full于2026-10-08T12:29Z实际退出1，11阶段全部运行；修复后unit/check、T13/T19真实流程及T22集成0，第二全量回归进行中。
+- 失败/阻塞项：原ZAP/私有工具lint/worker审计DTO及本次测试夹具/故障恢复/秘密误报已修；第二完整回归进行中，T18设备前置与参考性能/生产条件未放行。
 - 修复与复测：[T20记录](docs/evidence/T20/test-summary.md)、[威胁映射](docs/evidence/T20/cross-module-summary.md)、[ZAP分诊](docs/evidence/T20/zap/triage.md)。
-- 任务结论：待验收（已执行安全子套件通过，完整回归和原前置未放行）。
+- 任务结论：待验收（首次完整回归失败证据保留，修复后复跑中，原前置未放行）。
 
 
 ### T21 — 性能、容量和交互优化
@@ -813,7 +813,7 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 | 案例 | 前置状态 | 操作步骤 | 预期结果 | 实际结果 | 状态 | 证据 |
 |---|---|---|---|---|---|---|
 | T21-PERF-01 | 规定硬件与数据 | 单项/综合各 15 分钟 | 达到第 8.4 节门槛，错误分类明确 | 四个真实完整15min场景目标counts/drop0/业务错误0达到当前主机阈值；原参考硬件不匹配 | 未执行 | [本机结果](docs/evidence/T21/test-summary.md)、[四场复核](docs/evidence/T21/load-evidence-verification.json) |
-| T21-PERF-02 | 移动模拟环境 | 五次冷加载和关键交互 | LCP/CLS/体积达标，报告方法完整 | 真实Argon2id64MiB/t3/p1、最多4哈希，登录5RPS与mixed无队列超时，未降安全 | 未执行 | [本机结果](docs/evidence/T21/test-summary.md)、[四场复核](docs/evidence/T21/load-evidence-verification.json) |
+| T21-PERF-02 | 移动模拟环境 | 五次冷加载和关键交互 | LCP/CLS/体积达标，报告方法完整 | Chrome153、390×844/CPU4x/1.6Mbps-750Kbps/150ms各5次：首页-登录LCP1624-1632ms、CLS0、JS149.17-151.79KiB；本地max31.1ms/实验室p75max30.1ms，局部阈值达到 | 通过 | [前端方法](docs/evidence/T21/frontend-measurement.md)、[实际报告](docs/evidence/T21/frontend-2026-10-08T08-04-18-937Z.json) |
 | T21-PERF-03 | 查询计划与队列 | 分析慢 SQL、峰值 hash 队列 | 无明显 N+1，资源限制有效 | 真实十万用户/二十client/十万grant及索引/CPU/内存/池统计；完整容量边界与参考主机未验 | 未执行 | [本机结果](docs/evidence/T21/test-summary.md)、[四场复核](docs/evidence/T21/load-evidence-verification.json) |
 
 **实现子步骤检查：**
@@ -885,13 +885,13 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 
 | 案例 | 前置状态 | 操作步骤 | 预期结果 | 实际结果 | 状态 | 证据 |
 |---|---|---|---|---|---|---|
-| T23-REL-01 | 干净环境 | 完整安装/测试/构建 | 全套真实检查成功，无 skipped 关键测试 | 待填写 | 未执行 | 待提供：CI 与版本制品 |
-| T23-REL-02 | 五类浏览器 | 完整主要流程、键盘与 reduced-motion | 无阻塞体验问题 | 待填写 | 未执行 | 待提供：浏览器矩阵 |
-| T23-REL-03 | 生产部署 | 冒烟并观察 24 小时/高峰 | 认证/撤销/邮件健康，指标无异常 | 待填写 | 未执行 | 待提供：上线记录 |
+| T23-REL-01 | 干净环境 | 完整安装/测试/构建 | 全套真实检查成功，无 skipped 关键测试 | 首轮失败留证；319f30c全新干净7阶段均0、53制品SHA一致；第二完整回归进行中，未放行 | 失败 | [完整报告](TEST_SUMMARY.md)、[干净首轮](docs/evidence/T23/clean-checkout/2026-10-08T12-11-26-363Z.md) |
+| T23-REL-02 | 五类浏览器 | 完整主要流程、键盘与 reduced-motion | 无阻塞体验问题 | Chromium真实自动化/四宽axe已有证据；实体Passkey及五类浏览器人工矩阵未准备 | 阻塞 | [剩余条件](docs/evidence/T23/remaining-verification.md) |
+| T23-REL-03 | 生产部署 | 冒烟并观察 24 小时/高峰 | 认证/撤销/邮件健康，指标无异常 | 用户明确生产域名/主机/SMTP/独立备份暂未准备；未部署、未开始24小时观察 | 阻塞 | [运维审计](docs/evidence/T23/ops-release-audit.md)、[剩余条件](docs/evidence/T23/remaining-verification.md) |
 
 **实现子步骤检查：**
 
-- [ ] T23.01：从干净 checkout/锁文件安装构建，不依赖开发机缓存秘密。
+- [x] T23.01：从干净 checkout/锁文件安装构建，不依赖开发机缓存秘密。
 - [ ] T23.02：跑全部 check/unit/integration/e2e/security/accessibility，核对必要证据。
 - [ ] T23.03：手测当前稳定 Chrome/Firefox/Safari、移动 Safari/Chrome，真实 Passkey 至少一组。
 - [ ] T23.04：检查生产禁用调试/seed、按钮无占位、邮件/回调/错误页真实有效。
@@ -903,12 +903,12 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 
 **验收记录：**
 
-- 代码版本：待填写。
-- 环境与时间：待填写。
-- 命令退出码：待填写。
-- 失败/阻塞项：待填写。
-- 修复与复测：待填写。
-- 任务结论：未开始。
+- 代码版本：首轮add1400；修复7a6e203/946dbb0/319f30c/1c0c9ea，最终报告记录实际SHA。
+- 环境与时间：2026-10-08 UTC，WSL2Linux/Rust1.98.0/Node22.22.1、PG17/Redis7.4/Mailpit/Chromium；生产未部署。
+- 命令退出码：首轮干净checkout7阶段overall1（unit1，其余0）；319f30c第二干净七阶段全0；首轮完整test:full整体1（unit/integration/e2e/security1，其余0），第二完整复跑进行中。
+- 失败/阻塞项：首次失败已定位修复并保留证据；实体设备/五浏览器、参考性能/容量、生产域名/SMTP/独立恢复/告警与24小时观察未验。
+- 修复与复测：[测试修复](docs/evidence/tooling/final-regression-fixtures/test-summary.md)、[运维修复](docs/evidence/T23/ops-repair-summary.md)、[Caddy权限](docs/evidence/tooling/caddy-capabilities/test-summary.md)；最终完整复跑结果另记录。
+- 任务结论：待验收（独立本地检查及制品已推进，生产发布/原前置未放行）。
 
 ### T24 — 后续高可用升级
 
@@ -1026,7 +1026,7 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 |---|---|---|
 | G0 | T00～T04 全部必要案例通过 | 已放行（当前Linux基础验收；生产未放行） |
 | G1 | T05～T09 | 未放行 |
-| G2 | T10～T14 | 未放行 |
+| G2 | T10～T14 | 已放行（当前Linux协议/管理模块验收；生产未放行） |
 | G3 | T15～T19 | 未放行 |
 | G4 | T20～T22 | 未放行 |
 | G5 | T23 与 E01～E28 必要场景通过 | 未放行 |

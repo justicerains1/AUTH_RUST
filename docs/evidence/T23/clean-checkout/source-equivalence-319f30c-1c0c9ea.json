@@ -1,0 +1,12 @@
+{
+  "observedAt": "2026-10-08T12:43:28.647681+00:00",
+  "verifiedCleanCommit": "319f30c4e7de8090cb7055011acc2471530f4e5c",
+  "comparedCommit": "1c0c9eaace5c8ddb9fd77803d6bc42b5abf967f8",
+  "changedFiles": [
+    "docs/evidence/tooling/caddy-capabilities/test-summary.md",
+    "infra/Dockerfile.edge.prod"
+  ],
+  "changedRuntimeSourceLocksTests": [],
+  "runtimeSourceLocksTestsIdentical": true,
+  "scope": "Clean report stays at its actual 319f30c revision. Dockerfile edge change requires separately tested final production image; source equivalence does not imply identical image digest."
+}

@@ -1,0 +1,167 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile.edge.prod
+#1 transferring dockerfile: 1.21kB done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.m.daocloud.io/library/node:22.22.1-bookworm-slim@sha256:4f77a690f2f8946ab16fe1e791a3ac0667ae1c3575c3e4d0d4589e9ed5bfaf3d
+#2 ...
+
+#3 [internal] load metadata for docker.m.daocloud.io/library/caddy:2.11.7-alpine@sha256:d8542f48d34a9cf4e4c11a478865229840e87e4c96ea3f439101f31a5d35f75f
+#3 DONE 0.8s
+
+#2 [internal] load metadata for docker.m.daocloud.io/library/node:22.22.1-bookworm-slim@sha256:4f77a690f2f8946ab16fe1e791a3ac0667ae1c3575c3e4d0d4589e9ed5bfaf3d
+#2 DONE 1.7s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 230B done
+#4 DONE 0.1s
+
+#5 [internal] load build context
+#5 transferring context: 437.51kB 0.0s done
+#5 DONE 0.2s
+
+#6 [stage-1 1/6] FROM docker.m.daocloud.io/library/caddy:2.11.7-alpine@sha256:d8542f48d34a9cf4e4c11a478865229840e87e4c96ea3f439101f31a5d35f75f
+#6 resolve docker.m.daocloud.io/library/caddy:2.11.7-alpine@sha256:d8542f48d34a9cf4e4c11a478865229840e87e4c96ea3f439101f31a5d35f75f 0.1s done
+#6 DONE 0.1s
+
+#7 [frontend 1/9] FROM docker.m.daocloud.io/library/node:22.22.1-bookworm-slim@sha256:4f77a690f2f8946ab16fe1e791a3ac0667ae1c3575c3e4d0d4589e9ed5bfaf3d
+#7 resolve docker.m.daocloud.io/library/node:22.22.1-bookworm-slim@sha256:4f77a690f2f8946ab16fe1e791a3ac0667ae1c3575c3e4d0d4589e9ed5bfaf3d 0.1s done
+#7 DONE 0.1s
+
+#8 [frontend 2/9] WORKDIR /workspace
+#8 CACHED
+
+#9 [frontend 3/9] COPY package.json package-lock.json ./
+#9 DONE 0.1s
+
+#10 [frontend 4/9] COPY apps/identity-web/package.json ./apps/identity-web/package.json
+#10 DONE 0.1s
+
+#11 [frontend 5/9] COPY apps/demo-a/package.json ./apps/demo-a/package.json
+#11 DONE 0.1s
+
+#12 [frontend 6/9] COPY apps/demo-b/package.json ./apps/demo-b/package.json
+#12 DONE 0.2s
+
+#13 [frontend 7/9] RUN --mount=type=cache,id=auth-rust-npm-cache,target=/root/.npm,sharing=locked npm ci
+#13 3.661 
+#13 3.661 added 286 packages, and audited 290 packages in 3s
+#13 3.661 
+#13 3.661 65 packages are looking for funding
+#13 3.661   run `npm fund` for details
+#13 3.662 
+#13 3.662 found 0 vulnerabilities
+#13 DONE 4.0s
+
+#14 [frontend 8/9] COPY apps ./apps
+#14 DONE 0.2s
+
+#15 [frontend 9/9] RUN npm run build --workspaces
+#15 0.412 
+#15 0.412 > @identity/identity-web@0.1.0 build
+#15 0.412 > vite build
+#15 0.412 
+#15 0.552 vite v8.3.3 building client environment for production...
+#15 0.560 transforming...
+#15 0.620 ✓ 342 modules transformed.
+#15 0.681 rendering chunks...
+#15 0.747 computing gzip size...
+#15 0.752 dist/index.html                                  0.79 kB │ gzip:   0.38 kB
+#15 0.752 dist/assets/index-T_jclnav.css                  14.56 kB │ gzip:   3.62 kB
+#15 0.752 dist/assets/PageTitle-BdZViaGS.js                0.21 kB │ gzip:   0.19 kB
+#15 0.752 dist/assets/NotFoundPage-LMGpnJ56.js             0.43 kB │ gzip:   0.33 kB
+#15 0.752 dist/assets/CursorPagination-DYit5_4u.js         0.47 kB │ gzip:   0.34 kB
+#15 0.752 dist/assets/mail-action-CjTmAZmi.js              0.90 kB │ gzip:   0.49 kB
+#15 0.752 dist/assets/TotpQrCode-DMouwVKP.js               0.94 kB │ gzip:   0.66 kB
+#15 0.752 dist/assets/Status-B8XR2J4p.js                   0.96 kB │ gzip:   0.56 kB
+#15 0.752 dist/assets/Table-C-RFzkSI.js                    0.96 kB │ gzip:   0.56 kB
+#15 0.752 dist/assets/LogoutPage-bDFDEndk.js               1.77 kB │ gzip:   1.11 kB
+#15 0.752 dist/assets/AdminPage-DjMFe05c.js                1.84 kB │ gzip:   0.93 kB
+#15 0.752 dist/assets/AuthTransactionNotice-OlgoGQKr.js    2.01 kB │ gzip:   1.13 kB
+#15 0.752 dist/assets/MembersPage-B9IFVJXV.js              2.15 kB │ gzip:   1.20 kB
+#15 0.752 dist/assets/GrantsPage-DJa9t4c4.js               2.24 kB │ gzip:   1.35 kB
+#15 0.752 dist/assets/AccountLayout-Bv_DwZa5.js            2.40 kB │ gzip:   1.14 kB
+#15 0.752 dist/assets/AuditPage-CLTJQjKF.js                2.47 kB │ gzip:   1.37 kB
+#15 0.752 dist/assets/PasswordChangePage-wTV3WPOC.js       2.74 kB │ gzip:   1.53 kB
+#15 0.752 dist/assets/SessionsPage-Cn4EXtV8.js             2.94 kB │ gzip:   1.50 kB
+#15 0.752 dist/assets/HomePage-C7N9JyKQ.js                 2.95 kB │ gzip:   1.17 kB
+#15 0.752 dist/assets/RegisterPage-M1Wg-ysd.js             3.01 kB │ gzip:   1.65 kB
+#15 0.752 dist/assets/ConsentPage-7nsk9wty.js              3.51 kB │ gzip:   1.77 kB
+#15 0.752 dist/assets/EmailVerificationPage-Bsj7fzRS.js    3.56 kB │ gzip:   1.77 kB
+#15 0.752 dist/assets/UsersPage-CbQUXobV.js                3.59 kB │ gzip:   1.72 kB
+#15 0.752 dist/assets/PasswordResetPage-Cid6Uwre.js        4.24 kB │ gzip:   2.13 kB
+#15 0.752 dist/assets/AccountPage-D52EaqIg.js              5.13 kB │ gzip:   1.94 kB
+#15 0.752 dist/assets/LoginPage-DLX_tubW.js                5.70 kB │ gzip:   2.75 kB
+#15 0.752 dist/assets/PasskeysPage-TCDk26ml.js             5.93 kB │ gzip:   2.68 kB
+#15 0.752 dist/assets/AdminShared-BDDAxr5B.js              5.97 kB │ gzip:   2.64 kB
+#15 0.752 dist/assets/ClientsPage-AACi4ICn.js              6.48 kB │ gzip:   2.85 kB
+#15 0.752 dist/assets/dist-fhZSiuUL.js                     7.44 kB │ gzip:   2.85 kB
+#15 0.752 dist/assets/MfaPage-B9cQtG5e.js                  7.54 kB │ gzip:   3.30 kB
+#15 0.752 dist/assets/jsx-runtime-Dk72oS4N.js              8.77 kB │ gzip:   3.33 kB
+#15 0.752 dist/assets/qrcode-DtWdxa9d.js                  20.62 kB │ gzip:   7.29 kB
+#15 0.752 dist/assets/Input-DNCttkuw.js                   31.57 kB │ gzip:  11.57 kB
+#15 0.752 dist/assets/api-CiOuZ4ty.js                     94.27 kB │ gzip:  27.20 kB
+#15 0.752 dist/assets/index-BnsSCjmC.js                  337.91 kB │ gzip: 107.34 kB
+#15 0.752 
+#15 0.755 ✓ built in 202ms
+#15 0.775 
+#15 0.775 > @identity/demo-a@0.1.0 build
+#15 0.775 > vite build
+#15 0.775 
+#15 0.900 vite v8.3.3 building client environment for production...
+#15 0.909 transforming...
+#15 0.948 ✓ 94 modules transformed.
+#15 0.980 rendering chunks...
+#15 1.017 computing gzip size...
+#15 1.021 dist/index.html                               0.42 kB │ gzip:  0.32 kB
+#15 1.021 dist/assets/index-CJkDuFYv.css                0.81 kB │ gzip:  0.46 kB
+#15 1.021 dist/assets/NotFoundPage-CwSXcjfE.js          0.21 kB │ gzip:  0.20 kB
+#15 1.021 dist/assets/InitializationPage-B0_bjW0r.js    2.98 kB │ gzip:  1.31 kB
+#15 1.021 dist/assets/index-BNh23Gpl.js               257.70 kB │ gzip: 82.03 kB
+#15 1.021 
+#15 1.022 ✓ built in 120ms
+#15 1.035 
+#15 1.035 > @identity/demo-b@0.1.0 build
+#15 1.035 > vite build
+#15 1.035 
+#15 1.175 vite v8.3.3 building client environment for production...
+#15 1.183 transforming...
+#15 1.226 ✓ 94 modules transformed.
+#15 1.262 rendering chunks...
+#15 1.293 computing gzip size...
+#15 1.296 dist/index.html                               0.42 kB │ gzip:  0.31 kB
+#15 1.296 dist/assets/index-CJkDuFYv.css                0.81 kB │ gzip:  0.46 kB
+#15 1.296 dist/assets/NotFoundPage-OCc4L1fY.js          0.21 kB │ gzip:  0.20 kB
+#15 1.296 dist/assets/InitializationPage-qwECkMGw.js    2.98 kB │ gzip:  1.31 kB
+#15 1.296 dist/assets/index-Dpg-SaKC.js               257.70 kB │ gzip: 82.03 kB
+#15 1.296 
+#15 1.297 ✓ built in 121ms
+#15 DONE 1.4s
+
+#16 [stage-1 2/6] RUN addgroup -g 10001 identity && adduser -u 10001 -G identity -D -H identity &&     mkdir -p /data/caddy /config/caddy && chown -R 10001:10001 /data /config
+#16 CACHED
+
+#17 [stage-1 3/6] COPY --from=frontend /workspace/apps/identity-web/dist /srv/identity
+#17 DONE 0.1s
+
+#18 [stage-1 4/6] COPY --from=frontend /workspace/apps/demo-a/dist /srv/demo-a
+#18 DONE 0.1s
+
+#19 [stage-1 5/6] COPY --from=frontend /workspace/apps/demo-b/dist /srv/demo-b
+#19 DONE 0.1s
+
+#20 [stage-1 6/6] COPY infra/Caddyfile.prod /etc/caddy/Caddyfile
+#20 DONE 0.1s
+
+#21 exporting to image
+#21 exporting layers
+#21 exporting layers 0.4s done
+#21 exporting manifest sha256:1d751b21835fcd2555e8f4ae5964e8d8f8d1cf548643d98bad0fb44860846a9a 0.0s done
+#21 exporting config sha256:988837330ab1eca80c78326a96df7f5c3f9e8ba31902a66f732a920cb0045f2a 0.0s done
+#21 exporting attestation manifest sha256:62663b0b28bdeec5790b49e762182ffbfb28e9c4d52c419f67d01603be827cb7 0.1s done
+#21 exporting manifest list sha256:29eaa172aa7aa5fbd458ea5e8915a7fb5f7f75b0d64b2986e37c5a76f2e04a00
+#21 exporting manifest list sha256:29eaa172aa7aa5fbd458ea5e8915a7fb5f7f75b0d64b2986e37c5a76f2e04a00 0.0s done
+#21 naming to docker.io/library/auth-rust-edge:t23-319f30c done
+#21 unpacking to docker.io/library/auth-rust-edge:t23-319f30c 0.1s done
+#21 DONE 0.7s

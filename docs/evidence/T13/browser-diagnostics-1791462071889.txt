@@ -1,0 +1,29 @@
+
+Running 4 tests using 1 worker
+···T
+
+  1) tests/e2e/T13.spec.ts:74:1 › @T13 callback state tampering is rejected and platform logout waits for identity confirmation 
+
+    Test timeout of 60000ms exceeded.
+
+    Error: locator.fill: Test timeout of 60000ms exceeded.
+    Call log:
+      - waiting for getByLabel('邮箱地址')
+
+
+      75 |   const password = process.env.T13_BROWSER_PASSWORD; if (!password) throw new Error('Private test password required.');
+      76 |   await page.goto('http://localhost:5192/bff/login');
+    > 77 |   await page.getByLabel('邮箱地址').fill('browser-bff-negative@example.test'); await page.getByLabel('密码', { exact: true }).fill(password); await page.getByRole('button', { name: '登录', exact: true }).click();
+         |                                 ^
+      78 |   await expect(page).toHaveURL(/\/oauth\/consent\/[0-9a-f-]{36}$/u);
+      79 |   await page.route('http://localhost:5192/bff/callback?**', async (route) => { const url = new URL(route.request().url()); url.searchParams.set('state', 'T13_WRONG_STATE'); await route.continue({ url: url.toString() }); });
+      80 |   await page.getByRole('button', { name: '同意授权', exact: true }).click(); await page.waitForURL((url) => url.pathname === '/bff/callback');
+        at /root/code/rust/auth_rust/tests/e2e/T13.spec.ts:77:33
+
+    Error Context: .local/t13-browser-results/[OPAQUE]/error-context.md
+
+  1 failed
+    tests/e2e/T13.spec.ts:74:1 › @T13 callback state tampering is rejected and platform logout waits for identity confirmation 
+  3 passed (1.6m)
+(node:305366) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

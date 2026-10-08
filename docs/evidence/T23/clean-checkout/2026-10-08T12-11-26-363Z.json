@@ -1,0 +1,404 @@
+{
+  "kind": "T23 clean checkout static/install/unit/build submodule; no integration, browser, production or release approval",
+  "started": "2026-10-08T12-11-26-363Z",
+  "completed": "2026-10-08T12:16:48.261Z",
+  "commit": "add1400da832c66bfe7fed240b6804b49e769333",
+  "worktree": "/root/code/rust/auth_rust_clean_t23_20261008",
+  "sourceCleanBefore": true,
+  "sourceCleanAfter": true,
+  "sourceChanges": "",
+  "identitySecretFiles": [],
+  "sourceInputs": [
+    {
+      "path": "Cargo.lock",
+      "sha256": "47ffcb0545416af76dd26346f42a3f583f60d6a4f5f84f8fd6a1f36dea6539d8"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "4a016eb1d048cb0a7e06e41bff5909a8e1863584696585c1977b8be24abf1bca"
+    },
+    {
+      "path": "plan.md",
+      "sha256": "593b48d7b4401d7fcbf4a9becc2f87f668d1c7e33c1eea3b178aa83236164711"
+    },
+    {
+      "path": "acceptance.md",
+      "sha256": "e4af284a7146770f271e806c94d71da798589d24ecdb55b67eefb68e49c7f784"
+    }
+  ],
+  "tools": {
+    "rust": {
+      "exitCode": 0,
+      "version": "rustc 1.98.0 (88d9e12ae 2026-08-18)"
+    },
+    "cargo": {
+      "exitCode": 0,
+      "version": "cargo 1.98.0 (797e8a9bc 2026-08-05)"
+    },
+    "node": {
+      "exitCode": 0,
+      "version": "v22.22.1"
+    },
+    "npm": {
+      "exitCode": 0,
+      "version": "9.2.0"
+    }
+  },
+  "environment": {
+    "os": "Linux 6.18.40.1-microsoft-standard-WSL2",
+    "cpu": "AMD Ryzen 7 7700X 8-Core Processor",
+    "logicalCpus": 16,
+    "memoryGiB": 15.217361450195312,
+    "cargoBuildJobs": 4,
+    "cargoTarget": "new isolated worktree target; no original build artifacts",
+    "npm": "new node_modules and empty task-specific npm cache/userconfig",
+    "shared": "existing Rustup toolchain and Cargo registry source cache only; no existing target/dist/identity secrets"
+  },
+  "results": [
+    {
+      "name": "npm ci",
+      "started": "2026-10-08T12:11:26.706Z",
+      "durationMs": 14572,
+      "exitCode": 0,
+      "counts": []
+    },
+    {
+      "name": "verify:docs",
+      "started": "2026-10-08T12:11:41.279Z",
+      "durationMs": 101,
+      "exitCode": 0,
+      "counts": [
+        "文档检查通过：25 个任务、199 个步骤映射、87 个案例。"
+      ]
+    },
+    {
+      "name": "verify:openapi",
+      "started": "2026-10-08T12:11:41.381Z",
+      "durationMs": 509,
+      "exitCode": 0,
+      "counts": [
+        "OpenAPI 检查通过：59 个操作（48 个 JSON API）、128 个 schema、601 个 examples；契约验证不代表功能已实现。"
+      ]
+    },
+    {
+      "name": "test:tooling",
+      "started": "2026-10-08T12:11:41.890Z",
+      "durationMs": 2864,
+      "exitCode": 0,
+      "counts": [
+        "# tests 66",
+        "# pass 66",
+        "# fail 0",
+        "# skipped 0"
+      ]
+    },
+    {
+      "name": "check",
+      "started": "2026-10-08T12:11:44.755Z",
+      "durationMs": 80599,
+      "exitCode": 0,
+      "counts": []
+    },
+    {
+      "name": "test:unit",
+      "started": "2026-10-08T12:13:05.354Z",
+      "durationMs": 78671,
+      "exitCode": 1,
+      "counts": [
+        "test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 28 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 16.85s",
+        "test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯",
+        " Test Files  2 failed | 13 passed (15)",
+        "      Tests  3 failed | 56 passed (59)"
+      ],
+      "sanitizedFailureTail": "\n FAIL  src/components/passkey.test.tsx > 用户取消Passkey时不发送验证请求或制造强认证成功\nAssertionError: expected '！身份确认未完成验证已过期，请重新开始通行密钥验证。' to contain '已取消'\n\nExpected: \"已取消\"\nReceived: \"！身份确认未完成验证已过期，请重新开始通行密钥验证。\"\n\n ❯ src/components/passkey.test.tsx:19:60\n     17|     render(<PasskeyReauth onConfirmed={confirmed} />);\n     18|     await user.click(screen.getByRole('button', { name: '使用Passkey确认身份…\n     19|     expect((await screen.findByRole('alert')).textContent).toContain('…\n       |                                                            ^\n     20|     expect(confirmed).not.toHaveBeenCalled();\n     21|     expect(request).toHaveBeenCalledTimes(1);\n\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯\n\n\n Test Files  2 failed | 13 passed (15)\n      Tests  3 failed | 56 passed (59)\n   Start at  20:14:19\n   Duration  4.52s (environment 49%, tests 22%, import 21%, transform 7%)\n\n/usr/bin/node 退出码 1。"
+    },
+    {
+      "name": "build",
+      "started": "2026-10-08T12:14:24.037Z",
+      "durationMs": 144138,
+      "exitCode": 0,
+      "counts": []
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "target/release/identity-server",
+      "bytes": 11562128,
+      "sha256": "8c7c8f2ebb307cc60fc972e8ffc18b7cc8f38c9d93984fd7313f0ccf138afd4b"
+    },
+    {
+      "path": "target/release/identity-worker",
+      "bytes": 8157608,
+      "sha256": "d8bceb6ab3977cefc26ebb4363006e23049f0232cde0ef94ce79fcecfdeedf5e"
+    },
+    {
+      "path": "target/release/identity-admin-cli",
+      "bytes": 7002232,
+      "sha256": "6f981d9ef7a813e3c8bf3b3cdd6541822365fa795221f4d4e035d30e3b78ae21"
+    },
+    {
+      "path": "target/release/identity-migrate",
+      "bytes": 3690944,
+      "sha256": "a44119bf29eb88f767ca95bf1153a0b3b35a0b7d9aea02113ca308abfda28f83"
+    },
+    {
+      "path": "target/release/demo-bff",
+      "bytes": 8911424,
+      "sha256": "e798a06631255981906b657cd8dae957981e874dcee267989b6a8191fb4a214a"
+    },
+    {
+      "path": "target/release/identity-keys",
+      "bytes": 6632896,
+      "sha256": "db0a173741dcaf09b64e2cc432b591055c8863e14cf2ebbd3da63f0d7c04efaa"
+    },
+    {
+      "path": "target/release/identity-demo-clients",
+      "bytes": 3466920,
+      "sha256": "5ab2560fef0a362af8e846c7709b5762826195bf4176acc50c070cce7e1b9259"
+    },
+    {
+      "path": "apps/identity-web/dist/assets/AccountLayout-Bv_DwZa5.js",
+      "bytes": 2409,
+      "sha256": "7fc0c857f8dd2af9f3e74bc33d700f3163278b5d1162f9ada239bd07556cd4df"
+    },
+    {
+      "path": "apps/identity-web/dist/assets/AccountPage-D52EaqIg.js",
+      "bytes": 5130,
+      "sha256": "b09335d4e6c44512394912d815cbf36b6eca80f6085a4a23d2fd3668b5c3d14a"
+    },
+    {
+      "path": "apps/identity-web/dist/assets/AdminPage-DjMFe05c.js",
+      "bytes": 1846,
+      "sha256": "946402b82d1831b051002a9e7a55fc7f4fc464a6b23dbbd48485310ab8a5fcbb"
+    },
+    {
+      "path": "apps/identity-web/dist/assets/AdminShared-BDDAxr5B.js",
+      "bytes": 5974,
+      "sha256": "3b6aca4b7cae4384d89e06329561ad6d9b4f1dc405faaf01adac821dbfd22503"
+    },
+    {
+      "path": "apps/identity-web/dist/assets/AuditPage-CLTJQjKF.js",
+      "bytes": 2478,
+      "sha256": "0614d53e27a57784f7a4be9d8c139143cec6e9547c6a7ba498fe8388c2a72834"
+    },
+    {
+      "path": "apps/identity-web/dist/assets/AuthTransactionNotice-OlgoGQKr.js",
+      "bytes": 2016,
+      "sha256": "9025a5d6ac18807914606314b53f6265a5f89188be82ec11a412d5cd0b1a0e03"
+    },
+    {
+      "path": "apps/identity-web/dist/assets/ClientsPage-AACi4ICn.js",
+      "bytes": 6488,
+      "sha256": "49993595e7bbe7a3b068f54235bbaebbea5c0913e9ad1effdb069286ca7df878"
+    },
+    {
+      "path": "apps/identity-web/dist/assets/ConsentPage-7nsk9wty.js",
+      "bytes": 3516,
+      "sha256": "c7deda6fadbe5ce7d70e450fd71d3d538d1fbb58cc35434f23f084581f491f30"
+    },
+    {
+      "path": "apps/identity-web/dist/assets/CursorPagination-DYit5_4u.js",
+      "bytes": 475,
+      "sha256": "a73def4949f14c81012d323f30ccfdad80446f273af07fabac2d281e69c46298"
+    },
+    {
+      "path": "apps/identity-web/dist/assets/EmailVerificationPage-Bsj7fzRS.js",
+      "bytes": 3569,
+      "sha256": "52e73a00d67f862a48b0306fc8bb39915bd21fe0a184b5b376bc886a25e16a71"
+    },
+    {
+      "path": "apps/identity-web/dist/assets/GrantsPage-DJa9t4c4.js",
+      "bytes": 2246,
+      "sha256": "5c1025085a8bf85b4ce7d0ac88c48c61266bbbefd96b113b88ca566c077e8046"
+    },
+    {
+      "path": "apps/identity-web/dist/assets/HomePage-C7N9JyKQ.js",
+      "bytes": 2953,
+      "sha256": "e048929cc3d6760ee34376eb3207ba0c94dd11c40a94ecd70dbe295d9333301d"
+    },
+    {
+      "path": "apps/identity-web/dist/assets/Input-DNCttkuw.js",
+      "bytes": 31571,
+      "sha256": "3d37f919d583551237caa062cebc1004c37d173d6e96d5edb4983ce6c0c855df"
+    },
+    {
+      "path": "apps/identity-web/dist/assets/LoginPage-DLX_tubW.js",
+      "bytes": 5707,
+      "sha256": "47f02f0466442f71a5a8cc4398a90926f62a4c6d80c118f9cffe3db15cefd112"
+    },
+    {
+      "path": "apps/identity-web/dist/assets/LogoutPage-bDFDEndk.js",
+      "bytes": 1776,
+      "sha256": "844fc027aa4b05e6facbe07a68070f9156d4f98e11822a7fa001c0e0c7ec458d"
+    },
+    {
+      "path": "apps/identity-web/dist/assets/MembersPage-B9IFVJXV.js",
+      "bytes": 2159,
+      "sha256": "12fac471b8e9ca255be27572a32ad4d286559c4ec7d9eff7dce21e3acb0ca4f9"
+    },
+    {
+      "path": "apps/identity-web/dist/assets/MfaPage-B9cQtG5e.js",
+      "bytes": 7542,
+      "sha256": "933f3d3bf4400568920a82025e53eb4617f3b8412d09a83ba6975ddc86ee4120"
+    },
+    {
+      "path": "apps/identity-web/dist/assets/NotFoundPage-LMGpnJ56.js",
+      "bytes": 438,
+      "sha256": "31150431be3322806a63942549029e1ffb98ac9adeea746e11480269c2ef83ed"
+    },
+    {
+      "path": "apps/identity-web/dist/assets/PageTitle-BdZViaGS.js",
+      "bytes": 219,
+      "sha256": "9430cfdff71815d422e7c031854d1751eedbbfead5bf0c73b141fd287419ba26"
+    },
+    {
+      "path": "apps/identity-web/dist/assets/PasskeysPage-TCDk26ml.js",
+      "bytes": 5937,
+      "sha256": "c25c16b1dd12d9407b1fe1d44fd379a1f3c13e95710ba59f83f5e11f3194569e"
+    },
+    {
+      "path": "apps/identity-web/dist/assets/PasswordChangePage-wTV3WPOC.js",
+      "bytes": 2747,
+      "sha256": "bf6127762279af31c80db427e0a37ec1ce43b9ff00193b3cb928cb42f1aaf258"
+    },
+    {
+      "path": "apps/identity-web/dist/assets/PasswordResetPage-Cid6Uwre.js",
+      "bytes": 4242,
+      "sha256": "82db26d4163d0c881cabc4deb6abfbacac07b370b1b137fc78260ebcdcab0a40"
+    },
+    {
+      "path": "apps/identity-web/dist/assets/RegisterPage-M1Wg-ysd.js",
+      "bytes": 3011,
+      "sha256": "0c1728ecf964a8488e81302fd311a9481aad2ad88f81e522130301f2cdb3fc89"
+    },
+    {
+      "path": "apps/identity-web/dist/assets/SessionsPage-Cn4EXtV8.js",
+      "bytes": 2948,
+      "sha256": "b02f54fd0be706f363d76abf4b96f7994edee89b07acfeb813b4849c83bed8a4"
+    },
+    {
+      "path": "apps/identity-web/dist/assets/Status-B8XR2J4p.js",
+      "bytes": 964,
+      "sha256": "34c21bb59b411c0085e96262494c2314e100d7a36547359f3dd041fff8ea1c2f"
+    },
+    {
+      "path": "apps/identity-web/dist/assets/Table-C-RFzkSI.js",
+      "bytes": 967,
+      "sha256": "fe7993610bce6eff278c1b0ed4d67c2de65fb3291a560f79b389ccbfd4fcf6d8"
+    },
+    {
+      "path": "apps/identity-web/dist/assets/TotpQrCode-DMouwVKP.js",
+      "bytes": 943,
+      "sha256": "14db845a67ffe4cff7ee924abcac76a9ee840ae231bed66a3f1810da32d86126"
+    },
+    {
+      "path": "apps/identity-web/dist/assets/UsersPage-CbQUXobV.js",
+      "bytes": 3598,
+      "sha256": "7daad6e87ea3f48a624e7cd2d781f6606ec47df6090f39e4edf99559fd3a4e2b"
+    },
+    {
+      "path": "apps/identity-web/dist/assets/api-CiOuZ4ty.js",
+      "bytes": 94276,
+      "sha256": "da3e65f86ca0b2ef7d00f671ab0bed787916d529e923de2869504116732cc3d1"
+    },
+    {
+      "path": "apps/identity-web/dist/assets/dist-fhZSiuUL.js",
+      "bytes": 7440,
+      "sha256": "9ea7619feb4cd214cec7d2d39c0705f750346647a018d95922a0b81720aa91ea"
+    },
+    {
+      "path": "apps/identity-web/dist/assets/index-BnsSCjmC.js",
+      "bytes": 337916,
+      "sha256": "17125554fe0b5901005df446151ac329a529fe1c6ce2d25f90ea986d6ef90560"
+    },
+    {
+      "path": "apps/identity-web/dist/assets/index-T_jclnav.css",
+      "bytes": 14569,
+      "sha256": "5d11303c0990ee7594aff59d6412b8c7efd96387594cc44e49da6f8480bec27c"
+    },
+    {
+      "path": "apps/identity-web/dist/assets/jsx-runtime-Dk72oS4N.js",
+      "bytes": 8774,
+      "sha256": "c5f4f8da0038e4082afc00542f93aa1bb64bc5777801d67197507865915a89b6"
+    },
+    {
+      "path": "apps/identity-web/dist/assets/mail-action-CjTmAZmi.js",
+      "bytes": 900,
+      "sha256": "5831571606a1a35f29e38fe60ac138b777a84e49b9155484e3ce1e2f4091b9a8"
+    },
+    {
+      "path": "apps/identity-web/dist/assets/qrcode-DtWdxa9d.js",
+      "bytes": 20628,
+      "sha256": "4d4f1742456b3e0406bba78d1d1c891386c40676bc217ef3d5e3f29bc2989034"
+    },
+    {
+      "path": "apps/identity-web/dist/index.html",
+      "bytes": 790,
+      "sha256": "fcd2bd1620a023dfb4189d7640d4c1ce4a2e9428c3ccb9874a981e3d64b3a925"
+    },
+    {
+      "path": "apps/demo-a/dist/assets/InitializationPage-B0_bjW0r.js",
+      "bytes": 2984,
+      "sha256": "4b6d0126a82449348bdd3ebd6f26a865912dcf0e3d655cee3fb9ff7a3bb4da5c"
+    },
+    {
+      "path": "apps/demo-a/dist/assets/NotFoundPage-CwSXcjfE.js",
+      "bytes": 217,
+      "sha256": "6ba6dc9f2778593b30c2be684294d4e56365a3ef50e84cd3dad7be774d3619cb"
+    },
+    {
+      "path": "apps/demo-a/dist/assets/index-BNh23Gpl.js",
+      "bytes": 257707,
+      "sha256": "5f8e4e4ccfde68677374829795530287b70811f218fc9bc936532f7407b655ea"
+    },
+    {
+      "path": "apps/demo-a/dist/assets/index-CJkDuFYv.css",
+      "bytes": 817,
+      "sha256": "c755053272f9fc6962d3e32980f22e3867bde8361fc3d4ee5a01937bab21bb6f"
+    },
+    {
+      "path": "apps/demo-a/dist/index.html",
+      "bytes": 424,
+      "sha256": "f8001d3e8ab7b75a93ad428963988cea23293a9518f1a839099a4b731af5f967"
+    },
+    {
+      "path": "apps/demo-b/dist/assets/InitializationPage-qwECkMGw.js",
+      "bytes": 2984,
+      "sha256": "ac1d519ad50f7ecb0392351e664faadf8c1dff8edf7256a022e73ee6927d879b"
+    },
+    {
+      "path": "apps/demo-b/dist/assets/NotFoundPage-OCc4L1fY.js",
+      "bytes": 217,
+      "sha256": "01aea575f0cd94cd402549d529c6b1203cda70382d0b4aaab4c07eb02dc1078e"
+    },
+    {
+      "path": "apps/demo-b/dist/assets/index-CJkDuFYv.css",
+      "bytes": 817,
+      "sha256": "c755053272f9fc6962d3e32980f22e3867bde8361fc3d4ee5a01937bab21bb6f"
+    },
+    {
+      "path": "apps/demo-b/dist/assets/index-Dpg-SaKC.js",
+      "bytes": 257707,
+      "sha256": "c0c73cb24d0dc6e96a3d5714cb2f618c78c4b95b876a90119a7ec7f26d0968e7"
+    },
+    {
+      "path": "apps/demo-b/dist/index.html",
+      "bytes": 424,
+      "sha256": "5fa64df9e7a4058d81b448947aab0db1a75adccf4bf796aca4a6c40a2aee0349"
+    }
+  ],
+  "privateLogs": ".local/t23-clean-static/2026-10-08T12-11-26-363Z",
+  "exitCode": 1
+}

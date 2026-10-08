@@ -11,3 +11,6 @@ ZAP初轮Vite开发响应缺头中低告警保留；换正确productiondist及�
 另真实Worker投递audit target_type=outbox在严格管理员schema遗漏，补API及DTO枚举；4项UI单元含outbox可读，合成DTO未冒充SMTP到后台完整联动。最终rootcheck/unit/build及docs/OpenAPI/工具通过，完整test:integration/E2Emanifest逐module失败继续记录私有诊断；缺脚本必失败。正式test:full待执行，不能仅runner存在写全套通过。
 
 生产TLS/真实SMTP/独立恢复/设备/屏幕阅读器以及T21首次容量调度失败尚未放行。目录内失败和原报告保留，证据界限见ZAPtriage、cross-module-summary与T23 remaining-verification。
+
+
+最终完整回归首轮已实际完成：11阶段全运行，unit/integration/e2e/security退出1，详见[原始汇总](../full-test/2026-10-08T12-14-09-892Z.md)。三个正常流程fixture过期、T13恢复等待、T19同管理员因素夹具及三条源码SHA误报已按真实失败修复；unit/check、T13/T19真实流程与T22新增12项运维检查局部复测退出0。第二完整回归仍进行中，完成后再更新当前结论。原失败证据保留，不用后来局部通过替代首轮结果。

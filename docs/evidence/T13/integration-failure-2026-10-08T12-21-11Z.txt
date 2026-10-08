@@ -1,0 +1,7 @@
+T13 real double-BFF browser/API integration 2026-10-08T12:19:32.878Z
+FAIL T13 real BFF browser checks failed.
+
+1 !== 0
+
+Completed 2026-10-08T12:21:11.923Z
+Exit code 1

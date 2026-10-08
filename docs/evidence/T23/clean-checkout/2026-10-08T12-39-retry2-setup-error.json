@@ -1,0 +1,7 @@
+{
+  "observedAt": "2026-10-08T12:36:46.957979+00:00",
+  "actualCommit": "319f30c4e7de8090cb7055011acc2471530f4e5c",
+  "reason": "Runner was invoked with an incorrectly copied full revision. Explicit SHA guard rejected before any install/check/unit/build stage. Corrected to git rev-parse output; empty generated npm userconfig removed to restore freshness.",
+  "stagesExecuted": 0,
+  "exitCode": 1
+}

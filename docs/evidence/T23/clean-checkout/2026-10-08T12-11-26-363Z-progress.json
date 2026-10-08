@@ -1,0 +1,82 @@
+{
+  "commit": "add1400da832c66bfe7fed240b6804b49e769333",
+  "completed": false,
+  "results": [
+    {
+      "name": "npm ci",
+      "started": "2026-10-08T12:11:26.706Z",
+      "durationMs": 14572,
+      "exitCode": 0,
+      "counts": []
+    },
+    {
+      "name": "verify:docs",
+      "started": "2026-10-08T12:11:41.279Z",
+      "durationMs": 101,
+      "exitCode": 0,
+      "counts": [
+        "文档检查通过：25 个任务、199 个步骤映射、87 个案例。"
+      ]
+    },
+    {
+      "name": "verify:openapi",
+      "started": "2026-10-08T12:11:41.381Z",
+      "durationMs": 509,
+      "exitCode": 0,
+      "counts": [
+        "OpenAPI 检查通过：59 个操作（48 个 JSON API）、128 个 schema、601 个 examples；契约验证不代表功能已实现。"
+      ]
+    },
+    {
+      "name": "test:tooling",
+      "started": "2026-10-08T12:11:41.890Z",
+      "durationMs": 2864,
+      "exitCode": 0,
+      "counts": [
+        "# tests 66",
+        "# pass 66",
+        "# fail 0",
+        "# skipped 0"
+      ]
+    },
+    {
+      "name": "check",
+      "started": "2026-10-08T12:11:44.755Z",
+      "durationMs": 80599,
+      "exitCode": 0,
+      "counts": []
+    },
+    {
+      "name": "test:unit",
+      "started": "2026-10-08T12:13:05.354Z",
+      "durationMs": 78671,
+      "exitCode": 1,
+      "counts": [
+        "test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 28 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 16.85s",
+        "test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯",
+        " Test Files  2 failed | 13 passed (15)",
+        "      Tests  3 failed | 56 passed (59)"
+      ],
+      "sanitizedFailureTail": "\n FAIL  src/components/passkey.test.tsx > 用户取消Passkey时不发送验证请求或制造强认证成功\nAssertionError: expected '！身份确认未完成验证已过期，请重新开始通行密钥验证。' to contain '已取消'\n\nExpected: \"已取消\"\nReceived: \"！身份确认未完成验证已过期，请重新开始通行密钥验证。\"\n\n ❯ src/components/passkey.test.tsx:19:60\n     17|     render(<PasskeyReauth onConfirmed={confirmed} />);\n     18|     await user.click(screen.getByRole('button', { name: '使用Passkey确认身份…\n     19|     expect((await screen.findByRole('alert')).textContent).toContain('…\n       |                                                            ^\n     20|     expect(confirmed).not.toHaveBeenCalled();\n     21|     expect(request).toHaveBeenCalledTimes(1);\n\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯\n\n\n Test Files  2 failed | 13 passed (15)\n      Tests  3 failed | 56 passed (59)\n   Start at  20:14:19\n   Duration  4.52s (environment 49%, tests 22%, import 21%, transform 7%)\n\n/usr/bin/node 退出码 1。"
+    },
+    {
+      "name": "build",
+      "started": "2026-10-08T12:14:24.037Z",
+      "durationMs": 144138,
+      "exitCode": 0,
+      "counts": []
+    }
+  ]
+}

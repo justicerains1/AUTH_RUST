@@ -1,0 +1,30 @@
+{
+  "results": [
+    {
+      "name": "RustSec",
+      "exitCode": 0
+    },
+    {
+      "name": "Rust licenses and sources",
+      "exitCode": 0
+    },
+    {
+      "name": "npm vulnerability audit",
+      "exitCode": 0
+    },
+    {
+      "name": "Git history secret scan",
+      "exitCode": 1
+    },
+    {
+      "name": "Cross-module protocol/security",
+      "exitCode": 0
+    },
+    {
+      "name": "Production-build ZAP",
+      "exitCode": 0
+    }
+  ],
+  "exitCode": 1,
+  "scope": "Dependency, secrets, cross-module protocol and bounded local ZAP; release/manual checks remain in acceptance.md"
+}
