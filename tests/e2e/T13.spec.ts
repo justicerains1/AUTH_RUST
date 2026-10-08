@@ -38,7 +38,14 @@ test('@T13 identity-state failure returns503 and local logout only affects its a
   const cookies = await page.context().cookies(); const a = cookies.find((item) => item.name === 't13-a-session'); const b = cookies.find((item) => item.name === 't13-b-session'); if (!a || !b) throw new Error('Private application sessions missing.');
   const { spawn } = await import('node:child_process');
   const path = await import('node:path');
-  const compose = (action: string) => new Promise<void>((resolveDone, reject) => { const child = spawn('docker', ['compose', '--env-file', path.resolve('.local/dev.env'), '-f', path.resolve('infra/compose.dev.yaml'), action, 'redis'], { stdio: 'ignore', shell: false }); child.on('error', () => { reject(new Error('Dependency command unavailable.')); }); child.on('close', (code) => { if (code === 0) resolveDone(); else reject(new Error('Dependency command failed.')); }); });
+  const composeCommand = (args: string[]) => new Promise<string>((resolveDone, reject) => { const child = spawn('docker', ['compose', '--env-file', path.resolve('.local/dev.env'), '-f', path.resolve('infra/compose.dev.yaml'), ...args], { stdio: ['ignore', 'pipe', 'ignore'], shell: false }); let output = ''; child.stdout.setEncoding('utf8'); child.stdout.on('data', (value: string) => { output += value; }); child.on('error', () => { reject(new Error('Dependency command unavailable.')); }); child.on('close', (code) => { if (code === 0) resolveDone(output); else reject(new Error('Dependency command failed.')); }); });
+  async function compose(action: 'stop' | 'start') {
+    await composeCommand([action, 'redis']);
+    if (action === 'start') {
+      // Starting the container does not imply Redis is ready for the next real authorization.
+      await expect.poll(async () => { try { return (await composeCommand(['exec', '-T', 'redis', 'redis-cli', 'PING'])).trim() === 'PONG'; } catch { return false; } }, { timeout: 15_000 }).toBe(true);
+    }
+  }
   await compose('stop');
   try { const response = await fetch('http://127.0.0.1:5194/bff/session', { headers: { Cookie: `t13-a-session=${a.value}` } }); expect(response.status).toBe(503); }
   finally { await compose('start'); }

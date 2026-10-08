@@ -230,6 +230,7 @@ async fn t19_browser_harness() -> TestResult {
     let recovery_codes = recovery.expose().to_vec();
     let testclock = clock.clone();
     let controlpool = pool.clone();
+    let recovery_user = user;
     let app = Router::new().route("/__test/material", get(move |request: axum::extract::Request| {
         let key=private_key.clone(); let seed=seed.clone(); let codes=recovery_codes.clone(); let clock=testclock.clone(); let pool=controlpool.clone();
         async move {
@@ -248,7 +249,16 @@ async fn t19_browser_harness() -> TestResult {
                     _ => return (StatusCode::INTERNAL_SERVER_ERROR,Json(json!({"error":"fixture expiry update failed"}))),
                 }
             }
-            (StatusCode::OK,Json(json!({"secret":seed,"recoveries":codes,"seconds":clock.now().unix_timestamp()})))
+            let mut unused = Vec::new();
+            for code in codes {
+                let digest = identity_core::security::token_digest(&code);
+                match sqlx::query_scalar::<_, bool>("SELECT EXISTS(SELECT 1 FROM recovery_codes WHERE user_id=$1 AND code_hash=$2 AND consumed_at IS NULL)").bind(recovery_user).bind(digest.as_slice()).fetch_one(&pool).await {
+                    Ok(true) => unused.push(code),
+                    Ok(false) => {},
+                    Err(_) => return (StatusCode::SERVICE_UNAVAILABLE, Json(json!({"error":"fixture recovery lookup unavailable"}))),
+                }
+            }
+            (StatusCode::OK,Json(json!({"secret":seed,"recoveries":unused,"seconds":clock.now().unix_timestamp()})))
         }
     }));
     let listener = tokio::net::TcpListener::bind("127.0.0.1:5197").await?;
