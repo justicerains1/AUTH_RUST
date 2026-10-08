@@ -1,0 +1,89 @@
+   Compiling identity-server v0.1.0 (/root/code/rust/auth_rust/crates/identity-server)
+warning: unused import: `Duration`
+  --> crates/identity-server/tests/t22_signing.rs:36:12
+   |
+36 | use time::{Duration, OffsetDateTime};
+   |            ^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+error[E0277]: the trait bound `Zeroizing<std::string::String>: sqlx::Encode<'_, Postgres>` is not satisfied
+   --> crates/identity-server/tests/t22_signing.rs:427:11
+    |
+427 |     .bind(hash)
+    |      ---- ^^^^ the trait `sqlx::Encode<'_, Postgres>` is not implemented for `Zeroizing<std::string::String>`
+    |      |
+    |      required by a bound introduced by this call
+    |
+    = help: the following other types implement trait `sqlx::Encode<'q, DB>`:
+              `&'q JsonRawValue` implements `sqlx::Encode<'q, DB>`
+              `&T` implements `sqlx::Encode<'q, DB>`
+              `&[T]` implements `sqlx::Encode<'q, Postgres>`
+              `&[u8]` implements `sqlx::Encode<'_, Postgres>`
+              `&str` implements `sqlx::Encode<'_, Postgres>`
+              `Arc<T>` implements `sqlx::Encode<'q, DB>`
+              `Arc<[u8]>` implements `sqlx::Encode<'q, Postgres>`
+              `Arc<str>` implements `sqlx::Encode<'q, Postgres>`
+            and 60 others
+note: required by a bound in `sqlx::query::Query::<'_, DB, <DB as sqlx::Database>::Arguments>::bind`
+   --> /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sqlx-core-0.9.0/src/query.rs:87:24
+    |
+ 87 |     pub fn bind<'t, T: Encode<'t, DB> + Type<DB>>(mut self, value: T) -> Self {
+    |                        ^^^^^^^^^^^^^^ required by this bound in `Query::<'_, DB, <DB as Database>::Arguments>::bind`
+
+error[E0277]: the trait bound `Zeroizing<std::string::String>: sqlx::Type<Postgres>` is not satisfied
+   --> crates/identity-server/tests/t22_signing.rs:427:11
+    |
+427 |     .bind(hash)
+    |      ---- ^^^^ the trait `sqlx::Type<Postgres>` is not implemented for `Zeroizing<std::string::String>`
+    |      |
+    |      required by a bound introduced by this call
+    |
+    = help: the following other types implement trait `sqlx::Type<DB>`:
+              ()
+              (T1, T2)
+              (T1, T2, T3)
+              (T1, T2, T3, T4)
+              (T1, T2, T3, T4, T5)
+              (T1, T2, T3, T4, T5, T6)
+              (T1, T2, T3, T4, T5, T6, T7)
+              (T1, T2, T3, T4, T5, T6, T7, T8)
+            and 45 others
+note: required by a bound in `sqlx::query::Query::<'_, DB, <DB as sqlx::Database>::Arguments>::bind`
+   --> /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sqlx-core-0.9.0/src/query.rs:87:41
+    |
+ 87 |     pub fn bind<'t, T: Encode<'t, DB> + Type<DB>>(mut self, value: T) -> Self {
+    |                                         ^^^^^^^^ required by this bound in `Query::<'_, DB, <DB as Database>::Arguments>::bind`
+help: use a unary tuple instead
+    |
+427 |     .bind((hash,))
+    |           +    ++
+
+error[E0609]: no field `secret` on type `CreatedClient`
+   --> crates/identity-server/tests/t22_signing.rs:443:61
+    |
+443 |     let stale_cache = bff(issuer, "rollout-bff", registered.secret.expose()).await?;
+    |                                                             ^^^^^^ unknown field
+    |
+    = note: available fields are: `id`, `client_id`, `client_secret`
+
+error[E0609]: no field `secret` on type `CreatedClient`
+   --> crates/identity-server/tests/t22_signing.rs:453:64
+    |
+453 |     let prepared_cache = bff(issuer, "rollout-bff", registered.secret.expose()).await?;
+    |                                                                ^^^^^^ unknown field
+    |
+    = note: available fields are: `id`, `client_id`, `client_secret`
+
+error[E0609]: no field `secret` on type `CreatedClient`
+   --> crates/identity-server/tests/t22_signing.rs:518:66
+    |
+518 |     let after_retirement = bff(issuer, "rollout-bff", registered.secret.expose()).await?;
+    |                                                                  ^^^^^^ unknown field
+    |
+    = note: available fields are: `id`, `client_id`, `client_secret`
+
+Some errors have detailed explanations: E0277, E0609.
+For more information about an error, try `rustc --explain E0277`.
+warning: `identity-server` (test "t22_signing") generated 1 warning
+error: could not compile `identity-server` (test "t22_signing") due to 5 previous errors; 1 warning emitted

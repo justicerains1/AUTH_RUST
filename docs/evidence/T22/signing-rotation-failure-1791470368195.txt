@@ -1,0 +1,20 @@
+   Compiling identity-server v0.1.0 (/root/code/rust/auth_rust/crates/identity-server)
+error[E0599]: no method named `form` found for struct `RequestBuilder` in the current scope
+   --> crates/identity-server/tests/t22_signing.rs:606:10
+    |
+602 |       let refresh_denied = browser
+    |  __________________________-
+603 | |         .client
+604 | |         .post(format!("{issuer}/oauth/token"))
+605 | |         .basic_auth("rollout-bff", Some(registered.client_secret.expose()))
+606 | |         .form(&[
+    | |_________-^^^^
+    |
+help: there is a method `or` with a similar name
+    |
+606 -         .form(&[
+606 +         .or(&[
+    |
+
+For more information about this error, try `rustc --explain E0599`.
+error: could not compile `identity-server` (test "t22_signing") due to 1 previous error

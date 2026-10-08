@@ -1,0 +1,20 @@
+   Compiling identity-core v0.1.0 (/root/code/rust/auth_rust/crates/identity-core)
+   Compiling identity-store v0.1.0 (/root/code/rust/auth_rust/crates/identity-store)
+   Compiling demo-bff v0.1.0 (/root/code/rust/auth_rust/crates/demo-bff)
+   Compiling identity-server v0.1.0 (/root/code/rust/auth_rust/crates/identity-server)
+   Compiling identity-worker v0.1.0 (/root/code/rust/auth_rust/crates/identity-worker)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 14.80s
+     Running tests/t22_signing.rs (target/debug/deps/t22_signing-0870d84eb18a8583)
+
+running 1 test
+Error: "WebAuthn configuration invalid"
+test t22_real_signing_rollout ... FAILED
+
+failures:
+
+failures:
+    t22_real_signing_rollout
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.26s
+
+error: test failed, to rerun pass `-p identity-server --test t22_signing`

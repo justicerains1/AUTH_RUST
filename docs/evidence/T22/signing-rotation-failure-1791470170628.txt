@@ -1,0 +1,16 @@
+   Compiling identity-server v0.1.0 (/root/code/rust/auth_rust/crates/identity-server)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.70s
+     Running tests/t22_signing.rs (target/debug/deps/t22_signing-0870d84eb18a8583)
+
+running 1 test
+Error: "consent id missing"
+test t22_real_signing_rollout ... FAILED
+
+failures:
+
+failures:
+    t22_real_signing_rollout
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.21s
+
+error: test failed, to rerun pass `-p identity-server --test t22_signing`

@@ -1,5 +1,5 @@
 {
-  "completed": "2026-10-08T13:51:04.404Z",
+  "completed": "2026-10-08T14:46:45.760Z",
   "results": [
     {
       "name": "metrics",
@@ -12,8 +12,12 @@
     {
       "name": "backup-wal-production-config",
       "exitCode": 0
+    },
+    {
+      "name": "signing-rotation",
+      "exitCode": 0
     }
   ],
   "exitCode": 0,
-  "scope": "Local metrics, PostgreSQL key maintenance, isolated encrypted backup/WAL and offline production configuration; not production acceptance."
+  "scope": "Local metrics, PostgreSQL key maintenance, isolated encrypted backup/WAL, signing rollout with real BFF and offline production configuration; not production acceptance."
 }

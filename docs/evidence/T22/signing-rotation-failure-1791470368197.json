@@ -1,0 +1,18 @@
+{
+  "started": "2026-10-08T14:39:27.542Z",
+  "kind": "Local real HTTP/PG/BFF signing rollout; not production distribution or elapsed 12-hour observation",
+  "results": [],
+  "sourceSha256": {
+    "crates/identity-server/tests/t22_signing.rs": "1fe035fd3700778448b893c7a2c8752f9099f4012b445956f400148847116970",
+    "tests/integration/t22-signing.mjs": "59d09d9eb9d92909478af9ac8f95793e676ad41fc0d9ef93f393971107a3fa8d",
+    "crates/identity-core/src/jose.rs": "8ff8c52a1546df7d83754e2fc81935789bf127cd1928cf687fd1c679522c061b",
+    "crates/demo-bff/src/oidc.rs": "d3cde959618a14e2e0d7a049c37766d1e1b1e5b9a2a12d34b2426d99fa9d4a8a",
+    "Cargo.lock": "47ffcb0545416af76dd26346f42a3f583f60d6a4f5f84f8fd6a1f36dea6539d8"
+  },
+  "exitCode": 1,
+  "rustExitCode": 101,
+  "zeroIgnored": false,
+  "commit": "cfc0c70ffed1b675b386a7add8b4a54a877fa8c3",
+  "failure": "Local signing rollout failed; private diagnostics were suppressed and a sanitized report was retained.\n\n101 !== 0\n",
+  "completed": "2026-10-08T14:39:28.196Z"
+}

@@ -23,7 +23,10 @@ const ops = await runStage(process.execPath, ['--test', ...['base-backup', 'wal-
 await writeFile(resolve(privateDirectory, 'backup-wal-production-config.txt'), ops.diagnostic, { mode: 0o600 });
 const opsPassed = ops.exitCode === 0 && /# tests 12\r?\n/u.test(ops.diagnostic) && /# pass 12\r?\n/u.test(ops.diagnostic) && /# skipped 0\r?\n/u.test(ops.diagnostic);
 results.push({ name: 'backup-wal-production-config', exitCode: opsPassed ? 0 : ops.exitCode || 1 });
+const signing = await runStage(process.execPath, [resolve(root, 'tests/integration/t22-signing.mjs')], { cwd: root, env });
+await writeFile(resolve(privateDirectory, 'signing-rotation.txt'), signing.diagnostic, { mode: 0o600 });
+results.push({ name: 'signing-rotation', exitCode: signing.exitCode });
 const evidence = resolve(root, 'docs/evidence/T22'); await mkdir(evidence, { recursive: true });
 const code = results.some((result) => result.exitCode !== 0) ? 1 : 0;
-await writeFile(resolve(evidence, 'integration.json'), JSON.stringify({ completed: new Date().toISOString(), results, exitCode: code, scope: 'Local metrics, PostgreSQL key maintenance, isolated encrypted backup/WAL and offline production configuration; not production acceptance.' }, null, 2)+'\n');
+await writeFile(resolve(evidence, 'integration.json'), JSON.stringify({ completed: new Date().toISOString(), results, exitCode: code, scope: 'Local metrics, PostgreSQL key maintenance, isolated encrypted backup/WAL, signing rollout with real BFF and offline production configuration; not production acceptance.' }, null, 2)+'\n');
 process.exitCode = code;
