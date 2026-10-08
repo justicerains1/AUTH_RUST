@@ -1,0 +1,32 @@
+[WebServer] (node:912237) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 10 tests using 1 worker
+(node:912360) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+·····(node:916574) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+···F(node:922684) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+·
+
+  1) [firefox] › tests/e2e/product-accessibility.spec.ts:83:1 › administrator pages four widths, keyboard confirmation and declared error states 
+
+    Error: Control was not reachable through sequential keyboard navigation: {"target":{"tag":"BUTTON","label":"用户","width":390,"heading":"安全审计"},"history":[{"tag":"INPUT","label":""},{"tag":"INPUT","label":""},{"tag":"BUTTON","label":"查询审计"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"},{"tag":"BUTTON","label":"下一页"}]}
+
+      11 |   for (let count = 0; count < 100; count += 1) { if (await target.evaluate((element) => document.activeElement === element)) return; await page.keyboard.press('Tab'); history.push(await page.evaluate(() => { const active = document.activeElement; return { tag: active?.tagName, label: active?.getAttribute('aria-label') ?? active?.textContent.slice(0, 100) }; })); }
+      12 |   const details = await target.evaluate((element) => ({ tag: element.tagName, label: element.textContent.slice(0, 100), width: innerWidth, heading: document.querySelector('main h1')?.textContent }));
+    > 13 |   throw new Error(`Control was not reachable through sequential keyboard navigation: ${JSON.stringify({ target: details, history })}`);
+         |         ^
+      14 | }
+      15 | async function enter(page: Page, target: Locator) { await keyTo(page, target); await page.keyboard.press('Enter'); }
+      16 | async function type(page: Page, target: Locator, value: string) { await keyTo(page, target); await page.keyboard.press('Control+A'); await page.keyboard.type(value); }
+        at keyTo (/root/code/rust/auth_rust/tests/e2e/product-accessibility.spec.ts:13:9)
+        at enter (/root/code/rust/auth_rust/tests/e2e/product-accessibility.spec.ts:15:53)
+        at /root/code/rust/auth_rust/tests/e2e/product-accessibility.spec.ts:85:216
+
+    Error Context: .local/[OPAQUE]/[OPAQUE]/error-context.md
+
+  1 failed
+    [firefox] › tests/e2e/product-accessibility.spec.ts:83:1 › administrator pages four widths, keyboard confirmation and declared error states 
+  9 passed (2.6m)

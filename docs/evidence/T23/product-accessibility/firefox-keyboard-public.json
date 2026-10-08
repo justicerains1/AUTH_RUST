@@ -1,0 +1,14 @@
+{
+  "browser": "firefox",
+  "measuredAt": "2026-10-08T15:01:28.412Z",
+  "data": {
+    "realRegistration": true,
+    "realMail": true,
+    "explicitConfirmation": true,
+    "resetDoesNotLogin": true,
+    "keyboardOnlyControls": true,
+    "alertContract": true,
+    "liveStatusContract": true
+  },
+  "automatedOnly": true
+}

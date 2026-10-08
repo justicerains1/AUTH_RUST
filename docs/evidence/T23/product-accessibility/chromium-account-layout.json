@@ -1,0 +1,404 @@
+{
+  "browser": "chromium",
+  "measuredAt": "2026-10-08T15:00:46.758Z",
+  "data": {
+    "measured": [
+      {
+        "width": 360,
+        "path": "/me",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 20,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 360,
+        "path": "/me/sessions",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 20,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 360,
+        "path": "/me/grants",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 18,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 360,
+        "path": "/me/password/change",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 21,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 360,
+        "path": "/me/mfa",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 18,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 360,
+        "path": "/me/passkeys",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 21,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 390,
+        "path": "/me",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 20,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 390,
+        "path": "/me/sessions",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 20,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 390,
+        "path": "/me/grants",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 18,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 390,
+        "path": "/me/password/change",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 21,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 390,
+        "path": "/me/mfa",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 18,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 390,
+        "path": "/me/passkeys",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 21,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 768,
+        "path": "/me",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 20,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 768,
+        "path": "/me/sessions",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 20,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 768,
+        "path": "/me/grants",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 18,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 768,
+        "path": "/me/password/change",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 21,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 768,
+        "path": "/me/mfa",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 18,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 768,
+        "path": "/me/passkeys",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 21,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 1440,
+        "path": "/me",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 20,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 1440,
+        "path": "/me/sessions",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 20,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 1440,
+        "path": "/me/grants",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 18,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 1440,
+        "path": "/me/password/change",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 21,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 1440,
+        "path": "/me/mfa",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 18,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 1440,
+        "path": "/me/passkeys",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 21,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      }
+    ],
+    "scaled": [
+      {
+        "width": 390,
+        "path": "/me",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 20,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 390,
+        "path": "/me/sessions",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 20,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 390,
+        "path": "/me/grants",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 18,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 390,
+        "path": "/me/password/change",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 21,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 390,
+        "path": "/me/mfa",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 18,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 390,
+        "path": "/me/passkeys",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 21,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      }
+    ],
+    "textScalingPercent": 200,
+    "actualBrowserZoom": "not yet measured; text scaling is reported separately",
+    "screenReaderSpeech": "not measured"
+  },
+  "automatedOnly": true
+}

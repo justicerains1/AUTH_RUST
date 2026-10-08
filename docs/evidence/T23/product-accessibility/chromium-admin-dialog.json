@@ -1,0 +1,11 @@
+{
+  "browser": "chromium",
+  "measuredAt": "2026-10-08T15:01:11.553Z",
+  "data": {
+    "initialCancel": true,
+    "keyboardTrap": true,
+    "escapeReturnFocus": true,
+    "requestsFromCancel": 0
+  },
+  "automatedOnly": true
+}

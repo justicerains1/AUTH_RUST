@@ -1,4 +1,4 @@
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { afterEach, expect, it, vi } from 'vitest';
@@ -38,6 +38,18 @@ it('a high-risk admin action requires identity confirmation and then a separate 
   expect(screen.getAllByRole('dialog')).toHaveLength(1); await user.type(screen.getByLabelText('当前密码'), 'synthetic test password'); await user.click(screen.getByRole('button', { name: '确认密码' }));
   expect(await screen.findByRole('button', { name: '确认停用客户端' })).toBeTruthy(); expect(action).not.toHaveBeenCalled(); expect(screen.getAllByRole('dialog')).toHaveLength(1);
   await user.click(screen.getByRole('button', { name: '确认停用客户端' })); expect(action).toHaveBeenCalledOnce(); expect(completed).toHaveBeenCalledOnce();
+});
+
+it('canceling an admin action returns keyboard focus to its opener without a mutation', async () => {
+  const action = vi.fn(); const completed = vi.fn();
+  render(<AdminAction label="停用客户端" title="停用该应用？" description="应用凭证检查将失效。" action={action} onComplete={completed} />); const user = userEvent.setup();
+  const opener = screen.getByRole('button', { name: '停用客户端' });
+  await user.tab(); expect(document.activeElement).toBe(opener); await user.keyboard('{Enter}');
+  await waitFor(() => { expect(document.activeElement).toBe(screen.getByRole('button', { name: /^取消$/u })); });
+  await user.keyboard('{Escape}'); await waitFor(() => { expect(screen.queryByRole('dialog')).toBeNull(); expect(document.activeElement).toBe(opener); });
+  await user.keyboard('{Enter}'); await user.click(screen.getByRole('button', { name: /^取消$/u }));
+  await waitFor(() => { expect(screen.queryByRole('dialog')).toBeNull(); expect(document.activeElement).toBe(opener); });
+  expect(action).not.toHaveBeenCalled(); expect(completed).not.toHaveBeenCalled();
 });
 
 it('worker delivery audit targets remain readable after real mail delivery', () => {

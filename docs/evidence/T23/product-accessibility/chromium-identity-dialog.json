@@ -1,0 +1,13 @@
+{
+  "browser": "chromium",
+  "measuredAt": "2026-10-08T15:00:52.664Z",
+  "data": {
+    "initialCancel": true,
+    "tabTrap": true,
+    "escapedToTrigger": true,
+    "realInvalidPasswordAlert": true,
+    "secretCleared": true,
+    "accountPreserved": true
+  },
+  "automatedOnly": true
+}

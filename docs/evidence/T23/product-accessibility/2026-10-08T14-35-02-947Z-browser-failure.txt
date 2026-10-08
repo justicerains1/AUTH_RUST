@@ -1,0 +1,236 @@
+[WebServer] (node:856051) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 10 tests using 1 worker
+(node:856097) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+F(node:856774) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+F(node:858723) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+F(node:859378) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+·F(node:860872) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+F(node:861643) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+·F(node:865096) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+F(node:866060) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+F
+
+  1) [chromium] › tests/e2e/product-accessibility.spec.ts:51:1 › keyboard public registration, explicit email confirmation, login and recovery 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByLabel('新密码')
+    Expected: visible
+    Error: strict mode violation: getByLabel('新密码') resolved to 2 elements:
+        1) <input id="_r_0_" class="input" type="password" name="password" autocomplete="new-password" aria-describedby="reset-password-hint"/> aka getByRole('textbox', { name: '新密码' })
+        2) <button type="button" aria-label="显示新密码" aria-pressed="false" aria-controls="_r_0_" class="password-toggle">显示</button> aka getByRole('button', { name: '显示新密码' })
+
+    Call log:
+      - Expect "toBeVisible" getByLabel('新密码') with timeout 5000ms
+      - waiting for getByLabel('新密码')
+
+
+       7 | const password = () => { const value = process.env.[OPAQUE]; if (!value) throw new Error('Private test password required.'); return value; };
+       8 | async function keyTo(page: Page, target: Locator) {
+    >  9 |   await expect(target).toBeVisible();
+         |                        ^
+      10 |   for (let count = 0; count < 100; count += 1) { if (await target.evaluate((element) => document.activeElement === element)) return; await page.keyboard.press('Tab'); }
+      11 |   throw new Error('Control was not reachable through sequential keyboard navigation.');
+      12 | }
+        at keyTo (/root/code/rust/auth_rust/tests/e2e/product-accessibility.spec.ts:9:24)
+        at type (/root/code/rust/auth_rust/tests/e2e/product-accessibility.spec.ts:14:73)
+        at /root/code/rust/auth_rust/tests/e2e/product-accessibility.spec.ts:61:85
+
+    Error Context: .local/[OPAQUE]/[OPAQUE]/error-context.md
+
+  2) [chromium] › tests/e2e/product-accessibility.spec.ts:66:1 › account pages four widths, 200 percent text scaling and reduced motion 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: true
+
+      38 |     return { overflow: document.documentElement.scrollWidth > innerWidth, namelessFields: fields.filter((element) => !element.labels?.length && !element.getAttribute('aria-label') && !element.getAttribute('aria-labelledby')).length, reduced: matchMedia('([OPAQUE]: reduce)').matches, activeAnimations: Array.from(document.querySelectorAll('*')).filter((element) => { const style = getComputedStyle(element); return style.animationName !== 'none' && style.animationDuration.split(',').some((duration) => parseFloat(duration) > 0) || style.transitionDuration.split(',').some((duration) => parseFloat(duration) > 0); }).length };
+      39 |   });
+    > 40 |   expect(result.overflow).toBe(false); expect(result.namelessFields).toBe(0); expect(result.reduced).toBe(true); expect(result.activeAnimations).toBe(0);
+         |                           ^
+      41 |   const axe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze(); expect(axe.violations.map((violation) => ({ id: violation.id, impact: violation.impact }))).toEqual([]);
+      42 |   return { ...result, axePasses: axe.passes.length, incompleteRules: axe.incomplete.map((rule) => rule.id) };
+      43 | }
+        at semantics (/root/code/rust/auth_rust/tests/e2e/product-accessibility.spec.ts:40:27)
+        at /root/code/rust/auth_rust/tests/e2e/product-accessibility.spec.ts:69:363
+
+    Error Context: .local/[OPAQUE]/[OPAQUE]/error-context.md
+
+  3) [chromium] › tests/e2e/product-accessibility.spec.ts:73:1 › identity dialog keyboard focus, error announcements and cancellation preserve account 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('dialog', { name: '确认当前身份' }).getByLabel('当前密码')
+    Expected: visible
+    Error: strict mode violation: getByRole('dialog', { name: '确认当前身份' }).getByLabel('当前密码') resolved to 2 elements:
+        1) <input value="" id="_r_7_" class="input" type="password" autocomplete="current-password"/> aka getByRole('textbox', { name: '当前密码' })
+        2) <button type="button" aria-label="显示当前密码" aria-pressed="false" aria-controls="_r_7_" class="password-toggle">显示</button> aka getByRole('button', { name: '显示当前密码' })
+
+    Call log:
+      - Expect "toBeVisible" getByRole('dialog', { name: '确认当前身份' }).getByLabel('当前密码') with timeout 5000ms
+      - waiting for getByRole('dialog', { name: '确认当前身份' }).getByLabel('当前密码')
+
+
+       7 | const password = () => { const value = process.env.[OPAQUE]; if (!value) throw new Error('Private test password required.'); return value; };
+       8 | async function keyTo(page: Page, target: Locator) {
+    >  9 |   await expect(target).toBeVisible();
+         |                        ^
+      10 |   for (let count = 0; count < 100; count += 1) { if (await target.evaluate((element) => document.activeElement === element)) return; await page.keyboard.press('Tab'); }
+      11 |   throw new Error('Control was not reachable through sequential keyboard navigation.');
+      12 | }
+        at keyTo (/root/code/rust/auth_rust/tests/e2e/product-accessibility.spec.ts:9:24)
+        at type (/root/code/rust/auth_rust/tests/e2e/product-accessibility.spec.ts:14:73)
+        at /root/code/rust/auth_rust/tests/e2e/product-accessibility.spec.ts:76:9
+
+    Error Context: .local/[OPAQUE]/[OPAQUE]/error-context.md
+
+  4) [chromium] › tests/e2e/product-accessibility.spec.ts:89:1 › administrator high-risk confirmation keyboard trap and cancel never mutates 
+
+    Error: expect(locator).toBeFocused() failed
+
+    Locator:  getByRole('button', { name: '停用客户端', exact: true })
+    Expected: focused
+    Received: inactive
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toBeFocused" getByRole('button', { name: '停用客户端', exact: true }) with timeout 5000ms
+      - waiting for getByRole('button', { name: '停用客户端', exact: true })
+        14 × locator resolved to <button type="button" class="button button--danger ">停用客户端</button>
+           - unexpected value "inactive"
+
+
+      46 |   await enter(page, trigger); const dialog = page.getByRole('dialog'); await expect(dialog).toBeVisible(); const cancel = dialog.getByRole('button', { name: cancelName, exact: true }); await expect(cancel).toBeFocused();
+      47 |   for (let index = 0; index < 8; index += 1) { await page.keyboard.press('Tab'); expect(await dialog.evaluate((element) => element.contains(document.activeElement))).toBe(true); }
+    > 48 |   await page.keyboard.press('Escape'); await expect(dialog).toHaveCount(0); await expect(trigger).toBeFocused();
+         |                                                                                                   ^
+      49 | }
+      50 |
+      51 | test('keyboard public registration, explicit email confirmation, login and recovery', async ({ page }, info) => {
+        at cancelDialog (/root/code/rust/auth_rust/tests/e2e/product-accessibility.spec.ts:48:99)
+        at /root/code/rust/auth_rust/tests/e2e/product-accessibility.spec.ts:93:3
+
+    Error Context: .local/[OPAQUE]/[OPAQUE]/error-context.md
+
+  5) [firefox] › tests/e2e/product-accessibility.spec.ts:51:1 › keyboard public registration, explicit email confirmation, login and recovery 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByLabel('新密码')
+    Expected: visible
+    Error: strict mode violation: getByLabel('新密码') resolved to 2 elements:
+        1) <input id="_r_0_" class="input" type="password" name="password" autocomplete="new-password" aria-describedby="reset-password-hint"/> aka getByRole('textbox', { name: '新密码' })
+        2) <button type="button" aria-label="显示新密码" aria-pressed="false" aria-controls="_r_0_" class="password-toggle">显示</button> aka getByRole('button', { name: '显示新密码' })
+
+    Call log:
+      - Expect "toBeVisible" getByLabel('新密码') with timeout 5000ms
+      - waiting for getByLabel('新密码')
+
+
+       7 | const password = () => { const value = process.env.[OPAQUE]; if (!value) throw new Error('Private test password required.'); return value; };
+       8 | async function keyTo(page: Page, target: Locator) {
+    >  9 |   await expect(target).toBeVisible();
+         |                        ^
+      10 |   for (let count = 0; count < 100; count += 1) { if (await target.evaluate((element) => document.activeElement === element)) return; await page.keyboard.press('Tab'); }
+      11 |   throw new Error('Control was not reachable through sequential keyboard navigation.');
+      12 | }
+        at keyTo (/root/code/rust/auth_rust/tests/e2e/product-accessibility.spec.ts:9:24)
+        at type (/root/code/rust/auth_rust/tests/e2e/product-accessibility.spec.ts:14:73)
+        at /root/code/rust/auth_rust/tests/e2e/product-accessibility.spec.ts:61:85
+
+    Error Context: .local/[OPAQUE]/[OPAQUE]/error-context.md
+
+  6) [firefox] › tests/e2e/product-accessibility.spec.ts:73:1 › identity dialog keyboard focus, error announcements and cancellation preserve account 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('dialog', { name: '确认当前身份' }).getByLabel('当前密码')
+    Expected: visible
+    Error: strict mode violation: getByRole('dialog', { name: '确认当前身份' }).getByLabel('当前密码') resolved to 2 elements:
+        1) <input value="" id="_r_7_" class="input" type="password" autocomplete="current-password"/> aka getByRole('textbox', { name: '当前密码' })
+        2) <button type="button" aria-label="显示当前密码" aria-pressed="false" aria-controls="_r_7_" class="password-toggle">显示</button> aka getByRole('button', { name: '显示当前密码' })
+
+    Call log:
+      - Expect "toBeVisible" getByRole('dialog', { name: '确认当前身份' }).getByLabel('当前密码') with timeout 5000ms
+      - waiting for getByRole('dialog', { name: '确认当前身份' }).getByLabel('当前密码')
+
+
+       7 | const password = () => { const value = process.env.[OPAQUE]; if (!value) throw new Error('Private test password required.'); return value; };
+       8 | async function keyTo(page: Page, target: Locator) {
+    >  9 |   await expect(target).toBeVisible();
+         |                        ^
+      10 |   for (let count = 0; count < 100; count += 1) { if (await target.evaluate((element) => document.activeElement === element)) return; await page.keyboard.press('Tab'); }
+      11 |   throw new Error('Control was not reachable through sequential keyboard navigation.');
+      12 | }
+        at keyTo (/root/code/rust/auth_rust/tests/e2e/product-accessibility.spec.ts:9:24)
+        at type (/root/code/rust/auth_rust/tests/e2e/product-accessibility.spec.ts:14:73)
+        at /root/code/rust/auth_rust/tests/e2e/product-accessibility.spec.ts:76:9
+
+    Error Context: .local/[OPAQUE]/[OPAQUE]/error-context.md
+
+  7) [firefox] › tests/e2e/product-accessibility.spec.ts:81:1 › administrator pages four widths, keyboard confirmation and declared error states 
+
+    Error: Control was not reachable through sequential keyboard navigation.
+
+       9 |   await expect(target).toBeVisible();
+      10 |   for (let count = 0; count < 100; count += 1) { if (await target.evaluate((element) => document.activeElement === element)) return; await page.keyboard.press('Tab'); }
+    > 11 |   throw new Error('Control was not reachable through sequential keyboard navigation.');
+         |         ^
+      12 | }
+      13 | async function enter(page: Page, target: Locator) { await keyTo(page, target); await page.keyboard.press('Enter'); }
+      14 | async function type(page: Page, target: Locator, value: string) { await keyTo(page, target); await page.keyboard.press('Control+A'); await page.keyboard.type(value); }
+        at keyTo (/root/code/rust/auth_rust/tests/e2e/product-accessibility.spec.ts:11:9)
+        at enter (/root/code/rust/auth_rust/tests/e2e/product-accessibility.spec.ts:13:53)
+        at /root/code/rust/auth_rust/tests/e2e/product-accessibility.spec.ts:83:216
+
+    Error Context: .local/[OPAQUE]/[OPAQUE]/error-context.md
+
+  8) [firefox] › tests/e2e/product-accessibility.spec.ts:89:1 › administrator high-risk confirmation keyboard trap and cancel never mutates 
+
+    Error: expect(locator).toBeFocused() failed
+
+    Locator:  getByRole('button', { name: '停用客户端', exact: true })
+    Expected: focused
+    Received: inactive
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toBeFocused" getByRole('button', { name: '停用客户端', exact: true }) with timeout 5000ms
+      - waiting for getByRole('button', { name: '停用客户端', exact: true })
+        14 × locator resolved to <button type="button" class="button button--danger ">停用客户端</button>
+           - unexpected value "inactive"
+
+
+      46 |   await enter(page, trigger); const dialog = page.getByRole('dialog'); await expect(dialog).toBeVisible(); const cancel = dialog.getByRole('button', { name: cancelName, exact: true }); await expect(cancel).toBeFocused();
+      47 |   for (let index = 0; index < 8; index += 1) { await page.keyboard.press('Tab'); expect(await dialog.evaluate((element) => element.contains(document.activeElement))).toBe(true); }
+    > 48 |   await page.keyboard.press('Escape'); await expect(dialog).toHaveCount(0); await expect(trigger).toBeFocused();
+         |                                                                                                   ^
+      49 | }
+      50 |
+      51 | test('keyboard public registration, explicit email confirmation, login and recovery', async ({ page }, info) => {
+        at cancelDialog (/root/code/rust/auth_rust/tests/e2e/product-accessibility.spec.ts:48:99)
+        at /root/code/rust/auth_rust/tests/e2e/product-accessibility.spec.ts:93:3
+
+    Error Context: .local/[OPAQUE]/[OPAQUE]/error-context.md
+
+  8 failed
+    [chromium] › tests/e2e/product-accessibility.spec.ts:51:1 › keyboard public registration, explicit email confirmation, login and recovery 
+    [chromium] › tests/e2e/product-accessibility.spec.ts:66:1 › account pages four widths, 200 percent text scaling and reduced motion 
+    [chromium] › tests/e2e/product-accessibility.spec.ts:73:1 › identity dialog keyboard focus, error announcements and cancellation preserve account 
+    [chromium] › tests/e2e/product-accessibility.spec.ts:89:1 › administrator high-risk confirmation keyboard trap and cancel never mutates 
+    [firefox] › tests/e2e/product-accessibility.spec.ts:51:1 › keyboard public registration, explicit email confirmation, login and recovery 
+    [firefox] › tests/e2e/product-accessibility.spec.ts:73:1 › identity dialog keyboard focus, error announcements and cancellation preserve account 
+    [firefox] › tests/e2e/product-accessibility.spec.ts:81:1 › administrator pages four widths, keyboard confirmation and declared error states 
+    [firefox] › tests/e2e/product-accessibility.spec.ts:89:1 › administrator high-risk confirmation keyboard trap and cancel never mutates 
+  2 passed (2.5m)

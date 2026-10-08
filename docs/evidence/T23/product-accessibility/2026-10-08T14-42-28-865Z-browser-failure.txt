@@ -1,0 +1,56 @@
+[WebServer] (node:883906) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 10 tests using 1 worker
+(node:884003) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+·F(node:889246) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+···(node:890766) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+···F(node:896318) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+·
+
+  1) [chromium] › tests/e2e/product-accessibility.spec.ts:67:1 › account pages four widths, 200 percent text scaling and reduced motion 
+
+    Error: Overflow details: [{"tag":"DIV","class":"","text":"保护你的账号[OPAQUE]@example.test","right":447.78125},{"tag":"H2","class":"","text":"保护你的账号","right":447.78125},{"tag":"P","class":"muted","text":"[OPAQUE]@example.test","right":447.78125}]
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: true
+
+      39 |     return { overflow: document.documentElement.scrollWidth > innerWidth, overflowElements: Array.from(document.querySelectorAll('*')).filter((element) => { const rect = element.getBoundingClientRect(); return rect.right > innerWidth + 1 || rect.left < -1; }).slice(0, 12).map((element) => ({ tag: element.tagName, class: element.className, text: element.textContent?.slice(0, 90), right: element.getBoundingClientRect().right })), namelessFields: fields.filter((element) => !element.labels?.length && !element.getAttribute('aria-label') && !element.getAttribute('aria-labelledby')).length, reduced: matchMedia('([OPAQUE]: reduce)').matches, activeAnimations: Array.from(document.querySelectorAll('*')).filter((element) => { const style = getComputedStyle(element); return style.animationName !== 'none' && style.animationDuration.split(',').some((duration) => parseFloat(duration) > 0) || style.transitionDuration.split(',').some((duration) => parseFloat(duration) > 0); }).length };
+      40 |   });
+    > 41 |   expect(result.overflow, `Overflow details: ${JSON.stringify(result.overflowElements)}`).toBe(false); expect(result.namelessFields).toBe(0); expect(result.reduced).toBe(true); expect(result.activeAnimations).toBe(0);
+         |                                                                                           ^
+      42 |   const axe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze(); expect(axe.violations.map((violation) => ({ id: violation.id, impact: violation.impact }))).toEqual([]);
+      43 |   return { ...result, axePasses: axe.passes.length, incompleteRules: axe.incomplete.map((rule) => rule.id) };
+      44 | }
+        at semantics (/root/code/rust/auth_rust/tests/e2e/product-accessibility.spec.ts:41:91)
+        at /root/code/rust/auth_rust/tests/e2e/product-accessibility.spec.ts:70:363
+
+    Error Context: .local/[OPAQUE]/[OPAQUE]/error-context.md
+
+  2) [firefox] › tests/e2e/product-accessibility.spec.ts:82:1 › administrator pages four widths, keyboard confirmation and declared error states 
+
+    Error: Control was not reachable through sequential keyboard navigation: {"tag":"BUTTON","label":"下一页","dialog":false}
+
+      10 |   for (let count = 0; count < 100; count += 1) { if (await target.evaluate((element) => document.activeElement === element)) return; await page.keyboard.press('Tab'); }
+      11 |   const focus = await page.evaluate(() => { const active = document.activeElement; return { tag: active?.tagName, label: active?.getAttribute('aria-label') ?? active?.textContent?.slice(0, 100), dialog: document.querySelector('[role=dialog]') !== null }; });
+    > 12 |   throw new Error(`Control was not reachable through sequential keyboard navigation: ${JSON.stringify(focus)}`);
+         |         ^
+      13 | }
+      14 | async function enter(page: Page, target: Locator) { await keyTo(page, target); await page.keyboard.press('Enter'); }
+      15 | async function type(page: Page, target: Locator, value: string) { await keyTo(page, target); await page.keyboard.press('Control+A'); await page.keyboard.type(value); }
+        at keyTo (/root/code/rust/auth_rust/tests/e2e/product-accessibility.spec.ts:12:9)
+        at enter (/root/code/rust/auth_rust/tests/e2e/product-accessibility.spec.ts:14:53)
+        at /root/code/rust/auth_rust/tests/e2e/product-accessibility.spec.ts:84:216
+
+    Error Context: .local/[OPAQUE]/[OPAQUE]/error-context.md
+
+  2 failed
+    [chromium] › tests/e2e/product-accessibility.spec.ts:67:1 › account pages four widths, 200 percent text scaling and reduced motion 
+    [firefox] › tests/e2e/product-accessibility.spec.ts:82:1 › administrator pages four widths, keyboard confirmation and declared error states 
+  8 passed (2.6m)

@@ -1,0 +1,33 @@
+{
+  "measuredRun": "2026-10-08T14-59-38-709Z.json",
+  "source": [
+    {
+      "path": "apps/identity-web/src/pages/admin/AdminShared.tsx",
+      "sha256": "83d11619fee27a7d22aacd55309a631aa7ff050437f2fc9e1b37dfa84d9fd81f"
+    },
+    {
+      "path": "apps/identity-web/src/pages/admin/admin.test.tsx",
+      "sha256": "15e191ff50ef6e2e0ac3af9b85420ad239bb6c37f857d1e112907d29eb5016f9"
+    },
+    {
+      "path": "apps/identity-web/src/styles.css",
+      "sha256": "0773c0848055355c9904bb9f1e59285b6a0d58d7e2183d26e6a1538f6f87d015"
+    },
+    {
+      "path": "crates/identity-server/tests/t23_accessibility.rs",
+      "sha256": "0b8baf35e042195ed0ede260292bbde4b678c64d756f3544c6ffaaef9b260bd7"
+    },
+    {
+      "path": "tests/accessibility/product.mjs",
+      "sha256": "bdee426f9284b4da9d6a2ccb2ca1c3d0caa044d3f4a2fd1c19aac93aae054fd0"
+    },
+    {
+      "path": "tests/e2e/product-accessibility.config.ts",
+      "sha256": "cc1111ef813b90a6d8936a4376cc659bbd2d37f96a0d1b2cd71851d332c7d6af"
+    },
+    {
+      "path": "tests/e2e/product-accessibility.spec.ts",
+      "sha256": "875d3644767c6a081f4b2fd18071f2b52422b5294ed34df873efe7091340dad0"
+    }
+  ]
+}

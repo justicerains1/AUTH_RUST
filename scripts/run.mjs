@@ -109,6 +109,9 @@ export async function runCommand(command, args = []) {
       const suite = resolve(ROOT, 'tests', 'accessibility', 'T16.mjs');
       await requireFile(suite, '缺少 T16 浏览器可访问性套件；不能作为验收通过。');
       await runProcess(process.execPath, [suite], { cwd: ROOT });
+      const product = resolve(ROOT, 'tests', 'accessibility', 'product.mjs');
+      await requireFile(product, '缺少产品页面真实浏览器可访问性套件；不能作为验收通过。');
+      await runProcess(process.execPath, [product], { cwd: ROOT });
       return;
     }
     case 'dev:secrets':

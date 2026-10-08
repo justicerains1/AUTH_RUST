@@ -202,6 +202,7 @@ h3 { margin: 0 0 16px; line-height: 1.25; }
 .account-navigation a[aria-current] { color: var(--accent); background: var(--accent-wash); font-weight: 650; }
 .account-content { display: grid; gap: 24px; min-width: 0; }
 .security-header { display: flex; justify-content: space-between; align-items: start; gap: 24px; margin-bottom: 24px; }
+.security-header > div { min-width: 0; overflow-wrap: anywhere; }
 .security-header h2 { margin-bottom: 12px; }
 .security-header p { margin-bottom: 0; }
 .badge, .current-device { display: inline-block; color: var(--success); background: #edf6ef; padding: 5px 10px; border: 1px solid #b7d2c0; border-radius: var(--radius-control); font-size: .75rem; font-weight: 600; }

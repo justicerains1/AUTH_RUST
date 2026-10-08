@@ -1,0 +1,275 @@
+{
+  "browser": "firefox",
+  "measuredAt": "2026-10-08T15:02:39.713Z",
+  "data": {
+    "measured": [
+      {
+        "width": 360,
+        "panel": "用户",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 24,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 360,
+        "panel": "应用客户端",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 23,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 360,
+        "panel": "管理员",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 23,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 360,
+        "panel": "安全审计",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 23,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 390,
+        "panel": "用户",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 24,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 390,
+        "panel": "应用客户端",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 23,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 390,
+        "panel": "管理员",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 23,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 390,
+        "panel": "安全审计",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 23,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 768,
+        "panel": "用户",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 24,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 768,
+        "panel": "应用客户端",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 23,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 768,
+        "panel": "管理员",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 23,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 768,
+        "panel": "安全审计",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 23,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 1440,
+        "panel": "用户",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 24,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 1440,
+        "panel": "应用客户端",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 23,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 1440,
+        "panel": "管理员",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 23,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 1440,
+        "panel": "安全审计",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 23,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      }
+    ],
+    "scaled": [
+      {
+        "width": 390,
+        "panel": "用户",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 24,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 390,
+        "panel": "应用客户端",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 23,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 390,
+        "panel": "管理员",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 23,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      },
+      {
+        "width": 390,
+        "panel": "安全审计",
+        "overflow": false,
+        "overflowElements": [],
+        "namelessFields": 0,
+        "reduced": true,
+        "activeAnimations": 0,
+        "axePasses": 23,
+        "incompleteRules": [
+          "color-contrast"
+        ]
+      }
+    ],
+    "textScalingPercent": 200,
+    "realAdminRecoveryLogin": true,
+    "keyboardNavigation": true,
+    "clientValidationLiveAlert": true
+  },
+  "automatedOnly": true
+}

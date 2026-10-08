@@ -1,0 +1,20 @@
+   Compiling identity-core v0.1.0 (/root/code/rust/auth_rust/crates/identity-core)
+   Compiling identity-store v0.1.0 (/root/code/rust/auth_rust/crates/identity-store)
+   Compiling demo-bff v0.1.0 (/root/code/rust/auth_rust/crates/demo-bff)
+   Compiling identity-server v0.1.0 (/root/code/rust/auth_rust/crates/identity-server)
+   Compiling identity-worker v0.1.0 (/root/code/rust/auth_rust/crates/identity-worker)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 14.92s
+     Running tests/t23_accessibility.rs (target/debug/deps/[OPAQUE])
+
+running 1 test
+Error: InvalidTestSchema
+test [OPAQUE] ... FAILED
+
+failures:
+
+failures:
+    [OPAQUE]
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+error: test failed, to rerun pass `-p identity-server --test t23_accessibility`

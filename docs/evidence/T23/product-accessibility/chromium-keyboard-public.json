@@ -1,0 +1,14 @@
+{
+  "browser": "chromium",
+  "measuredAt": "2026-10-08T15:00:08.782Z",
+  "data": {
+    "realRegistration": true,
+    "realMail": true,
+    "explicitConfirmation": true,
+    "resetDoesNotLogin": true,
+    "keyboardOnlyControls": true,
+    "alertContract": true,
+    "liveStatusContract": true
+  },
+  "automatedOnly": true
+}

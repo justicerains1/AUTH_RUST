@@ -1,0 +1,11 @@
+{
+  "browser": "firefox",
+  "measuredAt": "2026-10-08T15:02:46.089Z",
+  "data": {
+    "initialCancel": true,
+    "keyboardTrap": true,
+    "escapeReturnFocus": true,
+    "requestsFromCancel": 0
+  },
+  "automatedOnly": true
+}
