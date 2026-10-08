@@ -1,7 +1,7 @@
-T20 real cross-module security integration 2026-10-08T12:54:45.935Z
+T20 real cross-module security integration 2026-10-08T13:08:55.843Z
 PASS T20 TH18/TH20 refresh authenticated before client-secret rotation cannot mint credentials after rotation commits
 PASS T20 TH08/TH18 a valid issued authorization code cannot exchange after its user is disabled
 PASS T20 TH03/TH10 token API rejects duplicated critical fields and never enables attacker browser CORS
 PASS T20 TH21 RP confirmation rechecks registration; removed logout callback cannot redirect or complete revocation
-Completed 2026-10-08T12:54:51.935Z
+Completed 2026-10-08T13:09:01.651Z
 Exit code 0

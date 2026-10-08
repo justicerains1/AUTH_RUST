@@ -1,6 +1,6 @@
 # E01～E28 实际测试映射与发布边界
 
-2026-10-08 UTC。逐项对照[acceptance.md](../../../acceptance.md)第5节，并只读检查当前Rust/Node/Playwright实际断言。映射依据当前源文件，第三轮完整测试以`0f190e6`干净起点运行，2026-10-08T13:09:24Z十一阶段全0；本报告仍不修改E表或任务放行状态，三个下述组合缺项正在补测。完整结果须以根生成的带时间[全量报告目录](../full-test)为准。首轮及第二轮失败报告继续保留，局部通过不能覆盖原失败。
+2026-10-08 UTC。逐项对照[acceptance.md](../../../acceptance.md)第5节，并核对当前Rust/Node/Playwright实际断言。第三轮完整测试以`0f190e6`干净起点运行，2026-10-08T13:09:24Z十一阶段全0；随后补齐E08/E12/E16组合断言，三模块局部真实复测均0，包含新增测试的最终全面回归仍待根执行。本报告不修改E表或任务放行状态。完整结果须以根生成的带时间[全量报告目录](../full-test)为准。首轮及第二轮失败报告继续保留，局部通过不能覆盖原失败。
 
 `npm run test:integration -- --task=Txx`指向`tests/integration/Txx.mjs`，驱动下列真实Rust测试；`npm run test:e2e -- --task=Txx`使用同runner的`--e2e`分支及对应Playwright文件。完整manifest目前为18个integration任务、11个E2E任务，见[suite-manifest.mjs](../../../scripts/suite-manifest.mjs)。多数Rust文件只有一个顶层测试，但该测试包含多项明确HTTP/DB断言；不能按顶层案例数推定28个发布场景全覆盖。
 
@@ -15,15 +15,15 @@
 | E05 TOTP密码后无普通会话 | [T08 mfa](../../../crates/identity-server/tests/t08_mfa.rs) `cases`真实enroll后密码返回mfa_required、/me401；独立RFC HMAC生成TOTP后/me200；[T08浏览器](../../../tests/e2e/T08.spec.ts)实际启用、第二因素及恢复码登录。 | 本地同用户真实TOTP启用/密码有限挑战/因子后session直接验证。 |
 | E06 同时间步TOTP至多一次 | [T08 mfa](../../../crates/identity-server/tests/t08_mfa.rs) `concurrent_verify`与`cases`：10个同步屏障HTTP请求成功数=1，同step在fresh challenge再次拒绝。 | 使用可控时钟、未清last_step；只清本次随机预算键准备独立场景，不把预算清理当限流证据。 |
 | E07 同恢复码并发至多一次 | [T08 mfa](../../../crates/identity-server/tests/t08_mfa.rs) `concurrent_verify`：同regen恢复码10个同步HTTP成功数=1，原恢复集合无可用行。 | 本地单次恢复码消费直接验证；不会把串行两次请求当竞争。 |
-| E08 邮箱重置MFA账号、新密码/因子保留/全退出 | [T07 passwords](../../../crates/identity-server/tests/t07_passwords.rs) `mfa_preserved`：真实reset邮件与确认后TOTP/Passkey行保留、新密码mfa_required、/me401；同文件`cases`另一个非MFA用户验证两会话/派生grant撤销与新密码成功；T08另一个用户真实TOTP启用/使用。 | **局部证据，组合仍缺。** `mfa_preserved`因素是直接插入的合成密文kid `T07_FIXTURE`及`credential_data={}`，不证明reset后原TOTP/Passkey仍可使用。尚须同一真实启用MFA账号已有多有效会话/OAuth，邮件reset后全部失效，再以新密码+原因素实际完成登录。 |
+| E08 邮箱重置MFA账号、新密码/因子保留/全退出 | [T07 passwords](../../../crates/identity-server/tests/t07_passwords.rs)新增 `t07_real_mfa_reset`/`mfa_reset_case`：同一账号实际启用TOTP、两有效会话及真实code exchange凭证，真实Mailpit reset后会话/授权/access/refresh失效，因素原密文/身份不变；新密码只有限MFA挑战，原TOTP新时间步真实登录。 | **新增同账号本地组合已实际0**，见[T07当前记录](../T07/integration.txt)13:33:43～13:34:40 UTC。旧`mfa_preserved`合成Passkey仍只证明记录保留；此新增组合不冒实体Passkeyreset恢复。生产邮件、实体设备与新增测试最终全套另待。 |
 | E09 实体Passkey注册/登录UV强认证 | [T09浏览器](../../../tests/e2e/T09.spec.ts) `virtual CTAP2...`：CDP resident/UV认证器真实注册/签名、discoverable登录/me、Passkey重新认证和密码变更；[T09 policy](../../../crates/identity-server/tests/t09_passkeys.rs) `policy_cases`归属/数量边界。 | **虚拟认证器本地验证，实体仍缺。** 真实手机/桌面凭证、平台UV/取消/回退及至少一组实体设备待T09-PK-04/T23。 |
 | E10 错origin/无UV/重放challenge拒绝 | [T09浏览器](../../../tests/e2e/T09.spec.ts) `signed assertion...`：捕获尚未消费的真实proof，错origin/challenge/signature401/403，原proof200，再重放非200；新proof清UV后用真实私钥重新签名仍401/403，原UV proof随后200。 | 对虚拟认证器的真实签名负向直接验证，避免已消费challenge或坏签名掩盖UV断言。未逐个负向额外查询session表；拒绝状态和之后原proof成功是当前证据边界。 |
 | E11 A登录→B复用SSO/首次同意 | [T13浏览器](../../../tests/e2e/T13.spec.ts) `A/B use...`及`appLogin`：A需密码、B不再输入密码且仍操作首次同意，两个独立BFF Cookie，/bff/session真实成功。 | 本地真实双BFF/同意直接验证，token/secret不在browser storage/响应；正式生产A/B回调与域名仍需冒烟。 |
-| E12 回调/verifier/client/nonce攻击拒绝 | [T10 oauth](../../../crates/identity-server/tests/t10_oauth.rs) `cases`拒prefix/wildcard/非法callback、重复参数与PKCE降级；[T11 oidc](../../../crates/identity-server/tests/t11_oidc.rs) `cases`错verifier/client/redirect拒；[T13浏览器](../../../tests/e2e/T13.spec.ts)篡改callback state后/bff/session401；[T11互操作](../../../tests/interop/T11.mjs)成熟库expectedNonce与实际nonce正向匹配。 | **大部分负向直接验证，错误nonce负向仍缺。** 当前未找到实际交换/验证时传错expectedNonce或改变签名有效nonce而明确拒绝的断言；BFF实现调用成熟库validate_token(nonce)不是已运行负向证据。不得据正向匹配写整个E12通过。 |
+| E12 回调/verifier/client/nonce攻击拒绝 | [T10 oauth](../../../crates/identity-server/tests/t10_oauth.rs) `cases`拒prefix/wildcard/非法callback、重复参数与PKCE降级；[T11 oidc](../../../crates/identity-server/tests/t11_oidc.rs) `cases`错verifier/client/redirect拒；[T13浏览器](../../../tests/e2e/T13.spec.ts)篡改callback state后/bff/session401；[T11互操作](../../../tests/interop/T11.mjs)新增同一真实RS256 token响应错误expectedNonce处理，明确JWT_CLAIM_COMPARISON且claim=nonce，正确nonce同响应成功并签名验证。 | **缺失nonce负向已补，T11实际0**，见[当前记录](../T11/integration.txt)13:33:15～13:33:27 UTC。同响应仅内存clone重处理，没有重用已消费code或篡改JWT造成签名错误假阳性；不冒OpenID官方认证。新增测试最终全套另待。 |
 | E13 code并发仅一成功 | [T11 oidc](../../../crates/identity-server/tests/t11_oidc.rs) `cases`：同步屏障十个真实Basic code exchange只有一个200，数据库对应token family只生成一次。 | 本地真实协议/DB并发直接验证；授权码签名失败另验证未消费/无新凭证。 |
 | E14 重放旧refresh提交家族撤销 | [T12 revocation](../../../crates/identity-server/tests/t12_revocation.rs) `cases`：真refresh轮换、新旧access原本可查；旧refresh重放400后两代active=false及持久audit；同步双refresh仅一次轮换且输方使family失效。 | 本地HTTP/权威DB直接验证；无grace window，签名失败单独检查消费回滚。 |
 | E15 全设备退出后A/B下次检查拒 | [T13浏览器](../../../tests/e2e/T13.spec.ts) `A/B use...`：同一用户A/B成功后真实点击IdP全设备退出，A/B均显示登录入口；[T12 revocation](../../../crates/identity-server/tests/t12_revocation.rs)真实logout后旧token active=false。 | 本地真实双应用退出直接验证，含权威检查；不承诺回滚已通过检查的远端业务事务。 |
-| E16 管理员禁用后旧凭证/refresh拒 | [T14 admin](../../../crates/identity-server/tests/t14_admin.rs) `cases`：真admin PATCH禁用victim，旧/me401；[T11 oidc](../../../crates/identity-server/tests/t11_oidc.rs)直接DB禁用后旧userinfo401；[T20 security](../../../crates/identity-server/tests/t20_security.rs)直接DB禁用后已发code不能交换。 | **局部证据，组合仍缺。** 当前未找到同一真实admin禁用动作之后已有access introspection=false、旧refresh invalid_grant且不新增token的协议断言。实现/仓储按status检查不能替代该验收；生产禁用冒烟另待。 |
+| E16 管理员禁用后旧凭证/refresh拒 | [T14 admin](../../../crates/identity-server/tests/t14_admin.rs)新增 `admin_disable_revokes_oauth`：同账号真登录/code exchange/refresh200、当前access+refresh active=true；强认证admin PATCH禁用后/me401、两token精确inactive、当前refresh invalid_grant且无新字段/记录。 | **新增同账号本地联合验收已实际0**，见[T14当前记录](../T14/integration.txt)13:35:27～13:35:49 UTC及[首次失败/复测](e16-combined-verification.md)。禁用使用实际API，非SQL；使用禁用前未消费的currentrefresh防重放假阳性。正式生产禁用冒烟与新增测试最终全套另待。 |
 | E17 普通用户admin403/无敏感数据 | [T14 admin](../../../crates/identity-server/tests/t14_admin.rs) `cases`逐管理组拒普通/未绑因素admin；[T19浏览器](../../../tests/e2e/T19.spec.ts) `ordinary users...`：后台拒绝文案及真实fetch admin/users403。 | 本地HTTP/真实UI直接验证，UI隐藏不是权限证据；当前拒绝断言主要为status/固定错误形状，不逐字节穷尽所有敏感字段。 |
 | E18 状态服务故障BFF503无旁路 | [T12 revocation](../../../crates/identity-server/tests/t12_revocation.rs)及T12 runner实际PG/Redis停机，introspection503；[T13浏览器](../../../tests/e2e/T13.spec.ts) `identity-state failure...`实际停Redis，已有BFF Cookie请求/bff/session503，恢复后200。 | 本地真依赖停机直接验证，不把closed pool边界冒容器故障；生产HA切换不是该证明。 |
 | E19 SMTP停机重试不丢动作 | [T05 accounts](../../../crates/identity-server/tests/t05_accounts.rs) `cases`实际stop Mailpit，register仍202，outbox pending密文/due保留、batch.retried=1，start后due timestamp准备实际送达；[T20故障记录](../T20/fault-replay-current.txt)。 | 本地SMTP真实停机/恢复直接验证，动作依旧通过真实Worker；生产SMTP/DNS送达与告警未验。 |
@@ -37,10 +37,10 @@
 | E27 最后管理员删除/禁用拒绝 | [T14 admin](../../../crates/identity-server/tests/t14_admin.rs) `cases`最后成员DELETE/禁用拒绝及因子行保留；两真实合格管理员同步删因素仅1成功、1受保护，DB available=1；真实双bootstrap CLI仅一创建。 | 本地API/并发保护直接验证，保留可管理状态；不以手改strong_at冒因素成功。 |
 | E28 弱生产配置/seed拒绝 | [T01 runner](../../../tests/integration/T01.mjs)真production --check-config拒HTTP issuer/错RP/弱Cookie/明文SMTP/DEV_SEED/DEBUG_ROUTES/坏key等；[T03 runner](../../../tests/integration/T03.mjs)真测试目标production/错库/override在连接前非零；[seed入口](../../../tests/load/run.mjs)及工具测试只允许identity_test；[最终镜像](final-artifacts.md)实际owner-only metrics配置/0644拒绝与非root只读。 | 本地production模式/安全目标拒绝直接验证；正式生产部署实际issuer/RP/secret/debug/seed/开放端口仍需现场检查。T03目标拒绝不是已经向生产库运行seed的证明。 |
 
-## 不应合并成“通过”的关键缺项
+## 新补组合与尚待验收
 
-E08、E12的错误nonce、E16禁用后OAuth协议组合是当前可独立补的自动化验收缺项，即使所有现有套件完成仍不能说这些完整场景已经验证。它们来自具体断言覆盖检查，不是发现认证旁路的源码结论。应新增同对象/同账号关键组合后真实执行并留证，不能仅修改此矩阵或调用次数。
+原映射发现的E08、E12错误nonce、E16禁用后OAuth组合自动化缺项已按上述同对象/同账号断言补齐，T07/T11/T14真实局部复测均0。原缺项不是认证旁路的源码结论；新增测试没有更改生产实现或放宽校验。第三轮完整结果早于这些新增测试，不能代替包含新增案例的最终全套回归。
 
 E09、E20、E21完整签名分发、E22人工读屏、E23实体手机、E28现场生产配置及T23生产SMTP/部署/24小时高峰条件保留为外部真实验收。虚拟认证器、模拟手机宽度、合成运维数据、文件目录迁移或成熟库正向互操作各有实际价值，但不能替代上述边界。
 
-本轮只读映射没有启动测试或修改源文件；第三轮完整结果到达后补它的准确提交/报告及执行结论，仍按原发布关卡处理必要场景未完成。
+矩阵本身仅记录源码断言与真实执行；必要组合补测另有独立授权及证据。新增测试最终提交/完整结果由根记录，仍按原发布关卡处理外部必要场景未完成。

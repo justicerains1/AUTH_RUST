@@ -1,4 +1,4 @@
-T17 real public-flow validation 2026-10-08T12:52:48.203Z
+T17 real public-flow validation 2026-10-08T13:06:57.093Z
 Playwright:6 passed/0 failed; actual public flows and accessibility.
-Completed 2026-10-08T12:53:47.535Z
+Completed 2026-10-08T13:07:57.686Z
 Exit code 0
