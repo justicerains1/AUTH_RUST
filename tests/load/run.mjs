@@ -8,16 +8,18 @@ import { localEnvironment, validateDatabaseTarget } from '../../scripts/database
 
 const root = resolve(import.meta.dirname, '../..');
 const args = process.argv.slice(2);
-assert.ok(args.length === 1 && /^(?:--scenario=(?:introspection|account|password|mixed)|--seed-only|--probe-only)$/u.test(args[0]), 'Usage: node tests/load/run.mjs --scenario=introspection|account|password|mixed or --seed-only or --probe-only');
+assert.ok(args.length === 1 && /^(?:--scenario=(?:introspection|account|password|mixed)|--seed-only|--probe-only|--capacity-probe)$/u.test(args[0]), 'Usage: node tests/load/run.mjs --scenario=introspection|account|password|mixed or --seed-only or --probe-only or --capacity-probe');
 const scenario = args[0].startsWith('--scenario=') ? args[0].slice(11) : undefined;
 const probeOnly = args[0] === '--probe-only';
+const capacity = args[0] === '--capacity-probe';
+const usesGenerator = scenario !== undefined || capacity;
 const started = new Date(); const runId = started.toISOString().replaceAll(':', '-').replaceAll('.', '-');
 const privateDirectory = resolve(root, '.local', `t21-load-${randomBytes(8).toString('hex')}`);
 const evidence = resolve(root, 'docs/evidence/T21');
 const k6 = resolve(root, '.local/t21-tools/k6-v2.3.0-linux-amd64/k6');
 const k6Archive = resolve(root, '.local/t21-tools/k6-v2.3.0-linux-amd64.tar.gz');
 const expectedArchiveSha256 = '39c3117b6af817592dcd0ce4242105c0a7af10948c2a425306f0be8f7a8a8ab1';
-const report = { kind: 'T21 load independent submodule, not overall acceptance', scenario: scenario ?? (probeOnly ? 'sql-probe' : 'seed-only'), started: started.toISOString(), environment: { os: `${platform()} ${release()}`, cpuModel: cpus()[0]?.model, logicalCpus: cpus().length, memoryGiB: totalmem() / 1024 ** 3, referenceMatches: false, note: 'Same-host WSL2 Ryzen7700X16logical15.2GiB differs from Linux8vCPU16GiBSSD reference; load generator shares CPU with API/PG/Redis.' }, warmupSeconds: scenario ? 120 : 0, measurementSeconds: scenario ? 900 : 0, resources: [], errors: [] };
+const report = { kind: 'T21 load independent submodule, not overall acceptance', scenario: scenario ?? (capacity ? 'capacity' : probeOnly ? 'sql-probe' : 'seed-only'), started: started.toISOString(), environment: { os: `${platform()} ${release()}`, cpuModel: cpus()[0]?.model, logicalCpus: cpus().length, memoryGiB: totalmem() / 1024 ** 3, referenceMatches: false, note: 'Same-host WSL2 Ryzen7700X16logical15.2GiB differs from Linux8vCPU16GiBSSD reference; load generator shares CPU with API/PG/Redis.' }, warmupSeconds: scenario ? 120 : capacity ? 240 : 0, measurementSeconds: scenario ? 900 : capacity ? 240 : 0, resources: [], errors: [] };
 let harness; let monitor; let k6Process;
 function capture(command, params, env = process.env, stdin = 'ignore') { const child = spawn(command, params, { cwd: root, env, shell: false, stdio: [stdin, 'pipe', 'pipe'] }); let output = ''; child.stdout.setEncoding('utf8'); child.stderr.setEncoding('utf8'); child.stdout.on('data', (part) => { output += part; }); child.stderr.on('data', (part) => { output += part; }); const completion = new Promise((done) => { child.on('error', () => done({code:127,output:'Required load tool unavailable.'})); child.on('close', (code) => done({ code, output })); }); return { child, completion, output: () => output }; }
 function fail(message) { report.errors.push(message); }
@@ -41,7 +43,7 @@ async function main() {
   const local = await localEnvironment(root); const database = new URL(supplied ?? local.DATABASE_URL); if (!supplied) { database.hostname = '127.0.0.1'; database.pathname = '/identity_test'; database.search = ''; }
   validateDatabaseTarget('test', database.toString(), { testOnly: true });
   assert.ok(['localhost', '127.0.0.1', '[::1]'].includes(database.hostname), 'Load fixture refuses non-loopback database hosts.');
-  if (scenario !== undefined) assert.equal(createHash('sha256').update(await readFile(k6Archive)).digest('hex'), expectedArchiveSha256, 'Official exact k6 archive checksum mismatch.');
+  if (usesGenerator) assert.equal(createHash('sha256').update(await readFile(k6Archive)).digest('hex'), expectedArchiveSha256, 'Official exact k6 archive checksum mismatch.');
   await mkdir(privateDirectory, { recursive: true, mode: 0o700 }); const keys = resolve(privateDirectory, 'keys.json'); await writeFile(keys, JSON.stringify({ 't21-fixture': randomBytes(32).toString('base64') }), { mode: 0o600 });
   const redis = new URL(local.REDIS_URL); redis.hostname = '127.0.0.1';
   const env = { ...process.env, APP_ENV: 'test', DATABASE_URL: database.toString(), TEST_DATABASE_URL: database.toString(), REDIS_URL: redis.toString(), T21_LOAD_HARNESS: '1', T21_PRIVATE_DIRECTORY: privateDirectory, T21_PASSWORD: `T21 real password ${randomBytes(24).toString('hex')}`, T21_CONTROL_KEY: randomBytes(24).toString('hex'), T21_SIGNING_KEY_FILE: resolve(root, '.local/signing.pem'), T21_ENCRYPTION_KEYS_FILE: keys, T21_ACTIVE_ENCRYPTION_KID: 't21-fixture' };
@@ -58,21 +60,23 @@ async function main() {
   for (const path of ['tests/load/run.mjs', 'tests/load/scenarios.js', 'tests/load/query-evidence.rs', 'crates/identity-server/tests/t21_load.rs', 'crates/identity-store/src/sessions.rs', 'crates/identity-store/src/tokens.rs', 'crates/identity-store/src/security.rs', 'crates/identity-store/src/repository.rs', 'Cargo.lock']) report.sourceSha256[path] = createHash('sha256').update(await readFile(resolve(root, path))).digest('hex');
   try { const pid = (await readFile(`/proc/${harness.child.pid}/task/${harness.child.pid}/children`, 'utf8')).trim().split(' ')[0]; report.apiExecutableSha256 = createHash('sha256').update(await readFile(`/proc/${pid}/exe`)).digest('hex'); } catch { fail('API binary fingerprint unavailable.'); }
   await stats(env);
-  if (scenario !== undefined) {
+  if (usesGenerator) {
     const version = capture(k6, ['version']); const verified = await version.completion; assert.equal(verified.code, 0); assert.match(verified.output, /k6 v2\.3\.0/u); report.k6 = verified.output.trim();
     report.k6ExecutableSha256 = createHash('sha256').update(await readFile(k6)).digest('hex');
     const summary = resolve(privateDirectory, 'summary.json');
-    k6Process = capture(k6, ['run', '--quiet', '--no-color', resolve(root, 'tests/load/scenarios.js')], { ...env, T21_CREDENTIALS: resolve(privateDirectory, 'credentials.json'), T21_SCENARIO: scenario, T21_SUMMARY: summary });
+    const loadScript = capacity ? 'tests/load/capacity.js' : 'tests/load/scenarios.js';
+    report.sourceSha256[loadScript] = createHash('sha256').update(await readFile(resolve(root, loadScript))).digest('hex');
+    k6Process = capture(k6, ['run', '--quiet', '--no-color', resolve(root, loadScript)], { ...env, T21_CREDENTIALS: resolve(privateDirectory, 'credentials.json'), T21_SCENARIO: scenario ?? 'capacity', T21_SUMMARY: summary });
     monitor = setInterval(() => { void stats(env); }, 15000);
     const result = await k6Process.completion;
     report.k6ExitCode = result.code; report.summary = JSON.parse(await readFile(summary, 'utf8'));
-    report.actualMeasurementRequests = report.summary.metrics.measurement_requests?.values?.count ?? 0;
-    report.actualAverageMeasurementRps = report.actualMeasurementRequests / 900;
+    report.actualMeasurementRequests = report.summary.metrics[capacity ? 'capacity_requests' : 'measurement_requests']?.values?.count ?? 0;
+    report.actualAverageMeasurementRps = report.actualMeasurementRequests / report.measurementSeconds;
     if (result.code !== 0) fail(result.code === 105 ? 'Interrupted before completing the required measurement; not a full performance result.' : 'k6 measurements did not meet all documented thresholds or could not sustain configured rate.');
     const refreshFailures = report.resources.some((sample) => (sample.service?.refresh_failures ?? 0) !== 0);
     if (refreshFailures) fail('Controlled token pool renewal failed; validity cannot be assumed.');
     await stats(env);
-    const safe = result.output.replaceAll(env.T21_PASSWORD, '[PASSWORD]').replaceAll(env.T21_CONTROL_KEY, '[CONTROL_KEY]').replace(/\b[A-Za-z0-9_-]{43,}\b/gu, '[OPAQUE]').replace(/(token=)[^\s&"']+/gu, '$1[REDACTED]'); await writeFile(resolve(evidence, `load-${scenario}-${runId}-output.txt`), safe);
+    const safe = result.output.replaceAll(env.T21_PASSWORD, '[PASSWORD]').replaceAll(env.T21_CONTROL_KEY, '[CONTROL_KEY]').replace(/\b[A-Za-z0-9_-]{43,}\b/gu, '[OPAQUE]').replace(/(token=)[^\s&"']+/gu, '$1[REDACTED]'); await writeFile(resolve(evidence, `load-${report.scenario}-${runId}-output.txt`), safe);
   }
 }
 await mkdir(evidence, { recursive: true });

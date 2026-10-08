@@ -31,7 +31,8 @@
     "verify:docs": "node scripts/run.mjs verify:docs",
     "verify:openapi": "node scripts/run.mjs verify:openapi",
     "test:tooling": "node scripts/run.mjs test:tooling",
-    "dev:clients": "node scripts/demo-clients.mjs"
+    "dev:clients": "node scripts/demo-clients.mjs",
+    "test:capacity": "node tests/load/run.mjs --capacity-probe"
   },
   "devDependencies": {
     "@apidevtools/swagger-parser": "13.1.0",
