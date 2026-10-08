@@ -1,0 +1,31 @@
+# T22 单机发布与回滚操作稿
+
+这里是可审查的部署制品与步骤，当前没有真实生产域名、DNS/主机、SMTP/独立备份环境，T20/T21未放行时不能据此开始生产发布或将T22标通过。单机维护存在中断，不声明高可用。
+
+## 制品与配置
+
+`infra/Dockerfile.prod`构建locked Rust release，runtime Debian12.15+OpenSSL3.0.22/CA/curl，应用UID10001；`infra/Dockerfile.edge.prod`构建三React应用并由Caddy2.11.7服务，UID10001监听容器8080/8443。`infra/compose.prod.yaml`仅edge发布主机80/443，PG/Redis无公开端口。应用read_only/cap_drop/资源与PID限制，tmpfs只/tmp；Caddy证书状态仅/data,/config持久卷。
+
+将镜像推送/验证后填写`infra/production.env.example`对应的不可变发布digest，不使用浮动latest。实际机密配置不入Git；放`.local/production/identity.env`、`demo-a.env`、`demo-b.env`及`secrets/`。identity.env明确APP_ENV=production、固定HTTPS ISSUER、匹配RP_ID、PG/Redis URL、current签名kid/key文件、AEAD版本文件/activekid、SMTP required及用户名/秘密文件、TRUSTED_PROXY_CIDRS；不打开seed/debug。BFF的PUBLIC_ORIGIN/clientID/secret/namespace/Cookie各不相同，Cookie以__Host-开头，生产不设置BFF_ISSUER_CONNECT_HOST。
+
+秘密文件绑定RO到/run/secrets；宿主文件应`chown 10001:10001`及`chmod 0600`，父目录仅运维账户可进入。Config拒绝group/other权限，不能把文件改0640来迁就容器读取。PG密码文件由Postgres入口读取，另设置其所需权限，数据库服务权限不和API私钥混用。私钥与AEAD另独立受控备份。
+
+API和Worker的内部指标配置`METRICS_TOKEN_FILE=/run/secrets/metrics-token`，使用至少256位随机token的受限文件，和Prometheus的bearer_token_file对应。该token不作为账号或OAuth凭证，指标只有固定聚合标签；Caddy不向公网代理/metrics。未配置token时仅loopback可读，不能误以为私网采集已可用。告警规则及配置见infra/ops，生产可达接收端需实际配置演练。
+
+未配置旧JWKS时准备仅`{"keys":[]}`的public文件，不能含私钥。生产Compose绑定所有秘密文件必须预先存在，不自动生成或覆盖生产密钥。正式issuer由DNS/证书指向edge；外部TCP80只TLS证书挑战与HTTPS跳转，HTTPS443提供身份/应用。运维SSH独立受控，不把DB/Redis映射公网。
+
+## 发布顺序
+
+1. 完整基础验收与外部条件放行后，检查生产配置及秘密权限，分别运行镜像`identity-server --check-config`/`identity-worker --check-config`及BFF配置校验；失败停止，不输出秘密。
+2. 独立加密存储备份与WAL归档状态确认，实际备份成功才继续；记录版本和校验。
+3. 显式维护命令运行`identity-migrate --allow-production`，迁移失败非零立即停止发布，不启动新应用或自动降库。
+4. 启动指定不可变镜像；readiness检查PG/Redis，Worker队列状态、edgeTLS/安全headers和BFF页面/API冒烟。
+5. 真实注册→验证→密码/MFA/Passkey→A/B SSO→退出全部→禁用检查；监控成功再完成放行。首次发布不能用Mailpit代替真实SMTP/DNS送达。
+
+不在容器启动命令中自动迁移，独立maintenance profile只供明确操作。Compose stop/down默认保留卷；不可逆schema变更单独窗口与备份恢复方案。
+
+## 回滚和恢复要求
+
+保留前版应用/edge镜像digest，schema兼容时切换前版镜像后重新readiness与冒烟，不自动down migration。schema不兼容则按已审查恢复方案，说明维护中断。每日基础备份+持续WAL到独立加密存储，≥14天；新主机恢复DB/签名/AEAD/配置并检查账户/TOTP/Passkey/OAuth/撤销，实测RPO≤15m/RTO≤60m才可标达标。
+
+签名轮换先发布新公钥，再切私钥kid，旧公钥≥12h+2m；AEAD版本保留旧key解密再后台重加密。告警必须覆盖5xx/延迟/连接池/攻击/队列/磁盘/证书/备份；生产SMTP设置SPF/DKIM/DMARC并实际检查送达与失败通知。上述恢复、轮换、监控、DNS/SMTP是后续真实验收项，本稿不宣称已执行。

@@ -1,0 +1,12 @@
+   Compiling identity-core v0.1.0 (/root/code/rust/auth_rust/crates/identity-core)
+   Compiling identity-store v0.1.0 (/root/code/rust/auth_rust/crates/identity-store)
+   Compiling demo-bff v0.1.0 (/root/code/rust/auth_rust/crates/demo-bff)
+   Compiling identity-worker v0.1.0 (/root/code/rust/auth_rust/crates/identity-worker)
+   Compiling identity-server v0.1.0 (/root/code/rust/auth_rust/crates/identity-server)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.31s
+     Running unittests src/lib.rs (target/debug/deps/identity_server-b724d034018f98b1)
+
+running 1 test
+test metrics::tests::bounded_metrics_never_add_identity_labels ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 11 filtered out; finished in 0.00s

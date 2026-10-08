@@ -89,7 +89,7 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 | T19 | 管理后台 UI | 通过 | T14、T16 | docs/evidence/T19/test-summary.md |
 | T20 | 安全、协议、并发和故障全面验收 | 待验收 | T13、T18、T19 | docs/evidence/T20/test-summary.md |
 | T21 | 性能、容量和交互优化 | 未开始 | T20 | 待提供 |
-| T22 | 单机生产、监控、备份和密钥轮换 | 未开始 | T20、T21 | 待提供 |
+| T22 | 单机生产、监控、备份和密钥轮换 | 待验收 | T20、T21 | docs/evidence/T22/test-summary.md |
 | T23 | 第一版发布与总体验收 | 未开始 | T00～T22 全通过 | 待提供 |
 | T24 | 后续高可用升级 | 未开始 | T23；不阻塞第一版 | 待提供 |
 
@@ -846,16 +846,16 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 
 | 案例 | 前置状态 | 操作步骤 | 预期结果 | 实际结果 | 状态 | 证据 |
 |---|---|---|---|---|---|---|
-| T22-OPS-01 | 干净 Linux 主机/域名/秘密 | 按 runbook 部署、检查开放端口 | HTTPS、安全 headers、健康正常，DB/Redis 不外露 | 待填写 | 未执行 | 待提供：部署输出及端口检查 |
-| T22-OPS-02 | 独立备份与新主机 | 恢复到已知时间并操作账号 | RPO/RTO 达标，密钥可用，日志脱敏 | 待填写 | 未执行 | 待提供：恢复计时和业务检查 |
-| T22-OPS-03 | 活动用户与旧 token | 签名/加密密钥轮换 | 新凭证正常，旧窗口兼容，TOTP 不丢 | 待填写 | 未执行 | 待提供：轮换报告 |
-| T22-OPS-04 | 邮件域名与监控 | 发真实邮件，制造可控失败告警 | 送达/DNS验证、告警可达 | 待填写 | 未执行 | 待提供：邮件和告警记录 |
+| T22-OPS-01 | 干净 Linux 主机/域名/秘密 | 按 runbook 部署、检查开放端口 | HTTPS、安全 headers、健康正常，DB/Redis 不外露 | 本地镜像/readonly非root/Caddyconfig通过，真实生产域名部署未准备 | 未执行 | [本地记录](docs/evidence/T22/test-summary.md) |
+| T22-OPS-02 | 独立备份与新主机 | 恢复到已知时间并操作账号 | RPO/RTO 达标，密钥可用，日志脱敏 | 独立本地小probePITR1.903s正确，完整账号/新主机/生产独立存储RPO-RTO未验 | 未执行 | [本地记录](docs/evidence/T22/test-summary.md) |
+| T22-OPS-03 | 活动用户与旧 token | 签名/加密密钥轮换 | 新凭证正常，旧窗口兼容，TOTP 不丢 | 本地全部AEAD用途+真实TOTP/CLI幂等维护通过，真实签名切换分发/旧窗口未验 | 未执行 | [本地记录](docs/evidence/T22/test-summary.md) |
+| T22-OPS-04 | 邮件域名与监控 | 发真实邮件，制造可控失败告警 | 送达/DNS验证、告警可达 | 指标API/Worker及9条告警规则语法通过，正式SMTP/DNS/告警送达未验 | 未执行 | [本地记录](docs/evidence/T22/test-summary.md) |
 
 **实现子步骤检查：**
 
-- [ ] T22.01：多阶段 Rust/frontend 镜像、非 root、read-only 可用路径、资源上限、明确健康检查和 graceful shutdown。
-- [ ] T22.02：生产仅开放 80/443（80 仅跳转/证书），SSH 受控；DB/Redis 不公开。
-- [ ] T22.03：秘密文件受权限控制挂载；固定 issuer/RP；配置 HSTS/no-store/CSP。
+- [x] T22.01：多阶段 Rust/frontend 镜像、非 root、read-only 可用路径、资源上限、明确健康检查和 graceful shutdown。
+- [x] T22.02：生产仅开放 80/443（80 仅跳转/证书），SSH 受控；DB/Redis 不公开。
+- [x] T22.03：秘密文件受权限控制挂载；固定 issuer/RP；配置 HSTS/no-store/CSP。
 - [ ] T22.04：部署流程：配置验证→备份成功→迁移→启动→readiness→冒烟；迁移失败停止发布。
 - [ ] T22.05：保留上版应用镜像，执行兼容 rollback；不可逆 schema 明确单独窗口，不自动降库。
 - [ ] T22.06：配置 Prometheus/Grafana 或等价现有系统，告警 5xx/延迟/队列/连接池/攻击/磁盘/证书/备份。
@@ -863,16 +863,17 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 - [ ] T22.08：新环境恢复数据库、加密密钥与签名密钥，验证账户/TOTP/Passkey/撤销；目标 RPO≤15 分钟、RTO≤60 分钟。
 - [ ] T22.09：签名轮换先发布新公钥后切签，旧公钥保留会话兼容窗口；AEAD 版本化后台重加密并支持旧 key 解密。
 - [ ] T22.10：生产 SMTP 配置 SPF/DKIM/DMARC，发实际邮件并检查失败处理。
-- [ ] T22.11：写明单机维护中断及恢复步骤，不宣称高可用。
+- [x] T22.11：写明单机维护中断及恢复步骤，不宣称高可用。
 
 **验收记录：**
 
-- 代码版本：待填写。
-- 环境与时间：待填写。
-- 命令退出码：待填写。
-- 失败/阻塞项：待填写。
-- 修复与复测：待填写。
-- 任务结论：未开始。
+- 代码版本：本次运维模块Git提交（父75a93dc），镜像各快照见证据。
+- 环境与时间：2026-10-08 Linux/Rust1.98/Node22/PG17；固定Dockerbase/Caddy2.11.7、age1.3.2、Promtool3.15.0。
+- 命令退出码：本地镜像build/Caddyvalidate/readonly、PITR、keysintegration、metricsintegration、rootcheck/unit/build/docs/tooling均0。
+- 失败/阻塞项：生产资源未准备，完整账户恢复/每日备份保留/可达告警/SMTPDNS/签名切换未验；原T20/T21未放行。
+- 修复与复测：[本地运维总结](docs/evidence/T22/test-summary.md)、[PITR](docs/evidence/T22/local-pitr-drill.md)、[密钥](docs/evidence/T22/key-rotation-drill.md)、[指标](docs/evidence/T22/metrics-summary.md)。
+- 任务结论：待验收（已测试本地制品/运维模块，正式生产必要条件未验）。
+
 
 ### T23 — 第一版发布与总体验收
 

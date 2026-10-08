@@ -47,6 +47,7 @@ pub struct Config {
     pub signing_kid: String,
     pub jwks_previous_file: Option<PathBuf>,
     pub encryption_keys_file: PathBuf,
+    pub metrics_token_digest: Option<[u8; 32]>,
     pub active_encryption_kid: String,
     pub smtp_host: String,
     pub smtp_port: u16,
@@ -325,6 +326,7 @@ impl Config {
             "SIGNING_KID",
             "JWKS_PREVIOUS_FILE",
             "ENCRYPTION_KEYS_FILE",
+            "METRICS_TOKEN_FILE",
             "ACTIVE_ENCRYPTION_KID",
             "SMTP_HOST",
             "SMTP_PORT",
@@ -369,6 +371,14 @@ impl Config {
             _ => return Err(invalid("APP_ENV")),
         };
         let production = environment == Environment::Production;
+        let metrics_token_digest = values
+            .get("METRICS_TOKEN_FILE")
+            .filter(|value| !value.is_empty())
+            .map(|path| {
+                crate::observability::load_metrics_digest(std::path::Path::new(path), production)
+                    .map_err(|_| invalid("METRICS_TOKEN_FILE"))
+            })
+            .transpose()?;
         let bind = values
             .get("BIND")
             .map(String::as_str)
@@ -562,6 +572,7 @@ impl Config {
             signing_kid,
             jwks_previous_file,
             encryption_keys_file: encryption_keys_file.into(),
+            metrics_token_digest,
             active_encryption_kid,
             smtp_host,
             smtp_port,

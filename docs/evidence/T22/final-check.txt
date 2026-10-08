@@ -1,0 +1,9 @@
+
+> rust-unified-identity@0.1.0 check
+> node scripts/run.mjs check
+
+    Checking identity-store v0.1.0 (/root/code/rust/auth_rust/crates/identity-store)
+    Checking identity-core v0.1.0 (/root/code/rust/auth_rust/crates/identity-core)
+    Checking identity-admin-cli v0.1.0 (/root/code/rust/auth_rust/crates/identity-admin-cli)
+    Checking demo-bff v0.1.0 (/root/code/rust/auth_rust/crates/demo-bff)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.08s

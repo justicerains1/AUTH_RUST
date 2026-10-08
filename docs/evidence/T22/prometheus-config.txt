@@ -1,0 +1,6 @@
+Checking .local/prometheus-validation.yaml
+  SUCCESS: 1 rule files found
+ SUCCESS: .local/prometheus-validation.yaml is valid prometheus config file syntax
+
+Checking /root/code/rust/auth_rust/infra/ops/identity-alerts.yaml
+  SUCCESS: 9 rules found

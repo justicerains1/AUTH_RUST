@@ -1,0 +1,2 @@
+PASS T22 real local API/Worker metrics expose bounded aggregate counters without identity labels
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.78s

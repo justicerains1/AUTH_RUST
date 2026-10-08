@@ -1,0 +1,16 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+rule_files:
+  - /etc/prometheus/identity-alerts.yaml
+scrape_configs:
+  - job_name: identity-api
+    metrics_path: /metrics
+    bearer_token_file: /run/secrets/metrics-token
+    static_configs:
+      - targets: [api:8080]
+  - job_name: identity-worker
+    metrics_path: /metrics
+    bearer_token_file: /run/secrets/metrics-token
+    static_configs:
+      - targets: [worker:8081]

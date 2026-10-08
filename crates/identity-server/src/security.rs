@@ -133,6 +133,7 @@ impl IntoResponse for ReauthFailure {
 #[derive(Clone)]
 pub struct SecurityState(Arc<SecurityInner>);
 struct SecurityInner {
+    http_metrics: Arc<crate::metrics::HttpMetrics>,
     store: BrowserSecurityStore,
     redis: redis::Client,
     origin: String,
@@ -167,6 +168,7 @@ impl SecurityState {
         let secure =
             config.environment == Environment::Production || config.issuer.scheme() == "https";
         Ok(Self(Arc::new(SecurityInner {
+            http_metrics: Arc::new(crate::metrics::HttpMetrics::default()),
             store: BrowserSecurityStore::new(dependencies.postgres),
             redis,
             origin: config.issuer.origin().ascii_serialization(),
@@ -188,6 +190,9 @@ impl SecurityState {
     }
     pub fn cookie_names(&self) -> (&'static str, &'static str) {
         (self.0.session_cookie, self.0.preauth_cookie)
+    }
+    pub(crate) fn http_metrics(&self) -> Arc<crate::metrics::HttpMetrics> {
+        self.0.http_metrics.clone()
     }
     /// Top-level OAuth entry points create only a durable preauthentication context, never identity.
     pub async fn ensure_preauth(
@@ -651,6 +656,7 @@ async fn browser_boundary(
     mut request: Request,
     next: Next,
 ) -> Response {
+    let started = std::time::Instant::now();
     let id = Uuid::new_v4();
     request.extensions_mut().insert(RequestId(id));
     let path = request.uri().path().to_string();
@@ -751,6 +757,10 @@ async fn browser_boundary(
         HeaderValue::from_static("nosniff"),
     );
     headers.insert("content-security-policy",HeaderValue::from_static("default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; object-src 'none'; base-uri 'none'; form-action 'self'"));
+    state
+        .0
+        .http_metrics
+        .record(response.status(), started.elapsed());
     response
 }
 

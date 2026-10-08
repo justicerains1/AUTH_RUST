@@ -19,6 +19,7 @@ pub struct Dependencies {
     pub postgres: sqlx::PgPool,
     redis: redis::Client,
 }
+pub use sqlx::PgPool;
 
 #[derive(Debug)]
 pub struct DependencyUnavailable;

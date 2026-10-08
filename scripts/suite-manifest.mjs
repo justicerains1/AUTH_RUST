@@ -3,7 +3,7 @@ import { resolve } from 'node:path';
 import { runStage } from './full-test.mjs';
 
 export const suites = {
-  integration: ['T01', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T10', 'T11', 'T12', 'T13', 'T14', 'T17', 'T18', 'T19', 'T20'],
+  integration: ['T01', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T10', 'T11', 'T12', 'T13', 'T14', 'T17', 'T18', 'T19', 'T20', 'T22'],
   e2e: ['T05', 'T06', 'T07', 'T08', 'T09', 'T10', 'T12', 'T13', 'T17', 'T18', 'T19'],
 };
 

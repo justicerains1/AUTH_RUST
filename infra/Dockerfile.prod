@@ -1,0 +1,26 @@
+FROM docker.m.daocloud.io/library/rust:1.98.0-bookworm@sha256:82150a52ec202c1b14d7817e14516c392bb7f5cfebd88f1ed531cb37ebd39922 AS build
+WORKDIR /workspace
+COPY Cargo.toml Cargo.lock rust-toolchain.toml ./
+COPY crates ./crates
+COPY migrations ./migrations
+COPY data ./data
+RUN --mount=type=cache,id=auth-rust-cargo-registry,target=/usr/local/cargo/registry,sharing=locked \
+    --mount=type=cache,id=auth-rust-cargo-git,target=/usr/local/cargo/git,sharing=locked \
+    --mount=type=cache,id=auth-rust-cargo-release-1.98,target=/workspace/target,sharing=locked \
+    cargo build --workspace --release --locked && \
+    mkdir /output && \
+    cp target/release/identity-server target/release/identity-worker target/release/demo-bff \
+       target/release/identity-admin-cli target/release/identity-migrate /output/
+
+FROM docker.m.daocloud.io/library/debian:bookworm-20261005-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587
+RUN apt-get update && \
+    apt-get install --no-install-recommends --yes \
+      libssl3=3.0.22-1~deb12u1 ca-certificates=20250419~deb12u1 curl=7.88.1-10+deb12u15 && \
+    rm -rf /var/lib/apt/lists/* && \
+    groupadd --gid 10001 identity && useradd --uid 10001 --gid 10001 --no-create-home --shell /usr/sbin/nologin identity
+COPY --from=build /output/ /usr/local/bin/
+USER 10001:10001
+WORKDIR /app
+EXPOSE 8080
+HEALTHCHECK --interval=10s --timeout=3s --start-period=15s --retries=3 CMD curl --fail --silent http://127.0.0.1:8080/health/live || exit 1
+CMD ["identity-server"]

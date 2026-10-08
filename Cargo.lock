@@ -1266,10 +1266,13 @@ checksum = "b9e0384b61958566e926dc50660321d12159025e767c18e043daf26b70104c39"
 name = "identity-admin-cli"
 version = "0.1.0"
 dependencies = [
+ "base64 0.23.1",
  "identity-core",
  "identity-store",
  "rpassword",
+ "serde_json",
  "sqlx",
+ "time",
  "tokio",
  "uuid",
  "zeroize",

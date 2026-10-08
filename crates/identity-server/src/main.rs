@@ -29,7 +29,7 @@ async fn run() -> Result<(), String> {
     let listener = tokio::net::TcpListener::bind(config.bind)
         .await
         .map_err(|_| "cannot bind BIND".to_string())?;
-    tracing::info!("identity-server started (T01 health routes)");
+    tracing::info!("identity-server started");
     axum::serve(
         listener,
         identity_server::application_router(dependencies.clone(), state)

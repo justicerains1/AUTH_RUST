@@ -1,0 +1,158 @@
+name: auth-rust-production
+
+x-rust: &rust
+  image: ${RUST_IMAGE:?Set the reviewed immutable Rust release image reference}
+  user: '10001:10001'
+  read_only: true
+  init: true
+  security_opt: [no-new-privileges:true]
+  cap_drop: [ALL]
+  tmpfs: [/tmp:size=16m,mode=1777]
+  stop_grace_period: 30s
+  restart: unless-stopped
+  networks: [private, egress]
+  mem_limit: 1g
+  cpus: 2
+  pids_limit: 128
+
+x-identity-env: &identity-env
+  env_file: ../.local/production/identity.env
+  volumes:
+    - ../.local/production/secrets/signing.pem:/run/secrets/signing.pem:ro
+    - ../.local/production/secrets/encryption-keys.json:/run/secrets/encryption-keys.json:ro
+    - ../.local/production/secrets/smtp-password:/run/secrets/smtp-password:ro
+    - ../.local/production/secrets/jwks-previous.json:/run/secrets/jwks-previous.json:ro
+    - ../.local/production/secrets/metrics-token:/run/secrets/metrics-token:ro
+
+services:
+  postgres:
+    image: docker.m.daocloud.io/library/postgres:17.11-bookworm@sha256:3645570cccdfa447589da9f57dd740faa29b30938e861289a5574b6ca6b03826
+    environment:
+      POSTGRES_USER: identity
+      POSTGRES_DB: identity_production
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres-password
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ../.local/production/secrets/postgres-password:/run/secrets/postgres-password:ro
+    networks: [private]
+    restart: unless-stopped
+    shm_size: 256m
+    mem_limit: 4g
+    cpus: 2
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U "$${POSTGRES_USER}" -d "$${POSTGRES_DB}"']
+      interval: 10s
+      timeout: 3s
+      retries: 10
+    stop_grace_period: 60s
+
+  redis:
+    image: docker.m.daocloud.io/library/redis:7.4@sha256:4fa24486b8bcca8eec45ee0eb166edc674795e53a2b53d1a9ef263eecebaac85
+    command: [redis-server, --appendonly, 'yes', --maxmemory, 512mb, --maxmemory-policy, noeviction]
+    volumes: [redis-data:/data]
+    networks: [private]
+    restart: unless-stopped
+    mem_limit: 768m
+    cpus: 1
+    healthcheck:
+      test: [CMD, redis-cli, ping]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+
+  api:
+    <<: [*rust, *identity-env]
+    command: [identity-server]
+    environment: { APP_ENV: production, BIND: '0.0.0.0:8080' }
+    depends_on:
+      postgres: { condition: service_healthy }
+      redis: { condition: service_healthy }
+    healthcheck:
+      test: [CMD, curl, --fail, --silent, http://127.0.0.1:8080/health/ready]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+
+  worker:
+    <<: [*rust, *identity-env]
+    command: [identity-worker]
+    environment: { APP_ENV: production, BIND: '0.0.0.0:8081' }
+    depends_on:
+      postgres: { condition: service_healthy }
+    healthcheck:
+      test: [CMD, curl, --fail, --silent, http://127.0.0.1:8081/health/ready]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+
+  migrate:
+    <<: [*rust, *identity-env]
+    profiles: [maintenance]
+    command: [identity-migrate, --allow-production]
+    environment: { APP_ENV: production }
+    restart: 'no'
+    healthcheck: { disable: true }
+
+  demo-a-bff:
+    <<: *rust
+    command: [demo-bff]
+    env_file: ../.local/production/demo-a.env
+    environment: { APP_ENV: production, BIND: '0.0.0.0:8082' }
+    volumes:
+      - ../.local/production/secrets/demo-a-secret:/run/secrets/client-secret:ro
+      - ../.local/production/secrets/encryption-keys.json:/run/secrets/encryption-keys.json:ro
+    depends_on:
+      postgres: { condition: service_healthy }
+      api: { condition: service_healthy }
+    healthcheck:
+      test: [CMD, curl, --fail, --silent, http://127.0.0.1:8082/health/live]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+
+  demo-b-bff:
+    <<: *rust
+    command: [demo-bff]
+    env_file: ../.local/production/demo-b.env
+    environment: { APP_ENV: production, BIND: '0.0.0.0:8083' }
+    volumes:
+      - ../.local/production/secrets/demo-b-secret:/run/secrets/client-secret:ro
+      - ../.local/production/secrets/encryption-keys.json:/run/secrets/encryption-keys.json:ro
+    depends_on:
+      postgres: { condition: service_healthy }
+      api: { condition: service_healthy }
+    healthcheck:
+      test: [CMD, curl, --fail, --silent, http://127.0.0.1:8083/health/live]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+
+  edge:
+    image: ${EDGE_IMAGE:?Set the reviewed immutable Caddy/static release image reference}
+    user: '10001:10001'
+    read_only: true
+    security_opt: [no-new-privileges:true]
+    cap_drop: [ALL]
+    environment:
+      IDENTITY_HOST: ${IDENTITY_HOST:?Set the production identity host}
+      DEMO_A_HOST: ${DEMO_A_HOST:?Set the independent app A host}
+      DEMO_B_HOST: ${DEMO_B_HOST:?Set the independent app B host}
+      TLS_EMAIL: ${TLS_EMAIL:?Set the certificate contact email}
+    ports: ['80:8080', '443:8443']
+    volumes: [caddy-data:/data, caddy-config:/config]
+    tmpfs: [/tmp:size=16m,mode=1777]
+    networks: [private, egress]
+    restart: unless-stopped
+    mem_limit: 256m
+    cpus: 1
+    depends_on:
+      api: { condition: service_healthy }
+
+networks:
+  private: { internal: true }
+  egress: {}
+volumes:
+  postgres-data:
+  redis-data:
+  caddy-data:
+  caddy-config:

@@ -2,6 +2,7 @@
 pub mod accounts;
 pub mod admin;
 pub mod grants;
+pub mod metrics;
 pub mod mfa;
 pub mod oauth;
 pub mod oidc;

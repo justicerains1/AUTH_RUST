@@ -1,0 +1,15 @@
+{
+  "completed": "2026-10-08T11:55:02.778Z",
+  "results": [
+    {
+      "name": "metrics",
+      "exitCode": 0
+    },
+    {
+      "name": "key-reencryption",
+      "exitCode": 0
+    }
+  ],
+  "exitCode": 0,
+  "scope": "Local-only metrics and actual PostgreSQL encrypted key maintenance; not production acceptance."
+}

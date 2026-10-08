@@ -84,6 +84,7 @@ pub struct MailWorker {
     issuer: Url,
     worker_id: Uuid,
     metrics: WorkerMetrics,
+    metrics_token_digest: Option<[u8; 32]>,
 }
 impl MailWorker {
     pub fn new(config: &Config, pool: PgPool, clock: Arc<dyn Clock>) -> Result<Self, WorkerError> {
@@ -128,6 +129,7 @@ impl MailWorker {
             issuer: config.issuer.clone(),
             worker_id: Uuid::new_v4(),
             metrics: WorkerMetrics::default(),
+            metrics_token_digest: config.metrics_token_digest,
         })
     }
 
@@ -360,6 +362,39 @@ impl MailWorker {
             failed: self.metrics.failed.load(Ordering::Relaxed),
             database_failures: self.metrics.database_failures.load(Ordering::Relaxed),
         }
+    }
+    pub fn metrics_authorized(
+        &self,
+        peer: std::net::IpAddr,
+        authorization: Option<&str>,
+        duplicate: bool,
+    ) -> bool {
+        identity_core::observability::metrics_authorized(
+            peer,
+            authorization,
+            duplicate,
+            self.metrics_token_digest.as_ref(),
+        )
+    }
+    pub async fn operational_metrics(&self) -> Result<String, WorkerError> {
+        use sqlx::Row;
+        let row = sqlx::query("SELECT count(*) FILTER (WHERE state='pending') AS pending,count(*) FILTER (WHERE state='failed') AS failed,COALESCE(EXTRACT(EPOCH FROM CURRENT_TIMESTAMP-min(created_at) FILTER (WHERE state='pending')),0)::float8 AS oldest_age FROM email_outbox")
+            .fetch_one(&self.pool).await.map_err(|_| WorkerError::DatabaseUnavailable)?;
+        let metrics = self.metrics();
+        Ok(format!(
+            "identity_outbox_delivered_total {}\nidentity_outbox_retried_total {}\nidentity_outbox_failed_total {}\nidentity_outbox_database_failures_total {}\nidentity_outbox_pending {}\nidentity_outbox_permanent_failures {}\nidentity_outbox_oldest_age_seconds {}\n",
+            metrics.delivered,
+            metrics.retried,
+            metrics.failed,
+            metrics.database_failures,
+            row.try_get::<i64, _>("pending")
+                .map_err(|_| WorkerError::DatabaseUnavailable)?,
+            row.try_get::<i64, _>("failed")
+                .map_err(|_| WorkerError::DatabaseUnavailable)?,
+            row.try_get::<f64, _>("oldest_age")
+                .map_err(|_| WorkerError::DatabaseUnavailable)?
+                .max(0.0)
+        ))
     }
 }
 async fn delivery_audit(

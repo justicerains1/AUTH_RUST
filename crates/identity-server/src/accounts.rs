@@ -44,6 +44,8 @@ pub struct AuthAppState {
 }
 pub(crate) struct AccountsInner {
     store: AccountsStore,
+    pub(crate) pool: identity_store::PgPool,
+    pub(crate) metrics_token: Option<[u8; 32]>,
     pub(crate) passwords: PasswordService,
     pub(crate) keys: Arc<AeadKeyRing>,
     pub(crate) issuer: String,
@@ -71,6 +73,7 @@ impl AuthAppState {
         let passwords = PasswordService::initialize(config.argon2_parallelism_limit)
             .await
             .map_err(|_| "password service unavailable")?;
+        let metrics_token = config.metrics_token_digest;
         Ok(Self {
             security,
             admin: identity_store::admin::AdminStore::new(
@@ -112,6 +115,8 @@ impl AuthAppState {
                 clock.clone(),
             ),
             inner: Arc::new(AccountsInner {
+                pool: dependencies.postgres.clone(),
+                metrics_token,
                 store: AccountsStore::new(dependencies.postgres),
                 passwords,
                 keys,
@@ -168,6 +173,7 @@ pub fn accounts_router(state: AuthAppState, existing: Router) -> Router {
             .merge(crate::rp_logout::logout_routes(state.clone()))
             .merge(crate::grants::grant_routes(state.clone()))
             .merge(crate::admin::admin_routes(state.clone()))
+            .merge(crate::metrics::metrics_routes(&state))
             .layer(axum::middleware::from_fn_with_state(
                 state,
                 crate::admin::binding_boundary,

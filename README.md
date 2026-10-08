@@ -68,7 +68,7 @@ npm run test:integration -- --task=T01
 
 `check` 执行 fmt、Clippy `-D warnings`、TypeScript strict 和 ESLint；`build` 编译全部 Rust release 与三前端 production；`test:unit` 运行实际 Rust/Vitest 测试，零测试拒绝成功。T01 集成测试需要先 `dev:up`，验证所有服务健康、页面/代理可达、真实 production 配置拒绝，以及分别停止 PG/Redis 后的 503 和恢复 200。它只控制本项目 Compose 的开发服务，故障测试后会恢复依赖；脱敏报告保存到 `docs/evidence/T01/`。
 
-未实现的 integration 任务、全量 e2e/security/load 和 seed 返回非零并指出所属任务；verify:openapi、数据库迁移与T16 accessibility已经有实际套件。`npm run db:migrate -- --env=development` 对本机开发目标应用SQLx校验迁移；test仅允许identity_test，production需显式环境和--allow-production。启动不会隐式迁移。测试数据 seed 禁止用于生产，T21再补完整种子，未实现命令仍非零。
+完整integration/E2E已按固定任务manifest逐项运行，失败继续并记录退出码；security执行依赖/秘密/协议和本地生产构建ZAP。load必须明确选择场景，seed只白名单测试库。verify:openapi、数据库迁移与T16 accessibility已经有实际套件。`npm run db:migrate -- --env=development` 对本机开发目标应用SQLx校验迁移；test仅允许identity_test，production需显式环境和--allow-production。启动不会隐式迁移。测试数据 seed 禁止用于生产，T21再补完整种子，未实现命令仍非零。
 
 CI 复用相同根脚本，分别配置 Linux/Windows 构建，以及 Linux Compose T01 集成任务。CI 配置存在不代表远端已经运行，实际执行记录以 [acceptance.md](acceptance.md) 和 [docs/evidence/T01](docs/evidence/T01) 为准。
 
@@ -114,3 +114,10 @@ cargo run --locked -p identity-admin-cli -- bootstrap --email operator@example.c
 TTY会隐藏密码输入；自动化可通过受控stdin传入单行密码，密码不得作为参数或环境变量。命令只在数据库没有管理员成员时成功，多个初始化并发仅一个提交。新用户由受控初始化验证；已有用户必须已验证、active且密码正确，不重置已有密码。未配置因素的首个管理员只可访问本人绑定必需流程；绑定TOTP/Passkey后，管理端点仍要求最近五分钟强认证。
 
 后续管理员仅通过受保护管理API授予已验证且有因素的用户。删除、禁用或移除最后认证因素均保留至少一名可用管理员。用户/客户端/管理员/审计列表分页，客户端秘密只在创建或轮换成功时展示一次；管理UI在T19实现。CLI测试schema参数仅显式identity_test允许，生产不得使用测试开关。
+
+
+## 负载、安全与运维模块
+
+`npm run test:load -- --scenario=introspection|account|password|mixed` 使用真实测试服务，两分钟预热、十五分钟测量，失败报告保留。`npm run seed:acceptance`验证十万账号、二十客户端、十万授权种子后清理本次schema，禁止生产；测试秘密仅.local受限文件。前端独立性能测量：`node tests/performance/frontend.mjs`，固定移动网络、Chrome及五次冷加载。
+
+生产镜像、Caddy/Compose、备份/WAL/恢复和密钥维护操作稿位于infra及docs/runbooks。它们已做相应本地验证，实际域名/SMTP/独立备份/告警和生产恢复仍未验收。内部API/Worker `/metrics`需要配置受限METRICS_TOKEN_FILE供私网采集；未配置时仅loopback可读，公网Caddy不代理。密钥维护不可删除仍被历史备份依赖的旧版本。

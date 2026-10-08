@@ -1,0 +1,11 @@
+# T22 可观测性指标模块
+
+API/Worker实现GET /metrics，无用户/client/IP/token/URLquery标签。未配置METRICS_TOKEN_FILE时仅真实loopback对端可读；配置后需唯一Bearer、对SHA256摘要常量时间比较，秘密受限文件最多1024字节。Cookie不能认证指标。Caddy外部路由不代理此路径，Prometheus仅私网携带受控tokenfile采集。
+
+API提供请求/5xx/429计数、固定延迟histogram桶（5ms/25ms/100ms/250ms/1s/5s/+Inf）、sum/count，密码哈希/验证/排队超时与Argon2参数、PG池size/idle。Worker提供送达/重试/永久失败/DB错误累计与真实数据库pending/failed/最老待发送年龄。指标仅聚合，查询故障503，不伪零。
+
+实际本地独立testschema启动API，/metrics真实200且Argon2memory65536与histogram可读；Worker真实空队列pending0；身份指标无秘密标签。核心授权边界和histogram单元通过、server/worker alltargets Clippy0。真实故障/告警送达和生产Prometheus仍需后续演练，不能把指标存在当生产监控通过。
+
+API指标计数实测包含一次401身份请求，随后/metrics看到requests_total=1（指标当前请求完成后计数）；auth核心测试明确非loopback无token拒、正确Bearer允许、重复Authorization拒、错误Bearer拒。服务端采集不通过Cookie。
+
+Prometheus3.15.0正式release的promtool经官方SHA256 2a542df32eac02ee17b9d844fb2aa1de00dafa5476579ba8a3ba862e9d572ea0核对。9条告警规则及配置真实语法验证退出0；配置验证副本只改本地rule/tokenfile路径，未运行生产采集或发送告警，不能标告警送达通过。

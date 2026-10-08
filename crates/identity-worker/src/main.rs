@@ -1,8 +1,14 @@
-use axum::{Json, Router, extract::State, http::StatusCode, routing::get};
+use axum::{
+    Json, Router,
+    extract::{ConnectInfo, State},
+    http::{HeaderMap, StatusCode},
+    response::{IntoResponse, Response},
+    routing::get,
+};
 use identity_core::{clock::SystemClock, config::Config};
 use identity_store::Dependencies;
 use identity_worker::outbox::MailWorker;
-use std::{process::ExitCode, sync::Arc, time::Duration};
+use std::{net::SocketAddr, process::ExitCode, sync::Arc, time::Duration};
 use tokio::sync::watch;
 
 #[tokio::main]
@@ -38,6 +44,7 @@ async fn run() -> Result<(), String> {
             get(|| async { Json(serde_json::json!({"status":"live", "stage":"T05"})) }),
         )
         .route("/health/ready", get(ready))
+        .route("/metrics", get(metrics))
         .with_state(worker.clone());
     let listener = tokio::net::TcpListener::bind(config.bind)
         .await
@@ -56,13 +63,16 @@ async fn run() -> Result<(), String> {
             tokio::select! {_=jobs_stop.changed()=>break,_=tokio::time::sleep(Duration::from_secs(1))=>{}}
         }
     });
-    let result = axum::serve(listener, app)
-        .with_graceful_shutdown(async move {
-            shutdown().await;
-            let _ = stop_tx.send(true);
-        })
-        .await
-        .map_err(|_| "worker HTTP server failed".to_string());
+    let result = axum::serve(
+        listener,
+        app.into_make_service_with_connect_info::<SocketAddr>(),
+    )
+    .with_graceful_shutdown(async move {
+        shutdown().await;
+        let _ = stop_tx.send(true);
+    })
+    .await
+    .map_err(|_| "worker HTTP server failed".to_string());
     let _ = jobs.await;
     dependencies.close().await;
     result
@@ -78,6 +88,33 @@ async fn ready(State(worker): State<Arc<MailWorker>>) -> (StatusCode, Json<serde
         },
         Json(serde_json::json!({"status":if ready{"ready"}else{"unavailable"}})),
     )
+}
+async fn metrics(
+    State(worker): State<Arc<MailWorker>>,
+    ConnectInfo(peer): ConnectInfo<SocketAddr>,
+    headers: HeaderMap,
+) -> Response {
+    let authorization = headers.get_all("authorization").iter().collect::<Vec<_>>();
+    if !worker.metrics_authorized(
+        peer.ip(),
+        authorization
+            .first()
+            .and_then(|header| header.to_str().ok()),
+        authorization.len() > 1,
+    ) {
+        return StatusCode::FORBIDDEN.into_response();
+    }
+    match worker.operational_metrics().await {
+        Ok(metrics) => (
+            [
+                ("content-type", "text/plain; version=0.0.4; charset=utf-8"),
+                ("cache-control", "no-store"),
+            ],
+            metrics,
+        )
+            .into_response(),
+        Err(_) => StatusCode::SERVICE_UNAVAILABLE.into_response(),
+    }
 }
 async fn shutdown() {
     #[cfg(unix)]
