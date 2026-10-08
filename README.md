@@ -1,6 +1,6 @@
 # Rust 统一身份中心
 
-实现依据为 [plan.md](plan.md) 和 [acceptance.md](acceptance.md)，按依赖实施并记录真实证据。T01～T08、T10～T11及T15～T16已通过本地模块验收；T09实现与虚拟认证器测试通过，实体设备待验收。T12刷新/撤销与退出确认已通过本地模块验收，后续双BFF、管理后台、完整产品与生产验收继续。每个模块验收后提交推送；最新状态见 [TASK_PROGRESS.md](TASK_PROGRESS.md)。当前尚不具备生产发布条件。
+实现依据为 [plan.md](plan.md) 和 [acceptance.md](acceptance.md)，按依赖实施并记录真实证据。T01～T08、T10～T11及T15～T16已通过本地模块验收；T09实现与虚拟认证器测试通过，实体设备待验收。T12刷新/撤销与退出确认已通过本地模块验收，T13双BFF已通过真实模块验收，后续管理后台、完整产品与生产验收继续。每个模块验收后提交推送；最新状态见 [TASK_PROGRESS.md](TASK_PROGRESS.md)。当前尚不具备生产发布条件。
 
 ## 环境
 
@@ -76,7 +76,7 @@ CI 复用相同根脚本，分别配置 Linux/Windows 构建，以及 Linux Comp
 
 `identity-core` 负责规则/配置，`identity-store` 负责 SQLx 和依赖连接，`identity-server` 负责 Axum，`identity-worker`负责真实outbox发送/重试，`identity-admin-cli` 在 T14 实现初始化，`demo-bff` 在 T13 实现两个独立客户端实例。身份前端已有最小真实认证/账号/同意流程；完整产品体验在T17～T19整合，A/B的实际BFF/SSO在T13实现。T15视觉稿获用户确认，T16基础已完成。
 
-当前通过与待验收任务见进度表；完整OpenAPI包括未来端点契约，端点能力以真实任务证据为准。当前继续T13双BFF；对应任务全部必要验收通过后推进下一任务。文档后续页面和跨模块验收的依赖问题已记录于 [T00 审计](docs/evidence/T00/document-audit.md)，进入相关任务前同步修订，不通过跳过测试消除依赖。
+当前通过与待验收任务见进度表；完整OpenAPI包括未来端点契约，端点能力以真实任务证据为准。当前继续T14管理API；对应任务全部必要验收通过后推进下一任务。文档后续页面和跨模块验收的依赖问题已记录于 [T00 审计](docs/evidence/T00/document-audit.md)，进入相关任务前同步修订，不通过跳过测试消除依赖。
 
 ## 前端基础与数据库测试
 
@@ -85,3 +85,19 @@ CI 复用相同根脚本，分别配置 Linux/Windows 构建，以及 Linux Comp
 ## 完整检查与总结
 
 `npm run test:full`依次执行npm ci、文档/契约/工具检查、check、unit、全部integration/e2e/security/accessibility及build。任一失败仍执行剩余项，整体返回非零，生成`TEST_SUMMARY.md`及带时间戳的`docs/evidence/full-test/`报告。原始进程输出只保存到受限的`.local/full-test/`，避免把秘密写入提交。尚未实现的全量套件会如实失败；此命令不代替性能、真实设备或生产恢复验收。
+
+
+## 双 BFF 演示开发环境（T13）
+
+先启动基础服务，再显式迁移并注册本地客户端：
+
+```text
+npm run dev:up
+npm run db:migrate -- --env=development
+npm run dev:clients
+docker compose --env-file .local/dev.env -f infra/compose.dev.yaml --profile bff up -d --wait --build
+```
+
+`dev:clients`只读取受控本地development配置和identity_development；已有客户端需秘密摘要及完整回调一致，命令不轮换或覆盖秘密。A/B秘密存.local/bff的0600文件，请保留并勿提交；CLI独立支持显式identity_test，production一律拒绝。
+
+BFF的bff profile启动两个独立Rust实例，网页分别5174/5175、BFF8082/8083。浏览器仅持本应用HttpOnly会话；保护请求每次查询身份平台当前状态，PostgreSQL共享锁串行刷新。平台退出需身份页确认当前会话，无ID token hint外回。完整接入与故障处理见[接入指南](docs/bff-integration.md)。T13本地真实验收通过，生产与全面发布仍以进度表和实际证据为准。

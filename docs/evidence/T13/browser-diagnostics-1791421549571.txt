@@ -1,0 +1,64 @@
+
+Running 2 tests using 1 worker
+TT
+
+  1) tests/e2e/T13.spec.ts:12:1 › @T13 A/B use the real shared identity with separate consent and browser-private tokens
+
+    Test timeout of 60000ms exceeded.
+
+    Error: response.text: Test timeout of 60000ms exceeded.
+
+      12 | test('@T13 A/B use the real shared identity with separate consent and browser-private tokens', async ({ page }) => {
+      13 |   const bodies: string[] = [];
+    > 14 |   page.on('response', (response) => { if (response.url().includes('/bff/session')) void response.text().then((value) => bodies.push(value)); });
+         |                                                                                                  ^
+      15 |   await appLogin(page, 5192, true); await appLogin(page, 5193, false);
+      16 |   expect(bodies.some((body) => /access_token|refresh_token|id_token|client_secret/u.test(body))).toBe(false);
+      17 |   const cookies = await page.context().cookies(); expect(cookies.some((cookie) => cookie.name === 't13-a-session')).toBe(true); expect(cookies.some((cookie) => cookie.name === 't13-b-session')).toBe(true);
+        at _Page.<anonymous> (/root/code/rust/auth_rust/tests/e2e/T13.spec.ts:14:98)
+
+    Error: locator.fill: Test timeout of 60000ms exceeded.
+    Call log:
+      - waiting for getByLabel('邮箱地址')
+
+
+      3 |   await page.goto(`http://localhost:${String(port)}/`);
+      4 |   await page.getByRole('link', { name: '通过身份中心登录', exact: true }).click();
+    > 5 |   if (password) { const secret = process.env.T13_BROWSER_PASSWORD; if (!secret) throw new Error('Private test password required.'); await page.getByLabel('邮箱地址').fill('browser-bff@example.test'); await page.getByLabel('密码', { exact: true }).fill(secret); await page.getByRole('button', { name: '登录', exact: true }).click(); }
+        |                                                                                                                                                                   ^
+      6 |   await expect(page).toHaveURL(/\/oauth\/consent\/[0-9a-f-]{36}$/u);
+      7 |   await page.getByRole('button', { name: '同意授权', exact: true }).click();
+      8 |   await page.waitForURL((url) => url.port === String(port) && url.pathname === '/');
+        at appLogin (/root/code/rust/auth_rust/tests/e2e/T13.spec.ts:5:163)
+        at /root/code/rust/auth_rust/tests/e2e/T13.spec.ts:15:3
+
+    Error Context: .local/t13-browser-results/[OPAQUE]/error-context.md
+
+  2) tests/e2e/T13.spec.ts:23:1 › @T13 concurrent requests across two BFF instances share one refresh lock
+
+    Test timeout of 60000ms exceeded.
+
+    Error: locator.fill: Test timeout of 60000ms exceeded.
+    Call log:
+      - waiting for getByLabel('邮箱地址')
+
+
+      3 |   await page.goto(`http://localhost:${String(port)}/`);
+      4 |   await page.getByRole('link', { name: '通过身份中心登录', exact: true }).click();
+    > 5 |   if (password) { const secret = process.env.T13_BROWSER_PASSWORD; if (!secret) throw new Error('Private test password required.'); await page.getByLabel('邮箱地址').fill('browser-bff@example.test'); await page.getByLabel('密码', { exact: true }).fill(secret); await page.getByRole('button', { name: '登录', exact: true }).click(); }
+        |                                                                                                                                                                   ^
+      6 |   await expect(page).toHaveURL(/\/oauth\/consent\/[0-9a-f-]{36}$/u);
+      7 |   await page.getByRole('button', { name: '同意授权', exact: true }).click();
+      8 |   await page.waitForURL((url) => url.port === String(port) && url.pathname === '/');
+        at appLogin (/root/code/rust/auth_rust/tests/e2e/T13.spec.ts:5:163)
+        at /root/code/rust/auth_rust/tests/e2e/T13.spec.ts:24:3
+
+    Error Context: .local/t13-browser-results/[OPAQUE]/error-context.md
+
+  2 failed
+    tests/e2e/T13.spec.ts:12:1 › @T13 A/B use the real shared identity with separate consent and browser-private tokens
+    tests/e2e/T13.spec.ts:23:1 › @T13 concurrent requests across two BFF instances share one refresh lock
+(node:2398174) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2401136) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

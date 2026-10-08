@@ -1,0 +1,15 @@
+
+> rust-unified-identity@0.1.0 dev:clients
+> node scripts/demo-clients.mjs
+
+   Compiling identity-store v0.1.0 (/root/code/rust/auth_rust/crates/identity-store)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.06s
+     Running `target/debug/identity-demo-clients`
+demo A/B clients verified; secrets stored in restricted local files
+
+> rust-unified-identity@0.1.0 dev:clients
+> node scripts/demo-clients.mjs
+
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.11s
+     Running `target/debug/identity-demo-clients`
+demo A/B clients verified; secrets stored in restricted local files

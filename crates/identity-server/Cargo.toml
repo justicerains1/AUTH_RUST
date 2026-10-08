@@ -26,6 +26,7 @@ tracing-subscriber.workspace = true
 workspace = true
 
 [dev-dependencies]
+demo-bff = { path = "../demo-bff" }
 identity-worker = { path = "../identity-worker" }
 reqwest.workspace = true
 sqlx.workspace = true

@@ -1,0 +1,5 @@
+
+> rust-unified-identity@0.1.0 verify:docs
+> node scripts/run.mjs verify:docs
+
+文档检查通过：25 个任务、199 个步骤映射、87 个案例。

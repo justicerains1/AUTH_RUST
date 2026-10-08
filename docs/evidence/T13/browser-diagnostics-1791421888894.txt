@@ -1,0 +1,37 @@
+
+Running 2 tests using 1 worker
+F·
+
+  1) tests/e2e/T13.spec.ts:12:1 › @T13 A/B use the real shared identity with separate consent and browser-private tokens
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('已登录本应用', { exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText('已登录本应用', { exact: true }) with timeout 5000ms
+      - waiting for getByText('已登录本应用', { exact: true })
+
+
+       7 |   await page.getByRole('button', { name: '同意授权', exact: true }).click();
+       8 |   await page.waitForURL((url) => url.port === String(port) && url.pathname === '/');
+    >  9 |   await expect(page.getByText('已登录本应用', { exact: true })).toBeVisible();
+         |                                                           ^
+      10 | }
+      11 |
+      12 | test('@T13 A/B use the real shared identity with separate consent and browser-private tokens', async ({ page }) => {
+        at appLogin (/root/code/rust/auth_rust/tests/e2e/T13.spec.ts:9:59)
+        at /root/code/rust/auth_rust/tests/e2e/T13.spec.ts:15:3
+
+    Error Context: .local/t13-browser-results/[OPAQUE]/error-context.md
+
+  1 failed
+    tests/e2e/T13.spec.ts:12:1 › @T13 A/B use the real shared identity with separate consent and browser-private tokens
+  1 passed (17.7s)
+(node:2423245) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2424927) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

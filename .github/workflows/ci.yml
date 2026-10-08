@@ -74,5 +74,6 @@ jobs:
       - run: npm run test:integration -- --task=T11
       - run: npm run test:integration -- --task=T12
       - run: npm run test:e2e -- --task=T12
+      - run: npm run test:integration -- --task=T13
       - if: always()
         run: npm run dev:down

@@ -1,0 +1,13 @@
+# T13 BFF 持久化与共享刷新锁
+
+[store.rs](../crates/demo-bff/src/store.rs) 使用 [0007](../migrations/0007_bff_sessions.sql) 两张命名空间表；A/B每次查询、Cookie摘要唯一键及AEAD用途都包含独立namespace。浏览器仅随机会话Cookie，数据库只有Cookie/state摘要与加密nonce/PKCE/token，三个OAuth令牌不发页面，不写日志。payload Drop清秘密，Debug只显示REDACTED。
+
+登录流程五分钟、一次消费，Cookie摘要和state摘要必须同时属于本namespace；锁取得后再检查consumed/expiry，防等待期间过期。服务器取出nonce/PKCE后交成熟OIDC客户端验证callback，失败不能重新用该state。流程保存与身份session独立，不共享两应用授权上下文。
+
+BFF会话最长12小时且由已验证身份auth_time限制，tokenpayload到期与数据库绝对expiry复核；刷新不得延长已有会话。`lock_session`持PostgreSQL FOR UPDATE事务，跨进程同一会话保护请求串行；首个请求需要时只调用一次OIDC refresh，后续请求拿锁看到新token，不重复消费旧refresh。
+
+LockedSession的SQL事务不对HTTP开放，只有tokens读取、replace_tokens、invalidate与release；网络请求在BFF专用session锁内进行且HTTP有超时，数据库身份平台安全事务不做网络。刷新失败清应用会话并提交；新token参数非法也先invalidate提交后返回错误。持久化数据库完全不可用时无法写撤销，只能503失败关闭；恢复后的旧token复用会被身份平台replay撤销并清session，不无限重试。
+
+每次受保护API仍实际introspection；明确active=false清BFF会话，身份状态服务失败503，不以本地ID Token验签冒充仍有效。纯本应用退出只撤该namespace Cookie对应会话，身份平台退出另有明确操作。
+
+本模块单元测试实际验证namespace格式隔离、token绝对到期和Debug脱敏，未连接mock数据库。真实两个服务实例共享PG行锁、SMTP/IdP状态故障与浏览器SSO由T13集成/E2E提供证据，不以本页推定全部通过。

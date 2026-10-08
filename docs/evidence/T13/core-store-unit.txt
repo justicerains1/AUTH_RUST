@@ -1,0 +1,8 @@
+   Compiling demo-bff v0.1.0 (/root/code/rust/auth_rust/crates/demo-bff)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.01s
+     Running unittests src/lib.rs (target/debug/deps/demo_bff-b35a78fa64d52035)
+
+running 1 test
+test store::tests::namespace_and_token_boundaries_are_explicit_without_database_calls ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s

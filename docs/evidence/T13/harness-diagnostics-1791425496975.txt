@@ -1,0 +1,28 @@
+   Compiling demo-bff v0.1.0 (/root/code/rust/auth_rust/crates/demo-bff)
+   Compiling identity-server v0.1.0 (/root/code/rust/auth_rust/crates/identity-server)
+error: expected one of `,`, `:`, or `>`, found `=`
+   --> crates/identity-server/tests/t13_bff.rs:287:34
+    |
+287 | ...   let rows:Vec<(String,i64)=sqlx::query_as("SELECT c.client_id,count(*) FROM oauth_grants g JOIN oauth_clients c ON c.id=g.clie...
+    |               -                ^ expected one of `,`, `:`, or `>`
+    |               |
+    |               while parsing the type for `rows`
+    |
+help: you might have meant to end the type parameters here
+    |
+287 |         let rows:Vec<(String,i64)>=sqlx::query_as("SELECT c.client_id,count(*) FROM oauth_grants g JOIN oauth_clients c ON c.id=g.client_id JOIN users u ON u.id=g.user_id WHERE g.revoked_at IS NULL AND u.email='browser-bff-fault@example.test' GROUP BY c.client_id").fetch_all(&pool).await.unwrap_or_default();let a=rows.iter().find(|(client,_)|client=="t13-a").map_or(0,|(_,count)|*count);let b=rows.iter().find(|(client,_)|client=="t13-b").map_or(0,|(_,count)|*count);(StatusCode::OK,Json(json!({"a":a,"b":b})))}}));
+    |                                  +
+
+error[E0282]: type annotations needed for `Vec<(_, i32)>`
+   --> crates/identity-server/tests/t13_bff.rs:287:13
+    |
+287 | ...et rows:Vec<(String,i64)=sqlx::query_as("SELECT c.client_id,count(*) FROM oauth_grants g JOIN oauth_clients c ON c.id=g.client_id JOIN users u ON u.id=g.user_id WHERE g.revoked_at IS NULL AND u.email='browser-bff-fault@example.test' GROUP BY c.client_id").fetch_all(&pool).await.unwrap_or_default();let a=rows.it...
+    |       ^^^^                                                                                                                                                                                                                                                                                                          ---- type must be known at this point
+    |
+help: consider giving `rows` an explicit type, where the placeholders `_` are specified
+    |
+287 |         let rows: Vec<(_, _)>:Vec<(String,i64)=sqlx::query_as("SELECT c.client_id,count(*) FROM oauth_grants g JOIN oauth_clients c ON c.id=g.client_id JOIN users u ON u.id=g.user_id WHERE g.revoked_at IS NULL AND u.email='browser-bff-fault@example.test' GROUP BY c.client_id").fetch_all(&pool).await.unwrap_or_default();let a=rows.iter().find(|(client,_)|client=="t13-a").map_or(0,|(_,count)|*count);let b=rows.iter().find(|(client,_)|client=="t13-b").map_or(0,|(_,count)|*count);(StatusCode::OK,Json(json!({"a":a,"b":b})))}}));
+    |                 +++++++++++++
+
+For more information about this error, try `rustc --explain E0282`.
+error: could not compile `identity-server` (test "t13_bff") due to 2 previous errors

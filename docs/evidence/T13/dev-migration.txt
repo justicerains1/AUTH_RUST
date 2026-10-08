@@ -1,0 +1,10 @@
+
+> rust-unified-identity@0.1.0 db:migrate
+> node scripts/run.mjs db:migrate --env=development
+
+    Blocking waiting for file lock on build directory
+   Compiling identity-store v0.1.0 (/root/code/rust/auth_rust/crates/identity-store)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 7.91s
+     Running `target/debug/identity-migrate`
+migration target: environment=development, database=identity_development
+migrations applied successfully (checksummed SQLx migration history)

@@ -21,7 +21,8 @@
 | T10 | 通过 | 受管理client/授权同意、严格PKCE和浏览器绑定；真实API/2E2E通过，[结果](docs/evidence/T10/test-summary.md) |
 | T11 | 通过 | 原子授权码交换、RS256及旧公钥、scope Userinfo、成熟OIDC互操作与真实并发/故障；[结果](docs/evidence/T11/test-summary.md) |
 | T12 | 通过 | 刷新重放家族撤销、权威introspection/RP确认、scope限制、真实并发/故障及2E2E；[结果](docs/evidence/T12/test-summary.md) |
-| T13～T14 | 未开始 | 双BFF SSO、管理API |
+| T13 | 通过 | 双BFF持久会话、维护SDK/SSO、共享刷新、真实故障/撤销及4E2E；[结果](docs/evidence/T13/test-summary.md) |
+| T14 | 进行中 | 管理员初始化CLI/事务仓储并行实现，前置T08/T10/T12已过 |
 | T15 | 通过 | 官方设计研究、视觉稿与状态规范；用户明确采用方案并进入 T16；[用户确认](docs/evidence/T15/user-review.md) |
 | T16 | 通过 | 设计组件、响应式布局、API/CSRF 客户端、可访问基础路由与保护提示；[结果](docs/evidence/T16/test-summary.md)、[UI 模块记录](docs/evidence/T16/ui-summary.md) |
 | T17～T24 | 未开始 | 完整认证/账号/后台产品页面、全面安全验收、性能、生产部署、发布与高可用 |
@@ -121,7 +122,7 @@ npm run dev:down
 
 `dev:down` 保留开发卷。未实现的任务套件不能返回伪成功；测试库与临时 schema 清理不会指向 production。不要把 `.local`、密码、邮件链接、私钥、token、Cookie 或含这些值的浏览器 trace 提交 Git。
 
-T11已推送83d1de3；当前T12已完成，提交后推进T13双BFF及T14管理API。T17～T19产品流程整合依赖相应真实后端；T20～T23完成后才能评估生产发布。每个模块验收后提交推送，完整任务结束时生成最终测试总结。
+T11已推送83d1de3，T12已推送4f58e1c；当前T13双BFF与独立T14管理仓储并行实现。T17～T19产品流程整合依赖相应真实后端；T20～T23完成后才能评估生产发布。每个模块验收后提交推送，完整任务结束时生成最终测试总结。
 
 ## 最近完成：T11
 
@@ -136,3 +137,9 @@ WindowsOpenSSL构建前置已按实际MSVC失败诊断修复并推送3a06d16，�
 ## 最近完成：T12
 
 刷新轮换/重放审计、scope限制、即时撤销、RP确认、真实PG/Redis停机和2个浏览器流程通过。锁内时间修复覆盖普通退出/密码变化，真实竞争验证及受影响回归通过；[记录](docs/evidence/T12/test-summary.md)。
+
+最新远端CI：a499520/run37711498834的Linux、Windowscheck/unit/build及当前T01～T12集成全成功；此前失败保留。[实际结果](docs/evidence/tooling/ci-recovery/remote-passed.md)。当前T13双BFF开发环境已真实启动，模块SSO/并发/故障仍在独立验收。
+
+## 最近完成：T13
+
+同包A/B/A2真实SSO与PG跨实例单次刷新、状态故障503、本地撤销失败清会话、平台确认退出和callback篡改验证4E2E通过；52前端测试、BFF6单元及完整检查/构建通过。开发10服务真实healthy与secret受限初始化已验证。[结果](docs/evidence/T13/test-summary.md)。下一T14草稿恢复后接HTTP与真实权限/并发测试。

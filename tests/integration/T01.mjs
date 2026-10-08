@@ -186,8 +186,10 @@ async function main() {
   for (const port of [5173, 5174, 5175]) {
     const response = await fetch(`http://localhost:${port}/`, { signal: AbortSignal.timeout(5000) });
     assert.equal(response.status, 200);
-    assert.match(await response.text(), /T01/u);
-    lines.push(`PASS frontend ${port}: HTTP 200 / T01 title`);
+    const html = await response.text();
+    assert.match(html, /<title>[^<]+<\/title>/u);
+    assert.match(html, /<div id="root">/u);
+    lines.push(`PASS frontend ${port}: HTTP 200 / application title and React root`);
   }
   const proxy = await fetch('http://localhost:5173/health/ready', { signal: AbortSignal.timeout(5000) });
   assert.equal(proxy.status, 200);

@@ -7,5 +7,6 @@ export default defineConfig({
     host: process.env.HOST ?? '127.0.0.1',
     port: 5174,
     strictPort: true,
+    proxy: { '/bff': process.env.BFF_API_PROXY ?? 'http://127.0.0.1:8082' },
   },
 });

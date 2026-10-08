@@ -1,0 +1,78 @@
+
+> rust-unified-identity@0.1.0 check
+> node scripts/run.mjs check
+
+   Compiling rustls v0.23.45
+    Checking thiserror v2.0.21
+    Checking webauthn-rs-proto v0.5.5
+   Compiling sqlx-core v0.9.0
+    Checking regex-automata v0.4.18
+    Checking chrono v0.4.45
+    Checking axum v0.8.9
+    Checking simple_asn1 v0.6.4
+    Checking jsonwebtoken v11.1.0
+    Checking webauthn-rs-core v0.5.5
+    Checking biscuit v0.7.0
+    Checking matchers v0.2.0
+    Checking regex v1.13.1
+    Checking tracing-subscriber v0.3.23
+    Checking validator v0.20.0
+    Checking webauthn-rs v0.5.5
+    Checking identity-core v0.1.0 (/root/code/rust/auth_rust/crates/identity-core)
+   Compiling sqlx-postgres v0.9.0
+    Checking tokio-rustls v0.26.6
+    Checking rustls-platform-verifier v0.7.1
+    Checking redis v1.7.1
+    Checking hyper-rustls v0.27.10
+    Checking lettre v0.11.23
+    Checking reqwest v0.13.5
+    Checking identity-admin-cli v0.1.0 (/root/code/rust/auth_rust/crates/identity-admin-cli)
+    Checking openid v0.25.0
+   Compiling sqlx-macros-core v0.9.0
+   Compiling sqlx-macros v0.9.0
+    Checking sqlx v0.9.0
+    Checking demo-bff v0.1.0 (/root/code/rust/auth_rust/crates/demo-bff)
+    Checking identity-store v0.1.0 (/root/code/rust/auth_rust/crates/identity-store)
+    Checking identity-worker v0.1.0 (/root/code/rust/auth_rust/crates/identity-worker)
+    Checking identity-server v0.1.0 (/root/code/rust/auth_rust/crates/identity-server)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 9.71s
+
+/root/code/rust/auth_rust/apps/demo-a/src/pages/InitializationPage.tsx
+  12:62  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/root/code/rust/auth_rust/apps/demo-a/src/pages/InitializationPage.tsx:12:62
+  10 |     try { const response = await responsePromise;  if (response.status === 401) { setState('anonymous'); return; } if (!response.ok) { setState('unavailable'); return; } const value: unknown = await response.json(); if (typeof value !== 'object' || value === null || !('user' in value) || typeof value.user !== 'object' || value.user === null || !('sub' in value.user) || typeof value.user.sub !== 'string') { setState('unavailable'); return; } setSubject(value.user.sub); setState('authenticated'); } catch { setState('unavailable'); }
+  11 |   }
+> 12 |   useEffect(() => { document.title = '演示应用 A · 统一身份中心'; void load(); }, []);
+     |                                                              ^^^^ Avoid calling setState() directly within an effect
+  13 |   async function logout(identity: boolean) {
+  14 |     setBusy(true); setMessage('');
+  15 |     try { const csrfResponse = await fetch('/bff/csrf', { credentials: 'same-origin', cache: 'no-store' }); const csrf: unknown = await csrfResponse.json(); if (!csrfResponse.ok || typeof csrf !== 'object' || csrf === null || !('csrf_token' in csrf) || typeof csrf.csrf_token !== 'string') throw new Error('CSRF unavailable'); const response = await fetch(identity ? '/bff/identity-logout' : '/bff/logout', { method: 'POST', credentials: 'same-origin', cache: 'no-store', headers: { 'X-CSRF-Token': csrf.csrf_token } }); if (!response.ok) throw new Error('Logout unavailable'); const value: unknown = await response.json(); if (typeof value === 'object' && value !== null && 'redirect_to' in value && typeof value.redirect_to === 'string') { window.location.assign(value.redirect_to); return; } setSubject(''); setState('anonymous'); setMessage('已退出本应用；身份平台及其他应用的会话不受影响。'); } catch { setMessage('退出暂未完成，请稍后重试。'); } finally { setBusy(false); }  react-hooks/set-state-in-effect
+
+/root/code/rust/auth_rust/apps/demo-b/src/pages/InitializationPage.tsx
+  12:62  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/root/code/rust/auth_rust/apps/demo-b/src/pages/InitializationPage.tsx:12:62
+  10 |     try { const response = await responsePromise;  if (response.status === 401) { setState('anonymous'); return; } if (!response.ok) { setState('unavailable'); return; } const value: unknown = await response.json(); if (typeof value !== 'object' || value === null || !('user' in value) || typeof value.user !== 'object' || value.user === null || !('sub' in value.user) || typeof value.user.sub !== 'string') { setState('unavailable'); return; } setSubject(value.user.sub); setState('authenticated'); } catch { setState('unavailable'); }
+  11 |   }
+> 12 |   useEffect(() => { document.title = '演示应用 B · 统一身份中心'; void load(); }, []);
+     |                                                              ^^^^ Avoid calling setState() directly within an effect
+  13 |   async function logout(identity: boolean) {
+  14 |     setBusy(true); setMessage('');
+  15 |     try { const csrfResponse = await fetch('/bff/csrf', { credentials: 'same-origin', cache: 'no-store' }); const csrf: unknown = await csrfResponse.json(); if (!csrfResponse.ok || typeof csrf !== 'object' || csrf === null || !('csrf_token' in csrf) || typeof csrf.csrf_token !== 'string') throw new Error('CSRF unavailable'); const response = await fetch(identity ? '/bff/identity-logout' : '/bff/logout', { method: 'POST', credentials: 'same-origin', cache: 'no-store', headers: { 'X-CSRF-Token': csrf.csrf_token } }); if (!response.ok) throw new Error('Logout unavailable'); const value: unknown = await response.json(); if (typeof value === 'object' && value !== null && 'redirect_to' in value && typeof value.redirect_to === 'string') { window.location.assign(value.redirect_to); return; } setSubject(''); setState('anonymous'); setMessage('已退出本应用；身份平台及其他应用的会话不受影响。'); } catch { setMessage('退出暂未完成，请稍后重试。'); } finally { setBusy(false); }  react-hooks/set-state-in-effect
+
+✖ 2 problems (2 errors, 0 warnings)
+
+/usr/bin/node 退出码 1。

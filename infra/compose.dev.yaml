@@ -116,6 +116,86 @@ services:
       retries: 20
       start_period: 10s
 
+  demo-a-bff:
+    <<: *backend
+    profiles: [bff]
+    image: auth-rust-demo-a-bff:development
+    command: [demo-bff]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      identity-web:
+        condition: service_healthy
+    environment:
+      BIND: 0.0.0.0:8082
+      BFF_PUBLIC_ORIGIN: http://localhost:5174
+      BFF_CLIENT_ID: demo-a
+      BFF_CLIENT_SECRET_FILE: /run/bff/demo-a-secret
+      BFF_NAMESPACE: demo_a
+      BFF_COOKIE_NAME: demo-a-session-dev
+      BFF_ISSUER_CONNECT_HOST: identity-web
+    volumes:
+      - type: bind
+        source: ../.local/bff/demo-a-secret
+        target: /run/bff/demo-a-secret
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ../.local/encryption-keys.json
+        target: /run/secrets/encryption-keys.json
+        read_only: true
+        bind:
+          create_host_path: false
+    ports:
+      - 127.0.0.1:8082:8082
+    healthcheck:
+      test: [CMD, curl, --fail, --silent, --show-error, http://127.0.0.1:8082/health/live]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 10s
+
+  demo-b-bff:
+    <<: *backend
+    profiles: [bff]
+    image: auth-rust-demo-b-bff:development
+    command: [demo-bff]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      identity-web:
+        condition: service_healthy
+    environment:
+      BIND: 0.0.0.0:8083
+      BFF_PUBLIC_ORIGIN: http://localhost:5175
+      BFF_CLIENT_ID: demo-b
+      BFF_CLIENT_SECRET_FILE: /run/bff/demo-b-secret
+      BFF_NAMESPACE: demo_b
+      BFF_COOKIE_NAME: demo-b-session-dev
+      BFF_ISSUER_CONNECT_HOST: identity-web
+    volumes:
+      - type: bind
+        source: ../.local/bff/demo-b-secret
+        target: /run/bff/demo-b-secret
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ../.local/encryption-keys.json
+        target: /run/secrets/encryption-keys.json
+        read_only: true
+        bind:
+          create_host_path: false
+    ports:
+      - 127.0.0.1:8083:8083
+    healthcheck:
+      test: [CMD, curl, --fail, --silent, --show-error, http://127.0.0.1:8083/health/live]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 10s
+
   identity-web:
     <<: *web
     image: auth-rust-identity-web:development
@@ -136,6 +216,9 @@ services:
     <<: *web
     image: auth-rust-demo-a:development
     command: [npm, run, dev, --workspace, '@identity/demo-a']
+    environment:
+      HOST: 0.0.0.0
+      BFF_API_PROXY: http://demo-a-bff:8082
     ports:
       - 127.0.0.1:5174:5174
     healthcheck:
@@ -149,6 +232,9 @@ services:
     <<: *web
     image: auth-rust-demo-b:development
     command: [npm, run, dev, --workspace, '@identity/demo-b']
+    environment:
+      HOST: 0.0.0.0
+      BFF_API_PROXY: http://demo-b-bff:8083
     ports:
       - 127.0.0.1:5175:5175
     healthcheck:

@@ -1,0 +1,142 @@
+
+> rust-unified-identity@0.1.0 check
+> node scripts/run.mjs check
+
+    Checking identity-core v0.1.0 (/root/code/rust/auth_rust/crates/identity-core)
+    Checking identity-store v0.1.0 (/root/code/rust/auth_rust/crates/identity-store)
+    Checking demo-bff v0.1.0 (/root/code/rust/auth_rust/crates/demo-bff)
+    Checking identity-admin-cli v0.1.0 (/root/code/rust/auth_rust/crates/identity-admin-cli)
+    Checking identity-worker v0.1.0 (/root/code/rust/auth_rust/crates/identity-worker)
+    Checking identity-server v0.1.0 (/root/code/rust/auth_rust/crates/identity-server)
+error: used `expect()` on a `Result` value
+   --> crates/demo-bff/src/config.rs:233:13
+    |
+233 |             fs::create_dir(&directory).expect("create config fixture");
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: if this value is an `Err`, it will panic
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#expect_used
+    = note: requested on the command line with `-D clippy::expect-used`
+
+error: used `expect()` on a `Result` value
+   --> crates/demo-bff/src/config.rs:235:13
+    |
+235 |             fs::write(&secret, "A".repeat(43)).expect("write fixture");
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: if this value is an `Err`, it will panic
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#expect_used
+
+error: used `expect()` on a `Result` value
+   --> crates/demo-bff/src/config.rs:237:13
+    |
+237 | /             fs::write(
+238 | |                 &keys,
+239 | |                 serde_json::json!({"test-key":BASE64_STANDARD.encode([7_u8;32])}).to_string(),
+240 | |             )
+241 | |             .expect("write fixture");
+    | |____________________________________^
+    |
+    = note: if this value is an `Err`, it will panic
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#expect_used
+
+error: used `expect()` on a `Result` value
+   --> crates/demo-bff/src/config.rs:246:21
+    |
+246 | /                     fs::set_permissions(file, fs::Permissions::from_mode(0o600))
+247 | |                         .expect("fixture permissions");
+    | |______________________________________________________^
+    |
+    = note: if this value is an `Err`, it will panic
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#expect_used
+
+error: used `expect()` on an `Option` value
+   --> crates/demo-bff/src/config.rs:307:25
+    |
+307 |               let error = BffConfig::from_values(&values)
+    |  _________________________^
+308 | |                 .err()
+309 | |                 .expect("reject config");
+    | |________________________________________^
+    |
+    = note: if this value is `None`, it will panic
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#expect_used
+
+error: used `expect()` on a `Result` value
+   --> crates/demo-bff/src/config.rs:313:9
+    |
+313 | /         fs::write(fixture.directory.join("client-secret"), "A".repeat(2048))
+314 | |             .expect("write oversized fixture");
+    | |______________________________________________^
+    |
+    = note: if this value is an `Err`, it will panic
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#expect_used
+
+error: used `expect()` on a `Result` value
+   --> crates/demo-bff/src/config.rs:338:17
+    |
+338 | /                 fs::set_permissions(&path, fs::Permissions::from_mode(0o644))
+339 | |                     .expect("fixture permissions");
+    | |__________________________________________________^
+    |
+    = note: if this value is an `Err`, it will panic
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#expect_used
+
+error: used `expect()` on a `Result` value
+   --> crates/demo-bff/src/config.rs:341:17
+    |
+341 | /                 fs::set_permissions(path, fs::Permissions::from_mode(0o600))
+342 | |                     .expect("restore fixture permissions");
+    | |__________________________________________________________^
+    |
+    = note: if this value is an `Err`, it will panic
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#expect_used
+
+error: used `expect()` on a `Result` value
+   --> crates/demo-bff/src/oidc.rs:533:19
+    |
+533 |         let now = OffsetDateTime::from_unix_timestamp(1800000000).expect("fixture time");
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: if this value is an `Err`, it will panic
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#expect_used
+
+error: used `expect()` on an `Option` value
+   --> crates/demo-bff/src/oidc.rs:547:13
+    |
+547 |             malformed.as_object_mut().expect("object").remove(field);
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: if this value is `None`, it will panic
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#expect_used
+
+error: used `expect()` on a `Result` value
+   --> crates/demo-bff/src/oidc.rs:564:22
+    |
+564 |         let issuer = Url::parse("https://identity.example").expect("fixture issuer");
+    |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: if this value is an `Err`, it will panic
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#expect_used
+
+error: used `expect()` on a `Result` value
+   --> crates/demo-bff/src/oidc.rs:571:37
+    |
+571 |             assert!(fixed_endpoint(&Url::parse(endpoint).expect("fixture URL"), &issuer).is_err());
+    |                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: if this value is an `Err`, it will panic
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#expect_used
+
+error: used `expect()` on a `Result` value
+   --> crates/demo-bff/src/oidc.rs:575:18
+    |
+575 |                 &Url::parse("https://identity.example/oauth/token").expect("fixture URL"),
+    |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: if this value is an `Err`, it will panic
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#expect_used
+
+error: could not compile `demo-bff` (lib test) due to 13 previous errors
+warning: build failed, waiting for other jobs to finish...
+cargo 退出码 101。

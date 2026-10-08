@@ -1,0 +1,28 @@
+
+Running 2 tests using 1 worker
+T·
+
+  1) tests/e2e/T13.spec.ts:12:1 › @T13 A/B use the real shared identity with separate consent and browser-private tokens
+
+    Test timeout of 60000ms exceeded.
+
+    Error: browserContext.cookies: Target page, context or browser has been closed
+
+      16 |   const bodies = await Promise.all(bodyPromises);
+      17 |   expect(bodies.some((body) => /access_token|refresh_token|id_token|client_secret/u.test(body))).toBe(false);
+    > 18 |   const cookies = await page.context().cookies(); expect(cookies.some((cookie) => cookie.name === 't13-a-session')).toBe(true); expect(cookies.some((cookie) => cookie.name === 't13-b-session')).toBe(true);
+         |                                        ^
+      19 |   const stored = await page.evaluate(() => ({ local: Object.keys(localStorage), session: Object.keys(sessionStorage) })); expect(stored).toEqual({ local: [], session: [] });
+      20 |   await page.goto('http://localhost:5190/me'); await page.getByRole('button', { name: '退出所有设备', exact: true }).click(); await page.getByRole('dialog').getByRole('button', { name: '退出所有设备', exact: true }).click(); await expect(page).toHaveURL(/\/login$/u);
+      21 |   await page.goto('http://localhost:5192/'); await expect(page.getByRole('link', { name: '通过身份中心登录', exact: true })).toBeVisible(); await page.goto('http://localhost:5193/'); await expect(page.getByRole('link', { name: '通过身份中心登录', exact: true })).toBeVisible();
+        at /root/code/rust/auth_rust/tests/e2e/T13.spec.ts:18:40
+
+    Error Context: .local/t13-browser-results/[OPAQUE]/error-context.md
+
+  1 failed
+    tests/e2e/T13.spec.ts:12:1 › @T13 A/B use the real shared identity with separate consent and browser-private tokens
+  1 passed (1.1m)
+(node:2439788) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2442779) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

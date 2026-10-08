@@ -1,0 +1,6 @@
+PASS A real BFF HTTP 401
+PASS B real BFF HTTP 401
+PASS public Discovery HTTP 200
+PASS fixed public issuer served as JSON at exact same-origin path
+PASS local demo client setup repeated without rotating secrets; both files mode600
+PASS production demo setup rejected before connection/files

@@ -80,8 +80,8 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 | T10 | 受管理客户端与授权/同意事务 | 通过 | T06、T02 | docs/evidence/T10/test-summary.md |
 | T11 | 授权码交换、ID Token、Discovery 和 Userinfo | 通过 | T10 | docs/evidence/T11/test-summary.md |
 | T12 | 刷新轮换、Introspection、撤销与 RP 退出 | 通过 | T11 | docs/evidence/T12/test-summary.md |
-| T13 | 两个 BFF 演示应用与接入指南 | 未开始 | T12 | 待提供 |
-| T14 | 管理员初始化与管理 API | 未开始 | T08、T10、T12 | 待提供 |
+| T13 | 两个 BFF 演示应用与接入指南 | 通过 | T12 | docs/evidence/T13/test-summary.md |
+| T14 | 管理员初始化与管理 API | 进行中 | T08、T10、T12 | 仓储/CLI实现中 |
 | T15 | Awwwards 研究、设计稿与视觉规范 | 通过 | T00；可与后端并行 | docs/evidence/T15/user-review.md |
 | T16 | 前端基础、组件和可访问路由 | 通过 | T15、T02 | docs/evidence/T16/test-summary.md |
 | T17 | 品牌、注册登录、MFA 与密码恢复页面 | 未开始 | T05～T09、T16 | 待提供 |
@@ -540,30 +540,31 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 
 | 案例 | 前置状态 | 操作步骤 | 预期结果 | 实际结果 | 状态 | 证据 |
 |---|---|---|---|---|---|---|
-| T13-BFF-01 | A/B 两应用 | A 登录，进入 B，再查看两应用 | B 无需输入凭证，首次同意仍出现 | 待填写 | 未执行 | 待提供：视频/截图与 trace |
-| T13-BFF-02 | 两应用已登录 | IdP 退出全部设备后访问 A/B | 下一次保护请求均拒绝 | 待填写 | 未执行 | 待提供：E2E 输出 |
-| T13-BFF-03 | 浏览器和服务日志 | 检查存储、网络、日志 | 无 OAuth tokens/client secret 暴露 | 待填写 | 未执行 | 待提供：脱敏检查 |
-| T13-BFF-04 | 多个并发请求需刷新 | 并发访问，再中断 introspection | 只一次轮换；故障 503，无旁路 | 待填写 | 未执行 | 待提供：并发测试 |
+| T13-BFF-01 | A/B 两应用 | A 登录，进入 B，再查看两应用 | B 无需输入凭证，首次同意仍出现 | 真实A登录/B复用身份，B首次scope同意；同包独立client/Cookie/持久namespace | 通过 | [真实4E2E](docs/evidence/T13/integration.txt)、[边界](docs/evidence/T13/test-boundaries.md) |
+| T13-BFF-02 | 两应用已登录 | IdP 退出全部设备后访问 A/B | 下一次保护请求均拒绝 | IdP全部退出提交后A/B下一保护请求均拒；平台退出必须确认 | 通过 | [真实4E2E](docs/evidence/T13/integration.txt)、[边界](docs/evidence/T13/test-boundaries.md) |
+| T13-BFF-03 | 浏览器和服务日志 | 检查存储、网络、日志 | 无 OAuth tokens/client secret 暴露 | 浏览器storage/BFFJSON无OAuth令牌或secret，不向tokenendpoint请求；只保存会话Cookie | 通过 | [真实4E2E](docs/evidence/T13/integration.txt)、[边界](docs/evidence/T13/test-boundaries.md) |
+| T13-BFF-04 | 多个并发请求需刷新 | 并发访问，再中断 introspection | 只一次轮换；故障 503，无旁路 | 十请求跨A/A2共享PG锁仅一次轮换；真实Redisstop状态/刷新503；退出revoke故障failed仍清Cookie | 通过 | [真实4E2E](docs/evidence/T13/integration.txt)、[边界](docs/evidence/T13/test-boundaries.md) |
 
 **实现子步骤检查：**
 
-- [ ] T13.01：同一 BFF 包运行 A/B 独立实例，不同 client secret、回调、Cookie 与会话空间。
-- [ ] T13.02：使用维护中的 OIDC 客户端库处理 discovery、state、nonce、PKCE 与 ID Token；BFF session 持久化。
-- [ ] T13.03：服务端存储 OAuth token，BFF 数据库中的长期秘密加密，不回传网页。
-- [ ] T13.04：每次受保护 API introspection，无效清 session；状态服务不可用返回 503，不当作已登录。
-- [ ] T13.05：刷新通过共享会话锁串行化，失败清理，不无限重试旧 token。
-- [ ] T13.06：提供本应用退出与身份平台退出两个明确按钮；本地退出不谎称退出其他设备。
-- [ ] T13.07：验证 A 登录后 B 复用 IdP session，但首次 B scope 仍按同意规则。
-- [ ] T13.08：写完整接入指南、示例环境和撤销请求失败处理。
+- [x] T13.01：同一 BFF 包运行 A/B 独立实例，不同 client secret、回调、Cookie 与会话空间。
+- [x] T13.02：使用维护中的 OIDC 客户端库处理 discovery、state、nonce、PKCE 与 ID Token；BFF session 持久化。
+- [x] T13.03：服务端存储 OAuth token，BFF 数据库中的长期秘密加密，不回传网页。
+- [x] T13.04：每次受保护 API introspection，无效清 session；状态服务不可用返回 503，不当作已登录。
+- [x] T13.05：刷新通过共享会话锁串行化，失败清理，不无限重试旧 token。
+- [x] T13.06：提供本应用退出与身份平台退出两个明确按钮；本地退出不谎称退出其他设备。
+- [x] T13.07：验证 A 登录后 B 复用 IdP session，但首次 B scope 仍按同意规则。
+- [x] T13.08：写完整接入指南、示例环境和撤销请求失败处理。
 
 **验收记录：**
 
-- 代码版本：待填写。
-- 环境与时间：待填写。
-- 命令退出码：待填写。
-- 失败/阻塞项：待填写。
-- 修复与复测：待填写。
-- 任务结论：未开始。
+- 代码版本：本模块Git提交（父a499520）。
+- 环境与时间：2026-10-08 Linux/Rust1.98/Node22、PG17/Redis7.4、Chromium153；同包A/B/A2、三真实Vite。
+- 命令退出码：check/unit/build/docs/openapi/tooling与4E2E均0；65工具、52前端测试；BFF6单元与Clippy0。
+- 失败/阻塞项：metadata代理/fixture scope/浏览器context及expect_used已修，失败保留；T14草稿隔离，生产/实体设备待验收。
+- 修复与复测：[T13总结](docs/evidence/T13/test-summary.md)、[接入指南](docs/bff-integration.md)、[存储事务](docs/bff-storage.md)。
+- 任务结论：通过（真实本地模块验收，生产/全量关卡未放行）。
+
 
 ### T14 — 管理员初始化与管理 API
 
@@ -597,7 +598,7 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 - 命令退出码：待填写。
 - 失败/阻塞项：待填写。
 - 修复与复测：待填写。
-- 任务结论：未开始。
+- 任务结论：进行中。
 
 ### T15 — Awwwards 研究、设计稿与视觉规范
 

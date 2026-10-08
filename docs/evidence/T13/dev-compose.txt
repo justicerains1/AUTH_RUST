@@ -1,0 +1,281 @@
+#1 [internal] load local bake definitions
+#1 reading from stdin 3.32kB done
+#1 DONE 0.0s
+
+#2 [api internal] load build definition from Dockerfile.dev
+#2 transferring dockerfile: 1.06kB done
+#2 DONE 0.0s
+
+#3 [identity-web internal] load build definition from Dockerfile.web.dev
+#3 transferring dockerfile: 703B done
+#3 DONE 0.0s
+
+#4 [worker internal] load metadata for docker.m.daocloud.io/library/rust:1.98.0-bookworm@sha256:82150a52ec202c1b14d7817e14516c392bb7f5cfebd88f1ed531cb37ebd39922
+#4 DONE 0.1s
+
+#5 [demo-a internal] load metadata for docker.m.daocloud.io/library/node:22.22.1-bookworm-slim@sha256:4f77a690f2f8946ab16fe1e791a3ac0667ae1c3575c3e4d0d4589e9ed5bfaf3d
+#5 DONE 0.1s
+
+#6 [identity-web internal] load .dockerignore
+#6 transferring context:
+#6 transferring context: 230B done
+#6 DONE 0.0s
+
+#7 [api internal] load build context
+#7 DONE 0.0s
+
+#8 [demo-a internal] load build context
+#8 transferring context: 12.07kB done
+#8 DONE 0.0s
+
+#9 [api stage-0 1/7] FROM docker.m.daocloud.io/library/rust:1.98.0-bookworm@sha256:82150a52ec202c1b14d7817e14516c392bb7f5cfebd88f1ed531cb37ebd39922
+#9 resolve docker.m.daocloud.io/library/rust:1.98.0-bookworm@sha256:82150a52ec202c1b14d7817e14516c392bb7f5cfebd88f1ed531cb37ebd39922
+#9 resolve docker.m.daocloud.io/library/rust:1.98.0-bookworm@sha256:82150a52ec202c1b14d7817e14516c392bb7f5cfebd88f1ed531cb37ebd39922 0.1s done
+#9 DONE 0.1s
+
+#10 [identity-web stage-0 1/8] FROM docker.m.daocloud.io/library/node:22.22.1-bookworm-slim@sha256:4f77a690f2f8946ab16fe1e791a3ac0667ae1c3575c3e4d0d4589e9ed5bfaf3d
+#10 resolve docker.m.daocloud.io/library/node:22.22.1-bookworm-slim@sha256:4f77a690f2f8946ab16fe1e791a3ac0667ae1c3575c3e4d0d4589e9ed5bfaf3d 0.1s done
+#10 DONE 0.1s
+
+#11 [identity-web stage-0 2/8] WORKDIR /workspace
+#11 CACHED
+
+#12 [identity-web stage-0 5/8] COPY apps/demo-a/package.json ./apps/demo-a/package.json
+#12 CACHED
+
+#13 [identity-web stage-0 3/8] COPY package.json package-lock.json ./
+#13 CACHED
+
+#14 [identity-web stage-0 4/8] COPY apps/identity-web/package.json ./apps/identity-web/package.json
+#14 CACHED
+
+#15 [identity-web stage-0 6/8] COPY apps/demo-b/package.json ./apps/demo-b/package.json
+#15 CACHED
+
+#7 [worker internal] load build context
+#7 transferring context: 29.85kB done
+#7 DONE 0.0s
+
+#16 [demo-a stage-0 7/8] RUN --mount=type=cache,id=auth-rust-npm-cache,target=/root/.npm,sharing=locked npm ci
+#16 CACHED
+
+#17 [api stage-0 2/7] WORKDIR /workspace
+#17 CACHED
+
+#18 [api stage-0 3/7] COPY Cargo.toml Cargo.lock rust-toolchain.toml ./
+#18 CACHED
+
+#19 [api stage-0 4/7] COPY crates ./crates
+#19 DONE 0.1s
+
+#20 [demo-a stage-0 8/8] COPY apps ./apps
+#20 DONE 0.1s
+
+#21 [demo-b-bff stage-0 5/7] COPY migrations ./migrations
+#21 DONE 0.1s
+
+#22 [worker stage-0 6/7] COPY data ./data
+#22 DONE 0.2s
+
+#23 [demo-b-bff stage-0 7/7] RUN --mount=type=cache,id=auth-rust-cargo-registry,target=/usr/local/cargo/registry,sharing=locked     --mount=type=cache,id=auth-rust-cargo-git,target=/usr/local/cargo/git,sharing=locked     --mount=type=cache,id=auth-rust-cargo-target-1.98,target=/workspace/target,sharing=locked     cargo build --workspace --locked &&     install -m 0755 target/debug/identity-server target/debug/identity-worker       target/debug/identity-admin-cli target/debug/identity-migrate target/debug/demo-bff /usr/local/bin/
+#23 ...
+
+#24 [identity-web] exporting to image
+#24 exporting layers 0.3s done
+#24 exporting manifest sha256:1b2a35897d45dbee618d2c17060a62c535d4236bc3fe400ab5d7c7659c87207d 0.1s done
+#24 exporting config sha256:ccb01e770985dae8e1796960bad2a3ce9fa4fb922f9a221e4641020cbe987b6f 0.1s done
+#24 exporting attestation manifest sha256:71e7e6b4513fe8e89f7b6bde10a74859a172a3eaa8d7db51688c624761eaf077 0.2s done
+#24 exporting manifest list sha256:1e950b1bc76f5b4591bda1f532150ea41d4ba8f00d19bf38513a54dbf403d0d7 0.1s done
+#24 naming to docker.io/library/auth-rust-identity-web:development done
+#24 unpacking to docker.io/library/auth-rust-identity-web:development 0.1s done
+#24 DONE 1.0s
+
+#25 [demo-b] exporting to image
+#25 exporting layers 0.2s done
+#25 exporting manifest sha256:decefeec2ebab30da5f04aacfbd9ad1b6c903aa064260ef61d5a4458cb0a6ff2 0.1s done
+#25 exporting config sha256:44b5efe730d441126ecc82886ec18b384db15b0f87d81c49e2c7c2572516dbcb 0.1s done
+#25 exporting attestation manifest sha256:d64bfbad816bac10f1a74606b2fd9dd5ca1e3cb7bb4341d6f544b7084d31247b 0.2s done
+#25 exporting manifest list sha256:ae40d5b381021e16f4fc4ab67352eb36e091fa8d385469cd16774346821e7308 0.1s done
+#25 naming to docker.io/library/auth-rust-demo-b:development 0.0s done
+#25 unpacking to docker.io/library/auth-rust-demo-b:development 0.1s done
+#25 DONE 1.0s
+
+#26 [demo-a] exporting to image
+#26 exporting layers 0.3s done
+#26 exporting manifest sha256:44bc15b08db998cc6e7c8d941f9ad69b86acf46bbb19938207009b4aa92032e1 0.1s done
+#26 exporting config sha256:569e9b9a9337783b64332cf654f20fa3b384da2af020f8ea1c1413802f2793b1 0.1s done
+#26 exporting attestation manifest sha256:4e0c5c2fd13f175cdd65388674279358c0e5c22793fd8c3483c4b6627c72097a 0.3s done
+#26 exporting manifest list sha256:042403a85880aee4f679595429f22e455073a409716cf05f1e8833e36dae7cb4 0.1s done
+#26 naming to docker.io/library/auth-rust-demo-a:development 0.0s done
+#26 unpacking to docker.io/library/auth-rust-demo-a:development 0.1s done
+#26 DONE 1.0s
+
+#23 [demo-b-bff stage-0 7/7] RUN --mount=type=cache,id=auth-rust-cargo-registry,target=/usr/local/cargo/registry,sharing=locked     --mount=type=cache,id=auth-rust-cargo-git,target=/usr/local/cargo/git,sharing=locked     --mount=type=cache,id=auth-rust-cargo-target-1.98,target=/workspace/target,sharing=locked     cargo build --workspace --locked &&     install -m 0755 target/debug/identity-server target/debug/identity-worker       target/debug/identity-admin-cli target/debug/identity-migrate target/debug/demo-bff /usr/local/bin/
+#23 0.675 info: syncing channel updates for 1.98.0-x86_64-unknown-linux-gnu
+#23 ...
+
+#27 [identity-web] resolving provenance for metadata file
+#27 DONE 0.1s
+
+#28 [demo-b] resolving provenance for metadata file
+#28 DONE 0.1s
+
+#29 [demo-a] resolving provenance for metadata file
+#29 DONE 0.0s
+
+#23 [demo-b-bff stage-0 7/7] RUN --mount=type=cache,id=auth-rust-cargo-registry,target=/usr/local/cargo/registry,sharing=locked     --mount=type=cache,id=auth-rust-cargo-git,target=/usr/local/cargo/git,sharing=locked     --mount=type=cache,id=auth-rust-cargo-target-1.98,target=/workspace/target,sharing=locked     cargo build --workspace --locked &&     install -m 0755 target/debug/identity-server target/debug/identity-worker       target/debug/identity-admin-cli target/debug/identity-migrate target/debug/demo-bff /usr/local/bin/
+#23 3.895 info: latest update on 2026-08-20 for version 1.98.0 (88d9e12ae 2026-08-18)
+#23 3.905 info: downloading component clippy
+#23 6.867    Compiling demo-bff v0.1.0 (/workspace/crates/demo-bff)
+#23 8.529     Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.10s
+#23 DONE 11.0s
+
+#30 [api] exporting to image
+#30 exporting layers
+#30 ...
+
+#31 [demo-b-bff] exporting to image
+#31 ...
+
+#32 [worker] exporting to image
+#32 ...
+
+#33 [demo-a-bff] exporting to image
+#33 exporting layers 13.4s done
+#33 exporting manifest sha256:a5f52faf381894ea002e4079dc1aff4563faf6604ee936a98d3c615aeb006a28 0.1s done
+#33 exporting config sha256:c9667f6b8d873262f9f614707d4fa939926ec03b1aaf122ff8c2f7e3f198933d
+#33 ...
+
+#30 [api] exporting to image
+#30 exporting layers 13.4s done
+#30 exporting manifest sha256:c01effb41d8b9818f3c94ece8e8f07e94ec59ed2bfdd94250b84908c61066f5d 0.1s done
+#30 exporting config sha256:02837c28e0b63139e8f062e111940d524f5ac18ec229dd108fab5bdb0dc08ec8
+#30 exporting config sha256:02837c28e0b63139e8f062e111940d524f5ac18ec229dd108fab5bdb0dc08ec8 0.1s done
+#30 exporting attestation manifest sha256:fe30571a51207c6350c57c547796668e4d4f9a8908df140a7c719692216b93ce
+#30 exporting attestation manifest sha256:fe30571a51207c6350c57c547796668e4d4f9a8908df140a7c719692216b93ce 0.2s done
+#30 exporting manifest list sha256:3ab515de50edda24a157e5858a8920f4aed6aac00d27962793d87ba5ed862a7b
+#30 exporting manifest list sha256:3ab515de50edda24a157e5858a8920f4aed6aac00d27962793d87ba5ed862a7b 0.1s done
+#30 naming to docker.io/library/auth-rust-api:development 0.0s done
+#30 unpacking to docker.io/library/auth-rust-api:development
+#30 unpacking to docker.io/library/auth-rust-api:development 4.4s done
+#30 DONE 18.5s
+
+#33 [demo-a-bff] exporting to image
+#33 exporting config sha256:c9667f6b8d873262f9f614707d4fa939926ec03b1aaf122ff8c2f7e3f198933d 0.1s done
+#33 exporting attestation manifest sha256:999a6b250e38cb06fb5df6353f8e1534f1889401b6f2553cf4f8545582e1f8ae 0.2s done
+#33 exporting manifest list sha256:4632d23bc2deb6d99eeecbb3c0c5d9710219d4a0378adcd08f254d0461f419a8 0.1s done
+#33 naming to docker.io/library/auth-rust-demo-a-bff:development 0.0s done
+#33 unpacking to docker.io/library/auth-rust-demo-a-bff:development 4.4s done
+#33 DONE 18.5s
+
+#31 [demo-b-bff] exporting to image
+#31 exporting layers 13.5s done
+#31 exporting manifest sha256:80e69cebbe3e2fc439020a502ca4e7d5f2cda426bb15c1c98289230e64e5da21 0.1s done
+#31 exporting config sha256:4b1f7040aa0e51ff54533b695112039b910c2f92a1566e3d322c26c1ac466f20 0.1s done
+#31 exporting attestation manifest sha256:c287f9f61bf2420eadb0319c1439f0e6844585b2c0ec3b99e0ff33e62f2dc8bb 0.2s done
+#31 exporting manifest list sha256:cc6ab562af7c3afb7d35891c2f0560216f31d22b15d81ddbcf61e9bb22962a63 0.1s done
+#31 naming to docker.io/library/auth-rust-demo-b-bff:development 0.0s done
+#31 unpacking to docker.io/library/auth-rust-demo-b-bff:development 4.4s done
+#31 DONE 18.5s
+
+#32 [worker] exporting to image
+#32 exporting layers 13.5s done
+#32 exporting manifest sha256:3c9f44cb93f10b5b047fbb3a4cd2067edd3cba1a3f38c2c301665ea94f34c760 0.1s done
+#32 exporting config sha256:75cf2de8f75a51c8658f40a8e5acc5fc65ddaefebb3758cf9dfb142eaeea5ee9 0.1s done
+#32 exporting attestation manifest sha256:5ebdb6557ae630472089e16248afab2be5e388c59100292c3f66530474d0a791 0.2s done
+#32 exporting manifest list sha256:58cb45875f584f75e81ba7eff3609210ab0d271eee15c5ff6eeb35e08e380262 0.1s done
+#32 naming to docker.io/library/auth-rust-worker:development 0.0s done
+#32 unpacking to docker.io/library/auth-rust-worker:development 4.4s done
+#32 DONE 18.5s
+
+#34 [demo-a-bff] resolving provenance for metadata file
+#34 DONE 0.4s
+
+#35 [api] resolving provenance for metadata file
+#35 DONE 0.3s
+
+#36 [demo-b-bff] resolving provenance for metadata file
+#36 DONE 0.1s
+
+#37 [worker] resolving provenance for metadata file
+#37 DONE 0.0s
+ auth-rust-demo-a:development  Built
+ auth-rust-identity-web:development  Built
+ auth-rust-demo-a-bff:development  Built
+ auth-rust-demo-b-bff:development  Built
+ auth-rust-worker:development  Built
+ auth-rust-demo-b:development  Built
+ auth-rust-api:development  Built
+ Container auth-rust-development-postgres-1  Running
+ Container auth-rust-development-mailpit-1  Running
+ Container auth-rust-development-demo-b-1  Recreate
+ Container auth-rust-development-demo-a-1  Recreate
+ Container auth-rust-development-redis-1  Running
+ Container auth-rust-development-worker-1  Recreate
+ Container auth-rust-development-api-1  Recreate
+ Container auth-rust-development-api-1  Recreated
+ Container auth-rust-development-identity-web-1  Recreate
+ Container auth-rust-development-worker-1  Recreated
+ Container auth-rust-development-demo-b-1  Recreated
+ Container auth-rust-development-demo-a-1  Recreated
+ Container auth-rust-development-identity-web-1  Recreated
+ Container auth-rust-development-demo-b-bff-1  Recreate
+ Container auth-rust-development-demo-a-bff-1  Recreate
+ Container auth-rust-development-demo-a-bff-1  Recreated
+ Container auth-rust-development-demo-b-bff-1  Recreated
+ Container auth-rust-development-demo-b-1  Starting
+ Container auth-rust-development-demo-a-1  Starting
+ Container auth-rust-development-postgres-1  Waiting
+ Container auth-rust-development-redis-1  Waiting
+ Container auth-rust-development-mailpit-1  Waiting
+ Container auth-rust-development-mailpit-1  Waiting
+ Container auth-rust-development-postgres-1  Waiting
+ Container auth-rust-development-redis-1  Waiting
+ Container auth-rust-development-demo-b-1  Started
+ Container auth-rust-development-demo-a-1  Started
+ Container auth-rust-development-redis-1  Healthy
+ Container auth-rust-development-mailpit-1  Healthy
+ Container auth-rust-development-postgres-1  Healthy
+ Container auth-rust-development-redis-1  Healthy
+ Container auth-rust-development-worker-1  Starting
+ Container auth-rust-development-postgres-1  Healthy
+ Container auth-rust-development-mailpit-1  Healthy
+ Container auth-rust-development-api-1  Starting
+ Container auth-rust-development-worker-1  Started
+ Container auth-rust-development-api-1  Started
+ Container auth-rust-development-api-1  Waiting
+ Container auth-rust-development-api-1  Healthy
+ Container auth-rust-development-identity-web-1  Starting
+ Container auth-rust-development-identity-web-1  Started
+ Container auth-rust-development-postgres-1  Waiting
+ Container auth-rust-development-identity-web-1  Waiting
+ Container auth-rust-development-identity-web-1  Waiting
+ Container auth-rust-development-postgres-1  Waiting
+ Container auth-rust-development-postgres-1  Healthy
+ Container auth-rust-development-postgres-1  Healthy
+ Container auth-rust-development-identity-web-1  Healthy
+ Container auth-rust-development-demo-a-bff-1  Starting
+ Container auth-rust-development-identity-web-1  Healthy
+ Container auth-rust-development-demo-b-bff-1  Starting
+ Container auth-rust-development-demo-a-bff-1  Started
+ Container auth-rust-development-demo-b-bff-1  Started
+ Container auth-rust-development-demo-a-1  Waiting
+ Container auth-rust-development-demo-b-bff-1  Waiting
+ Container auth-rust-development-postgres-1  Waiting
+ Container auth-rust-development-identity-web-1  Waiting
+ Container auth-rust-development-mailpit-1  Waiting
+ Container auth-rust-development-demo-a-bff-1  Waiting
+ Container auth-rust-development-demo-b-1  Waiting
+ Container auth-rust-development-redis-1  Waiting
+ Container auth-rust-development-api-1  Waiting
+ Container auth-rust-development-worker-1  Waiting
+ Container auth-rust-development-demo-b-1  Healthy
+ Container auth-rust-development-api-1  Healthy
+ Container auth-rust-development-identity-web-1  Healthy
+ Container auth-rust-development-redis-1  Healthy
+ Container auth-rust-development-demo-a-1  Healthy
+ Container auth-rust-development-mailpit-1  Healthy
+ Container auth-rust-development-worker-1  Healthy
+ Container auth-rust-development-postgres-1  Healthy
+ Container auth-rust-development-demo-a-bff-1  Healthy
+ Container auth-rust-development-demo-b-bff-1  Healthy
