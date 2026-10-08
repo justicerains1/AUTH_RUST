@@ -1,13 +1,13 @@
 {
-  "measuredRun": "2026-10-08T14-59-38-709Z.json",
+  "measuredRun": "2026-10-08T19-04-12-019Z.json",
   "source": [
     {
       "path": "apps/identity-web/src/pages/admin/AdminShared.tsx",
-      "sha256": "83d11619fee27a7d22aacd55309a631aa7ff050437f2fc9e1b37dfa84d9fd81f"
+      "sha256": "d32352cb4c5abb0d1b1f8f3ab95ad532fcd7bbdbae1ff58d49608395ce58b651"
     },
     {
       "path": "apps/identity-web/src/pages/admin/admin.test.tsx",
-      "sha256": "15e191ff50ef6e2e0ac3af9b85420ad239bb6c37f857d1e112907d29eb5016f9"
+      "sha256": "2b3559d4f955e100466bfa31b122b0d49049c0ccaa2d6e8b101ac2fe18dbb66e"
     },
     {
       "path": "apps/identity-web/src/styles.css",
@@ -15,11 +15,11 @@
     },
     {
       "path": "crates/identity-server/tests/t23_accessibility.rs",
-      "sha256": "0b8baf35e042195ed0ede260292bbde4b678c64d756f3544c6ffaaef9b260bd7"
+      "sha256": "e1ef287adf2825aef632cc636d53b08be9bbdd009337591d47c324ad8a4ae982"
     },
     {
       "path": "tests/accessibility/product.mjs",
-      "sha256": "bdee426f9284b4da9d6a2ccb2ca1c3d0caa044d3f4a2fd1c19aac93aae054fd0"
+      "sha256": "741a48a792290b2cd374c4e147b0f19931aa6565ed5ecf5130dc085643c280cd"
     },
     {
       "path": "tests/e2e/product-accessibility.config.ts",
@@ -27,7 +27,12 @@
     },
     {
       "path": "tests/e2e/product-accessibility.spec.ts",
-      "sha256": "875d3644767c6a081f4b2fd18071f2b52422b5294ed34df873efe7091340dad0"
+      "sha256": "6bb11ea2e8ab40f25f10b2dfaee3316fca94e98aceaec8b24eca99a861b0d982"
+    },
+    {
+      "path": "apps/identity-web/src/pages/admin/ClientsPage.tsx",
+      "sha256": "515a97c1584d0840d4375f31b4ba8281afa9129379e929cfa43d2846de2f8767"
     }
-  ]
+  ],
+  "expectedCases": 12
 }

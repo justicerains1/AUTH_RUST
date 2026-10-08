@@ -1,0 +1,38 @@
+[WebServer] (node:1795720) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 12 tests using 1 worker
+(node:1795803) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+·····F(node:1800796) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+······
+
+  1) [chromium] › tests/e2e/product-accessibility.spec.ts:106:1 › client secret dialogs and strong authentication keyboard sequence 
+
+    Error: expect(locator).toBeFocused() failed
+
+    Locator: getByRole('dialog', { name: '保存客户端秘密', exact: true }).getByRole('button', { name: '已保存，关闭秘密', exact: true })
+    Expected: focused
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeFocused" getByRole('dialog', { name: '保存客户端秘密', exact: true }).getByRole('button', { name: '已保存，关闭秘密', exact: true }) with timeout 5000ms
+      - waiting for getByRole('dialog', { name: '保存客户端秘密', exact: true }).getByRole('button', { name: '已保存，关闭秘密', exact: true })
+
+
+      114 |   }
+      115 |   const create = page.getByRole('button', { name: '创建客户端', exact: true }); await enter(page, create); expect(creates).toBe(0); await proof(); await expect(create).toBeFocused(); expect(creates).toBe(0); await enter(page, create);
+    > 116 |   const secret = page.getByRole('dialog', { name: '保存客户端秘密', exact: true }); const close = secret.getByRole('button', { name: '已保存，关闭秘密', exact: true }); await expect(close).toBeFocused(); expect(creates).toBe(1);
+          |                                                                                                                                                                               ^
+      117 |   const createdSecret = await secret.locator('.setup-secret').textContent(); if (!createdSecret) throw new Error('Real generated client secret missing.'); for (let index = 0; index < 4; index += 1) { await page.keyboard.press('Tab'); expect(await secret.evaluate((element) => element.contains(document.activeElement))).toBe(true); } await page.keyboard.press('Escape'); await expect(secret).toHaveCount(0); await expect(create).toBeFocused(); expect(await page.locator('main').innerText()).not.toContain(createdSecret);
+      118 |   const row = page.getByRole('row').filter({ hasText: name }); const rotate = row.getByRole('button', { name: '轮换客户端秘密', exact: true }); await enter(page, rotate); const action = page.getByRole('dialog', { name: '轮换客户端秘密？', exact: true }); await expect(action.getByRole('button', { name: '取消', exact: true })).toBeFocused();
+      119 |   await enter(page, action.getByRole('button', { name: '确认身份后继续', exact: true })); expect(rotations).toBe(0); await proof(); await expect(action.getByRole('button', { name: '取消', exact: true })).toBeFocused(); expect(rotations).toBe(0); await enter(page, action.getByRole('button', { name: '确认轮换客户端秘密', exact: true }));
+        at /root/code/rust/auth_rust/tests/e2e/product-accessibility.spec.ts:116:175
+
+    Error Context: .local/[OPAQUE]/[OPAQUE]/error-context.md
+
+  1 failed
+    [chromium] › tests/e2e/product-accessibility.spec.ts:106:1 › client secret dialogs and strong authentication keyboard sequence 
+  11 passed (3.1m)

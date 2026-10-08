@@ -125,21 +125,37 @@ async fn t23_product_accessibility_harness() -> TestResult {
     sqlx::query("INSERT INTO users(id,email,password_hash,verified) VALUES($1,'access-account-chromium@example.test',$2,true)").bind(plain).bind(hash.as_str()).execute(&pool).await?;
     let firefox_user = Uuid::new_v4();
     sqlx::query("INSERT INTO users(id,email,password_hash,verified) VALUES($1,'access-account-firefox@example.test',$2,true)").bind(firefox_user).bind(hash.as_str()).execute(&pool).await?;
-    let user = Uuid::new_v4();
-    sqlx::query("INSERT INTO users(id,email,password_hash,verified) VALUES($1,'access-admin@example.test',$2,true)").bind(user).bind(hash.as_str()).execute(&pool).await?;
-    let totp = identity_core::mfa::TotpSecret::generate()?;
     let ring = AeadKeyRing::load_file(&config.encryption_keys_file, &config.active_encryption_kid)?;
-    let encrypted = ring.encrypt(user, "totp-seed", totp.bytes())?;
     use base64::{Engine, prelude::BASE64_URL_SAFE_NO_PAD};
-    sqlx::query("INSERT INTO totp_factors(id,user_id,encrypted_seed,encryption_kid,encryption_nonce,confirmed) VALUES($1,$2,$3,$4,$5,true)").bind(Uuid::new_v4()).bind(user).bind(BASE64_URL_SAFE_NO_PAD.decode(&encrypted.ciphertext)?).bind(&encrypted.kid).bind(BASE64_URL_SAFE_NO_PAD.decode(&encrypted.nonce)?).execute(&pool).await?;
-    let recovery = identity_core::mfa::RecoveryCodes::generate()?;
-    for code in recovery.expose() {
-        sqlx::query("INSERT INTO recovery_codes(id,user_id,code_hash) VALUES($1,$2,$3)")
-            .bind(Uuid::new_v4())
+    let mut browser_admins = BTreeMap::new();
+    for browser in ["chromium", "firefox", "dialogs-chromium", "dialogs-firefox"] {
+        let user = Uuid::new_v4();
+        let email = format!("access-admin-{browser}@example.test");
+        sqlx::query("INSERT INTO users(id,email,password_hash,verified) VALUES($1,$2,$3,true)")
             .bind(user)
-            .bind(identity_core::security::token_digest(code).as_slice())
+            .bind(email)
+            .bind(hash.as_str())
             .execute(&pool)
             .await?;
+        let totp = identity_core::mfa::TotpSecret::generate()?;
+        let encrypted = ring.encrypt(user, "totp-seed", totp.bytes())?;
+        sqlx::query("INSERT INTO totp_factors(id,user_id,encrypted_seed,encryption_kid,encryption_nonce,confirmed) VALUES($1,$2,$3,$4,$5,true)").bind(Uuid::new_v4()).bind(user).bind(BASE64_URL_SAFE_NO_PAD.decode(&encrypted.ciphertext)?).bind(&encrypted.kid).bind(BASE64_URL_SAFE_NO_PAD.decode(&encrypted.nonce)?).execute(&pool).await?;
+        let recovery = identity_core::mfa::RecoveryCodes::generate()?;
+        let codes = recovery.expose().to_vec();
+        for code in &codes {
+            sqlx::query("INSERT INTO recovery_codes(id,user_id,code_hash) VALUES($1,$2,$3)")
+                .bind(Uuid::new_v4())
+                .bind(user)
+                .bind(identity_core::security::token_digest(code).as_slice())
+                .execute(&pool)
+                .await?;
+        }
+        sqlx::query("INSERT INTO admin_memberships(id,user_id,enabled) VALUES($1,$2,true)")
+            .bind(Uuid::new_v4())
+            .bind(user)
+            .execute(&pool)
+            .await?;
+        browser_admins.insert(browser.to_owned(), (user, codes));
     }
     let oauth = identity_store::oauth::OAuthStore::new(pool.clone(), Arc::new(SystemClock));
     oauth
@@ -152,26 +168,29 @@ async fn t23_product_accessibility_harness() -> TestResult {
             production: false,
         })
         .await?;
-    sqlx::query("INSERT INTO admin_memberships(id,user_id,enabled) VALUES($1,$2,true)")
-        .bind(Uuid::new_v4())
-        .bind(user)
-        .execute(&pool)
-        .await?;
     let (_, server) = start(&config, &pool).await?;
     let private_key =
         std::env::var("T23_ACCESSIBILITY_CLOCK_KEY").map_err(|_| "private test key required")?;
-    let recovery_codes = recovery.expose().to_vec();
     let controlpool = pool.clone();
-    let recovery_user = user;
     let app = Router::new().route("/__test/material", get(move |request: axum::extract::Request| {
-        let key=private_key.clone(); let codes=recovery_codes.clone(); let pool=controlpool.clone();
+        let key=private_key.clone(); let admins=browser_admins.clone(); let pool=controlpool.clone();
         async move {
             if request.headers().get("x-test-key").and_then(|value|value.to_str().ok()) != Some(key.as_str()) {
                 return (StatusCode::FORBIDDEN, Json(json!({"error":"forbidden"})));
             }
+            let browser = match request.uri().query() {
+                Some("browser=chromium") => "chromium",
+                Some("browser=firefox") => "firefox",
+                Some("browser=dialogs-chromium") => "dialogs-chromium",
+                Some("browser=dialogs-firefox") => "dialogs-firefox",
+                _ => return (StatusCode::BAD_REQUEST, Json(json!({"error":"fixed browser fixture required"}))),
+            };
+            let Some((recovery_user, codes)) = admins.get(browser) else {
+                return (StatusCode::INTERNAL_SERVER_ERROR, Json(json!({"error":"browser fixture missing"})));
+            };
             let mut unused = Vec::new();
             for code in codes {
-                let digest = identity_core::security::token_digest(&code);
+                let digest = identity_core::security::token_digest(code);
                 match sqlx::query_scalar::<_, bool>("SELECT EXISTS(SELECT 1 FROM recovery_codes WHERE user_id=$1 AND code_hash=$2 AND consumed_at IS NULL)").bind(recovery_user).bind(digest.as_slice()).fetch_one(&pool).await {
                     Ok(true) => unused.push(code),
                     Ok(false) => {},

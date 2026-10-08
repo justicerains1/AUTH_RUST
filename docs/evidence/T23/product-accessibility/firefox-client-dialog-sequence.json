@@ -1,0 +1,18 @@
+{
+  "browser": "firefox",
+  "measuredAt": "2026-10-08T19:07:21.224Z",
+  "data": {
+    "keyboardOnly": true,
+    "actualRecoveryProofs": 3,
+    "createAfterExplicitSecondSubmit": true,
+    "createFocusReturned": true,
+    "secretInitialFocus": true,
+    "secretTabTrap": true,
+    "secretEscapeReturned": true,
+    "actionReauthenticationActionFocus": true,
+    "rotationOnlyAfterExplicitConfirmation": true,
+    "rotatedSecretCloseReturned": true,
+    "secretRemovedFromDomAndStorage": true
+  },
+  "automatedOnly": true
+}

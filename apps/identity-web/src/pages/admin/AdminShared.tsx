@@ -10,12 +10,12 @@ import { ReauthenticationDialog } from '../../components/ReauthenticationDialog'
 import { Button } from '../../components/Button';
 
 export function AdminFailure({ error, retry }: { error: unknown; retry?: () => void }) { const detail = error instanceof ApiError ? error : null; return <Status kind={detail?.status === 403 ? 'error' : 'unavailable'} title={detail?.status === 403 ? '当前账号不能访问此后台数据' : '暂时无法加载'} description={detail?.message ?? '请重新加载后再试。'} requestId={detail?.requestId} onRetry={detail?.status === 403 ? undefined : retry} />; }
-export function AdminAction({ label, title, description, action, onComplete, danger = false }: { label: string; title: string; description: string; action: () => Promise<unknown>; onComplete: () => void | Promise<void>; danger?: boolean }) {
+export function AdminAction({ label, title, description, action, onComplete, danger = false }: { label: string; title: string; description: string; action: () => Promise<unknown>; onComplete: (opener?: HTMLElement) => void | Promise<void>; danger?: boolean }) {
   const [failure, setFailure] = useState<ApiError | null>(null); const [open, setOpen] = useState(false); const [reauth, setReauth] = useState(false); const [pending, setPending] = useState(false); const [confirmed, setConfirmed] = useState(false); const active = useRef(false); const cancel = useRef<HTMLButtonElement>(null); const retry = useRetryAfter(); const opener = useRef<HTMLElement | null>(null);
   async function execute() {
     if (active.current || retry.remaining > 0) return;
     active.current = true; setPending(true); setFailure(null);
-    try { await action(); setOpen(false); setConfirmed(false); await onComplete(); }
+    try { await action(); setOpen(false); setConfirmed(false); await onComplete(opener.current ?? undefined); }
     catch (error) { const detail = asApiError(error); retry.start(detail); setFailure(detail); if (detail.next?.status === 'reauth_required') { setOpen(false); setConfirmed(false); setReauth(true); } }
     finally { active.current = false; setPending(false); }
   }

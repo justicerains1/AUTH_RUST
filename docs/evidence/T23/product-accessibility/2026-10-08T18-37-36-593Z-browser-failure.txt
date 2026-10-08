@@ -1,0 +1,39 @@
+[WebServer] (node:1748331) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 1 worker
+(node:1748425) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+·(node:1749018) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+F
+
+  1) [firefox] › tests/e2e/product-accessibility.spec.ts:105:1 › client secret dialogs and strong authentication keyboard sequence 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('dialog', { name: '确认当前身份', exact: true }).getByLabel('验证码', { exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('dialog', { name: '确认当前身份', exact: true }).getByLabel('验证码', { exact: true }) with timeout 5000ms
+      - waiting for getByRole('dialog', { name: '确认当前身份', exact: true }).getByLabel('验证码', { exact: true })
+
+
+      109 |   async function proof() {
+      110 |     const dialog = page.getByRole('dialog', { name: '确认当前身份', exact: true }); await expect(dialog.getByRole('button', { name: '取消身份确认', exact: true })).toBeFocused();
+    > 111 |     await type(page, dialog.getByLabel('当前密码', { exact: true }), password()); await enter(page, dialog.getByRole('button', { name: '确认密码', exact: true })); await expect(dialog.getByLabel('验证码', { exact: true })).toBeVisible();
+          |                                                                                                                                                                                                                     ^
+      112 |     await enter(page, dialog.getByRole('button', { name: '使用恢复码', exact: true })); const value = await material(); const recovery = value.recoveries[0]; if (!recovery) throw new Error('Unused real recovery proof missing.'); await type(page, dialog.getByLabel('恢复码', { exact: true }), recovery); await enter(page, dialog.getByRole('button', { name: '完成强认证', exact: true })); await expect(dialog).toHaveCount(0);
+      113 |   }
+      114 |   const create = page.getByRole('button', { name: '创建客户端', exact: true }); await enter(page, create); expect(creates).toBe(0); await proof(); await expect(create).toBeFocused(); expect(creates).toBe(0); await enter(page, create);
+        at proof (/root/code/rust/auth_rust/tests/e2e/product-accessibility.spec.ts:111:213)
+        at /root/code/rust/auth_rust/tests/e2e/product-accessibility.spec.ts:118:111
+
+    Error Context: .local/[OPAQUE]/[OPAQUE]/error-context.md
+
+  1 failed
+    [firefox] › tests/e2e/product-accessibility.spec.ts:105:1 › client secret dialogs and strong authentication keyboard sequence 
+  1 passed (25.8s)

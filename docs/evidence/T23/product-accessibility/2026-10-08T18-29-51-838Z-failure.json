@@ -1,0 +1,25 @@
+{
+  "started": "2026-10-08T18:29:51.838Z",
+  "scope": "Real Chromium and Linux Playwright Firefox automation. Does not prove screen-reader speech, physical mobile/Passkey hardware, or Safari compatibility.",
+  "browsers": [
+    {
+      "name": "chromium",
+      "version": "153.0.8010.12",
+      "executableSha256": "8c599d43aec53f2460a31ae2f4af6bd863f8258b34ff519564bc5d4726bfaa1e"
+    },
+    {
+      "name": "firefox",
+      "version": "155.0",
+      "executableSha256": "062272ac4d851eade5b75db2dc7c14569d96cb3ca38f949337cdc1b74367e35b"
+    }
+  ],
+  "results": {
+    "browserExitCode": 1,
+    "suites": 2,
+    "expectedCases": 2,
+    "focusedClientDialogsOnly": true
+  },
+  "exitCode": 1,
+  "failure": "Actual product checks did not complete or failed; see sanitized diagnostics. No private API payload or credentials are printed.",
+  "completed": "2026-10-08T18:30:24.879Z"
+}

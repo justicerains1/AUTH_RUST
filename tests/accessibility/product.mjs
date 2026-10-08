@@ -10,6 +10,9 @@ const root = resolve(import.meta.dirname, '../..');
 const privateDirectory = resolve(root, '.local', `product-accessibility-${randomBytes(8).toString('hex')}`);
 const evidence = resolve(root, 'docs/evidence/T23/product-accessibility');
 const timestamp = new Date().toISOString().replaceAll(':', '-').replaceAll('.', '-');
+const focused = process.argv.includes('--focus-client-dialogs');
+assert.ok(process.argv.slice(2).every((argument) => argument === '--focus-client-dialogs'), 'Unknown product accessibility argument.');
+const expectedCases = focused ? 2 : 12;
 const report = { started: new Date().toISOString(), scope: 'Real Chromium and Linux Playwright Firefox automation. Does not prove screen-reader speech, physical mobile/Passkey hardware, or Safari compatibility.', browsers: [], results: {}, exitCode: 1 };
 let harness;
 function capture(program, args, env = process.env, input = 'ignore') {
@@ -33,11 +36,11 @@ async function main() {
   const safe = (text) => text.replaceAll(env.T23_ACCESSIBILITY_BROWSER_PASSWORD, '[PASSWORD]').replaceAll(env.T23_ACCESSIBILITY_CLOCK_KEY, '[CONTROL_KEY]').replaceAll(env.DATABASE_URL, '[DATABASE_URL]').replace(/\b[A-Z2-7]{32,128}\b/gu, '[TOTP_SECRET]').replace(/\b[A-Za-z0-9_-]{22,}\b/gu, '[OPAQUE]').replace(/#token=[^\s"']+/gu, '#token=[REDACTED]').replace(/([?&](?:code|nonce|state)=)[^&\s"']+/gu, '$1[REDACTED]');
   if (!ready) await writeFile(resolve(evidence, `${timestamp}-harness-failure.txt`), safe(harness.output()));
   assert.ok(ready, 'Isolated product accessibility identity harness did not start.');
-  const browser = capture(process.execPath, [resolve(root, 'node_modules/@playwright/test/cli.js'), 'test', '--config', 'tests/e2e/product-accessibility.config.ts'], env);
+  const browser = capture(process.execPath, [resolve(root, 'node_modules/@playwright/test/cli.js'), 'test', '--config', 'tests/e2e/product-accessibility.config.ts', ...(focused ? ['--grep', 'client secret dialogs and strong authentication keyboard sequence'] : [])], env);
   const result = await browser.completion; await writeFile(resolve(privateDirectory, 'browser-output.txt'), result.output, { mode: 0o600 });
   if (result.code !== 0) await writeFile(resolve(evidence, `${timestamp}-browser-failure.txt`), safe(result.output));
-  report.results = { browserExitCode: result.code, suites: 2, expectedCases: 10 };
-  assert.equal(result.code, 0, 'Real product accessibility or Firefox checks failed.'); assert.match(result.output, /10 passed/u);
+  report.results = { browserExitCode: result.code, suites: 2, expectedCases, focusedClientDialogsOnly: focused };
+  assert.equal(result.code, 0, 'Real product accessibility or Firefox checks failed.'); assert.match(result.output, new RegExp(`${String(expectedCases)} passed`, 'u'));
   report.exitCode = 0;
 }
 try { await main(); } catch { report.failure = 'Actual product checks did not complete or failed; see sanitized diagnostics. No private API payload or credentials are printed.'; }

@@ -21,7 +21,7 @@ it('admin client secrets appear only in the local result dialog and vanish on cl
   await user.click(screen.getByRole('button', { name: '创建客户端' })); expect(create).not.toHaveBeenCalled(); await user.type(screen.getByLabelText('当前密码'), 'synthetic test password'); await user.click(screen.getByRole('button', { name: '确认密码' }));
   await user.click(await screen.findByRole('button', { name: '创建客户端' })); expect(await screen.findByText(secret)).toBeTruthy();
   expect(create).toHaveBeenCalledOnce(); expect(JSON.stringify(cache.getQueryCache().getAll().map((query) => query.state.data))).not.toContain(secret); expect(cache.getMutationCache().getAll()).toHaveLength(0);
-  await user.click(screen.getByRole('button', { name: '已保存，关闭秘密' })); expect(screen.queryByText(secret)).toBeNull(); expect(Object.keys(localStorage)).toEqual([]); expect(Object.keys(sessionStorage)).toEqual([]);
+  await user.keyboard('{Escape}'); await waitFor(() => { expect(document.activeElement).toBe(screen.getByRole('button', { name: '创建客户端' })); }); expect(screen.queryByText(secret)).toBeNull(); expect(Object.keys(localStorage)).toEqual([]); expect(Object.keys(sessionStorage)).toEqual([]);
 });
 
 it('server-provided client names render as escaped text', async () => {
@@ -34,10 +34,10 @@ it('a high-risk admin action requires identity confirmation and then a separate 
   const action = vi.fn().mockResolvedValue(undefined); const completed = vi.fn();
   vi.spyOn(api, 'request').mockResolvedValue({ status: 'reauthenticated', strong: true, reauthenticated_at: '2026-10-08T12:00:00Z', valid_until: '2026-10-08T12:05:00Z', amr: ['user'] });
   render(<AdminAction label="停用客户端" title="停用该应用？" description="该应用凭证检查将失效。" action={action} onComplete={completed} />); const user = userEvent.setup();
-  await user.click(screen.getByRole('button', { name: '停用客户端' })); await user.click(screen.getByRole('button', { name: '确认身份后继续' }));
+  const opener = screen.getByRole('button', { name: '停用客户端' }); await user.click(opener); await user.click(screen.getByRole('button', { name: '确认身份后继续' }));
   expect(screen.getAllByRole('dialog')).toHaveLength(1); await user.type(screen.getByLabelText('当前密码'), 'synthetic test password'); await user.click(screen.getByRole('button', { name: '确认密码' }));
   expect(await screen.findByRole('button', { name: '确认停用客户端' })).toBeTruthy(); expect(action).not.toHaveBeenCalled(); expect(screen.getAllByRole('dialog')).toHaveLength(1);
-  await user.click(screen.getByRole('button', { name: '确认停用客户端' })); expect(action).toHaveBeenCalledOnce(); expect(completed).toHaveBeenCalledOnce();
+  await user.click(screen.getByRole('button', { name: '确认停用客户端' })); expect(action).toHaveBeenCalledOnce(); expect(completed).toHaveBeenCalledOnce(); expect(completed).toHaveBeenCalledWith(opener);
 });
 
 it('canceling an admin action returns keyboard focus to its opener without a mutation', async () => {
