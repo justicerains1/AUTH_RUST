@@ -27,7 +27,7 @@ async function controlledFile(path, maximum) {
   catch (error) { await handle.close(); throw error; }
 }
 async function smallFile(path, maximum) { const { handle } = await controlledFile(path, maximum); try { return await handle.readFile('utf8'); } finally { await handle.close(); } }
-export async function backupCompletion(directory, now) {
+export async function verifiedBackupReceipt(directory, now) {
   const parent = await stat(directory); if (!parent.isDirectory() || (parent.mode & 0o022) !== 0) throw new Error('Owner-controlled backup directory required.');
   const receipt = JSON.parse(await smallFile(join(directory, 'last-success.json'), 4096));
   if (JSON.stringify(Object.keys(receipt).sort()) !== JSON.stringify(['backup_name', 'ciphertext_bytes', 'ciphertext_sha256', 'completed_at', 'version']) || receipt.version !== 1 || !Number.isSafeInteger(receipt.completed_at) || receipt.completed_at <= 0 || receipt.completed_at > now + 60 || !Number.isSafeInteger(receipt.ciphertext_bytes) || receipt.ciphertext_bytes <= 0 || !/^[a-f0-9]{64}$/u.test(receipt.ciphertext_sha256) || typeof receipt.backup_name !== 'string' || !/^\d{8}T\d{6}Z-\d+\.tar\.age$/u.test(receipt.backup_name)) throw new Error('Invalid backup completion record.');
@@ -40,9 +40,10 @@ export async function backupCompletion(directory, now) {
     try { for await (const chunk of stream) digest.update(chunk); } finally { clearTimeout(timer); }
     const after = await handle.stat();
     if (after.size !== info.size || after.ino !== info.ino || after.dev !== info.dev || after.mtimeMs !== info.mtimeMs || after.ctimeMs !== info.ctimeMs || digest.digest('hex') !== receipt.ciphertext_sha256) throw new Error('Selected backup changed or failed checksum.');
-    return receipt.completed_at;
+    return Object.freeze(receipt);
   } finally { await handle.close(); }
 }
+export async function backupCompletion(directory, now) { return (await verifiedBackupReceipt(directory, now)).completed_at; }
 export async function certificateExpiry(issuer, caFile) {
   const ca = caFile ? await readFile(caFile) : undefined;
   const host = issuer.hostname.replace(/^\[|\]$/gu, '');

@@ -1,0 +1,108 @@
+TAP version 13
+# Subtest: real promtool verifies host alert thresholds, holds, missing telemetry, stale files and recovery
+ok 1 - real promtool verifies host alert thresholds, holds, missing telemetry, stale files and recovery
+  ---
+  duration_ms: 1969.436229
+  type: 'test'
+  ...
+# Subtest: backup freshness requires the completed object and ignores refreshed mtimes
+    # Subtest: future, path injection and inconsistent metadata are rejected
+    ok 1 - future, path injection and inconsistent metadata are rejected
+      ---
+      duration_ms: 8.525401
+      type: 'test'
+      ...
+    # Subtest: corruption, missing manifest and symlink cannot report a fresh backup
+    ok 2 - corruption, missing manifest and symlink cannot report a fresh backup
+      ---
+      duration_ms: 5.5835
+      type: 'test'
+      ...
+    1..2
+ok 2 - backup freshness requires the completed object and ignores refreshed mtimes
+  ---
+  duration_ms: 31.583801
+  type: 'test'
+  ...
+# Subtest: actual local TLS validates the trusted issuer and rejects untrusted or wrong-host certificates
+ok 3 - actual local TLS validates the trusted issuer and rejects untrusted or wrong-host certificates
+  ---
+  duration_ms: 54.619701
+  type: 'test'
+  ...
+# Subtest: an actually expired local certificate fails despite explicit trust and a matching hostname
+ok 4 - an actually expired local certificate fails despite explicit trust and a matching hostname
+  ---
+  duration_ms: 114.180701
+  type: 'test'
+  ...
+# Subtest: collector publishes actual statfs, TLS and completed-backup values with fixed labels
+    # Subtest: wrong expected device and incomplete backup publish failures with current attempt times
+    ok 1 - wrong expected device and incomplete backup publish failures with current attempt times
+      ---
+      duration_ms: 5.7244
+      type: 'test'
+      ...
+    # Subtest: unsafe output destinations cannot replace the last metrics file
+    ok 2 - unsafe output destinations cannot replace the last metrics file
+      ---
+      duration_ms: 1.0359
+      type: 'test'
+      ...
+    1..2
+ok 5 - collector publishes actual statfs, TLS and completed-backup values with fixed labels
+  ---
+  duration_ms: 64.831301
+  type: 'test'
+  ...
+# Subtest: CLI does not print secret configuration or advertise a failed publication as success
+ok 6 - CLI does not print secret configuration or advertise a failed publication as success
+  ---
+  duration_ms: 98.857602
+  type: 'test'
+  ...
+# Subtest: release ordering verifies new backup before migrate, up, ready and smoke
+ok 7 - release ordering verifies new backup before migrate, up, ready and smoke
+  ---
+  duration_ms: 31.608701
+  type: 'test'
+  ...
+# Subtest: migration failure never starts new services and retains prior successful state
+ok 8 - migration failure never starts new services and retains prior successful state
+  ---
+  duration_ms: 16.9393
+  type: 'test'
+  ...
+# Subtest: zero-exit backup command cannot reuse old completion or corrupt ciphertext
+ok 9 - zero-exit backup command cannot reuse old completion or corrupt ciphertext
+  ---
+  duration_ms: 20.2242
+  type: 'test'
+  ...
+# Subtest: a concurrently replaced receipt cannot replace the backup actually verified for release
+ok 10 - a concurrently replaced receipt cannot replace the backup actually verified for release
+  ---
+  duration_ms: 20.234801
+  type: 'test'
+  ...
+# Subtest: rollback requires matched schema and key compatibility and never runs migration
+ok 11 - rollback requires matched schema and key compatibility and never runs migration
+  ---
+  duration_ms: 30.5263
+  type: 'test'
+  ...
+# Subtest: production rejects floating tags or partial config checks; local tags require acknowledgement
+ok 12 - production rejects floating tags or partial config checks; local tags require acknowledgement
+  ---
+  duration_ms: 0.4782
+  type: 'test'
+  ...
+1..12
+# tests 16
+# suites 0
+# pass 16
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2078.169029

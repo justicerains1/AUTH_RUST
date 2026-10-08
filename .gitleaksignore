@@ -79,3 +79,9 @@ ea0e7d78531e6e73ebbb4f9a5a62625b89fadb2e:docs/evidence/T23/final-artifacts.json:
 7c7bc2f38b5ae21ae48fc324c8efc4ddb32bbe63:docs/evidence/T21/sql-probe-2026-10-08T15-02-58-125Z.json:generic-api-key:4110
 7c7bc2f38b5ae21ae48fc324c8efc4ddb32bbe63:docs/evidence/T21/sql-probe-2026-10-08T15-06-29-301Z.json:generic-api-key:4545
 7c7bc2f38b5ae21ae48fc324c8efc4ddb32bbe63:docs/evidence/T21/sql-probe-2026-10-08T15-06-29-301Z.json:generic-api-key:4550
+
+# Reviewed extra T21 public source/API integrity fields.
+c0230e29332eee164d1c0a1aa6a95efcb29411cd:docs/evidence/T21/sql-probe-2026-10-08T16-26-52-869Z.json:generic-api-key:4545
+c0230e29332eee164d1c0a1aa6a95efcb29411cd:docs/evidence/T21/sql-probe-2026-10-08T16-26-52-869Z.json:generic-api-key:4550
+c0230e29332eee164d1c0a1aa6a95efcb29411cd:docs/evidence/T21/sql-probe-2026-10-08T17-01-50-867Z.json:generic-api-key:4617
+c0230e29332eee164d1c0a1aa6a95efcb29411cd:docs/evidence/T21/sql-probe-2026-10-08T17-01-50-867Z.json:generic-api-key:4622

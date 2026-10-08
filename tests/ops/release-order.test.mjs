@@ -6,6 +6,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import test from 'node:test';
 import { configuration, runRelease } from '../../infra/ops/release.mjs';
+import { verifiedBackupReceipt } from '../../infra/ops/collect-metrics.mjs';
 
 async function fixture(t) {
   const directory = await mkdtemp(join(tmpdir(), 'identity-release-order-')); t.after(() => rm(directory, { recursive: true, force: true }));
@@ -35,6 +36,19 @@ test('zero-exit backup command cannot reuse old completion or corrupt ciphertext
   const config = await fixture(t); await backup(config, 99); let migrated = false;
   await assert.rejects(runRelease(config, 'deploy', { clock: () => 100, executor: async (program, args) => { if (args.includes('migrate')) migrated = true; return { code: 0, output: output(program, config) }; } }), /new verified backup/u); assert.equal(migrated, false);
   await assert.rejects(runRelease(config, 'deploy', { clock: () => 100, executor: async (program) => { if (program === config.backup.program) { await backup(config, 100, 2); await writeFile(join(config.backupDirectory, '20261008T000000Z-2.tar.age'), 'tampered'); } return { code: 0, output: output(program, config) }; } }), /checksum|size/u);
+});
+test('a concurrently replaced receipt cannot replace the backup actually verified for release', async (t) => {
+  const config = await fixture(t); let verified;
+  const record = await runRelease(config, 'deploy', { clock: () => 100, executor: async (program) => { if (program === config.backup.program) await backup(config, 100, 1); return { code: 0, output: output(program, config) }; }, verifyBackup: async (directory, now) => {
+    verified = await verifiedBackupReceipt(directory, now);
+    // A different writer publishes its receipt immediately after verification; its object is damaged.
+    await backup(config, 100, 2); await writeFile(join(directory, '20261008T000000Z-2.tar.age'), 'unverified concurrent ciphertext');
+    return verified;
+  } });
+  assert.ok(Object.isFrozen(verified)); assert.equal(JSON.parse(await readFile(join(config.backupDirectory, 'last-success.json'))).backup_name, '20261008T000000Z-2.tar.age');
+  assert.deepEqual(record.backup, { name: verified.backup_name, sha256: verified.ciphertext_sha256, completedAt: verified.completed_at });
+  assert.equal(record.backup.name, '20261008T000000Z-1.tar.age'); assert.deepEqual(JSON.parse(await readFile(join(config.stateDirectory, 'current.json'))).backup, record.backup);
+  await assert.rejects(verifiedBackupReceipt(config.backupDirectory, 100), /size|checksum/u);
 });
 test('rollback requires matched schema and key compatibility and never runs migration', async (t) => {
   const config = await fixture(t); await mkdir(config.stateDirectory, { mode: 0o700 }); await writeFile(join(config.stateDirectory, 'current.json'), JSON.stringify({ release: 'new', rustImage: config.rustImage, edgeImage: config.edgeImage, previous: { release: 'old', rustImage: 'auth-rust-runtime:old', edgeImage: 'auth-rust-edge:old' } }), { mode: 0o600 });

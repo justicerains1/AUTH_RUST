@@ -5,7 +5,7 @@ import { createHash, randomUUID } from 'node:crypto';
 import { spawn } from 'node:child_process';
 import { dirname, isAbsolute, join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { backupCompletion } from './collect-metrics.mjs';
+import { verifiedBackupReceipt } from './collect-metrics.mjs';
 
 const digest = (text) => createHash('sha256').update(text).digest('hex');
 function absolute(path) { if (typeof path !== 'string' || !isAbsolute(path) || resolve(path) !== path) throw new Error('Canonical absolute release paths required.'); return path; }
@@ -66,7 +66,7 @@ export async function databaseFacts(config, executor = executeCommand) {
 function validateFacts(facts) {
   if (facts.version !== 1 || !/^[a-f0-9]{64}$/u.test(facts.migration_sha256) || !Array.isArray(facts.used_kids) || !Array.isArray(facts.configured_kids) || [...facts.used_kids, ...facts.configured_kids].some((kid) => typeof kid !== 'string' || !/^[a-zA-Z0-9._-]{1,128}$/u.test(kid)) || facts.used_kids.some((kid) => !facts.configured_kids.includes(kid))) throw new Error('Actual schema/key compatibility facts are incomplete or incompatible.');
 }
-export async function runRelease(config, action, { executor = executeCommand, clock = () => Math.floor(Date.now() / 1000) } = {}) {
+export async function runRelease(config, action, { executor = executeCommand, clock = () => Math.floor(Date.now() / 1000), verifyBackup = verifiedBackupReceipt } = {}) {
   if (!['deploy', 'rollback'].includes(action)) throw new Error('Use deploy or rollback.');
   await mkdir(config.stateDirectory, { recursive: true, mode: 0o700 });
   const directory = await stat(config.stateDirectory);
@@ -107,8 +107,8 @@ export async function runRelease(config, action, { executor = executeCommand, cl
     const priorReceipt = await controlledJson(join(config.backupDirectory, 'last-success.json'), true);
     const startedBackup = clock();
     await run('base-backup', config.backup.program, config.backup.args, env);
-    const completed = await backupCompletion(config.backupDirectory, clock());
-    const receipt = await controlledJson(join(config.backupDirectory, 'last-success.json'));
+    const receipt = await verifyBackup(config.backupDirectory, clock());
+    const completed = receipt.completed_at;
     if (completed < startedBackup || receipt.backup_name === priorReceipt?.backup_name) throw new Error('A new verified backup must complete in this release attempt.');
     record.backup = { name: receipt.backup_name, sha256: receipt.ciphertext_sha256, completedAt: completed };
     record.stages.push({ stage: 'backup-verified', exitCode: 0 }); await publish(eventPath, record);

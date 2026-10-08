@@ -6,7 +6,7 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { createServer } from 'node:tls';
 import test from 'node:test';
-import { backupCompletion, certificateExpiry, collectMetrics, configuration, publishMetrics } from '../../infra/ops/collect-metrics.mjs';
+import { backupCompletion, certificateExpiry, collectMetrics, configuration, publishMetrics, verifiedBackupReceipt } from '../../infra/ops/collect-metrics.mjs';
 
 const root = resolve(import.meta.dirname, '../..');
 async function fixture(t) { const directory = await mkdtemp(join(tmpdir(), 'identity-ops-metrics-')); t.after(() => rm(directory, { recursive: true, force: true })); return directory; }
@@ -34,6 +34,7 @@ async function tlsFixture(directory, t, expired = false) {
 test('backup freshness requires the completed object and ignores refreshed mtimes', async (t) => {
   const directory = await fixture(t); const old = Math.floor(Date.now() / 1000) - 90_000; const material = await completed(directory, old);
   assert.equal(await backupCompletion(directory, Math.floor(Date.now() / 1000)), old);
+  const verified = await verifiedBackupReceipt(directory, Math.floor(Date.now() / 1000)); assert.deepEqual(verified, material.receipt); assert.ok(Object.isFrozen(verified)); assert.throws(() => { verified.completed_at = Math.floor(Date.now() / 1000); }, TypeError);
   await utimes(join(directory, material.name), new Date(), new Date()); await utimes(join(directory, 'last-success.json'), new Date(), new Date()); assert.equal(await backupCompletion(directory, Math.floor(Date.now() / 1000)), old);
   await t.test('future, path injection and inconsistent metadata are rejected', async () => {
     for (const change of [{ completed_at: Math.floor(Date.now() / 1000) + 120 }, { backup_name: '../elsewhere.tar.age' }, { ciphertext_bytes: material.object.length + 1 }, { ciphertext_sha256: '0'.repeat(64) }, { completed_at: 0 }, { version: 2 }, { unexpected: 'extra' }]) {

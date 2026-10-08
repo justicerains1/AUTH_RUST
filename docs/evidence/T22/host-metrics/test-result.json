@@ -20,5 +20,11 @@
     }
   ],
   "productionAlertDelivery": "not measured",
-  "productionStorage": "not configured"
+  "productionStorage": "not configured",
+  "receiptRaceFix": {
+    "completed": "2026-10-08T17:15:16.943Z",
+    "nodeTestCases": 16,
+    "exitCode": 0,
+    "realContainerRelease": "not yet rerun after this source change"
+  }
 }

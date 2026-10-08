@@ -1,5 +1,5 @@
 {
-  "measuredAt": "2026-10-08T16:09:39.068Z",
+  "measuredAt": "2026-10-08T17:15:16.941Z",
   "source": [
     {
       "path": "infra/ops/base-backup.sh",
@@ -7,7 +7,7 @@
     },
     {
       "path": "infra/ops/collect-metrics.mjs",
-      "sha256": "45dd030f8eaeec2624ddd5f83ae7a85c45e13b8b474bb34541a5b917a478a1d1"
+      "sha256": "0a18f74fd7bd9e816d3730e69371a11d9eacdd7552fd4f438b90c86a9961aa6d"
     },
     {
       "path": "infra/ops/identity-alerts.yaml",
@@ -23,7 +23,7 @@
     },
     {
       "path": "tests/ops/metrics.test.mjs",
-      "sha256": "59440f0be87bdffac346f9525c406fba523267a82695661f949e392ddf745bf6"
+      "sha256": "f4ad997633b9caada118f461e56b97ef2c3690c3ed93f1921125bdb230cb71b8"
     },
     {
       "path": "tests/ops/alert-fixtures.mjs",
@@ -36,6 +36,15 @@
     {
       "path": "docs/runbooks/host-metrics.md",
       "sha256": "8e9ca5a99ee8bcb0e9965f5653ae1977dfcc3226d5a4694c334f2f453dfc5474"
+    },
+    {
+      "path": "infra/ops/release.mjs",
+      "sha256": "b840b59e1a5c4e2146de5fcbb625fd37cb67a05df3936237d01f8fa2ff3eff13"
+    },
+    {
+      "path": "tests/ops/release-order.test.mjs",
+      "sha256": "a61e9f88a60745dd78319440eedc041a98ce5a53c6d7a0d1a118ce6f3dc840c3"
     }
-  ]
+  ],
+  "measuredScope": "16 focused file/collector/order/promtool tests after receipt race fix; prior real PG base-backup results unchanged; real container release awaits rerun"
 }
