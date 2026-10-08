@@ -348,6 +348,130 @@ async fn t04_redis_unavailable() -> TestResult {
     Ok(())
 }
 
+async fn own_redis_compose(action: &str) -> TestResult {
+    let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+    let mut command = std::process::Command::new("docker");
+    command
+        .args(["compose", "--env-file"])
+        .arg(root.join(".local/dev.env"))
+        .arg("-f")
+        .arg(root.join("infra/compose.dev.yaml"));
+    if action == "restore" {
+        command.args(["up", "-d", "--wait", "redis"]);
+    } else if action == "stop" {
+        command.args(["stop", "redis"]);
+    } else {
+        return Err("invalid Redis test action".into());
+    }
+    let output = tokio::task::spawn_blocking(move || command.output()).await??;
+    if !output.status.success() {
+        return Err("controlled Redis dependency action failed; output suppressed".into());
+    }
+    Ok(())
+}
+
+async fn redis_connection_count(
+    connection: &mut redis::aio::MultiplexedConnection,
+) -> TestResult<u64> {
+    let info: String = redis::cmd("INFO")
+        .arg("stats")
+        .query_async(connection)
+        .await?;
+    info.lines()
+        .find_map(|line| line.strip_prefix("total_connections_received:"))
+        .ok_or("Redis connection counter missing")?
+        .trim()
+        .parse::<u64>()
+        .map_err(Into::into)
+}
+async fn concurrent_reuse(state: &SecurityState) -> TestResult {
+    let barrier = Arc::new(Barrier::new(20));
+    let mut jobs = Vec::new();
+    for index in 0..20_u8 {
+        let state = state.clone();
+        let barrier = barrier.clone();
+        jobs.push(tokio::spawn(async move {
+            barrier.wait().await;
+            state
+                .check_limit(
+                    LimitPolicy::Status,
+                    IpAddr::from([198, 18, 91, index + 1]),
+                    None,
+                    None,
+                )
+                .await
+        }));
+    }
+    for job in jobs {
+        assert!(matches!(job.await?, Ok(LimitDecision::Allowed)));
+    }
+    Ok(())
+}
+#[tokio::test]
+async fn t04_redis_connection_recovery() -> TestResult {
+    assert_eq!(std::env::var("T04_DEPENDENCY_MODE")?, "healthy");
+    let config = configuration()?;
+    let target =
+        MigrationTarget::from_environment("test", config.database_url.expose(), false, true)?;
+    let schema = format!("identity_test_t04_reconnect_{}", Uuid::new_v4().simple());
+    let admin = target.connect().await?;
+    sqlx::query(sqlx::AssertSqlSafe(format!("CREATE SCHEMA {schema}")))
+        .execute(&admin)
+        .await?;
+    let pool = PgPoolOptions::new()
+        .max_connections(4)
+        .connect_with(target.test_schema_options(&schema)?)
+        .await?;
+    let result = redis_connection_recovery_case(&config, &pool).await;
+    pool.close().await;
+    let cleanup = sqlx::query(sqlx::AssertSqlSafe(format!("DROP SCHEMA {schema} CASCADE")))
+        .execute(&admin)
+        .await;
+    admin.close().await;
+    cleanup.map_err(|_| "recovery schema cleanup failed")?;
+    result
+}
+async fn redis_connection_recovery_case(config: &Config, pool: &PgPool) -> TestResult {
+    migrate(pool).await?;
+    let mut dependencies = Dependencies::new(config).map_err(|_| "test dependencies invalid")?;
+    dependencies.postgres = pool.clone();
+    let state = SecurityState::new(config, dependencies)?;
+    let observer = redis::Client::open(config.redis_url.expose())?;
+    let mut connection = observer.get_multiplexed_async_connection().await?;
+    let before = redis_connection_count(&mut connection).await?;
+    concurrent_reuse(&state).await?;
+    let after = redis_connection_count(&mut connection).await?;
+    assert_eq!(
+        after - before,
+        1,
+        "twenty simultaneous budget checks must open exactly one real Redis connection"
+    );
+    let warmed = state.redis_connection_metrics();
+    assert_eq!(warmed.connection.attempts, 1);
+    assert_eq!(warmed.connection.successes, 1);
+    assert_eq!(warmed.invocation.successes, 20);
+    assert_eq!(warmed.reused, 19);
+    assert!(warmed.cached);
+    let (origin, handle) = serve(state.clone()).await?;
+    own_redis_compose("stop").await?;
+    let result=async{
+        let response=Client::new().get(format!("{origin}/api/v1/auth/csrf")).send().await?;
+        safe_error(response,StatusCode::SERVICE_UNAVAILABLE,"DEPENDENCY_UNAVAILABLE").await?;
+        let failed=state.redis_connection_metrics();assert_eq!(failed.invalidations,1);assert!(!failed.cached);assert_eq!(failed.invocation.attempts,21);assert_eq!(failed.invocation.successes,20);assert_eq!(failed.invocation.failures+failed.invocation.timeouts,1);
+        own_redis_compose("restore").await?;
+        let mut connection=observer.get_multiplexed_async_connection().await?;let before=redis_connection_count(&mut connection).await?;
+        concurrent_reuse(&state).await?;let after=redis_connection_count(&mut connection).await?;assert_eq!(after-before,1,"recovery should single-flight one replacement connection");
+        let recovered=state.redis_connection_metrics();assert_eq!(recovered.connection.successes,2);assert_eq!(recovered.connection.attempts,2);assert_eq!(recovered.generation,warmed.generation+1);assert!(recovered.cached);assert_eq!(recovered.invocation.successes,40);
+        let response=Client::new().get(format!("{origin}/api/v1/auth/csrf")).send().await?;assert_eq!(response.status(),reqwest::StatusCode::OK);
+        println!("PASS T04 real Redis shared socket: twenty simultaneous checks create one connection; cached outage returns503 with no Lua retry; recovery creates one replacement and original state succeeds");
+        Ok::<(),Box<dyn Error+Send+Sync>>(())
+    }.await;
+    let restored = own_redis_compose("restore").await;
+    handle.abort();
+    restored?;
+    result
+}
+
 #[tokio::test]
 async fn t04_postgres_unavailable() -> TestResult {
     assert_eq!(

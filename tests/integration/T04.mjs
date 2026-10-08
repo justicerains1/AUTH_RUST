@@ -56,11 +56,13 @@ async function main() {
     const result = await childResult('cargo', ['test', '--package', 'identity-server', '--test', 't04_security', '--locked', '--', '--exact', name, '--nocapture'], { ...env, T04_DEPENDENCY_MODE: mode });
     const output = result.stdout + result.stderr;
     for (const value of secretValues) assert.ok(!output.includes(value), 'Security suite output leaked private configuration');
+    if (result.code !== 0) { const safe = output.replaceAll(url.toString(), '[DATABASE]').replaceAll(encryptionKey, '[KEY]').replace(/\b[0-9a-f]{8}-[0-9a-f-]{27}\b/giu, '[UUID]').replace(/[A-Za-z0-9+/_=-]{64,}/gu, '[LONG VALUE]'); await mkdir(evidence, { recursive: true }); await writeFile(resolve(evidence, `redis-connection-diagnostic-${Date.now()}.txt`), safe); }
     assert.equal(result.code, 0, `${name} failed; child output suppressed to protect secrets.`);
     assert.match(result.stdout, /1 passed/u, `${name} did not execute a real test`);
     for (const line of result.stdout.split('\n')) if (line.startsWith('PASS T04')) lines.push(line);
   };
   await testCase('t04_security_boundary', 'healthy');
+  await testCase('t04_redis_connection_recovery', 'healthy');
   await compose('stop', 'redis');
   try { await testCase('t04_redis_unavailable', 'redis-stopped'); }
   finally { await compose('start', 'redis'); }

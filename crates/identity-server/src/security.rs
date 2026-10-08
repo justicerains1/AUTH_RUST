@@ -21,8 +21,11 @@ use std::{
     collections::BTreeMap,
     fmt,
     net::{IpAddr, SocketAddr},
-    sync::Arc,
-    time::Duration,
+    sync::{
+        Arc, Mutex,
+        atomic::{AtomicU64, Ordering},
+    },
+    time::{Duration, Instant},
 };
 use uuid::Uuid;
 use zeroize::Zeroizing;
@@ -135,7 +138,7 @@ pub struct SecurityState(Arc<SecurityInner>);
 struct SecurityInner {
     http_metrics: Arc<crate::metrics::HttpMetrics>,
     store: BrowserSecurityStore,
-    redis: redis::Client,
+    redis: SharedLimiter,
     origin: String,
     session_cookie: &'static str,
     preauth_cookie: &'static str,
@@ -143,6 +146,309 @@ struct SecurityInner {
     proxies: Vec<IpNet>,
     limit_key: Zeroizing<[u8; 32]>,
     clock: Arc<dyn identity_core::clock::Clock>,
+}
+
+const LIMIT_TIMEOUT: Duration = Duration::from_secs(2);
+const REDIS_TIMING_BOUNDS: [u64; 7] = [
+    1_000_000,
+    5_000_000,
+    10_000_000,
+    25_000_000,
+    50_000_000,
+    100_000_000,
+    2_000_000_000,
+];
+#[derive(Default)]
+struct RedisTiming {
+    attempts: AtomicU64,
+    successes: AtomicU64,
+    failures: AtomicU64,
+    timeouts: AtomicU64,
+    cancellations: AtomicU64,
+    total_nanoseconds: AtomicU64,
+    max_nanoseconds: AtomicU64,
+    buckets: [AtomicU64; 8],
+}
+#[derive(Clone, Copy, serde::Serialize)]
+pub struct RedisTimingSnapshot {
+    pub attempts: u64,
+    pub successes: u64,
+    pub failures: u64,
+    pub timeouts: u64,
+    pub cancellations: u64,
+    pub total_nanoseconds: u64,
+    pub max_nanoseconds: u64,
+    pub buckets: [u64; 8],
+}
+impl RedisTiming {
+    fn snapshot(&self) -> RedisTimingSnapshot {
+        RedisTimingSnapshot {
+            attempts: self.attempts.load(Ordering::Relaxed),
+            successes: self.successes.load(Ordering::Relaxed),
+            failures: self.failures.load(Ordering::Relaxed),
+            timeouts: self.timeouts.load(Ordering::Relaxed),
+            cancellations: self.cancellations.load(Ordering::Relaxed),
+            total_nanoseconds: self.total_nanoseconds.load(Ordering::Relaxed),
+            max_nanoseconds: self.max_nanoseconds.load(Ordering::Relaxed),
+            buckets: std::array::from_fn(|index| self.buckets[index].load(Ordering::Relaxed)),
+        }
+    }
+    fn record_duration(&self, started: Instant) {
+        let ns = u64::try_from(started.elapsed().as_nanos()).unwrap_or(u64::MAX);
+        self.total_nanoseconds.fetch_add(ns, Ordering::Relaxed);
+        self.max_nanoseconds.fetch_max(ns, Ordering::Relaxed);
+        for (index, count) in self.buckets.iter().enumerate() {
+            if index == 7 || ns <= REDIS_TIMING_BOUNDS[index] {
+                count.fetch_add(1, Ordering::Relaxed);
+            }
+        }
+    }
+}
+#[derive(Default)]
+struct RedisMetrics {
+    gate: RedisTiming,
+    connect: RedisTiming,
+    invoke: RedisTiming,
+    reused: AtomicU64,
+    invalidations: AtomicU64,
+}
+#[derive(Clone, Copy, serde::Serialize)]
+pub struct RedisConnectionMetricsSnapshot {
+    pub gate: RedisTimingSnapshot,
+    pub connection: RedisTimingSnapshot,
+    pub invocation: RedisTimingSnapshot,
+    pub reused: u64,
+    pub invalidations: u64,
+    pub generation: u64,
+    pub cached: bool,
+    pub bucket_le_nanoseconds: [u64; 7],
+}
+struct ConnectionSlot<T> {
+    generation: u64,
+    connection: Option<T>,
+}
+impl<T> Default for ConnectionSlot<T> {
+    fn default() -> Self {
+        Self {
+            generation: 0,
+            connection: None,
+        }
+    }
+}
+impl<T: Clone> ConnectionSlot<T> {
+    fn cached(&self) -> Option<(u64, T)> {
+        self.connection
+            .as_ref()
+            .map(|connection| (self.generation, connection.clone()))
+    }
+    fn publish(&mut self, connection: T) -> (u64, T) {
+        self.generation = self.generation.wrapping_add(1);
+        self.connection = Some(connection.clone());
+        (self.generation, connection)
+    }
+    fn invalidate(&mut self, generation: u64) -> bool {
+        if self.generation == generation && self.connection.is_some() {
+            self.connection = None;
+            true
+        } else {
+            false
+        }
+    }
+}
+struct SharedLimiter {
+    client: redis::Client,
+    slot: Arc<Mutex<ConnectionSlot<redis::aio::MultiplexedConnection>>>,
+    gate: tokio::sync::Mutex<()>,
+    metrics: Arc<RedisMetrics>,
+}
+enum Phase {
+    Gate,
+    Connection,
+    Invocation,
+}
+enum PhaseResult {
+    Success,
+    Failure,
+    Timeout,
+}
+struct PhaseGuard {
+    metrics: Arc<RedisMetrics>,
+    phase: Phase,
+    started: Instant,
+    complete: bool,
+    invalidate: Option<(
+        Arc<Mutex<ConnectionSlot<redis::aio::MultiplexedConnection>>>,
+        u64,
+    )>,
+}
+impl PhaseGuard {
+    fn new(metrics: Arc<RedisMetrics>, phase: Phase) -> Self {
+        let timing = match phase {
+            Phase::Connection => &metrics.connect,
+            Phase::Invocation => &metrics.invoke,
+            Phase::Gate => &metrics.gate,
+        };
+        timing.attempts.fetch_add(1, Ordering::Relaxed);
+        Self {
+            metrics,
+            phase,
+            started: Instant::now(),
+            complete: false,
+            invalidate: None,
+        }
+    }
+    fn timing(&self) -> &RedisTiming {
+        match self.phase {
+            Phase::Connection => &self.metrics.connect,
+            Phase::Invocation => &self.metrics.invoke,
+            Phase::Gate => &self.metrics.gate,
+        }
+    }
+    fn invalidate(&self) {
+        if let Some((slot, generation)) = &self.invalidate
+            && slot
+                .lock()
+                .unwrap_or_else(std::sync::PoisonError::into_inner)
+                .invalidate(*generation)
+        {
+            self.metrics.invalidations.fetch_add(1, Ordering::Relaxed);
+        }
+    }
+    fn finish(&mut self, result: PhaseResult) {
+        let counter = match result {
+            PhaseResult::Success => &self.timing().successes,
+            PhaseResult::Failure => &self.timing().failures,
+            PhaseResult::Timeout => &self.timing().timeouts,
+        };
+        counter.fetch_add(1, Ordering::Relaxed);
+        if !matches!(result, PhaseResult::Success) {
+            self.invalidate();
+        }
+        self.timing().record_duration(self.started);
+        self.complete = true;
+    }
+}
+impl Drop for PhaseGuard {
+    fn drop(&mut self) {
+        if !self.complete {
+            self.timing().cancellations.fetch_add(1, Ordering::Relaxed);
+            self.invalidate();
+            self.timing().record_duration(self.started);
+        }
+    }
+}
+impl SharedLimiter {
+    fn new(client: redis::Client) -> Self {
+        Self {
+            client,
+            slot: Arc::new(Mutex::new(ConnectionSlot::default())),
+            gate: tokio::sync::Mutex::new(()),
+            metrics: Arc::new(RedisMetrics::default()),
+        }
+    }
+    fn cached(&self) -> Option<(u64, redis::aio::MultiplexedConnection)> {
+        self.slot
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner)
+            .cached()
+    }
+    async fn connection(
+        &self,
+        deadline: tokio::time::Instant,
+    ) -> Result<(u64, redis::aio::MultiplexedConnection), BoundaryUnavailable> {
+        if let Some(connection) = self.cached() {
+            self.metrics.reused.fetch_add(1, Ordering::Relaxed);
+            return Ok(connection);
+        }
+        let mut gate_phase = PhaseGuard::new(self.metrics.clone(), Phase::Gate);
+        let _gate = match tokio::time::timeout_at(deadline, self.gate.lock()).await {
+            Ok(gate) => {
+                gate_phase.finish(PhaseResult::Success);
+                gate
+            }
+            Err(_) => {
+                gate_phase.finish(PhaseResult::Timeout);
+                return Err(BoundaryUnavailable);
+            }
+        };
+        if let Some(connection) = self.cached() {
+            self.metrics.reused.fetch_add(1, Ordering::Relaxed);
+            return Ok(connection);
+        }
+        let mut phase = PhaseGuard::new(self.metrics.clone(), Phase::Connection);
+        let result =
+            tokio::time::timeout_at(deadline, self.client.get_multiplexed_async_connection()).await;
+        match result {
+            Ok(Ok(connection)) => {
+                phase.finish(PhaseResult::Success);
+                Ok(self
+                    .slot
+                    .lock()
+                    .unwrap_or_else(std::sync::PoisonError::into_inner)
+                    .publish(connection))
+            }
+            Ok(Err(error)) => {
+                phase.finish(if error.is_timeout() {
+                    PhaseResult::Timeout
+                } else {
+                    PhaseResult::Failure
+                });
+                Err(BoundaryUnavailable)
+            }
+            Err(_) => {
+                phase.finish(PhaseResult::Timeout);
+                Err(BoundaryUnavailable)
+            }
+        }
+    }
+    async fn invoke(
+        &self,
+        invocation: &mut redis::ScriptInvocation<'_>,
+    ) -> Result<Vec<i64>, BoundaryUnavailable> {
+        let deadline = tokio::time::Instant::now() + LIMIT_TIMEOUT;
+        let (generation, mut connection) = self.connection(deadline).await?;
+        let mut phase = PhaseGuard::new(self.metrics.clone(), Phase::Invocation);
+        phase.invalidate = Some((self.slot.clone(), generation));
+        let result = tokio::time::timeout_at(
+            deadline,
+            invocation.invoke_async::<Vec<i64>>(&mut connection),
+        )
+        .await;
+        match result {
+            Ok(Ok(value)) => {
+                phase.finish(PhaseResult::Success);
+                Ok(value)
+            }
+            Ok(Err(error)) => {
+                phase.finish(if error.is_timeout() {
+                    PhaseResult::Timeout
+                } else {
+                    PhaseResult::Failure
+                });
+                Err(BoundaryUnavailable)
+            }
+            Err(_) => {
+                phase.finish(PhaseResult::Timeout);
+                Err(BoundaryUnavailable)
+            }
+        }
+    }
+    fn snapshot(&self) -> RedisConnectionMetricsSnapshot {
+        let slot = self
+            .slot
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner);
+        RedisConnectionMetricsSnapshot {
+            gate: self.metrics.gate.snapshot(),
+            connection: self.metrics.connect.snapshot(),
+            invocation: self.metrics.invoke.snapshot(),
+            reused: self.metrics.reused.load(Ordering::Relaxed),
+            invalidations: self.metrics.invalidations.load(Ordering::Relaxed),
+            generation: slot.generation,
+            cached: slot.connection.is_some(),
+            bucket_le_nanoseconds: REDIS_TIMING_BOUNDS,
+        }
+    }
 }
 impl SecurityState {
     pub fn new(config: &Config, dependencies: Dependencies) -> Result<Self, &'static str> {
@@ -170,7 +476,7 @@ impl SecurityState {
         Ok(Self(Arc::new(SecurityInner {
             http_metrics: Arc::new(crate::metrics::HttpMetrics::default()),
             store: BrowserSecurityStore::new(dependencies.postgres),
-            redis,
+            redis: SharedLimiter::new(redis),
             origin: config.issuer.origin().ascii_serialization(),
             session_cookie: if secure {
                 "__Host-identity"
@@ -193,6 +499,10 @@ impl SecurityState {
     }
     pub(crate) fn http_metrics(&self) -> Arc<crate::metrics::HttpMetrics> {
         self.0.http_metrics.clone()
+    }
+    /// Aggregate transport metrics only. Atomic fields may be sampled at slightly different instants.
+    pub fn redis_connection_metrics(&self) -> RedisConnectionMetricsSnapshot {
+        self.0.redis.snapshot()
     }
     /// Top-level OAuth entry points create only a durable preauthentication context, never identity.
     pub async fn ensure_preauth(
@@ -347,13 +657,8 @@ impl SecurityState {
         for (_, limit, seconds) in &budgets {
             invocation.arg(*limit).arg(*seconds);
         }
-        let result = tokio::time::timeout(Duration::from_secs(2), async {
-            let mut connection = self.0.redis.get_multiplexed_async_connection().await?;
-            invocation.invoke_async::<Vec<i64>>(&mut connection).await
-        })
-        .await
-        .map_err(|_| BoundaryUnavailable)?
-        .map_err(|_| BoundaryUnavailable)?;
+        // A failed/timeout/cancelled command may already have updated budgets. Never replay Lua.
+        let result = self.0.redis.invoke(&mut invocation).await?;
         if result.len() != 3 {
             return Err(BoundaryUnavailable);
         }
@@ -858,6 +1163,197 @@ impl<'de> serde::Deserialize<'de> for StrictJson {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn an_old_generation_cannot_invalidate_a_reconnected_socket() {
+        let mut slot = ConnectionSlot::default();
+        let (old, _) = slot.publish(1_u8);
+        assert!(slot.invalidate(old));
+        let (new, _) = slot.publish(2_u8);
+        assert!(!slot.invalidate(old));
+        assert_eq!(slot.cached(), Some((new, 2)));
+        assert!(slot.invalidate(new));
+        assert!(slot.cached().is_none());
+    }
+
+    async fn fake_redis() -> (
+        String,
+        Arc<AtomicU64>,
+        Arc<AtomicU64>,
+        tokio::task::JoinHandle<()>,
+    ) {
+        use tokio::io::{AsyncReadExt, AsyncWriteExt};
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0")
+            .await
+            .unwrap_or_else(|_| panic!("test listener unavailable"));
+        let address = listener
+            .local_addr()
+            .unwrap_or_else(|_| panic!("test listener address unavailable"));
+        let connections = Arc::new(AtomicU64::new(0));
+        let evals = Arc::new(AtomicU64::new(0));
+        let count = connections.clone();
+        let commands = evals.clone();
+        let task = tokio::spawn(async move {
+            while let Ok((mut stream, _)) = listener.accept().await {
+                count.fetch_add(1, Ordering::Relaxed);
+                let commands = commands.clone();
+                tokio::spawn(async move {
+                    let mut buffer = Vec::new();
+                    let mut chunk = [0_u8; 4096];
+                    while let Ok(length) = stream.read(&mut chunk).await {
+                        if length == 0 {
+                            break;
+                        }
+                        buffer.extend_from_slice(&chunk[..length]);
+                        while let Some((name, consumed)) = resp_command(&buffer) {
+                            buffer.drain(..consumed);
+                            if name == "EVALSHA" {
+                                commands.fetch_add(1, Ordering::Relaxed);
+                                tokio::time::sleep(Duration::from_secs(4)).await;
+                                let _ = stream.write_all(b"*3\r\n:0\r\n:0\r\n:0\r\n").await;
+                            } else {
+                                let _ = stream.write_all(b"+OK\r\n").await;
+                            }
+                        }
+                    }
+                });
+            }
+        });
+        (format!("redis://{address}"), connections, evals, task)
+    }
+    fn resp_command(buffer: &[u8]) -> Option<(String, usize)> {
+        let line = buffer.windows(2).position(|chunk| chunk == b"\r\n")?;
+        if buffer.first() != Some(&b'*') {
+            return None;
+        }
+        let count = std::str::from_utf8(&buffer[1..line])
+            .ok()?
+            .parse::<usize>()
+            .ok()?;
+        let mut offset = line + 2;
+        let mut name = None;
+        for index in 0..count {
+            let end = buffer[offset..]
+                .windows(2)
+                .position(|chunk| chunk == b"\r\n")?
+                + offset;
+            if buffer.get(offset) != Some(&b'$') {
+                return None;
+            }
+            let length = std::str::from_utf8(&buffer[offset + 1..end])
+                .ok()?
+                .parse::<usize>()
+                .ok()?;
+            let start = end + 2;
+            let finish = start + length;
+            if buffer.len() < finish + 2 {
+                return None;
+            }
+            if index == 0 {
+                name = Some(std::str::from_utf8(&buffer[start..finish]).ok()?.to_owned());
+            }
+            offset = finish + 2;
+        }
+        Some((name?, offset))
+    }
+
+    #[tokio::test]
+    async fn simultaneous_callers_share_one_real_transport_connection() {
+        let (url, connections, _, server) = fake_redis().await;
+        let limiter = Arc::new(SharedLimiter::new(
+            redis::Client::open(url).unwrap_or_else(|_| panic!("test redis url invalid")),
+        ));
+        let mut tasks = Vec::new();
+        for _ in 0..20 {
+            let limiter = limiter.clone();
+            tasks.push(tokio::spawn(async move {
+                limiter
+                    .connection(tokio::time::Instant::now() + LIMIT_TIMEOUT)
+                    .await
+            }));
+        }
+        for task in tasks {
+            assert!(task.await.is_ok_and(|result| result.is_ok()));
+        }
+        assert_eq!(connections.load(Ordering::Relaxed), 1);
+        assert_eq!(limiter.snapshot().connection.attempts, 1);
+        assert_eq!(limiter.snapshot().connection.successes, 1);
+        assert_eq!(limiter.snapshot().reused, 19);
+        server.abort();
+    }
+
+    #[tokio::test]
+    async fn timeout_after_sent_lua_never_retries_and_invalidates_only_that_generation() {
+        let (url, connections, evals, server) = fake_redis().await;
+        let limiter = SharedLimiter::new(
+            redis::Client::open(url).unwrap_or_else(|_| panic!("test redis url invalid")),
+        );
+        let script = redis::Script::new("return {0,0,0}");
+        let mut invocation = script.prepare_invoke();
+        let began = Instant::now();
+        assert!(limiter.invoke(&mut invocation).await.is_err());
+        assert!(began.elapsed() < Duration::from_secs(3));
+        assert_eq!(evals.load(Ordering::Relaxed), 1);
+        assert_eq!(connections.load(Ordering::Relaxed), 1);
+        let snapshot = limiter.snapshot();
+        assert_eq!(snapshot.invocation.attempts, 1);
+        assert_eq!(snapshot.invocation.timeouts, 1);
+        assert_eq!(snapshot.invalidations, 1);
+        assert!(!snapshot.cached);
+        server.abort();
+    }
+
+    #[tokio::test]
+    async fn cancelled_invocation_clears_socket_and_releases_future_reconnect() {
+        let (url, connections, evals, server) = fake_redis().await;
+        let limiter = Arc::new(SharedLimiter::new(
+            redis::Client::open(url).unwrap_or_else(|_| panic!("test redis url invalid")),
+        ));
+        let copy = limiter.clone();
+        let task = tokio::spawn(async move {
+            let script = redis::Script::new("return {0,0,0}");
+            copy.invoke(&mut script.prepare_invoke()).await
+        });
+        for _ in 0..100 {
+            if evals.load(Ordering::Relaxed) == 1 {
+                break;
+            }
+            tokio::time::sleep(Duration::from_millis(5)).await;
+        }
+        assert_eq!(evals.load(Ordering::Relaxed), 1);
+        task.abort();
+        let _ = task.await;
+        let snapshot = limiter.snapshot();
+        assert_eq!(snapshot.invocation.cancellations, 1);
+        assert!(!snapshot.cached);
+        assert!(
+            limiter
+                .connection(tokio::time::Instant::now() + LIMIT_TIMEOUT)
+                .await
+                .is_ok()
+        );
+        assert_eq!(connections.load(Ordering::Relaxed), 2);
+        server.abort();
+    }
+
+    #[tokio::test]
+    async fn total_deadline_includes_singleflight_gate_wait() {
+        let limiter = SharedLimiter::new(
+            redis::Client::open("redis://127.0.0.1:1")
+                .unwrap_or_else(|_| panic!("test redis url invalid")),
+        );
+        let held = limiter.gate.lock().await;
+        assert!(
+            limiter
+                .connection(tokio::time::Instant::now() + Duration::from_millis(20))
+                .await
+                .is_err()
+        );
+        drop(held);
+        assert_eq!(limiter.snapshot().gate.timeouts, 1);
+        assert_eq!(limiter.snapshot().connection.attempts, 0);
+        assert_eq!(limiter.snapshot().invocation.attempts, 0);
+    }
 
     #[test]
     fn untrusted_forwarding_headers_cannot_override_peer() {

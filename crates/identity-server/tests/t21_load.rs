@@ -57,6 +57,7 @@ struct Control {
     pool: PgPool,
     observer: query_evidence::Observer,
     application_name: Arc<String>,
+    security: identity_server::security::SecurityState,
 }
 fn allowed(state: &Control, request: &Request) -> bool {
     request
@@ -94,7 +95,7 @@ async fn stats(State(state): State<Control>, request: Request) -> (StatusCode, J
     (
         StatusCode::OK,
         Json(
-            json!({"refreshes":state.refreshes.load(Ordering::Relaxed),"refresh_failures":state.failures.load(Ordering::Relaxed),"password_hashes":m.hashes,"password_verifications":m.verifications,"password_queue_timeouts":m.queue_timeouts,"password_waiting":m.waiting,"password_waiting_high_watermark":m.waiting_high_watermark,"password_slots_in_use":m.slots_in_use,"password_slots_high_watermark":m.slots_high_watermark,"password_running":m.running,"password_running_high_watermark":m.running_high_watermark,"password_queue_wait_nanoseconds":m.queue_wait_nanoseconds,"password_queue_wait_buckets":m.queue_wait_buckets,"password_queue_wait_bucket_le_nanoseconds":identity_core::security::PASSWORD_WAIT_BUCKET_NANOSECONDS,"password_hash_nanoseconds":m.hash_nanoseconds,"password_verification_nanoseconds":m.verification_nanoseconds,"argon2_memory_kib":m.memory_kib,"argon2_iterations":m.iterations,"argon2_lanes":m.lanes,"pool_size":state.pool.size(),"pool_idle":state.pool.num_idle(),"database_active_connections":active,"database_waits":waits,"query_observation":state.observer.snapshot()}),
+            json!({"refreshes":state.refreshes.load(Ordering::Relaxed),"refresh_failures":state.failures.load(Ordering::Relaxed),"password_hashes":m.hashes,"password_verifications":m.verifications,"password_queue_timeouts":m.queue_timeouts,"password_waiting":m.waiting,"password_waiting_high_watermark":m.waiting_high_watermark,"password_slots_in_use":m.slots_in_use,"password_slots_high_watermark":m.slots_high_watermark,"password_running":m.running,"password_running_high_watermark":m.running_high_watermark,"password_queue_wait_nanoseconds":m.queue_wait_nanoseconds,"password_queue_wait_buckets":m.queue_wait_buckets,"password_queue_wait_bucket_le_nanoseconds":identity_core::security::PASSWORD_WAIT_BUCKET_NANOSECONDS,"password_hash_nanoseconds":m.hash_nanoseconds,"password_verification_nanoseconds":m.verification_nanoseconds,"argon2_memory_kib":m.memory_kib,"argon2_iterations":m.iterations,"argon2_lanes":m.lanes,"pool_size":state.pool.size(),"pool_idle":state.pool.num_idle(),"database_active_connections":active,"database_waits":waits,"query_observation":state.observer.snapshot(),"redis_connection_metrics":state.security.redis_connection_metrics()}),
         ),
     )
 }
@@ -744,6 +745,7 @@ async fn run(
     let mut dependencies = Dependencies::new(config).map_err(|_| "private dependencies invalid")?;
     dependencies.postgres = pool.clone();
     let state = AuthAppState::new_with_clock(config, dependencies, Arc::new(SystemClock)).await?;
+    let security = state.security.clone();
     let app =
         accounts_router(state, Router::new()).layer(axum::middleware::from_fn(observe_endpoint));
     let listener = tokio::net::TcpListener::bind("127.0.0.1:5310").await?;
@@ -801,6 +803,7 @@ async fn run(
         pool: pool.clone(),
         observer,
         application_name: Arc::new(application_name),
+        security,
     };
     let control_listener = tokio::net::TcpListener::bind("127.0.0.1:5311").await?;
     let control_app = Router::new()

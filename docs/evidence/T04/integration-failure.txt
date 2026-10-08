@@ -1,4 +1,4 @@
-T04 security primitives; real dependencies; 2026-10-08T16:57:44.768Z
+T04 security primitives; real dependencies; 2026-10-08T16:55:00.924Z
 PASS T04 current session/credential-version CSRF authority; preauth cannot bypass; audit failure rolls back security mutation
 PASS T04 HTTPS __Host/Secure/HttpOnly/Path preauth flags and valid session CSRF rotation; no login business claim
 PASS T04-SEC-02 CSRF/Origin/body limit/safe errors and untrusted forwarding header; temporary fixture only
@@ -6,8 +6,9 @@ PASS T04 mail limit: target-only cap distinguished from source cap for enumerati
 PASS T04 Redis Lua atomic 10-way account budget; distinct policy keys; HTTP 429/Retry-After under spoofed-IP concurrency
 PASS T04-SEC-04 real AEAD wrong AAD/key/ciphertext rejected; full crypto boundaries in core unit suite
 PASS T04 durable preauth expiry enforced at explicit database timestamp; no expiry sleep
-PASS T04 real Redis shared socket: twenty simultaneous checks create one connection; cached outage returns503 with no Lua retry; recovery creates one replacement and original state succeeds
-PASS T04-SEC-03 stopped real Redis: limiter and preauth HTTP fail 503; no authentication bypass
-PASS T04 stopped real PostgreSQL: preauth persistence unavailable returns503 with safe envelope
-Completed 2026-10-08T16:58:08.685Z
-Exit code 0
+FAIL t04_redis_connection_recovery failed; child output suppressed to protect secrets.
+
+101 !== 0
+
+Completed 2026-10-08T16:55:08.515Z
+Exit code 1

@@ -76,6 +76,7 @@ struct MetricsState {
     pool: PgPool,
     passwords: identity_core::security::PasswordService,
     token: Option<[u8; 32]>,
+    security: crate::security::SecurityState,
 }
 pub fn metrics_routes(state: &AuthAppState) -> Router {
     Router::new()
@@ -85,6 +86,7 @@ pub fn metrics_routes(state: &AuthAppState) -> Router {
             pool: state.inner.pool.clone(),
             passwords: state.inner.passwords.clone(),
             token: state.inner.metrics_token,
+            security: state.security.clone(),
         })
 }
 async fn metrics(
@@ -103,6 +105,7 @@ async fn metrics(
     }
     let mut output = state.http.render();
     output.push_str(&password_metrics(state.passwords.metrics()));
+    output.push_str(&redis_metrics(state.security.redis_connection_metrics()));
     output.push_str(&format!(
         "identity_database_pool_size {}\nidentity_database_pool_idle {}\n",
         state.pool.size(),
@@ -116,6 +119,27 @@ async fn metrics(
         output,
     )
         .into_response()
+}
+fn redis_metrics(snapshot: crate::security::RedisConnectionMetricsSnapshot) -> String {
+    let mut output = format!(
+        "identity_limiter_redis_connections_reused_total {}\nidentity_limiter_redis_connections_invalidated_total {}\nidentity_limiter_redis_connection_generation {}\nidentity_limiter_redis_connection_cached {}\n",
+        snapshot.reused,
+        snapshot.invalidations,
+        snapshot.generation,
+        u8::from(snapshot.cached)
+    );
+    for (phase, timing) in [
+        ("gate", snapshot.gate),
+        ("connect", snapshot.connection),
+        ("invoke", snapshot.invocation),
+    ] {
+        output.push_str(&format!("identity_limiter_redis_attempts_total{{phase=\"{phase}\"}} {}\nidentity_limiter_redis_successes_total{{phase=\"{phase}\"}} {}\nidentity_limiter_redis_failures_total{{phase=\"{phase}\"}} {}\nidentity_limiter_redis_timeouts_total{{phase=\"{phase}\"}} {}\nidentity_limiter_redis_cancellations_total{{phase=\"{phase}\"}} {}\n", timing.attempts, timing.successes, timing.failures, timing.timeouts, timing.cancellations));
+        for (index, upper) in snapshot.bucket_le_nanoseconds.iter().enumerate() {
+            output.push_str(&format!("identity_limiter_redis_duration_seconds_bucket{{phase=\"{phase}\",le=\"{}\"}} {}\n", *upper as f64 / 1_000_000_000.0, timing.buckets[index]));
+        }
+        output.push_str(&format!("identity_limiter_redis_duration_seconds_bucket{{phase=\"{phase}\",le=\"+Inf\"}} {}\nidentity_limiter_redis_duration_seconds_count{{phase=\"{phase}\"}} {}\nidentity_limiter_redis_duration_seconds_sum{{phase=\"{phase}\"}} {}\n", timing.buckets[7], timing.buckets[7], timing.total_nanoseconds as f64 / 1_000_000_000.0));
+    }
+    output
 }
 fn password_metrics(m: PasswordMetricsSnapshot) -> String {
     let mut output = format!(

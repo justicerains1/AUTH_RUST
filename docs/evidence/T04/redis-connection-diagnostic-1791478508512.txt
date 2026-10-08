@@ -1,0 +1,20 @@
+
+running 1 test
+test t04_redis_connection_recovery ... FAILED
+
+failures:
+
+failures:
+    t04_redis_connection_recovery
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 3 filtered out; finished in 6.36s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+     Running tests/t04_security.rs (target/debug/deps/t04_security-f2551f0889bdf01a)
+
+thread 't04_redis_connection_recovery' (1384126) panicked at crates/identity-server/tests/t04_security.rs:442:92:
+assertion `left == right` failed
+  left: 503
+ right: 200
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+error: test failed, to rerun pass `-p identity-server --test t04_security`

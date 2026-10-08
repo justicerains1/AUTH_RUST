@@ -158,6 +158,12 @@ async fn t22_real_metrics() -> TestResult {
     assert!(body.contains("identity_password_waiting 0"));
     assert!(body.contains("identity_password_running 0"));
     assert!(body.contains("identity_password_slots_in_use 0"));
+    assert!(body.contains("identity_limiter_redis_attempts_total{phase=\"connect\"}"));
+    assert!(
+        body.contains(
+            "identity_limiter_redis_duration_seconds_bucket{phase=\"invoke\",le=\"+Inf\"}"
+        )
+    );
     assert!(!body.contains("password_hash="));
     let worker =
         identity_worker::outbox::MailWorker::new(&config, pool.clone(), Arc::new(SystemClock))?;

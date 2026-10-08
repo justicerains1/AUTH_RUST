@@ -1,0 +1,21 @@
+{
+  "checkedAt": "2026-10-08T17:00:09.718282+00:00",
+  "services": [
+    {
+      "Service": "mailpit",
+      "State": "running",
+      "Health": "healthy"
+    },
+    {
+      "Service": "postgres",
+      "State": "running",
+      "Health": "healthy"
+    },
+    {
+      "Service": "redis",
+      "State": "running",
+      "Health": "healthy"
+    }
+  ],
+  "exitCode": 0
+}
