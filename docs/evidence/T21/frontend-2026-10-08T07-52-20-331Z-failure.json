@@ -1,0 +1,597 @@
+{
+  "kind": "T21 frontend independent submodule; does not mark T21 accepted",
+  "started": "2026-10-08T07:52:20.332Z",
+  "environment": {
+    "os": "linux 6.18.40.1-microsoft-standard-WSL2 x64",
+    "node": "v22.22.1",
+    "cpuModel": "AMD Ryzen 7 7700X 8-Core Processor",
+    "logicalCpus": 16,
+    "memoryGiB": 15.217361450195312,
+    "cgroupCpuMax": "max 100000",
+    "cgroupMemoryMax": "max",
+    "referenceEnvironment": "Linux 8 vCPU / 16 GiB / SSD; this host differs, backend capacity is not measured.",
+    "git": "ede17523365a4877289433ba555824a4382ee809",
+    "workspaceHasTrackedChanges": true,
+    "chrome": {
+      "protocolVersion": "1.3",
+      "product": "HeadlessChrome/153.0.8010.12",
+      "revision": "@971a7443b0c9b0a9b2860529b33331b76077ec62",
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+      "jsVersion": "15.3.76.4"
+    },
+    "browserExecutableSha256": "8c599d43aec53f2460a31ae2f4af6bd863f8258b34ff519564bc5d4726bfaa1e"
+  },
+  "settings": {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "samples": 5,
+    "cpuSlowdown": 4,
+    "downlinkMbps": 1.6,
+    "uplinkKbps": 750,
+    "latencyMs": 150,
+    "downloadBytesPerSecond": 200000,
+    "uploadBytesPerSecond": 93750
+  },
+  "limits": {
+    "lcpMs": 2500,
+    "cls": 0.1,
+    "homeJavaScriptGzipBytes": 307200,
+    "loginJavaScriptGzipBytes": 204800,
+    "localFeedbackMaxMs": 100,
+    "laboratoryFeedbackP75Ms": 200
+  },
+  "methodology": {
+    "build": "Existing production dist; source and every output SHA-256 recorded",
+    "network": "CDP emulation; static server supplies gzip bytes; actual GET /api/v1/me proxies to fixed loopback API",
+    "cache": "New incognito context for every cold sample; browser HTTP cache cleared and disabled; service workers blocked",
+    "metrics": "LCP latest observer entry before interaction; CLS maximum standard 1s-gap/5s session window without recent input; five-sample median",
+    "interaction": "Click event timestamp to second animation frame after password visibility/local empty-login feedback; local CPU1x and laboratory CPU4x measured separately, not INP or a Lighthouse score",
+    "scope": "Home and anonymous login rendering only. No account seed, token generation, password login or production RUM."
+  },
+  "build": [
+    {
+      "source": "apps/identity-web/src/App.test.tsx",
+      "sha256": "5754076ccb3943446d00bf7ae024db8c26afd8f7ae65b588838eddf65b8bfd90"
+    },
+    {
+      "source": "apps/identity-web/src/App.tsx",
+      "sha256": "8619759a18d296f57964ebecdf163d5e1a747239e13db7289888b5605b8f2f7e"
+    },
+    {
+      "source": "apps/identity-web/src/components/AccountAction.tsx",
+      "sha256": "3f5483f804f9a6175c7c64032cb190e8a2648ab33376f26bc80a64207c7c6ca2"
+    },
+    {
+      "source": "apps/identity-web/src/components/AccountLayout.tsx",
+      "sha256": "6c320052b6e167acb13867e8aa39577b7a30babea2ee509da25b28bc53173f02"
+    },
+    {
+      "source": "apps/identity-web/src/components/AuthGuard.tsx",
+      "sha256": "6126d9caf669e3d639dcf6144cce5d5f33a08e68cd94c184d16247ae85a6f88b"
+    },
+    {
+      "source": "apps/identity-web/src/components/AuthTransactionNotice.tsx",
+      "sha256": "033f18cbf3475c9c75f2bb078cd38ffcfcbb0ef02f27ef64c20e286203bd1553"
+    },
+    {
+      "source": "apps/identity-web/src/components/Button.tsx",
+      "sha256": "fa74ec5f09d3bd2977eec5c079d6e6a6894f1f192b8172f22f054a32a0556a48"
+    },
+    {
+      "source": "apps/identity-web/src/components/ConfirmDialog.tsx",
+      "sha256": "1ede95030a56d3c8b6ab3b525266397959fe904c78e1668725effafb30e2e98b"
+    },
+    {
+      "source": "apps/identity-web/src/components/CursorPagination.tsx",
+      "sha256": "2d09741413f9c2fb99a87096456ab8d1f5ef0fed6c3f9b38afb77a40596b2fee"
+    },
+    {
+      "source": "apps/identity-web/src/components/Empty.tsx",
+      "sha256": "1fdd3a53ba3415a1aaf20af070784b85bb946d6623df1fb7de09239a5b225d5e"
+    },
+    {
+      "source": "apps/identity-web/src/components/FactorChallenge.tsx",
+      "sha256": "1c01a2b78974220a6f5facddae7b386e2c7a36f28bcae4097bbe9bd07ff14a22"
+    },
+    {
+      "source": "apps/identity-web/src/components/FieldError.tsx",
+      "sha256": "b63d07d7a07280be3cb21d580ccaf86176d37fab13068124825261d7d31073a5"
+    },
+    {
+      "source": "apps/identity-web/src/components/Input.tsx",
+      "sha256": "1273a7db394859174be7ec7bd29834a0f913327242d90b7550d955a2992fb798"
+    },
+    {
+      "source": "apps/identity-web/src/components/Layout.tsx",
+      "sha256": "25b58ffceee7af208ac71e2a7c265b1126f99bdba12ae30ad997bb9cddf4bade"
+    },
+    {
+      "source": "apps/identity-web/src/components/PasskeyLoginButton.tsx",
+      "sha256": "4fc86d6bcc6fb158b0ef10088fe90e636c6391eaa13e74bbbe3248eeb59e2c37"
+    },
+    {
+      "source": "apps/identity-web/src/components/PasskeyReauth.tsx",
+      "sha256": "7c6500799f658babf929c1a0eb7c541dfb7e76815f37982172e2dbda9589a76d"
+    },
+    {
+      "source": "apps/identity-web/src/components/Password.tsx",
+      "sha256": "3a5945279207c1ebda5cfa4c716adb554853db4f018be46115dfd3ee6c8b276f"
+    },
+    {
+      "source": "apps/identity-web/src/components/PublicAuthLayout.tsx",
+      "sha256": "e8cd9722128ceab5eaad59bee91229dc0282eb8d86dd757126c3f1e68e942c31"
+    },
+    {
+      "source": "apps/identity-web/src/components/ReauthenticationDialog.tsx",
+      "sha256": "1ed0bedc285274943b30f28050673aa06586c55fa0badb8b58156bc0ff3588a3"
+    },
+    {
+      "source": "apps/identity-web/src/components/RecoveryCodes.tsx",
+      "sha256": "4f1501b83df823b66c08ec2fe5f8937f1f0a993a23ada47bd31a681dc52f4e3c"
+    },
+    {
+      "source": "apps/identity-web/src/components/RequestFeedback.tsx",
+      "sha256": "fdaa9a973bd6846b03277c7e9656072360c7f81dd577d21125e6761a904007b2"
+    },
+    {
+      "source": "apps/identity-web/src/components/Status.tsx",
+      "sha256": "64bd758fb8e08a9103aabfd4d787fb8b38d7856ec4b282cab36fa9ce20edad8b"
+    },
+    {
+      "source": "apps/identity-web/src/components/Table.tsx",
+      "sha256": "8654aee84242c30679bf1ccd551dca4ca8fb724e4018190b2ed928d0e1eed619"
+    },
+    {
+      "source": "apps/identity-web/src/components/TotpQrCode.tsx",
+      "sha256": "60f563fc47106dd1adc9396fc68e8a17375a9102b940f96771ed7366c792fb75"
+    },
+    {
+      "source": "apps/identity-web/src/components/auth-factors.test.tsx",
+      "sha256": "51b6814e69ddfa77238a018f3cc517dbf5d550f402585f1914c4f42e68dee2ad"
+    },
+    {
+      "source": "apps/identity-web/src/components/components.test.tsx",
+      "sha256": "34b1d101b88f223768f2827d31cf0f63c68c4d597359ea361d0befba48b31bb3"
+    },
+    {
+      "source": "apps/identity-web/src/components/mfa.test.tsx",
+      "sha256": "be88c77d9bcea57e4c32a9e92a7b23dabc85172e207da13192be40798e603de2"
+    },
+    {
+      "source": "apps/identity-web/src/components/passkey.test.tsx",
+      "sha256": "ff9e4fa099226d460a120f168976f9bb61e7aaa6ac5427008f8a704e143b927a"
+    },
+    {
+      "source": "apps/identity-web/src/components/reauthentication.test.tsx",
+      "sha256": "0e05c7a698c6ee7e0bed67e970f9588372eed3137090c8ad7329d7b8d80555c7"
+    },
+    {
+      "source": "apps/identity-web/src/lib/admin-api.ts",
+      "sha256": "0d680d945ea7de6de3bdd5d3a11f786b7f260f7c0d7a567611fc8ac0d3202273"
+    },
+    {
+      "source": "apps/identity-web/src/lib/api.test.ts",
+      "sha256": "ffe03e877ecd8a5e8b454f88afdf7bf742e626b8d9a18d1f8d1be4896b2cad2f"
+    },
+    {
+      "source": "apps/identity-web/src/lib/api.ts",
+      "sha256": "d2e52229608975e910443bf55ef4d9795878575fb51aadc905878fa994a78f08"
+    },
+    {
+      "source": "apps/identity-web/src/lib/auth-feedback.ts",
+      "sha256": "e19ec5885d8f7121608badcb75d4627df859c66d9c6827418f745d5afbdb6584"
+    },
+    {
+      "source": "apps/identity-web/src/lib/auth-flow.ts",
+      "sha256": "1a7ec8f5a81d0da82a25f7013ca8b7872a0bf3b9104493096c325b5eeaba6db2"
+    },
+    {
+      "source": "apps/identity-web/src/lib/i18n.ts",
+      "sha256": "b5f73e84df2aa3c70dcaaccdc20e6531c6c7a17f3018aa042256b853d0523e73"
+    },
+    {
+      "source": "apps/identity-web/src/lib/mail-action.ts",
+      "sha256": "09b0bcae677f37b8eb56b688905ae2e7e972beac04cd2dd79ca2f2f7ea3eb9f5"
+    },
+    {
+      "source": "apps/identity-web/src/lib/passkeyAuth.ts",
+      "sha256": "5b7be56e7886b208a27c454b6a314e531df42f705b3c6375d38307c919f1b96b"
+    },
+    {
+      "source": "apps/identity-web/src/lib/query.ts",
+      "sha256": "e2835f48e3c7b5f40a6ee0207a430d56c82e39abd78537b7bf4eb3a9893ce873"
+    },
+    {
+      "source": "apps/identity-web/src/lib/reauthentication.ts",
+      "sha256": "2cb2803ca7ddb041328a85abcc3ff0d2d3b62175354f38deb60b822f68671d90"
+    },
+    {
+      "source": "apps/identity-web/src/lib/webauthn.test.ts",
+      "sha256": "c78c43b2156114fa93e75c26eb76e8c8701fc202112192a8efe38a226d87343f"
+    },
+    {
+      "source": "apps/identity-web/src/lib/webauthn.ts",
+      "sha256": "d73830f674b5a931ea9e7942abe5b26519095540c19946691e95268bd82693c9"
+    },
+    {
+      "source": "apps/identity-web/src/main.tsx",
+      "sha256": "a776412f9856bfa64f9c0761d7b95de3b4b81c728d6bec686acc3fbc9f353a19"
+    },
+    {
+      "source": "apps/identity-web/src/pages/AccountPage.tsx",
+      "sha256": "e8d237c67737cdad84b021396a7d17c3d71fed8a092f1ca4f2218e9124c93d8a"
+    },
+    {
+      "source": "apps/identity-web/src/pages/AdminPage.tsx",
+      "sha256": "645ea7f4a5e39fede65d416d0d18df3f78b4acf6f4c2b0e250f0b5d84b558c0f"
+    },
+    {
+      "source": "apps/identity-web/src/pages/ComponentsPage.tsx",
+      "sha256": "4879477c3a3dc6e77ece335fb3d7ea06facee8740d8f04cd9ca5c6429e912652"
+    },
+    {
+      "source": "apps/identity-web/src/pages/ConsentPage.tsx",
+      "sha256": "62c871eba500fc5579dc383f14e4ba1c3d6e1193af9b66093d60be97c86b3e82"
+    },
+    {
+      "source": "apps/identity-web/src/pages/EmailVerificationPage.tsx",
+      "sha256": "5e2f025dec85a630828965dbc4cbd35357a60ca16649911c7f30e22b8ecaaa3a"
+    },
+    {
+      "source": "apps/identity-web/src/pages/GrantsPage.tsx",
+      "sha256": "c04873a23ae79c43d383b8bcfd517255a501f3e3b8239271f3c55d1c678f80a9"
+    },
+    {
+      "source": "apps/identity-web/src/pages/HomePage.tsx",
+      "sha256": "e1dd4017307edb607cf3da1875202fea86278163c4873ce0b379a7bac582ecdc"
+    },
+    {
+      "source": "apps/identity-web/src/pages/InitializationPage.tsx",
+      "sha256": "e4828f1a5427a4de762de2c9fba47e4fe041c683642ff9fa115816e529d3ee4a"
+    },
+    {
+      "source": "apps/identity-web/src/pages/LoginPage.tsx",
+      "sha256": "bbbea68b8ba8c53066f5c3bc5deba7b75ef6dd4b6046569310056a4df8560ba7"
+    },
+    {
+      "source": "apps/identity-web/src/pages/LogoutPage.tsx",
+      "sha256": "a2e1bcb04fa9a24734507db62c40d510d61278b234c8ca18cfe0d387db8c03c6"
+    },
+    {
+      "source": "apps/identity-web/src/pages/MfaPage.tsx",
+      "sha256": "817b4cc8d87e296fed588430f1577cae1c5087f8eec82c6b847911b5e062ea71"
+    },
+    {
+      "source": "apps/identity-web/src/pages/NotFoundPage.tsx",
+      "sha256": "a9f4b2ab285c6d647055529d4e8e917a831b32ada4d3e873ff3e473aa2d80f83"
+    },
+    {
+      "source": "apps/identity-web/src/pages/PageTitle.tsx",
+      "sha256": "0c1fe9ebc4b956e5e15731fab5a2dbae43d6080fbf73d6ac159f442704c5a462"
+    },
+    {
+      "source": "apps/identity-web/src/pages/PasskeysPage.tsx",
+      "sha256": "d0345c7f72a7dea30e2636e9de9a11b5d999880a62c3357c26f891d1706a06ef"
+    },
+    {
+      "source": "apps/identity-web/src/pages/PasswordChangePage.tsx",
+      "sha256": "9aea9412b4e093cefacbe60ef6ec1939f6538534af8a7366d16b23cb7eb6f458"
+    },
+    {
+      "source": "apps/identity-web/src/pages/PasswordResetPage.tsx",
+      "sha256": "6b0863ff11e8b90cb0c309996d100e93e9453e0495981554ae233b23d69eb2b3"
+    },
+    {
+      "source": "apps/identity-web/src/pages/RegisterPage.tsx",
+      "sha256": "00a8fc9eccd2cea13ecb9fcd236cf4c0e13322a8bff9df2cf14c743ecd12cbfd"
+    },
+    {
+      "source": "apps/identity-web/src/pages/SessionsPage.tsx",
+      "sha256": "d57216547cd8b3e447c71c4011007f9f1399a963a36fc46516d25a989abc95b9"
+    },
+    {
+      "source": "apps/identity-web/src/pages/account-security.test.tsx",
+      "sha256": "8cfd612031bc007c9502ee27caa78a67935c3bd0a4efe025e730608f016277fb"
+    },
+    {
+      "source": "apps/identity-web/src/pages/admin/AdminConsole.tsx",
+      "sha256": "861ac0ab793bb29c60170e93346a1448c6dd9be7f2acffc65cca97dc2988e4dd"
+    },
+    {
+      "source": "apps/identity-web/src/pages/admin/AdminShared.tsx",
+      "sha256": "9238189920f9165f237d2aab7d603dbfb1c90e39fe402da866562b588f2ce43f"
+    },
+    {
+      "source": "apps/identity-web/src/pages/admin/AuditPage.tsx",
+      "sha256": "f7a790361ceccf0771a4ed26a39290a5eb4c3112451e15db2c79f8d71249fc51"
+    },
+    {
+      "source": "apps/identity-web/src/pages/admin/ClientsPage.tsx",
+      "sha256": "d6e3ed262f0e3380818e6e16eb28b74e7eea4931469797d5c77883590551cc86"
+    },
+    {
+      "source": "apps/identity-web/src/pages/admin/MembersPage.tsx",
+      "sha256": "a98e7d2db6673f408e7b03ff271cc5e914f327f5e7efa43fcb71eef274ce20d6"
+    },
+    {
+      "source": "apps/identity-web/src/pages/admin/UsersPage.tsx",
+      "sha256": "e45f4a28a474bed1b83c0362410bf7b229a64f50de3012347c221d618fceffed"
+    },
+    {
+      "source": "apps/identity-web/src/pages/admin/admin.test.tsx",
+      "sha256": "d9809de0e16a6a333f6ae1ef0bd8dd99d0324b502dfbd3cbce1902184a97e8c5"
+    },
+    {
+      "source": "apps/identity-web/src/pages/consent.test.tsx",
+      "sha256": "03f66520c0ea20f0933224ab0d50928753e5f9c0ccd8ba738092e892f933d753"
+    },
+    {
+      "source": "apps/identity-web/src/pages/logout-grants.test.tsx",
+      "sha256": "f92762aeb42671d9e43b7f34b9d62202e9ff1e9fbe813989e079dfcfa338b963"
+    },
+    {
+      "source": "apps/identity-web/src/pages/passwords.test.tsx",
+      "sha256": "421b5da87e239f835f0fc26802fe5a00c59fd292b2ba612ec5f67ab21d400690"
+    },
+    {
+      "source": "apps/identity-web/src/pages/public-auth.test.tsx",
+      "sha256": "a7d6f8bc60606a7e50bc0ec5c49428a482c7d573db0022d1fffa675a398d7e6a"
+    },
+    {
+      "source": "apps/identity-web/src/pages/sessions.test.tsx",
+      "sha256": "642b5e8fd1171a8402f0c758afbe1198819f64585e8cdd3743af4081f31787ec"
+    },
+    {
+      "source": "apps/identity-web/src/styles.css",
+      "sha256": "9520257b6a08688f3b914dc40cf226f4c1951145abc986793eb2b7a3e05968df"
+    },
+    {
+      "path": "/assets/AccountLayout-uwzVcNfO.js",
+      "bytes": 2409,
+      "gzipBytes": 1140,
+      "sha256": "790110aed24eb7492521e026afcc91a5137bf06d094ef391a43f13f816117455"
+    },
+    {
+      "path": "/assets/AccountPage-DcmVZ7hY.js",
+      "bytes": 5130,
+      "gzipBytes": 1924,
+      "sha256": "2362078fcc2c7bff12460707548cd59ba6bb87170cb5fd305263fa476e444e34"
+    },
+    {
+      "path": "/assets/AdminPage-BUSqK0ti.js",
+      "bytes": 1846,
+      "gzipBytes": 930,
+      "sha256": "766ee23e7dc10fad4baa0def89734f0a28c8b1e1b5073c529b3077336b4d4888"
+    },
+    {
+      "path": "/assets/AdminShared-CJYpPa1W.js",
+      "bytes": 5965,
+      "gzipBytes": 2626,
+      "sha256": "2e46886b3e2fc078adf642f213b1c7f6fd76238b1e623271f0774c4cef1db612"
+    },
+    {
+      "path": "/assets/AuditPage-CVNQhbzy.js",
+      "bytes": 2478,
+      "gzipBytes": 1361,
+      "sha256": "af89665a8c0e6d3d0572dc5161bffd3417e64bb2898d0ab8fa273a293fce27e8"
+    },
+    {
+      "path": "/assets/AuthTransactionNotice-BL0-9zHA.js",
+      "bytes": 2016,
+      "gzipBytes": 1123,
+      "sha256": "d0616471e032994f5dcc2c4907cc1e310275218110c5358613f00a7d3289c501"
+    },
+    {
+      "path": "/assets/ClientsPage-ySwJQtwU.js",
+      "bytes": 6488,
+      "gzipBytes": 2827,
+      "sha256": "f3135bb0fa7e82567e5bf4646d04df1f87910c546325243f2af04ddc49c9d5a5"
+    },
+    {
+      "path": "/assets/ConsentPage-zECiWmIX.js",
+      "bytes": 3516,
+      "gzipBytes": 1778,
+      "sha256": "077d0af44eac1b28c22cf2f765518f6a149065f712ce89c136d4422261fe1e58"
+    },
+    {
+      "path": "/assets/CursorPagination-DYit5_4u.js",
+      "bytes": 475,
+      "gzipBytes": 349,
+      "sha256": "a73def4949f14c81012d323f30ccfdad80446f273af07fabac2d281e69c46298"
+    },
+    {
+      "path": "/assets/EmailVerificationPage-CL3CulsW.js",
+      "bytes": 3569,
+      "gzipBytes": 1755,
+      "sha256": "e7b822523066a369d824c3d929d17267494371986e69f20d9442848dbafb2149"
+    },
+    {
+      "path": "/assets/GrantsPage-BNNunG5Q.js",
+      "bytes": 2246,
+      "gzipBytes": 1338,
+      "sha256": "d4d30c523fd8b7714e3beb3e9f949de3b049f808ca864f4768f736f9c9d8071c"
+    },
+    {
+      "path": "/assets/HomePage-DQUeir7z.js",
+      "bytes": 2953,
+      "gzipBytes": 1155,
+      "sha256": "ee7ae8d6c8a6a2eaaa43948c9a6567f206e05622aae0ae224acecf790a6dedad"
+    },
+    {
+      "path": "/assets/Input-DNCttkuw.js",
+      "bytes": 31571,
+      "gzipBytes": 11474,
+      "sha256": "3d37f919d583551237caa062cebc1004c37d173d6e96d5edb4983ce6c0c855df"
+    },
+    {
+      "path": "/assets/LoginPage-CJlurIxr.js",
+      "bytes": 5707,
+      "gzipBytes": 2711,
+      "sha256": "0cb1a264df217a3e9fbfa67ac7a8ff1892a625fa9f1a39ecb807de3b64a4c133"
+    },
+    {
+      "path": "/assets/LogoutPage-DWrEV0Ic.js",
+      "bytes": 1776,
+      "gzipBytes": 1104,
+      "sha256": "ef6f6508cdd19e1245ddace813f987550b307b81a9def1fda0200d75c343e5b5"
+    },
+    {
+      "path": "/assets/MembersPage-GXJZb9ca.js",
+      "bytes": 2159,
+      "gzipBytes": 1197,
+      "sha256": "67aa906c3e6ca02c16518f10bba9047bcf8604adf0189fbda0df27083be9fb5c"
+    },
+    {
+      "path": "/assets/MfaPage-CJc-qHFG.js",
+      "bytes": 7542,
+      "gzipBytes": 3235,
+      "sha256": "e2adca0258594a7d3c20d13ac5a967095cdd2d8892600410c09bf42f6ac56f60"
+    },
+    {
+      "path": "/assets/NotFoundPage-BwU9-Otd.js",
+      "bytes": 438,
+      "gzipBytes": 329,
+      "sha256": "0912984152cdb7f85c99a2f778609d071cb4f27f070c47846c603eaa77da6544"
+    },
+    {
+      "path": "/assets/PageTitle-CTn7F8yC.js",
+      "bytes": 219,
+      "gzipBytes": 202,
+      "sha256": "7f4febf5fe77342c488511cd4782987185cd6759edcd69092c763c473b8db4b5"
+    },
+    {
+      "path": "/assets/PasskeysPage-DIXQtj60.js",
+      "bytes": 5937,
+      "gzipBytes": 2641,
+      "sha256": "7df77f3dc921ddd512f6d0c2e6548cee135a562287112112186418ccc5d76112"
+    },
+    {
+      "path": "/assets/PasswordChangePage-BR-XgXpk.js",
+      "bytes": 2747,
+      "gzipBytes": 1520,
+      "sha256": "490aec87bc6d9d937239324d93a431113abde55b01bc1b63d5507ecc5bfdda12"
+    },
+    {
+      "path": "/assets/PasswordResetPage-C5W_m2iC.js",
+      "bytes": 4242,
+      "gzipBytes": 2104,
+      "sha256": "5860e85fb3b129d9f0c639d296a2b00d9d73c2829e2813c3c848f052e580e61f"
+    },
+    {
+      "path": "/assets/RegisterPage-CmXWJhrB.js",
+      "bytes": 3011,
+      "gzipBytes": 1629,
+      "sha256": "c35d1eba32c278b5d0bb0b1531e3d50db977b214b699ff476713a82941c7c5df"
+    },
+    {
+      "path": "/assets/SessionsPage-ZxJI6cLD.js",
+      "bytes": 2948,
+      "gzipBytes": 1493,
+      "sha256": "a0560dbc054b0ca33dae147a2fa29e366af1786f804745da0c4120a26055273c"
+    },
+    {
+      "path": "/assets/Status-B8XR2J4p.js",
+      "bytes": 964,
+      "gzipBytes": 562,
+      "sha256": "34c21bb59b411c0085e96262494c2314e100d7a36547359f3dd041fff8ea1c2f"
+    },
+    {
+      "path": "/assets/Table-CeR7bYsn.js",
+      "bytes": 967,
+      "gzipBytes": 566,
+      "sha256": "b1a8d6595f99ba7368c44fe0bda70448368949bb3b81a3eef649f547962234bd"
+    },
+    {
+      "path": "/assets/TotpQrCode-Cj7t8Uq1.js",
+      "bytes": 943,
+      "gzipBytes": 657,
+      "sha256": "64dc9f21369c7f8b826eda69a67f0d57a9f1cb49ed9d8b949c4b6c693e548d23"
+    },
+    {
+      "path": "/assets/UsersPage-DhP_elHv.js",
+      "bytes": 3598,
+      "gzipBytes": 1699,
+      "sha256": "7aa629df681d220b61d4cb67c8290715d06cea40910b290f4f1f9813f5cd0a54"
+    },
+    {
+      "path": "/assets/api-CiOuZ4ty.js",
+      "bytes": 94276,
+      "gzipBytes": 27001,
+      "sha256": "da3e65f86ca0b2ef7d00f671ab0bed787916d529e923de2869504116732cc3d1"
+    },
+    {
+      "path": "/assets/dist-fhZSiuUL.js",
+      "bytes": 7440,
+      "gzipBytes": 2844,
+      "sha256": "9ea7619feb4cd214cec7d2d39c0705f750346647a018d95922a0b81720aa91ea"
+    },
+    {
+      "path": "/assets/index-BsYHvUm8.js",
+      "bytes": 337916,
+      "gzipBytes": 106166,
+      "sha256": "a199f08d8fb7827390d9e6da0479453de51817fbd2e52776212d41f0ad973796"
+    },
+    {
+      "path": "/assets/index-T_jclnav.css",
+      "bytes": 14569,
+      "gzipBytes": 3616,
+      "sha256": "5d11303c0990ee7594aff59d6412b8c7efd96387594cc44e49da6f8480bec27c"
+    },
+    {
+      "path": "/assets/jsx-runtime-Dk72oS4N.js",
+      "bytes": 8774,
+      "gzipBytes": 3345,
+      "sha256": "c5f4f8da0038e4082afc00542f93aa1bb64bc5777801d67197507865915a89b6"
+    },
+    {
+      "path": "/assets/mail-action-CjTmAZmi.js",
+      "bytes": 900,
+      "gzipBytes": 500,
+      "sha256": "5831571606a1a35f29e38fe60ac138b777a84e49b9155484e3ce1e2f4091b9a8"
+    },
+    {
+      "path": "/assets/qrcode-DtWdxa9d.js",
+      "bytes": 20628,
+      "gzipBytes": 7193,
+      "sha256": "4d4f1742456b3e0406bba78d1d1c891386c40676bc217ef3d5e3f29bc2989034"
+    },
+    {
+      "path": "/index.html",
+      "bytes": 790,
+      "gzipBytes": 383,
+      "sha256": "e51eee537c679bbee1066008c064968a462304164cbd7a0528083b6f47dd169c"
+    }
+  ],
+  "coldLoads": [],
+  "interactions": [],
+  "summaries": [],
+  "assertions": [],
+  "failures": [
+    "Measurement could not complete; check the production build, fixed local API, and Chrome installation. No secret-bearing transport diagnostics are retained."
+  ],
+  "diagnostics": {
+    "stage": "cold / sample 1: real heading",
+    "pageErrors": [],
+    "headingCount": 1,
+    "headings": [
+      "一个身份，安心连接每一处。"
+    ],
+    "documentTitle": "一个身份，安心连接 · 统一身份中心",
+    "resourcePaths": [
+      "/assets/HomePage-DQUeir7z.js",
+      "/assets/Input-DNCttkuw.js",
+      "/assets/PageTitle-CTn7F8yC.js",
+      "/assets/Status-B8XR2J4p.js",
+      "/assets/api-CiOuZ4ty.js",
+      "/assets/dist-fhZSiuUL.js",
+      "/assets/index-BsYHvUm8.js",
+      "/assets/jsx-runtime-Dk72oS4N.js"
+    ]
+  },
+  "failureStage": "cold / sample 1: real heading",
+  "failureType": "TimeoutError",
+  "completed": "2026-10-08T07:52:52.773Z",
+  "exitCode": 1
+}
