@@ -21,7 +21,7 @@
 | T10 | 通过 | 受管理client/授权同意、严格PKCE和浏览器绑定；真实API/2E2E通过，[结果](docs/evidence/T10/test-summary.md) |
 | T11 | 通过 | 原子授权码交换、RS256及旧公钥、scope Userinfo、成熟OIDC互操作与真实并发/故障；[结果](docs/evidence/T11/test-summary.md) |
 | T12 | 通过 | 刷新重放家族撤销、权威introspection/RP确认、scope限制、真实并发/故障及2E2E；[结果](docs/evidence/T12/test-summary.md) |
-| T13 | 通过 | 双BFF持久会话、维护SDK/SSO、共享刷新、真实故障/撤销及4E2E；[结果](docs/evidence/T13/test-summary.md) |
+| T13 | 通过 | 双BFF持久会话、维护SDK/SSO、共享刷新、真实故障/撤销及6E2E；[结果](docs/evidence/T13/test-summary.md) |
 | T14 | 通过 | 真实初始化CLI、13管理API、强认证、最后管理员/因素与审计事务；[结果](docs/evidence/T14/test-summary.md) |
 | T15 | 通过 | 官方设计研究、视觉稿与状态规范；用户明确采用方案并进入 T16；[用户确认](docs/evidence/T15/user-review.md) |
 | T16 | 通过 | 设计组件、响应式布局、API/CSRF 客户端、可访问基础路由与保护提示；[结果](docs/evidence/T16/test-summary.md)、[UI 模块记录](docs/evidence/T16/ui-summary.md) |
@@ -179,3 +179,6 @@ T21状态检查正式复测已通过：15分钟270000请求精确300RPS、drop0/
 
 
 干净检出收尾已通过：[319f30c](docs/evidence/T23/clean-checkout/test-summary.md) 七阶段全部0、53制品SHA一致、无身份秘密。与最终1c0c9ea应用/锁/测试源码相同，差异仅Caddy Dockerfile及证据。最终[本地镜像](docs/evidence/T23/final-artifacts.md)已经从1c0c9ea构建并按完整生产权限约束实测通过，保存新OCI摘要；未registry发布或生产部署。第二完整回归仍进行中。
+
+
+第二轮完整集成T13原组合故障案例触发60秒整体预算，拆为独立故障场景并保持原断言/时限后，后续E2E六案例实际通过（12:51:54～12:52:48Z），修复提交f5e7640。生产代码未改；该轮旧集成失败仍保留，最终将以修复提交再执行整套。

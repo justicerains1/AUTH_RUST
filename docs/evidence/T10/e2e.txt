@@ -1,5 +1,5 @@
-T10 real UI E2E 2026-10-08T08:12:10.207Z
+T10 real UI E2E 2026-10-08T12:51:26.621Z
 Playwright: 2 passed / 0 failed; 2 task cases executed.
 PASS T10 real UI authorization consent and rejection through real registered clients
-Completed 2026-10-08T08:12:23.278Z
+Completed 2026-10-08T12:51:38.852Z
 Exit code 0

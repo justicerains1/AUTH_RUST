@@ -540,10 +540,10 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 
 | 案例 | 前置状态 | 操作步骤 | 预期结果 | 实际结果 | 状态 | 证据 |
 |---|---|---|---|---|---|---|
-| T13-BFF-01 | A/B 两应用 | A 登录，进入 B，再查看两应用 | B 无需输入凭证，首次同意仍出现 | 真实A登录/B复用身份，B首次scope同意；同包独立client/Cookie/持久namespace | 通过 | [真实4E2E](docs/evidence/T13/integration.txt)、[边界](docs/evidence/T13/test-boundaries.md) |
-| T13-BFF-02 | 两应用已登录 | IdP 退出全部设备后访问 A/B | 下一次保护请求均拒绝 | IdP全部退出提交后A/B下一保护请求均拒；平台退出必须确认 | 通过 | [真实4E2E](docs/evidence/T13/integration.txt)、[边界](docs/evidence/T13/test-boundaries.md) |
-| T13-BFF-03 | 浏览器和服务日志 | 检查存储、网络、日志 | 无 OAuth tokens/client secret 暴露 | 浏览器storage/BFFJSON无OAuth令牌或secret，不向tokenendpoint请求；只保存会话Cookie | 通过 | [真实4E2E](docs/evidence/T13/integration.txt)、[边界](docs/evidence/T13/test-boundaries.md) |
-| T13-BFF-04 | 多个并发请求需刷新 | 并发访问，再中断 introspection | 只一次轮换；故障 503，无旁路 | 十请求跨A/A2共享PG锁仅一次轮换；真实Redisstop状态/刷新503；退出revoke故障failed仍清Cookie | 通过 | [真实4E2E](docs/evidence/T13/integration.txt)、[边界](docs/evidence/T13/test-boundaries.md) |
+| T13-BFF-01 | A/B 两应用 | A 登录，进入 B，再查看两应用 | B 无需输入凭证，首次同意仍出现 | 真实A登录/B复用身份，B首次scope同意；同包独立client/Cookie/持久namespace | 通过 | [真实6E2E](docs/evidence/T13/integration.txt)、[边界](docs/evidence/T13/test-boundaries.md) |
+| T13-BFF-02 | 两应用已登录 | IdP 退出全部设备后访问 A/B | 下一次保护请求均拒绝 | IdP全部退出提交后A/B下一保护请求均拒；平台退出必须确认 | 通过 | [真实6E2E](docs/evidence/T13/integration.txt)、[边界](docs/evidence/T13/test-boundaries.md) |
+| T13-BFF-03 | 浏览器和服务日志 | 检查存储、网络、日志 | 无 OAuth tokens/client secret 暴露 | 浏览器storage/BFFJSON无OAuth令牌或secret，不向tokenendpoint请求；只保存会话Cookie | 通过 | [真实6E2E](docs/evidence/T13/integration.txt)、[边界](docs/evidence/T13/test-boundaries.md) |
+| T13-BFF-04 | 多个并发请求需刷新 | 并发访问，再中断 introspection | 只一次轮换；故障 503，无旁路 | 十请求跨A/A2共享PG锁仅一次轮换；真实Redisstop状态/刷新503；退出revoke故障failed仍清Cookie | 通过 | [真实6E2E](docs/evidence/T13/integration.txt)、[边界](docs/evidence/T13/test-boundaries.md) |
 
 **实现子步骤检查：**
 
@@ -778,7 +778,7 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 
 | 案例 | 前置状态 | 操作步骤 | 预期结果 | 实际结果 | 状态 | 证据 |
 |---|---|---|---|---|---|---|
-| T20-AUDIT-01 | 全部服务 | 运行威胁矩阵与安全测试 | 关键场景全过，确认 High/Critical 为零 | 首次完整回归实际失败（unit/T13/T19/秘密误报），修复后局部复测0；第二完整回归进行中，不能提前放行 | 失败 | [汇总](docs/evidence/T20/cross-module-summary.md)、[真实记录](docs/evidence/T20/test-summary.md) |
+| T20-AUDIT-01 | 全部服务 | 运行威胁矩阵与安全测试 | 关键场景全过，确认 High/Critical 为零 | 首两轮完整回归失败已保留；第二轮仅旧组合T13集成失败，后续六case E2E/安全均0；拆分已修并复测，最终完整复跑待执行 | 失败 | [汇总](docs/evidence/T20/cross-module-summary.md)、[真实记录](docs/evidence/T20/test-summary.md) |
 | T20-AUDIT-02 | 真实依赖 | 停止并恢复各依赖 | 无认证旁路，邮件不丢 | 本次T04/T05/T12真实PG/Redis/SMTP停机恢复均0，失败关闭/outbox重试且healthy | 通过 | [汇总](docs/evidence/T20/cross-module-summary.md)、[真实记录](docs/evidence/T20/test-summary.md) |
 | T20-AUDIT-03 | 独立客户端 | 完成协议验证和非法 token 测试 | 互操作通过，非法声明拒绝 | 成熟OIDC/JOSE已有真实互操作，新跨模块clientrotation/code/user/RP绑定四场景0，未宣称官方认证 | 通过 | [汇总](docs/evidence/T20/cross-module-summary.md)、[真实记录](docs/evidence/T20/test-summary.md) |
 
@@ -797,8 +797,8 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 
 - 代码版本：本次安全模块Git提交（父10067a5）。
 - 环境与时间：2026-10-08 Linux/Rust1.98/Node22、PG17/Redis7.4/Mailpit、ZAP2.17.0/Gitleaks8.30.1/cargo-deny0.20.2。
-- 命令退出码：历史六阶段security为0；首次完整test:full于2026-10-08T12:29Z实际退出1，11阶段全部运行；修复后unit/check、T13/T19真实流程及T22集成0，第二全量回归进行中。
-- 失败/阻塞项：原ZAP/私有工具lint/worker审计DTO及本次测试夹具/故障恢复/秘密误报已修；第二完整回归进行中，T18设备前置与参考性能/生产条件未放行。
+- 命令退出码：历史六阶段security为0；首次完整test:full于2026-10-08T12:29Z实际退出1，11阶段全部运行；修复后unit/check、T13/T19真实流程及T22集成0，第二完整回归仅T13旧组合集成退出1，后续新六case E2E、安全、accessibility/build均0；最终复跑待执行。
+- 失败/阻塞项：原ZAP/私有工具lint/worker审计DTO及本次测试夹具/故障恢复/秘密误报已修；第二完整回归旧T13组合case失败已修，最终完整复跑待执行，T18设备前置与参考性能/生产条件未放行。
 - 修复与复测：[T20记录](docs/evidence/T20/test-summary.md)、[威胁映射](docs/evidence/T20/cross-module-summary.md)、[ZAP分诊](docs/evidence/T20/zap/triage.md)。
 - 任务结论：待验收（首次完整回归失败证据保留，修复后复跑中，原前置未放行）。
 
@@ -885,7 +885,7 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 
 | 案例 | 前置状态 | 操作步骤 | 预期结果 | 实际结果 | 状态 | 证据 |
 |---|---|---|---|---|---|---|
-| T23-REL-01 | 干净环境 | 完整安装/测试/构建 | 全套真实检查成功，无 skipped 关键测试 | 首轮失败留证；319f30c全新干净7阶段均0、53制品SHA一致；第二完整回归进行中，未放行 | 失败 | [完整报告](TEST_SUMMARY.md)、[干净首轮](docs/evidence/T23/clean-checkout/2026-10-08T12-11-26-363Z.md) |
+| T23-REL-01 | 干净环境 | 完整安装/测试/构建 | 全套真实检查成功，无 skipped 关键测试 | 首轮失败留证；319f30c全新干净7阶段均0、53制品SHA一致；第二完整回归旧T13组合case失败已修，最终完整复跑待执行，未放行 | 失败 | [完整报告](TEST_SUMMARY.md)、[干净首轮](docs/evidence/T23/clean-checkout/2026-10-08T12-11-26-363Z.md) |
 | T23-REL-02 | 五类浏览器 | 完整主要流程、键盘与 reduced-motion | 无阻塞体验问题 | Chromium真实自动化/四宽axe已有证据；实体Passkey及五类浏览器人工矩阵未准备 | 阻塞 | [剩余条件](docs/evidence/T23/remaining-verification.md) |
 | T23-REL-03 | 生产部署 | 冒烟并观察 24 小时/高峰 | 认证/撤销/邮件健康，指标无异常 | 用户明确生产域名/主机/SMTP/独立备份暂未准备；未部署、未开始24小时观察 | 阻塞 | [运维审计](docs/evidence/T23/ops-release-audit.md)、[剩余条件](docs/evidence/T23/remaining-verification.md) |
 
@@ -905,7 +905,7 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 
 - 代码版本：首轮add1400；修复7a6e203/946dbb0/319f30c/1c0c9ea，最终报告记录实际SHA。
 - 环境与时间：2026-10-08 UTC，WSL2Linux/Rust1.98.0/Node22.22.1、PG17/Redis7.4/Mailpit/Chromium；生产未部署。
-- 命令退出码：首轮干净checkout7阶段overall1（unit1，其余0）；319f30c第二干净七阶段全0；首轮完整test:full整体1（unit/integration/e2e/security1，其余0），第二完整复跑进行中。
+- 命令退出码：首轮干净checkout7阶段overall1（unit1，其余0）；319f30c第二干净七阶段全0；首轮完整test:full整体1（unit/integration/e2e/security1，其余0），第二完整复跑整体1（仅旧T13组合集成1、其余0），最终完整复跑待执行。
 - 失败/阻塞项：首次失败已定位修复并保留证据；实体设备/五浏览器、参考性能/容量、生产域名/SMTP/独立恢复/告警与24小时观察未验。
 - 修复与复测：[测试修复](docs/evidence/tooling/final-regression-fixtures/test-summary.md)、[运维修复](docs/evidence/T23/ops-repair-summary.md)、[Caddy权限](docs/evidence/tooling/caddy-capabilities/test-summary.md)；最终完整复跑结果另记录。
 - 任务结论：待验收（独立本地检查及制品已推进，生产发布/原前置未放行）。

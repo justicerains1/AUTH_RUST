@@ -1,0 +1,97 @@
+{
+  "kind": "integration",
+  "completed": "2026-10-08T12:49:53.670Z",
+  "results": [
+    {
+      "task": "T01",
+      "exitCode": 0,
+      "durationMs": 40454
+    },
+    {
+      "task": "T03",
+      "exitCode": 0,
+      "durationMs": 2631
+    },
+    {
+      "task": "T04",
+      "exitCode": 0,
+      "durationMs": 17072
+    },
+    {
+      "task": "T05",
+      "exitCode": 0,
+      "durationMs": 20163
+    },
+    {
+      "task": "T06",
+      "exitCode": 0,
+      "durationMs": 26575
+    },
+    {
+      "task": "T07",
+      "exitCode": 0,
+      "durationMs": 41145
+    },
+    {
+      "task": "T08",
+      "exitCode": 0,
+      "durationMs": 22343
+    },
+    {
+      "task": "T09",
+      "exitCode": 0,
+      "durationMs": 7699
+    },
+    {
+      "task": "T10",
+      "exitCode": 0,
+      "durationMs": 9980
+    },
+    {
+      "task": "T11",
+      "exitCode": 0,
+      "durationMs": 12694
+    },
+    {
+      "task": "T12",
+      "exitCode": 0,
+      "durationMs": 36784
+    },
+    {
+      "task": "T13",
+      "exitCode": 1,
+      "durationMs": 89943
+    },
+    {
+      "task": "T14",
+      "exitCode": 0,
+      "durationMs": 22194
+    },
+    {
+      "task": "T17",
+      "exitCode": 0,
+      "durationMs": 58992
+    },
+    {
+      "task": "T18",
+      "exitCode": 0,
+      "durationMs": 31337
+    },
+    {
+      "task": "T19",
+      "exitCode": 0,
+      "durationMs": 23946
+    },
+    {
+      "task": "T20",
+      "exitCode": 0,
+      "durationMs": 6228
+    },
+    {
+      "task": "T22",
+      "exitCode": 0,
+      "durationMs": 12261
+    }
+  ],
+  "exitCode": 1
+}

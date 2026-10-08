@@ -1,7 +1,7 @@
-T13 real double-BFF browser/API integration 2026-10-08T02:11:35.459Z
-FAIL T13 isolated schema cleanup failed.
+T13 real double-BFF browser/API integration 2026-10-08T12:45:48.852Z
+FAIL T13 real BFF browser checks failed.
 
-101 !== 0
+1 !== 0
 
-Completed 2026-10-08T02:11:36.977Z
+Completed 2026-10-08T12:47:18.690Z
 Exit code 1

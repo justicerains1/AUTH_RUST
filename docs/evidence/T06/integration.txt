@@ -1,4 +1,4 @@
-T06 real session integration 2026-10-08T00:18:57.042Z
+T06 real session integration 2026-10-08T12:43:11.628Z
 PASS T06-SES-01/02 actual password login/me and twelve-hour authority; new cookies/CSRF; old preauth rejected; OAuth transaction bound atomically
 PASS T06 unknown/wrong/unverified/disabled uniform401; confirmed MFA only challenge and no ordinary identity session
 PASS T06 main-only valid session can rotate identity; invented identity cannot fall back; MFA old context revoked
@@ -6,5 +6,5 @@ PASS T06-SES-03 foreign session rejected; target/session/grant/token revoked imm
 PASS T06-SES-04 real password POST blocks on held user row; disable commits first and prevents all session issuance
 PASS T06 production-config real login sets __Host identity/Secure/HttpOnly/Lax/Path flags
 PASS T06 session expiry enforced at explicit database timestamp; no expiry sleeps
-Completed 2026-10-08T00:19:22.347Z
+Completed 2026-10-08T12:43:38.113Z
 Exit code 0

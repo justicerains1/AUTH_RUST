@@ -1,6 +1,6 @@
 # Rust 统一身份中心
 
-实现依据为 [plan.md](plan.md) 和 [acceptance.md](acceptance.md)，按依赖实施并记录真实证据。T01～T08、T10～T11及T15～T16已通过本地模块验收；T09实现与虚拟认证器测试通过，实体设备待验收。T12刷新/撤销与退出确认已通过本地模块验收，T13双BFF已通过真实模块验收，T14管理API已通过真实CLI/权限验收，后续管理产品UI、完整产品与生产验收继续。每个模块验收后提交推送；最新状态见 [TASK_PROGRESS.md](TASK_PROGRESS.md)。当前尚不具备生产发布条件。
+实现依据为 [plan.md](plan.md) 和 [acceptance.md](acceptance.md)。邮箱/密码/MFA/Passkey、OAuth/OIDC、双 BFF、账号与管理后台，以及本地生产制品和运维工具已实现并逐模块推送。实体设备、规定性能环境、正式生产部署/邮件/独立恢复等仍待验收；最终自动回归实际结果见 [TEST_SUMMARY.md](TEST_SUMMARY.md)，任务状态和外部条件见 [TASK_PROGRESS.md](TASK_PROGRESS.md)。当前尚不具备生产发布条件。
 
 ## 环境
 
@@ -74,7 +74,7 @@ CI 复用相同根脚本，分别配置 Linux/Windows 构建，以及 Linux Comp
 
 ## 目录与下一任务
 
-`identity-core` 负责规则/配置，`identity-store` 负责 SQLx 和依赖连接，`identity-server` 负责 Axum，`identity-worker`负责真实outbox发送/重试，`identity-admin-cli` 在 T14 实现初始化，`demo-bff` 在 T13 实现两个独立客户端实例。身份前端已有最小真实认证/账号/同意流程；完整产品体验在T17～T19整合，A/B的实际BFF/SSO在T13实现。T15视觉稿获用户确认，T16基础已完成。
+`identity-core` 负责规则/配置，`identity-store` 负责 SQLx 和依赖连接，`identity-server` 负责 Axum，`identity-worker`负责真实outbox发送/重试，`identity-admin-cli` 在 T14 实现初始化，`demo-bff` 在 T13 实现两个独立客户端实例。身份前端已完成T17～T19认证/账号/同意/后台产品流程整合，A/B的实际BFF/SSO已在T13实现。T15视觉稿获用户确认，T16基础已完成。
 
 当前通过与待验收任务见进度表；完整OpenAPI包括未来端点契约，端点能力以真实任务证据为准。T17认证页面代码与浏览器案例通过，前置实体设备待验收；当前继续独立T18/T19账号与后台实现；对应任务全部必要验收通过后推进下一任务。文档后续页面和跨模块验收的依赖问题已记录于 [T00 审计](docs/evidence/T00/document-audit.md)，进入相关任务前同步修订，不通过跳过测试消除依赖。
 

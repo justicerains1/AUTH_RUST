@@ -1,7 +1,7 @@
-T19 real public-flow validation 2026-10-08T07:42:58.481Z
-FAIL T19 isolated schema cleanup failed.
+T19 real public-flow validation 2026-10-08T12:28:05.050Z
+FAIL T19 real public-flow/accessibility tests failed.
 
-101 !== 0
+1 !== 0
 
-Completed 2026-10-08T07:43:04.659Z
+Completed 2026-10-08T12:28:31.902Z
 Exit code 1
