@@ -28,3 +28,6 @@
 最初T04恢复案例连接恢复断言已成功，但随后CSRF200断言失败：测试新state使用了未迁移默认测试库，无持久化表；已补专属schema/迁移，未修改生产成功规则或把503改成期望成功。保留 [首失败](redis-connection-recovery-first-failure.txt)、[安全诊断](redis-connection-diagnostic-1791478508512.txt)。开发中类型/feature/Clippy错误均修到实际通过，没有添加Tokio feature或关闭lint。
 
 首次容量阶梯的503在PG查询前、每次新Redis连接是对应调查方向，见 [capacity-first-analysis.md](../T21/capacity-first-analysis.md)。本变更及故障验证证明连接确实复用/恢复，**尚不能声称容量根因已解决或710RPS可承载**；根需以同数据/同阶梯及完整mixed长测的新二进制报告复核，原容量失败永久保留。
+
+
+后续相同短阶梯实际复测表明355/710/1420RPS三个60秒测量档无错误、真实Redis1连接/全部调用0失败，2840档密码四任务排队超时及负载器drop明确限制；参见[当前容量结论](../T21/capacity-current-summary.md)。仍非参考硬件或900秒结果，原“尚不能”段保留修复当时边界，最终综合长测另独立记录。

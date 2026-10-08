@@ -1,0 +1,70 @@
+{
+  "scope": "Actual pre-rebuild candidate Caddyfile routes under readonly/nonroot/capdrop with controlled test TLS; no production domain or backend authentication.",
+  "candidateSha256": "a8846cdf4725f643ef4eff19a1be1ee52e1789f33539eaa86bd689387168f05a",
+  "started": "2026-10-08T17:53:02.211Z",
+  "checks": [
+    {
+      "site": "identity",
+      "path": "/login",
+      "cacheControl": "no-store",
+      "status": 200,
+      "securityHeaders": true
+    },
+    {
+      "site": "identity",
+      "path": "/assets/index-CRa0Ev5a.js",
+      "cacheControl": "public, max-age=31536000, immutable",
+      "status": 200,
+      "securityHeaders": true
+    },
+    {
+      "site": "identity",
+      "path": "/login",
+      "protocol": "http",
+      "status": 301
+    },
+    {
+      "site": "demo-a",
+      "path": "/login",
+      "cacheControl": "no-store",
+      "status": 200,
+      "securityHeaders": true
+    },
+    {
+      "site": "demo-a",
+      "path": "/assets/index-BNh23Gpl.js",
+      "cacheControl": "public, max-age=31536000, immutable",
+      "status": 200,
+      "securityHeaders": true
+    },
+    {
+      "site": "demo-a",
+      "path": "/login",
+      "protocol": "http",
+      "status": 301
+    },
+    {
+      "site": "demo-b",
+      "path": "/login",
+      "cacheControl": "no-store",
+      "status": 200,
+      "securityHeaders": true
+    },
+    {
+      "site": "demo-b",
+      "path": "/assets/index-Dpg-SaKC.js",
+      "cacheControl": "public, max-age=31536000, immutable",
+      "status": 200,
+      "securityHeaders": true
+    },
+    {
+      "site": "demo-b",
+      "path": "/login",
+      "protocol": "http",
+      "status": 301
+    }
+  ],
+  "exitCode": 1,
+  "failure": "Expected values to be strictly equal:\n\ntrue !== false\n",
+  "completed": "2026-10-08T17:53:05.798Z"
+}

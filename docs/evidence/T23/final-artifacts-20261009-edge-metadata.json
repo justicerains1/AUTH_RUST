@@ -1,0 +1,53 @@
+{
+  "buildx.build.provenance": {
+    "builder": {
+      "id": ""
+    },
+    "buildType": "https://mobyproject.org/buildkit@v1",
+    "materials": [
+      {
+        "uri": "pkg:docker/docker.m.daocloud.io/library/caddy@2.11.7-alpine?digest=sha256:d8542f48d34a9cf4e4c11a478865229840e87e4c96ea3f439101f31a5d35f75f\u0026platform=linux%2Famd64",
+        "digest": {
+          "sha256": "d8542f48d34a9cf4e4c11a478865229840e87e4c96ea3f439101f31a5d35f75f"
+        }
+      },
+      {
+        "uri": "pkg:docker/docker.m.daocloud.io/library/node@22.22.1-bookworm-slim?digest=sha256:4f77a690f2f8946ab16fe1e791a3ac0667ae1c3575c3e4d0d4589e9ed5bfaf3d\u0026platform=linux%2Famd64",
+        "digest": {
+          "sha256": "4f77a690f2f8946ab16fe1e791a3ac0667ae1c3575c3e4d0d4589e9ed5bfaf3d"
+        }
+      }
+    ],
+    "invocation": {
+      "configSource": {
+        "entryPoint": "Dockerfile.edge.prod"
+      },
+      "parameters": {
+        "frontend": "dockerfile.v0",
+        "args": {
+          "label:org.opencontainers.image.revision": "72dbe6a4a85df0c72c672b5a8747860a17da5ecf",
+          "label:org.opencontainers.image.source": "local-authorized-git-archive"
+        },
+        "locals": [
+          {
+            "name": "context"
+          },
+          {
+            "name": "dockerfile"
+          }
+        ]
+      },
+      "environment": {
+        "platform": "linux/amd64"
+      }
+    }
+  },
+  "buildx.build.ref": "default/default/1bv73aa3pdmiiccqncfczd5y8",
+  "containerimage.descriptor": {
+    "mediaType": "application/vnd.oci.image.index.v1+json",
+    "digest": "sha256:89adab27068eed9474fa9139ebfb29cfbcc500aed04353f0121f1089ffe2305e",
+    "size": 856
+  },
+  "containerimage.digest": "sha256:89adab27068eed9474fa9139ebfb29cfbcc500aed04353f0121f1089ffe2305e",
+  "image.name": "docker.io/library/auth-rust-edge:t23-72dbe6a"
+}

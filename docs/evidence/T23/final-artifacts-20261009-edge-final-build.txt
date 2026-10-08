@@ -1,0 +1,80 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile.edge.prod
+#1 transferring dockerfile: 1.25kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.m.daocloud.io/library/node:22.22.1-bookworm-slim@sha256:4f77a690f2f8946ab16fe1e791a3ac0667ae1c3575c3e4d0d4589e9ed5bfaf3d
+#2 DONE 0.1s
+
+#3 [internal] load metadata for docker.m.daocloud.io/library/caddy:2.11.7-alpine@sha256:d8542f48d34a9cf4e4c11a478865229840e87e4c96ea3f439101f31a5d35f75f
+#3 DONE 0.1s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 230B done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 6.71kB done
+#5 DONE 0.0s
+
+#6 [stage-1 1/6] FROM docker.m.daocloud.io/library/caddy:2.11.7-alpine@sha256:d8542f48d34a9cf4e4c11a478865229840e87e4c96ea3f439101f31a5d35f75f
+#6 resolve docker.m.daocloud.io/library/caddy:2.11.7-alpine@sha256:d8542f48d34a9cf4e4c11a478865229840e87e4c96ea3f439101f31a5d35f75f 0.1s done
+#6 DONE 0.1s
+
+#7 [frontend 1/9] FROM docker.m.daocloud.io/library/node:22.22.1-bookworm-slim@sha256:4f77a690f2f8946ab16fe1e791a3ac0667ae1c3575c3e4d0d4589e9ed5bfaf3d
+#7 resolve docker.m.daocloud.io/library/node:22.22.1-bookworm-slim@sha256:4f77a690f2f8946ab16fe1e791a3ac0667ae1c3575c3e4d0d4589e9ed5bfaf3d 0.1s done
+#7 DONE 0.1s
+
+#8 [stage-1 5/6] COPY --from=frontend /workspace/apps/demo-b/dist /srv/demo-b
+#8 CACHED
+
+#9 [stage-1 4/6] COPY --from=frontend /workspace/apps/demo-a/dist /srv/demo-a
+#9 CACHED
+
+#10 [frontend 7/9] RUN --mount=type=cache,id=auth-rust-npm-cache,target=/root/.npm,sharing=locked npm ci
+#10 CACHED
+
+#11 [frontend 2/9] WORKDIR /workspace
+#11 CACHED
+
+#12 [frontend 9/9] RUN npm run build --workspaces
+#12 CACHED
+
+#13 [frontend 4/9] COPY apps/identity-web/package.json ./apps/identity-web/package.json
+#13 CACHED
+
+#14 [stage-1 3/6] COPY --from=frontend /workspace/apps/identity-web/dist /srv/identity
+#14 CACHED
+
+#15 [frontend 3/9] COPY package.json package-lock.json ./
+#15 CACHED
+
+#16 [frontend 5/9] COPY apps/demo-a/package.json ./apps/demo-a/package.json
+#16 CACHED
+
+#17 [frontend 8/9] COPY apps ./apps
+#17 CACHED
+
+#18 [stage-1 2/6] RUN addgroup -g 10001 identity && adduser -u 10001 -G identity -D -H identity &&     mkdir -p /data/caddy /config/caddy && chown -R 10001:10001 /data /config &&     setcap -r /usr/bin/caddy
+#18 CACHED
+
+#19 [frontend 6/9] COPY apps/demo-b/package.json ./apps/demo-b/package.json
+#19 CACHED
+
+#20 [stage-1 6/6] COPY infra/Caddyfile.prod /etc/caddy/Caddyfile
+#20 CACHED
+
+#21 exporting to image
+#21 exporting layers done
+#21 exporting manifest sha256:5ccae011dd53584385cd725e30ef0039d9e55c793d6859a2d7ff5b3287b7c60a 0.0s done
+#21 exporting config sha256:5fcee57e8d05628d1df425874aed6ae848a44d9152f18c950bb0520f15945db5 0.0s done
+#21 exporting attestation manifest sha256:9ed0e53dd1e7f22a79067af9cdef356f6488b0c211d46c604a85e43758461f3c 0.0s done
+#21 exporting manifest list sha256:89adab27068eed9474fa9139ebfb29cfbcc500aed04353f0121f1089ffe2305e
+#21 exporting manifest list sha256:89adab27068eed9474fa9139ebfb29cfbcc500aed04353f0121f1089ffe2305e 0.0s done
+#21 naming to docker.io/library/auth-rust-edge:t23-72dbe6a 0.0s done
+#21 unpacking to docker.io/library/auth-rust-edge:t23-72dbe6a 0.0s done
+#21 DONE 0.2s
+
+#22 resolving provenance for metadata file
+#22 DONE 0.0s

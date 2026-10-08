@@ -4,7 +4,7 @@
 编写日期：2026-10-07  
 关联计划：[plan.md](plan.md)
 
-> 初始交付仅为文档；用户已于 2026-10-07 授权严格按文档实施并要求多 agent 分模块并行。功能模块及本地运维制品已实现并逐模块推送，最终完整回归正在收尾。实体设备、规定性能环境及真实生产验收未完成；当前状态以下表及实际证据为准。原第 11 节保留为历史文档交付记录，不能作为系统实现验收。
+> 初始交付仅为文档；用户已于 2026-10-07 授权严格按文档实施并要求多 agent 分模块并行。功能模块及本地运维制品已实现并逐模块推送，上一轮完整回归已通过；用户再次授权本地补全，目前新增SQL/指标/轮换/恢复/发布/浏览器补测已推进，当前源码统一回归正在准备。实体设备、规定性能环境及真实生产验收未完成；当前状态以下表及实际证据为准。原第 11 节保留为历史文档交付记录，不能作为系统实现验收。
 
 ## 1. 验收规则
 
@@ -812,9 +812,9 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 
 | 案例 | 前置状态 | 操作步骤 | 预期结果 | 实际结果 | 状态 | 证据 |
 |---|---|---|---|---|---|---|
-| T21-PERF-01 | 规定硬件与数据 | 单项/综合各 15 分钟 | 达到第 8.4 节门槛，错误分类明确 | 四个真实完整15min场景目标counts/drop0/业务错误0达到当前主机阈值；原参考硬件不匹配 | 未执行 | [本机结果](docs/evidence/T21/test-summary.md)、[四场复核](docs/evidence/T21/load-evidence-verification.json) |
+| T21-PERF-01 | 规定硬件与数据 | 单项/综合各 15 分钟 | 达到第 8.4 节门槛，错误分类明确 | 原四场及共享Redis后综合900s精准319500/零错误drop达本机门槛；规定硬件未提供 | 阻塞 | [本机结果](docs/evidence/T21/test-summary.md)、[四场复核](docs/evidence/T21/load-evidence-verification.json) |
 | T21-PERF-02 | 移动模拟环境 | 五次冷加载和关键交互 | LCP/CLS/体积达标，报告方法完整 | Chrome153、390×844/CPU4x/1.6Mbps-750Kbps/150ms各5次：首页-登录LCP1624-1632ms、CLS0、JS149.17-151.79KiB；本地max31.1ms/实验室p75max30.1ms，局部阈值达到 | 通过 | [前端方法](docs/evidence/T21/frontend-measurement.md)、[实际报告](docs/evidence/T21/frontend-2026-10-08T08-04-18-937Z.json) |
-| T21-PERF-03 | 查询计划与队列 | 分析慢 SQL、峰值 hash 队列 | 无明显 N+1，资源限制有效 | 真实十万用户/二十client/十万grant及索引/CPU/内存/池统计；完整容量边界与参考主机未验 | 未执行 | [本机结果](docs/evidence/T21/test-summary.md)、[四场复核](docs/evidence/T21/load-evidence-verification.json) |
+| T21-PERF-03 | 查询计划与队列 | 分析慢 SQL、峰值 hash 队列 | 无明显 N+1，资源限制有效 | 真实十万fixtures精确15SQL计划/10请求探测、本人分页1-20条SQL次数固定；队列/连接/PG等待与容量阶梯已实测；未覆盖全部业务写路径及参考环境 | 未执行 | [本机结果](docs/evidence/T21/test-summary.md)、[四场复核](docs/evidence/T21/load-evidence-verification.json) |
 
 **实现子步骤检查：**
 
@@ -822,8 +822,8 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 - [x] T21.02：记录 Argon2 参数、哈希内存/耗时、并行队列；不降安全参数换吞吐。
 - [x] T21.03：每场景两分钟预热，十五分钟测量，单项与综合分开。
 - [x] T21.04：状态检查使用足量真实 token 池及受控更新，避免到期造成假错误；客户端认证包含在耗时内。
-- [ ] T21.05：数据库 account 查询跑真实 10 万行；用 EXPLAIN ANALYZE 检查热 SQL。
-- [ ] T21.06：监测 API/PG/Redis CPU/内存/连接池/排队，定位瓶颈后只优化相关路径。
+- [x] T21.05：数据库 account 查询跑真实 10 万行；用 EXPLAIN ANALYZE 检查热 SQL。
+- [x] T21.06：监测 API/PG/Redis CPU/内存/连接池/排队，定位瓶颈后只优化相关路径。
 - [x] T21.07：按固定移动设备网络跑至少五次前端测量，报告体积、LCP/CLS 与交互。
 - [x] T21.08：保留失败原始报告，修复后重测；不改阈值掩盖失败。
 - [x] T21.09：记录容量边界及何时拆分数据库/增加 API/降低外部流量，禁止凭空保证无限扩容。
@@ -848,9 +848,9 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 | 案例 | 前置状态 | 操作步骤 | 预期结果 | 实际结果 | 状态 | 证据 |
 |---|---|---|---|---|---|---|
 | T22-OPS-01 | 干净 Linux 主机/域名/秘密 | 按 runbook 部署、检查开放端口 | HTTPS、安全 headers、健康正常，DB/Redis 不外露 | 本地镜像/readonly非root/Caddyconfig通过，真实生产域名部署未准备 | 未执行 | [本地记录](docs/evidence/T22/test-summary.md) |
-| T22-OPS-02 | 独立备份与新主机 | 恢复到已知时间并操作账号 | RPO/RTO 达标，密钥可用，日志脱敏 | 独立本地小probePITR1.903s正确，完整账号/新主机/生产独立存储RPO-RTO未验 | 未执行 | [本地记录](docs/evidence/T22/test-summary.md) |
-| T22-OPS-03 | 活动用户与旧 token | 签名/加密密钥轮换 | 新凭证正常，旧窗口兼容，TOTP 不丢 | 本地全部AEAD用途+真实TOTP/CLI幂等维护通过，真实签名切换分发/旧窗口未验 | 未执行 | [本地记录](docs/evidence/T22/test-summary.md) |
-| T22-OPS-04 | 邮件域名与监控 | 发真实邮件，制造可控失败告警 | 送达/DNS验证、告警可达 | 指标API/Worker及9条告警规则语法通过，正式SMTP/DNS/告警送达未验 | 未执行 | [本地记录](docs/evidence/T22/test-summary.md) |
+| T22-OPS-02 | 独立备份与新主机 | 恢复到已知时间并操作账号 | RPO/RTO 达标，密钥可用，日志脱敏 | 命名点PITR与完整身份新PG恢复已本地验证密码/TOTP/虚拟Passkey/live-revokedOAuth；生产独立主机/规模/RPO-RTO未验 | 未执行 | [本地记录](docs/evidence/T22/test-summary.md) |
+| T22-OPS-03 | 活动用户与旧 token | 签名/加密密钥轮换 | 新凭证正常，旧窗口兼容，TOTP 不丢 | 本地全部AEAD用途/TOTP维护及真实BFF新公钥先发/切签/缓存刷新/回滚/精确期限通过；生产分发/退役尚未验 | 未执行 | [本地记录](docs/evidence/T22/test-summary.md) |
+| T22-OPS-04 | 邮件域名与监控 | 发真实邮件，制造可控失败告警 | 送达/DNS验证、告警可达 | API/Worker与主机磁盘/TLS/备份采集、18条规则/20场景已本地验证；生产SMTP/DNS/调度/通知到达未验 | 未执行 | [本地记录](docs/evidence/T22/test-summary.md) |
 
 **实现子步骤检查：**
 
@@ -871,7 +871,7 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 - 代码版本：本次运维模块Git提交（父75a93dc），镜像各快照见证据。
 - 环境与时间：2026-10-08 Linux/Rust1.98/Node22/PG17；固定Dockerbase/Caddy2.11.7、age1.3.2、Promtool3.15.0。
 - 命令退出码：本地镜像build/Caddyvalidate/readonly、PITR、keysintegration、metricsintegration、rootcheck/unit/build/docs/tooling均0。
-- 失败/阻塞项：生产资源未准备，完整账户恢复/每日备份保留/可达告警/SMTPDNS/签名切换未验；原T20/T21未放行。
+- 失败/阻塞项：生产资源未准备；本地完整身份恢复、签名切换/BFF兼容、真实发布/迁移中止/回滚与告警规则已执行，生产独立主机/每日保留/通知/SMTPDNS/分发未验；原T20/T21未放行。
 - 修复与复测：[本地运维总结](docs/evidence/T22/test-summary.md)、[PITR](docs/evidence/T22/local-pitr-drill.md)、[密钥](docs/evidence/T22/key-rotation-drill.md)、[指标](docs/evidence/T22/metrics-summary.md)。
 - 任务结论：待验收（已测试本地制品/运维模块，正式生产必要条件未验）。
 

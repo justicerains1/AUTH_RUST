@@ -89,3 +89,9 @@ c0230e29332eee164d1c0a1aa6a95efcb29411cd:docs/evidence/T21/sql-probe-2026-10-08T
 # Reviewed second capacity report public integrity digests.
 2c9c712c4fb83ebbb5d7e59fd97fcf9ef3b8777c:docs/evidence/T21/load-capacity-2026-10-08T17-04-23-472Z-failure.json:generic-api-key:56996
 2c9c712c4fb83ebbb5d7e59fd97fcf9ef3b8777c:docs/evidence/T21/load-capacity-2026-10-08T17-04-23-472Z-failure.json:generic-api-key:57002
+
+# Reviewed final local measurement source and executable SHA fields.
+8240738519a4580e16d36e9c22a2dd0982211f71:docs/evidence/T21/load-capacity-2026-10-08T17-14-38-463Z-failure.json:generic-api-key:57002
+8240738519a4580e16d36e9c22a2dd0982211f71:docs/evidence/T21/load-capacity-2026-10-08T17-14-38-463Z-failure.json:generic-api-key:57008
+aeb40648915bef2386c84c623ab75dac0be1b301:docs/evidence/T21/load-mixed-2026-10-08T17-24-46-455Z.json:generic-api-key:117285
+aeb40648915bef2386c84c623ab75dac0be1b301:docs/evidence/T21/load-mixed-2026-10-08T17-24-46-455Z.json:generic-api-key:117290

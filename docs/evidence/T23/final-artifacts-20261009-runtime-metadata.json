@@ -1,0 +1,53 @@
+{
+  "buildx.build.provenance": {
+    "builder": {
+      "id": ""
+    },
+    "buildType": "https://mobyproject.org/buildkit@v1",
+    "materials": [
+      {
+        "uri": "pkg:docker/docker.m.daocloud.io/library/debian@bookworm-20261005-slim?digest=sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587\u0026platform=linux%2Famd64",
+        "digest": {
+          "sha256": "7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587"
+        }
+      },
+      {
+        "uri": "pkg:docker/docker.m.daocloud.io/library/rust@1.98.0-bookworm?digest=sha256:82150a52ec202c1b14d7817e14516c392bb7f5cfebd88f1ed531cb37ebd39922\u0026platform=linux%2Famd64",
+        "digest": {
+          "sha256": "82150a52ec202c1b14d7817e14516c392bb7f5cfebd88f1ed531cb37ebd39922"
+        }
+      }
+    ],
+    "invocation": {
+      "configSource": {
+        "entryPoint": "Dockerfile.prod"
+      },
+      "parameters": {
+        "frontend": "dockerfile.v0",
+        "args": {
+          "label:org.opencontainers.image.revision": "2c9c712c4fb83ebbb5d7e59fd97fcf9ef3b8777c",
+          "label:org.opencontainers.image.source": "local-authorized-git-archive"
+        },
+        "locals": [
+          {
+            "name": "context"
+          },
+          {
+            "name": "dockerfile"
+          }
+        ]
+      },
+      "environment": {
+        "platform": "linux/amd64"
+      }
+    }
+  },
+  "buildx.build.ref": "default/default/2x2e8t3a8oh5sys8s99cmxbtx",
+  "containerimage.descriptor": {
+    "mediaType": "application/vnd.oci.image.index.v1+json",
+    "digest": "sha256:6080ddcd99ea92b53c750e11c206c7781a6cd4261d3c5cd515b8af75f4d07f9c",
+    "size": 856
+  },
+  "containerimage.digest": "sha256:6080ddcd99ea92b53c750e11c206c7781a6cd4261d3c5cd515b8af75f4d07f9c",
+  "image.name": "docker.io/library/auth-rust-runtime:t23-2c9c712"
+}
