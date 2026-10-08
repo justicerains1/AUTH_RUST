@@ -226,6 +226,14 @@ async fn t13_bff_harness() -> TestResult {
         "active",
     )
     .await?;
+    seed(
+        &pool,
+        "browser-bff-logout-fault@example.test",
+        &hash,
+        true,
+        "active",
+    )
+    .await?;
     let (_, identity) = start(&config, &pool, true).await?;
     println!("T13_IDENTITY_READY");
     let mut servers = Vec::new();

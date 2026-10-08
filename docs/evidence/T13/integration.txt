@@ -1,4 +1,4 @@
-T13 real double-BFF browser/API integration 2026-10-08T08:12:47.365Z
-Playwright: 4 passed / 0 failed; actual A/B SSO, revocation, shared refresh and secret isolation.
-Completed 2026-10-08T08:13:34.671Z
+T13 real double-BFF browser/API integration 2026-10-08T12:51:54.753Z
+Playwright: 6 passed / 0 failed; actual A/B SSO, revocation, shared refresh and secret isolation.
+Completed 2026-10-08T12:52:48.104Z
 Exit code 0

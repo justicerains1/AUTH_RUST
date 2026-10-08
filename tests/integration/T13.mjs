@@ -30,7 +30,7 @@ async function main() {
     assert.ok(ready, 'T13 same-package BFF harness failed to start; details sanitized.');
     const browser = capture(process.execPath, [resolve(root, 'node_modules/@playwright/test/cli.js'), 'test', '--config', 'tests/e2e/playwright.config.ts', '--grep', '@T13'], { ...env, E2E_TASK: 'T13', T13_WEBS_PRESTARTED: '1' }); const result = await browser.completion;
     if (result.code !== 0) { const safe = `${result.stdout}${result.stderr}`.replaceAll(env.T13_BROWSER_PASSWORD, '[PASSWORD]').replaceAll(env.T13_TEST_KEY, '[TEST_KEY]').replace(/\b[A-Za-z0-9_-]{43,}\b/gu, '[OPAQUE]').replace(/([?&](?:code|state|nonce)=)[^&\s"']+/gu, '$1[REDACTED]'); await writeFile(resolve(evidence, `browser-diagnostics-${Date.now()}.txt`), safe); }
-    assert.equal(result.code, 0, 'T13 real BFF browser checks failed.'); assert.match(result.stdout, /4 passed/u); lines.push('Playwright: 4 passed / 0 failed; actual A/B SSO, revocation, shared refresh and secret isolation.');
+    assert.equal(result.code, 0, 'T13 real BFF browser checks failed.'); assert.match(result.stdout, /6 passed/u); lines.push('Playwright: 6 passed / 0 failed; actual A/B SSO, revocation, shared refresh and secret isolation.');
   } finally { harness.child.stdin?.end('stop\n'); const result = await harness.completion; for (const web of webs) web.child.kill(); assert.equal(result.code, 0, 'T13 isolated schema cleanup failed.'); }
   console.log('T13 actual A/B BFF and identity browser checks passed without token/client-secret output.');
 }

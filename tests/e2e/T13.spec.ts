@@ -9,6 +9,20 @@ async function appLogin(page: Page, port: number, password: boolean, email = 'br
   await expect(page.getByText('已登录本应用', { exact: true })).toBeVisible();
 }
 
+async function redis(action: 'stop' | 'start') {
+  const { spawn } = await import('node:child_process');
+  const path = await import('node:path');
+  const composeCommand = (args: string[]) => new Promise<string>((resolveDone, reject) => { const child = spawn('docker', ['compose', '--env-file', path.resolve('.local/dev.env'), '-f', path.resolve('infra/compose.dev.yaml'), ...args], { stdio: ['ignore', 'pipe', 'ignore'], shell: false }); let output = ''; child.stdout.setEncoding('utf8'); child.stdout.on('data', (value: string) => { output += value; }); child.on('error', () => { reject(new Error('Dependency command unavailable.')); }); child.on('close', (code) => { if (code === 0) resolveDone(output); else reject(new Error('Dependency command failed.')); }); });
+  async function runAction(action: 'stop' | 'start') {
+    await composeCommand([action, 'redis']);
+    if (action === 'start') {
+      // Starting the container does not imply Redis is ready for the next real authorization.
+      await expect.poll(async () => { try { return (await composeCommand(['exec', '-T', 'redis', 'redis-cli', 'PING'])).trim() === 'PONG'; } catch { return false; } }, { timeout: 15_000 }).toBe(true);
+    }
+  }
+  await runAction(action);
+}
+
 test('@T13 A/B use the real shared identity with separate consent and browser-private tokens', async ({ page }) => {
   let forbiddenNetwork = false;
   page.on('request', (request) => { const url = new URL(request.url()); if (url.pathname === '/oauth/token' || /client_secret|access_token|refresh_token|id_token/u.test(request.postData() ?? '')) forbiddenNetwork = true; });
@@ -33,31 +47,24 @@ test('@T13 concurrent requests across two BFF instances share one refresh lock',
   expect(after.refresh_count - before.refresh_count).toBe(1);
 });
 
-test('@T13 identity-state failure returns503 and local logout only affects its application', async ({ page, browser }) => {
+test('@T13 identity-state failure returns503 and local logout only affects its application', async ({ page }) => {
   await appLogin(page, 5192, true, 'browser-bff-fault@example.test'); await appLogin(page, 5193, false, 'browser-bff-fault@example.test');
   const cookies = await page.context().cookies(); const a = cookies.find((item) => item.name === 't13-a-session'); const b = cookies.find((item) => item.name === 't13-b-session'); if (!a || !b) throw new Error('Private application sessions missing.');
-  const { spawn } = await import('node:child_process');
-  const path = await import('node:path');
-  const composeCommand = (args: string[]) => new Promise<string>((resolveDone, reject) => { const child = spawn('docker', ['compose', '--env-file', path.resolve('.local/dev.env'), '-f', path.resolve('infra/compose.dev.yaml'), ...args], { stdio: ['ignore', 'pipe', 'ignore'], shell: false }); let output = ''; child.stdout.setEncoding('utf8'); child.stdout.on('data', (value: string) => { output += value; }); child.on('error', () => { reject(new Error('Dependency command unavailable.')); }); child.on('close', (code) => { if (code === 0) resolveDone(output); else reject(new Error('Dependency command failed.')); }); });
-  async function compose(action: 'stop' | 'start') {
-    await composeCommand([action, 'redis']);
-    if (action === 'start') {
-      // Starting the container does not imply Redis is ready for the next real authorization.
-      await expect.poll(async () => { try { return (await composeCommand(['exec', '-T', 'redis', 'redis-cli', 'PING'])).trim() === 'PONG'; } catch { return false; } }, { timeout: 15_000 }).toBe(true);
-    }
-  }
-  await compose('stop');
+  await redis('stop');
   try { const response = await fetch('http://127.0.0.1:5194/bff/session', { headers: { Cookie: `t13-a-session=${a.value}` } }); expect(response.status).toBe(503); }
-  finally { await compose('start'); }
+  finally { await redis('start'); }
   await expect.poll(async () => (await fetch('http://127.0.0.1:5194/bff/session', { headers: { Cookie: `t13-a-session=${a.value}` } })).status).toBe(200);
   await page.goto('http://localhost:5192/'); await page.getByRole('button', { name: '退出本应用', exact: true }).click(); await expect(page.getByRole('link', { name: '通过身份中心登录', exact: true })).toBeVisible();
   const unaffected = await fetch('http://127.0.0.1:5195/bff/session', { headers: { Cookie: `t13-b-session=${b.value}` } }); expect(unaffected.status).toBe(200);
   const key = process.env.T13_TEST_KEY; if (!key) throw new Error('Private test key missing.');
   const grants = await (await fetch('http://127.0.0.1:5197/__test/grants', { headers: { 'x-test-key': key } })).json() as { a: number; b: number };
   expect(grants.a).toBe(0); expect(grants.b > 0).toBe(true);
-  await compose('stop');
+});
+
+test('@T13 failed grant revocation still clears the local application cookie', async ({ page }) => {
+  await appLogin(page, 5193, true, 'browser-bff-logout-fault@example.test');
+  await redis('stop');
   try {
-    await page.goto('http://localhost:5193/');
     const csrf = await page.evaluate(async () => (await (await fetch('/bff/csrf', { credentials: 'same-origin' })).json()) as { csrf_token: string });
     const response = await page.evaluate(async (value) => {
       const response = await fetch('/bff/logout', { method: 'POST', credentials: 'same-origin', headers: { 'X-CSRF-Token': value } });
@@ -65,17 +72,18 @@ test('@T13 identity-state failure returns503 and local logout only affects its a
     }, csrf.csrf_token);
     expect(response.status).toBe(200); expect(response.failed).toBe(true);
     const privateCookies = await page.context().cookies(); expect(privateCookies.some((item) => item.name === 't13-b-session')).toBe(false);
-  } finally { await compose('start'); }
-  const refreshContext = await browser.newContext(); const refreshPage = await refreshContext.newPage();
+  } finally { await redis('start'); }
+});
+
+test('@T13 failed refresh clears the application session without retrying its old token', async ({ page }) => {
+  const key = process.env.T13_TEST_KEY; if (!key) throw new Error('Private test key missing.');
+  await appLogin(page, 5192, true, 'browser-bff-refresh-fault@example.test');
+  await fetch('http://127.0.0.1:5197/__test/refresh', { method: 'POST', headers: { 'x-test-key': key } });
+  await redis('stop');
   try {
-    await appLogin(refreshPage, 5192, true, 'browser-bff-refresh-fault@example.test');
-    await fetch('http://127.0.0.1:5197/__test/refresh', { method: 'POST', headers: { 'x-test-key': key } });
-    await compose('stop');
-    try {
-      const status = await refreshPage.evaluate(async () => (await fetch('/bff/session', { credentials: 'same-origin' })).status); expect(status).toBe(503);
-      const after = await refreshContext.cookies(); expect(after.some((item) => item.name === 't13-a-session')).toBe(false);
-    } finally { await compose('start'); }
-  } finally { await refreshContext.close(); }
+    const status = await page.evaluate(async () => (await fetch('/bff/session', { credentials: 'same-origin' })).status); expect(status).toBe(503);
+    const after = await page.context().cookies(); expect(after.some((item) => item.name === 't13-a-session')).toBe(false);
+  } finally { await redis('start'); }
 });
 
 test('@T13 callback state tampering is rejected and platform logout waits for identity confirmation', async ({ page, browser }) => {
