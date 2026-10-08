@@ -61,3 +61,9 @@ ea0e7d78531e6e73ebbb4f9a5a62625b89fadb2e:docs/evidence/T23/final-artifacts.json:
 ea0e7d78531e6e73ebbb4f9a5a62625b89fadb2e:docs/evidence/T23/final-artifacts.json:generic-api-key:85
 ea0e7d78531e6e73ebbb4f9a5a62625b89fadb2e:docs/evidence/T23/final-artifacts.json:generic-api-key:86
 ea0e7d78531e6e73ebbb4f9a5a62625b89fadb2e:docs/evidence/T23/final-artifacts.json:generic-api-key:87
+
+# The same reviewed local image tag quoted in its triage descriptions.
+867b5907ca5d8ea9c06333e308b0888cacf76b8e:docs/evidence/T20/artifact-secret-triage.json:generic-api-key:12
+867b5907ca5d8ea9c06333e308b0888cacf76b8e:docs/evidence/T20/artifact-secret-triage.json:generic-api-key:19
+867b5907ca5d8ea9c06333e308b0888cacf76b8e:docs/evidence/T20/artifact-secret-triage.json:generic-api-key:26
+867b5907ca5d8ea9c06333e308b0888cacf76b8e:docs/evidence/T20/secret-triage.md:generic-api-key:14
