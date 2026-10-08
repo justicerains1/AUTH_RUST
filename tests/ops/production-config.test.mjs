@@ -15,7 +15,7 @@ test('production PG archive command has required tool and independent storage mo
       'env_file: [{ path: /deliberately-absent-production-env, required: false }]');
   const derivedPath = join(fixture, 'compose.prod.yaml'); writeFileSync(derivedPath, derived);
   const output = execFileSync('docker', ['compose', '--env-file', resolve(root, 'infra/production.env.example'),
-    '--project-directory', resolve(root, 'infra'), '-f', derivedPath, 'config', '--no-env-resolution', '--format', 'json'], { encoding: 'utf8' });
+    '--project-directory', resolve(root, 'infra'), '-f', derivedPath, '--profile', 'maintenance', 'config', '--no-env-resolution', '--format', 'json'], { encoding: 'utf8' });
   const config = JSON.parse(output);
   const postgres = config.services.postgres;
   assert.ok(postgres.command.includes('wal_level=replica'));
@@ -36,4 +36,7 @@ test('production PG archive command has required tool and independent storage mo
   assert.equal(postgres.ports, undefined);
   assert.equal(config.services.redis.ports, undefined);
   assert.deepEqual(config.services.edge.ports.map((port) => String(port.published)).sort(), ['443', '80']);
+  for (const service of ['api', 'worker', 'migrate', 'demo-a-bff', 'demo-b-bff', 'edge']) {
+    assert.deepEqual(config.services[service].tmpfs, ['/tmp:size=16m,mode=1777'], `${service} must have one complete tmpfs mount, not comma-split YAML items`);
+  }
 });

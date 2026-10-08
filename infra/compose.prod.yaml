@@ -7,7 +7,7 @@ x-rust: &rust
   init: true
   security_opt: [no-new-privileges:true]
   cap_drop: [ALL]
-  tmpfs: [/tmp:size=16m,mode=1777]
+  tmpfs: ['/tmp:size=16m,mode=1777']
   stop_grace_period: 30s
   restart: unless-stopped
   networks: [private, egress]
@@ -167,7 +167,7 @@ services:
       TLS_EMAIL: ${TLS_EMAIL:?Set the certificate contact email}
     ports: ['80:8080', '443:8443']
     volumes: [caddy-data:/data, caddy-config:/config]
-    tmpfs: [/tmp:size=16m,mode=1777]
+    tmpfs: ['/tmp:size=16m,mode=1777']
     networks: [private, egress]
     restart: unless-stopped
     mem_limit: 256m
