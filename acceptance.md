@@ -778,7 +778,7 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 
 | 案例 | 前置状态 | 操作步骤 | 预期结果 | 实际结果 | 状态 | 证据 |
 |---|---|---|---|---|---|---|
-| T20-AUDIT-01 | 全部服务 | 运行威胁矩阵与安全测试 | 关键场景全过，确认 High/Critical 为零 | bc742d1干净起点完整11阶段全0，18集成/11E2E/6安全均0，包含E08/E12/E16新增组合；原前置/生产未放行 | 通过 | [汇总](docs/evidence/T20/cross-module-summary.md)、[真实记录](docs/evidence/T20/test-summary.md) |
+| T20-AUDIT-01 | 全部服务 | 运行威胁矩阵与安全测试 | 关键场景全过，确认 High/Critical 为零 | ffe3b98干净起点完整11阶段全0，19集成/11E2E/6安全及双浏览器12流程均0，含当前所有新增模块；原前置/生产未放行 | 通过 | [汇总](docs/evidence/T20/cross-module-summary.md)、[真实记录](docs/evidence/T20/test-summary.md) |
 | T20-AUDIT-02 | 真实依赖 | 停止并恢复各依赖 | 无认证旁路，邮件不丢 | 本次T04/T05/T12真实PG/Redis/SMTP停机恢复均0，失败关闭/outbox重试且healthy | 通过 | [汇总](docs/evidence/T20/cross-module-summary.md)、[真实记录](docs/evidence/T20/test-summary.md) |
 | T20-AUDIT-03 | 独立客户端 | 完成协议验证和非法 token 测试 | 互操作通过，非法声明拒绝 | 成熟OIDC/JOSE已有真实互操作，新跨模块clientrotation/code/user/RP绑定四场景0，未宣称官方认证 | 通过 | [汇总](docs/evidence/T20/cross-module-summary.md)、[真实记录](docs/evidence/T20/test-summary.md) |
 
@@ -795,9 +795,9 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 
 **验收记录：**
 
-- 代码版本：最终自动回归bc742d1，历史模块及失败修复记录保留。
+- 代码版本：最终自动回归ffe3b98，历史模块及失败修复记录保留。
 - 环境与时间：2026-10-08 Linux/Rust1.98/Node22、PG17/Redis7.4/Mailpit、ZAP2.17.0/Gitleaks8.30.1/cargo-deny0.20.2。
-- 命令退出码：历史六阶段security为0；首次完整test:full于2026-10-08T12:29Z实际退出1，11阶段全部运行；修复后unit/check、T13/T19真实流程及T22集成0，第二完整回归仅旧T13组合集成1；0f190e6与最终bc742d1完整11阶段均0，最终完成2026-10-08T13:56:28Z。
+- 命令退出码：历史六阶段security为0；首次完整test:full于2026-10-08T12:29Z实际退出1，11阶段全部运行；修复后unit/check、T13/T19真实流程及T22集成0，第二完整回归仅旧T13组合集成1；早期完整0已保留，当前ffe3b98包含SQL/共享连接/告警/恢复/发布/保留/焦点模块的11阶段0，完成2026-10-08T19:40:55Z。
 - 失败/阻塞项：原ZAP/私有工具lint/worker审计DTO及本次测试夹具/故障恢复/秘密误报已修；最终完整11阶段均0且含新增组合；T18设备前置与参考性能/生产条件未放行。
 - 修复与复测：[T20记录](docs/evidence/T20/test-summary.md)、[威胁映射](docs/evidence/T20/cross-module-summary.md)、[ZAP分诊](docs/evidence/T20/zap/triage.md)。
 - 任务结论：待验收（本地完整自动检查通过，原设备前置及生产必要条件未放行）。
@@ -814,7 +814,7 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 |---|---|---|---|---|---|---|
 | T21-PERF-01 | 规定硬件与数据 | 单项/综合各 15 分钟 | 达到第 8.4 节门槛，错误分类明确 | 原四场及共享Redis后综合900s精准319500/零错误drop达本机门槛；规定硬件未提供 | 阻塞 | [本机结果](docs/evidence/T21/test-summary.md)、[四场复核](docs/evidence/T21/load-evidence-verification.json) |
 | T21-PERF-02 | 移动模拟环境 | 五次冷加载和关键交互 | LCP/CLS/体积达标，报告方法完整 | Chrome153、390×844/CPU4x/1.6Mbps-750Kbps/150ms各5次：首页-登录LCP1624-1632ms、CLS0、JS149.17-151.79KiB；本地max31.1ms/实验室p75max30.1ms，局部阈值达到 | 通过 | [前端方法](docs/evidence/T21/frontend-measurement.md)、[实际报告](docs/evidence/T21/frontend-2026-10-08T08-04-18-937Z.json) |
-| T21-PERF-03 | 查询计划与队列 | 分析慢 SQL、峰值 hash 队列 | 无明显 N+1，资源限制有效 | 真实十万fixtures精确15SQL计划/10请求探测、本人分页1-20条SQL次数固定；队列/连接/PG等待与容量阶梯已实测；未覆盖全部业务写路径及参考环境 | 未执行 | [本机结果](docs/evidence/T21/test-summary.md)、[四场复核](docs/evidence/T21/load-evidence-verification.json) |
+| T21-PERF-03 | 查询计划与队列 | 分析慢 SQL、峰值 hash 队列 | 无明显 N+1，资源限制有效 | 真实十万fixtures精确15SQL计划/10请求探测、本人分页1-20条SQL次数固定；900秒SQL/获取等待/PG等待/密码队列与短容量已实测；未覆盖全部业务写路径及参考环境 | 未执行 | [本机结果](docs/evidence/T21/test-summary.md)、[四场复核](docs/evidence/T21/load-evidence-verification.json) |
 
 **实现子步骤检查：**
 
@@ -885,8 +885,8 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 
 | 案例 | 前置状态 | 操作步骤 | 预期结果 | 实际结果 | 状态 | 证据 |
 |---|---|---|---|---|---|---|
-| T23-REL-01 | 干净环境 | 完整安装/测试/构建 | 全套真实检查成功，无 skipped 关键测试 | 首两轮失败留证；319f30c干净7阶段0/53制品SHA一致；最终bc742d1含新增组合完整11阶段0，源码一致范围明确 | 通过 | [完整报告](TEST_SUMMARY.md)、[干净验证与历史失败](docs/evidence/T23/clean-checkout/test-summary.md) |
-| T23-REL-02 | 五类浏览器 | 完整主要流程、键盘与 reduced-motion | 无阻塞体验问题 | Chromium真实自动化/四宽axe已有证据；实体Passkey及五类浏览器人工矩阵未准备 | 阻塞 | [剩余条件](docs/evidence/T23/remaining-verification.md) |
+| T23-REL-01 | 干净环境 | 完整安装/测试/构建 | 全套真实检查成功，无 skipped 关键测试 | 失败历史保留；ffe3b98新干净7阶段0/53制品SHA一致/身份秘密0；同提交最终完整11阶段0，当前镜像输入范围另记录 | 通过 | [完整报告](TEST_SUMMARY.md)、[干净验证与历史失败](docs/evidence/T23/clean-checkout/test-summary.md) |
+| T23-REL-02 | 五类浏览器 | 完整主要流程、键盘与 reduced-motion | 无阻塞体验问题 | Chromium/Firefox12真实键盘流程、80四宽布局与20文字200%缩放已通过；实体Passkey、真实读屏/完整zoom及五类浏览器人工矩阵未准备 | 阻塞 | [剩余条件](docs/evidence/T23/remaining-verification.md) |
 | T23-REL-03 | 生产部署 | 冒烟并观察 24 小时/高峰 | 认证/撤销/邮件健康，指标无异常 | 用户明确生产域名/主机/SMTP/独立备份暂未准备；未部署、未开始24小时观察 | 阻塞 | [运维审计](docs/evidence/T23/ops-release-audit.md)、[剩余条件](docs/evidence/T23/remaining-verification.md) |
 
 **实现子步骤检查：**
@@ -903,9 +903,9 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 
 **验收记录：**
 
-- 代码版本：最终完整测试bc742d1；实际干净构建319f30c、最终镜像1c0c9ea，生产源码/锁一致性另记录，测试变化由最终整套执行。
+- 代码版本：当前完整测试及直接干净构建ffe3b98；edge镜像138815c生产/测试源码与ffe3相同，runtime95生产输入与2c9c712相同且testharness差异不入发布二进制，具体归档/版本证据独立保存。
 - 环境与时间：2026-10-08 UTC，WSL2Linux/Rust1.98.0/Node22.22.1、PG17/Redis7.4/Mailpit/Chromium；生产未部署。
-- 命令退出码：首轮干净checkout7阶段overall1（unit1，其余0）；319f30c第二干净七阶段全0；首轮完整test:full整体1（unit/integration/e2e/security1，其余0），第二完整复跑整体1（仅旧T13组合集成1）；0f190e6第三完整11阶段0；bc742d1最终含新增组合完整11阶段0，18集成/11E2E/6安全均0，完成2026-10-08T13:56:28Z。
+- 命令退出码：首轮干净checkout7阶段overall1（unit1，其余0）；319f30c第二干净七阶段全0；首轮完整test:full整体1（unit/integration/e2e/security1，其余0），第二完整复跑整体1（仅旧T13组合集成1）；旧场次0已保留；当前ffe3b98完整11阶段0、19集成/11E2E/6安全与12双浏览器流程0，完成2026-10-08T19:40:55Z。
 - 失败/阻塞项：首次失败已定位修复并保留证据；实体设备/五浏览器、参考性能/容量、生产域名/SMTP/独立恢复/告警与24小时观察未验。
 - 修复与复测：[测试修复](docs/evidence/tooling/final-regression-fixtures/test-summary.md)、[运维修复](docs/evidence/T23/ops-repair-summary.md)、[Caddy权限](docs/evidence/tooling/caddy-capabilities/test-summary.md)；[最终完整结果](TEST_SUMMARY.md)、[版本/制品与部署回滚说明](docs/release-notes.md)。
 - 任务结论：待验收（独立本地检查及制品已推进，生产发布/原前置未放行）。

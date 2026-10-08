@@ -1,5 +1,11 @@
 # T23 干净 checkout 子模块最终结果
 
+最新一次验证提交为 `ffe3b9878ef729e7ca6966186657e00da4886d99`，2026-10-08 19:25:06～19:33 UTC（上海日期2026-10-09）。[本次原报告](2026-10-08T19-25-06-451Z.json) 和 [命令摘要](2026-10-08T19-25-06-451Z.md) 七阶段实际退出码全部0：空缓存`npm ci`、文档/OpenAPI、工具测试、静态检查、单元和release/三前端构建。工具70测试0failed/0skipped；Rust63 lib/bin单元0ignored，身份前端60、A/B各6单元全部通过。数量来自各crate实际结果求和，没有用预计数。
+
+本次使用另一全新detached worktree `auth_rust_clean_t23_20261008_retry3`，开始前node_modules/target/三dist/.local全部不存在；Cargo并行任务2，独立target及空npm cache/userconfig，只共享现有Rustup工具链与Cargo注册表源码缓存。源码开始/结束均clean，身份秘密文件0，必需产物无缺；53份制品SHA-256实盘逐个复核一致，锁文件与两md摘要也已核对。没有启动Compose或数据库/浏览器测试，完整回归由根另行记录；这次结果直接对应ffe3b98，早期提交的源码等价说明不替代此轮实际验证。
+
+以下保留早期独立验收、失败与修复历史，不把它们覆写成当前结果。
+
 2026-10-08，实际验证提交 `319f30c4e7de8090cb7055011acc2471530f4e5c`。从新的 detached worktree 开始，node_modules、target、三前端 dist 与 `.local` 均不存在；安装使用空 npm cache/userconfig，Cargo 使用全新独立 target，仅共享现有 Rustup 工具链和 Cargo 注册表源码缓存。
 
 [最终原报告](2026-10-08T12-36-47-083Z.json) 七阶段真实退出码全部 0：`npm ci`、verify:docs、verify:openapi、test:tooling、check、test:unit、build。文档25任务/199步骤/87任务案例；OpenAPI59操作/128schema/601examples；66工具测试0failed/0skipped；Rust58单元0ignored，身份前端59、A/B各6单元全部通过。

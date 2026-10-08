@@ -1,0 +1,84 @@
+{
+  "commit": "ffe3b9878ef729e7ca6966186657e00da4886d99",
+  "completed": false,
+  "results": [
+    {
+      "name": "npm ci",
+      "started": "2026-10-08T19:25:06.916Z",
+      "durationMs": 13202,
+      "exitCode": 0,
+      "counts": []
+    },
+    {
+      "name": "verify:docs",
+      "started": "2026-10-08T19:25:20.119Z",
+      "durationMs": 101,
+      "exitCode": 0,
+      "counts": [
+        "文档检查通过：25 个任务、199 个步骤映射、87 个案例。"
+      ]
+    },
+    {
+      "name": "verify:openapi",
+      "started": "2026-10-08T19:25:20.221Z",
+      "durationMs": 512,
+      "exitCode": 0,
+      "counts": [
+        "OpenAPI 检查通过：59 个操作（48 个 JSON API）、128 个 schema、601 个 examples；契约验证不代表功能已实现。"
+      ]
+    },
+    {
+      "name": "test:tooling",
+      "started": "2026-10-08T19:25:20.734Z",
+      "durationMs": 2650,
+      "exitCode": 0,
+      "counts": [
+        "# tests 70",
+        "# pass 70",
+        "# fail 0",
+        "# skipped 0"
+      ]
+    },
+    {
+      "name": "check",
+      "started": "2026-10-08T19:25:23.385Z",
+      "durationMs": 111628,
+      "exitCode": 0,
+      "counts": []
+    },
+    {
+      "name": "test:unit",
+      "started": "2026-10-08T19:27:15.014Z",
+      "durationMs": 124869,
+      "exitCode": 0,
+      "counts": [
+        "test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 28 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 18.07s",
+        "test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.50s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        " Test Files  15 passed (15)",
+        "      Tests  60 passed (60)",
+        " Test Files  1 passed (1)",
+        "      Tests  6 passed (6)",
+        " Test Files  1 passed (1)",
+        "      Tests  6 passed (6)"
+      ]
+    },
+    {
+      "name": "build",
+      "started": "2026-10-08T19:29:19.884Z",
+      "durationMs": 243573,
+      "exitCode": 0,
+      "counts": []
+    }
+  ]
+}
