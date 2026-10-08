@@ -148,8 +148,10 @@ try {
   const freshCdp = await context.newCDPSession(passkeyLogin.page); await freshCdp.send('WebAuthn.enable'); const freshAuth = await freshCdp.send('WebAuthn.addVirtualAuthenticator', { options: { protocol: 'ctap2', transport: 'internal', hasResidentKey: true, hasUserVerification: true, isUserVerified: true, automaticPresenceSimulation: true } });
   await freshCdp.send('WebAuthn.addCredential', { authenticatorId: freshAuth.authenticatorId, credential: exported.credentials[0] });
   const assertion = await passkeyLogin.passkey('get'); assert.equal(assertion.status, 'authenticated'); assert.equal(assertion.user.id, scenario.user_id); assert.equal(assertion.session.amr.includes('user'), true); assert.equal(assertion.session.amr.includes('hwk'), false); assert.ok(assertion.session.strong_at); assert.equal((await passkeyLogin.request('/api/v1/me')).status, 200);
+  const postRestore = await grant(passkeyLogin, issuer, scenario.clients[0]);
+  assert.equal((await protocol(issuer, scenario.clients[0].client_id, scenario.clients[0].secret, '/oauth/introspect', { token: postRestore.access_token })).body.active, true);
   assert.equal((await passkeyLogin.request('/api/v1/auth/logout-all', {})).status, 204);
-  assert.equal((await protocol(issuer, scenario.clients[0].client_id, scenario.clients[0].secret, '/oauth/introspect', { token: refreshed.body.access_token })).body.active, false);
+  assert.equal((await protocol(issuer, scenario.clients[0].client_id, scenario.clients[0].secret, '/oauth/introspect', { token: postRestore.access_token })).body.active, false);
   report.localRestoreSeconds = (performance.now() - restoreStart) / 1000;
   report.checks.push('Recovered different-directory database and separately copied signing/AEAD keys: active session, live access/refresh and revoked family preserved.');
   report.checks.push('Primary data/key source directory removed before recovery; new RS256 token validates with restored public JWKS, issuer/audience/sub.');
