@@ -56,6 +56,15 @@ async function main() {
     }
     assert.equal(result.code, 0, 'T07 real integration failed; output suppressed to protect passwords/tokens.');
     assert.match(result.stdout, /1 passed/u); for (const line of result.stdout.split('\n')) if (line.startsWith('PASS T07')) lines.push(line);
+    const mfaReset = await command('cargo', ['test', '--package', 'identity-server', '--test', 't07_passwords', '--locked', '--', '--exact', 't07_real_mfa_reset', '--nocapture'], env);
+    if (mfaReset.code !== 0) {
+      const safe = `${mfaReset.stdout}${mfaReset.stderr}`.replaceAll(env.DATABASE_URL, '[DATABASE_URL]').replaceAll(env.T07_BROWSER_PASSWORD, '[PASSWORD]').replace(/T07 distinct fixture long passphrase 78164|T07 replacement distinct fixture phrase 86420/gu, '[PASSWORD]').replace(/\b[A-Za-z0-9_-]{43}\b/gu, '[SECRET]').replace(/#token=[A-Za-z0-9_-]+/gu, '#token=[REDACTED]');
+      await writeFile(resolve(evidence, `mfa-reset-diagnostics-${Date.now()}.txt`), safe);
+    }
+    assert.equal(mfaReset.code, 0, 'T07 real MFA-preserving reset integration failed; private details suppressed.');
+    assert.match(mfaReset.stdout, /1 passed/u);
+    for (const line of mfaReset.stdout.split('\n')) if (line.startsWith('PASS T07')) lines.push(line);
+
   } else {
     const harness = spawnCapture('cargo', args, { ...env, T07_BROWSER_HARNESS: '1' }, 'pipe');
     try {

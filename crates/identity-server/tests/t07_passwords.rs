@@ -1,7 +1,7 @@
 //! T07 real PostgreSQL/Redis/HTTP session tests. No simulated authentication or secret logs.
 use axum::{Json, Router, routing::get};
 use identity_core::{
-    clock::SystemClock,
+    clock::{Clock, SystemClock},
     config::Config,
     security::{Password, PasswordService, Token, token_digest},
 };
@@ -15,7 +15,15 @@ use identity_worker::outbox::MailWorker;
 use reqwest::{Client, StatusCode};
 use serde_json::{Value, json};
 use sqlx::{PgPool, postgres::PgPoolOptions};
-use std::{collections::BTreeMap, error::Error, net::SocketAddr, sync::Arc};
+use std::{
+    collections::BTreeMap,
+    error::Error,
+    net::SocketAddr,
+    sync::{
+        Arc,
+        atomic::{AtomicI64, Ordering},
+    },
+};
 use uuid::Uuid;
 type TestResult<T = ()> = Result<T, Box<dyn Error + Send + Sync>>;
 const PASSWORD: &str = "T07 distinct fixture long passphrase 78164";
@@ -241,6 +249,374 @@ impl Browser {
             .await?)
     }
 }
+#[derive(Clone)]
+struct ResetMfaClock(Arc<AtomicI64>);
+impl Clock for ResetMfaClock {
+    fn now(&self) -> time::OffsetDateTime {
+        time::OffsetDateTime::from_unix_timestamp(self.0.load(Ordering::SeqCst))
+            .unwrap_or(time::OffsetDateTime::UNIX_EPOCH)
+    }
+}
+impl ResetMfaClock {
+    fn next_step(&self) {
+        self.0.fetch_add(30, Ordering::SeqCst);
+    }
+}
+async fn mfa_reset_server(
+    config: &Config,
+    pool: &PgPool,
+    clock: ResetMfaClock,
+) -> TestResult<(String, tokio::task::JoinHandle<()>)> {
+    let mut dependencies =
+        Dependencies::new(config).map_err(|_| "MFA reset dependency config invalid")?;
+    dependencies.postgres = pool.clone();
+    let state = AuthAppState::new_with_clock(config, dependencies, Arc::new(clock)).await?;
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await?;
+    let address = listener.local_addr()?;
+    let app = accounts_router(state, Router::new());
+    let handle = tokio::spawn(async move {
+        let _ = axum::serve(
+            listener,
+            app.into_make_service_with_connect_info::<SocketAddr>(),
+        )
+        .await;
+    });
+    Ok((format!("http://{address}"), handle))
+}
+impl Browser {
+    async fn mfa_password(&mut self, email: &str, password: &str) -> TestResult<Value> {
+        let response = self
+            .post(
+                "/auth/login/password",
+                json!({"email":email,"password":password}),
+            )
+            .await?;
+        assert_eq!(response.status(), StatusCode::OK);
+        let pairs = response
+            .headers()
+            .get_all("set-cookie")
+            .iter()
+            .filter_map(|value| value.to_str().ok())
+            .filter(|value| !value.contains("Max-Age=0"))
+            .filter_map(|value| value.split(';').next())
+            .map(str::to_owned)
+            .collect::<Vec<_>>();
+        let value = response.json::<Value>().await?;
+        assert_eq!(value["status"], "mfa_required");
+        self.cookie = pairs.join("; ");
+        Ok(value)
+    }
+    async fn rotated_csrf(&mut self) -> TestResult {
+        let response = self.get("/auth/csrf").await?;
+        assert_eq!(response.status(), StatusCode::OK);
+        let pairs = response
+            .headers()
+            .get_all("set-cookie")
+            .iter()
+            .filter_map(|value| value.to_str().ok())
+            .filter_map(|value| value.split(';').next())
+            .map(str::to_owned)
+            .collect::<Vec<_>>();
+        if !pairs.is_empty() {
+            self.cookie = pairs.join("; ");
+        }
+        self.csrf = response.json::<Value>().await?["csrf_token"]
+            .as_str()
+            .ok_or("rotated csrf missing")?
+            .into();
+        Ok(())
+    }
+    async fn factor_auth(
+        &mut self,
+        challenge: &Value,
+        seed: &identity_core::mfa::TotpSecret,
+        clock: &ResetMfaClock,
+    ) -> TestResult<Value> {
+        self.rotated_csrf().await?;
+        let response=self.post("/auth/mfa/totp/verify",json!({"challenge_id":challenge["challenge_id"],"code":seed.code_at(clock.now().unix_timestamp())?})).await?;
+        assert_eq!(response.status(), StatusCode::OK);
+        let pairs = response
+            .headers()
+            .get_all("set-cookie")
+            .iter()
+            .filter_map(|value| value.to_str().ok())
+            .filter(|value| !value.contains("Max-Age=0"))
+            .filter_map(|value| value.split(';').next())
+            .map(str::to_owned)
+            .collect::<Vec<_>>();
+        let value = response.json::<Value>().await?;
+        assert_eq!(value["status"], "authenticated");
+        self.cookie = pairs.join("; ");
+        self.csrf = value["csrf_token"]
+            .as_str()
+            .ok_or("factor csrf missing")?
+            .into();
+        Ok(value)
+    }
+}
+#[tokio::test]
+async fn t07_real_mfa_reset() -> TestResult {
+    let config = configuration(false)?;
+    let (admin, pool, schema) = isolated(&config).await?;
+    let clock = ResetMfaClock(Arc::new(AtomicI64::new(
+        time::OffsetDateTime::now_utc().unix_timestamp() + 1,
+    )));
+    let (base, server) = mfa_reset_server(&config, &pool, clock.clone()).await?;
+    let result = mfa_reset_case(&config, &pool, base, clock).await;
+    server.abort();
+    cleanup(admin, pool, schema).await?;
+    result
+}
+async fn mfa_reset_case(
+    config: &Config,
+    pool: &PgPool,
+    base: String,
+    clock: ResetMfaClock,
+) -> TestResult {
+    let hash = PasswordService::initialize(config.argon2_parallelism_limit)
+        .await?
+        .hash(&Password::new(PASSWORD)?)
+        .await?;
+    let email = format!("mfa-reset-{}@example.test", Uuid::new_v4().simple());
+    let user = seed(pool, &email, &hash, true, "active").await?;
+    let origin = config.issuer.origin().ascii_serialization();
+    let mut first = Browser::new(base.clone(), origin.clone()).await?;
+    let initial = first.login(&email, PASSWORD).await?;
+    assert_eq!(initial["status"], "authenticated");
+    assert_eq!(
+        first
+            .post("/me/reauth/password", json!({"password":PASSWORD}))
+            .await?
+            .status(),
+        StatusCode::OK
+    );
+    let enrollment = first.post("/me/mfa/totp/enrollment", json!({})).await?;
+    assert_eq!(enrollment.status(), StatusCode::OK);
+    let enrollment: Value = enrollment.json().await?;
+    let totp = identity_core::mfa::TotpSecret::from_base32(
+        enrollment["secret"]
+            .as_str()
+            .ok_or("real enrollment secret missing")?,
+    )?;
+    let confirmed=first.post("/me/mfa/totp/enrollment/confirm",json!({"challenge_id":enrollment["challenge_id"],"code":totp.code_at(clock.now().unix_timestamp())?})).await?;
+    assert_eq!(confirmed.status(), StatusCode::OK);
+    assert_eq!(confirmed.json::<Value>().await?["status"], "totp_enabled");
+    let factor_before:(Uuid,Vec<u8>,String,Vec<u8>)=sqlx::query_as("SELECT id,encrypted_seed,encryption_kid,encryption_nonce FROM totp_factors WHERE user_id=$1 AND confirmed").bind(user).fetch_one(pool).await?;
+    clock.next_step();
+    let mut second = Browser::new(base.clone(), origin.clone()).await?;
+    let challenge = second.mfa_password(&email, PASSWORD).await?;
+    let second_auth = second.factor_auth(&challenge, &totp, &clock).await?;
+    assert_eq!(first.get("/me").await?.status(), StatusCode::OK);
+    assert_eq!(second.get("/me").await?.status(), StatusCode::OK);
+    let client_id = format!("reset-mfa-{}", Uuid::new_v4().simple());
+    let store = identity_store::oauth::OAuthStore::new(pool.clone(), Arc::new(clock.clone()));
+    let oauth = store
+        .create_client(&identity_store::oauth::NewClient {
+            client_id: client_id.clone(),
+            name: "MFA reset integration client".into(),
+            allowed_scopes: vec![identity_core::oauth::Scope::OpenId],
+            redirect_uris: vec!["http://localhost:5173/callback".into()],
+            logout_uris: vec![],
+            production: false,
+        })
+        .await?;
+    let verifier = Token::generate()?;
+    let form = url::form_urlencoded::Serializer::new(String::new())
+        .extend_pairs([
+            ("client_id", client_id.as_str()),
+            ("response_type", "code"),
+            ("redirect_uri", "http://localhost:5173/callback"),
+            ("scope", "openid"),
+            ("state", "MFA_RESET_STATE_FIXTURE_12345"),
+            ("nonce", "MFA_RESET_NONCE_FIXTURE_54321"),
+            (
+                "code_challenge",
+                identity_core::oauth::pkce_s256(verifier.expose())?.as_str(),
+            ),
+            ("code_challenge_method", "S256"),
+            ("prompt", "consent"),
+        ])
+        .finish();
+    let protocol = Client::builder()
+        .redirect(reqwest::redirect::Policy::none())
+        .build()?;
+    let authorize = protocol
+        .get(format!("{base}/oauth/authorize?{form}"))
+        .header("cookie", &second.cookie)
+        .send()
+        .await?;
+    assert_eq!(authorize.status(), StatusCode::FOUND);
+    let transaction = authorize
+        .headers()
+        .get("location")
+        .ok_or("consent location missing")?
+        .to_str()?
+        .strip_prefix("/oauth/consent/")
+        .ok_or("expected consent transaction")?
+        .to_string();
+    let decision = second
+        .post(
+            &format!("/oauth/transactions/{transaction}/decision"),
+            json!({"decision":"approve"}),
+        )
+        .await?;
+    assert_eq!(decision.status(), StatusCode::OK);
+    let decision: Value = decision.json().await?;
+    let callback = url::Url::parse(decision["redirect_to"].as_str().ok_or("callback missing")?)?;
+    let code = callback
+        .query_pairs()
+        .find(|(name, _)| name == "code")
+        .ok_or("authorization code missing")?
+        .1
+        .into_owned();
+    let token_body = url::form_urlencoded::Serializer::new(String::new())
+        .extend_pairs([
+            ("grant_type", "authorization_code"),
+            ("code", code.as_str()),
+            ("code_verifier", verifier.expose()),
+            ("redirect_uri", "http://localhost:5173/callback"),
+        ])
+        .finish();
+    let exchanged = protocol
+        .post(format!("{base}/oauth/token"))
+        .basic_auth(&client_id, Some(oauth.client_secret.expose()))
+        .header("content-type", "application/x-www-form-urlencoded")
+        .body(token_body)
+        .send()
+        .await?;
+    assert_eq!(exchanged.status(), StatusCode::OK);
+    let tokens: Value = exchanged.json().await?;
+    let access = zeroize::Zeroizing::new(
+        tokens["access_token"]
+            .as_str()
+            .ok_or("access missing")?
+            .to_string(),
+    );
+    let refresh = zeroize::Zeroizing::new(
+        tokens["refresh_token"]
+            .as_str()
+            .ok_or("refresh missing")?
+            .to_string(),
+    );
+    let introspect = |token: &str| {
+        let body = url::form_urlencoded::Serializer::new(String::new())
+            .append_pair("token", token)
+            .finish();
+        protocol
+            .post(format!("{base}/oauth/introspect"))
+            .basic_auth(&client_id, Some(oauth.client_secret.expose()))
+            .header("content-type", "application/x-www-form-urlencoded")
+            .body(body)
+    };
+    assert_eq!(
+        introspect(&access).send().await?.json::<Value>().await?["active"],
+        true
+    );
+    let repository = Repository::new(pool.clone(), Arc::new(clock.clone()));
+    assert!(
+        repository
+            .token_authority(Digest::from_bytes(token_digest(&access)), &client_id)
+            .await?
+            .is_some()
+    );
+    let anonymous = Browser::new(base.clone(), origin.clone()).await?;
+    let worker = MailWorker::new(config, pool.clone(), Arc::new(clock.clone()))?;
+    let reset = request_reset(&anonymous, &worker, &email).await?;
+    assert_unconsumed(pool, &reset).await?;
+    let confirmation = anonymous
+        .post(
+            "/auth/password-reset/confirm",
+            json!({"token":reset,"password":NEW_PASSWORD}),
+        )
+        .await?;
+    assert_eq!(confirmation.status(), StatusCode::OK);
+    for cookie in confirmation.headers().get_all("set-cookie") {
+        assert!(cookie.to_str()?.contains("Max-Age=0"));
+    }
+    assert_eq!(
+        confirmation.json::<Value>().await?["status"],
+        "password_reset"
+    );
+    assert_eq!(
+        anonymous.get("/me").await?.status(),
+        StatusCode::UNAUTHORIZED
+    );
+    assert_eq!(first.get("/me").await?.status(), StatusCode::UNAUTHORIZED);
+    assert_eq!(second.get("/me").await?.status(), StatusCode::UNAUTHORIZED);
+    assert_eq!(
+        introspect(&access).send().await?.json::<Value>().await?["active"],
+        false
+    );
+    assert_eq!(
+        introspect(&refresh).send().await?.json::<Value>().await?["active"],
+        false
+    );
+    let refresh_body = url::form_urlencoded::Serializer::new(String::new())
+        .extend_pairs([
+            ("grant_type", "refresh_token"),
+            ("refresh_token", refresh.as_str()),
+        ])
+        .finish();
+    let revoked = protocol
+        .post(format!("{base}/oauth/token"))
+        .basic_auth(&client_id, Some(oauth.client_secret.expose()))
+        .header("content-type", "application/x-www-form-urlencoded")
+        .body(refresh_body)
+        .send()
+        .await?;
+    assert_eq!(revoked.status(), StatusCode::BAD_REQUEST);
+    assert_eq!(revoked.json::<Value>().await?["error"], "invalid_grant");
+    assert!(
+        repository
+            .token_authority(Digest::from_bytes(token_digest(&access)), &client_id)
+            .await?
+            .is_none()
+    );
+    let active_grants: i64 = sqlx::query_scalar(
+        "SELECT count(*) FROM oauth_grants WHERE user_id=$1 AND revoked_at IS NULL",
+    )
+    .bind(user)
+    .fetch_one(pool)
+    .await?;
+    assert_eq!(active_grants, 0);
+    let factor_after:(Uuid,Vec<u8>,String,Vec<u8>)=sqlx::query_as("SELECT id,encrypted_seed,encryption_kid,encryption_nonce FROM totp_factors WHERE user_id=$1 AND confirmed").bind(user).fetch_one(pool).await?;
+    assert!(
+        factor_before == factor_after,
+        "existing actual factor ciphertext and identity must remain unchanged"
+    );
+    let old_password = Browser::new(base.clone(), origin.clone()).await?;
+    assert_eq!(
+        old_password
+            .post(
+                "/auth/login/password",
+                json!({"email":email,"password":PASSWORD})
+            )
+            .await?
+            .status(),
+        StatusCode::UNAUTHORIZED
+    );
+    clock.next_step();
+    let mut fresh = Browser::new(base, origin).await?;
+    let challenge = fresh.mfa_password(&email, NEW_PASSWORD).await?;
+    assert_eq!(fresh.get("/me").await?.status(), StatusCode::UNAUTHORIZED);
+    let authenticated = fresh.factor_auth(&challenge, &totp, &clock).await?;
+    assert_eq!(authenticated["session"]["amr"], json!(["pwd", "otp"]));
+    assert_eq!(fresh.get("/me").await?.status(), StatusCode::OK);
+    assert_ne!(
+        session_id(&initial).await?,
+        session_id(&authenticated).await?
+    );
+    assert_ne!(
+        session_id(&second_auth).await?,
+        session_id(&authenticated).await?
+    );
+    println!(
+        "PASS T07-E08 actual TOTP enrollment survives real Mailpit reset; both sessions and grant/access/refresh revoked immediately; new password remains MFA-limited until original factor completes a fresh step; no automatic login"
+    );
+
+    Ok(())
+}
+
 async fn seed(
     pool: &PgPool,
     email: &str,
