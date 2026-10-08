@@ -1,0 +1,1878 @@
+{
+  "count": 306,
+  "licenses": {
+    "MIT": 240,
+    "MPL-2.0": 14,
+    "MIT-0": 2,
+    "Apache-2.0": 21,
+    "ISC": 11,
+    "Python-2.0": 1,
+    "CC-BY-4.0": 1,
+    "BSD-2-Clause": 8,
+    "BSD-3-Clause": 4,
+    "BlueOak-1.0.0": 2,
+    "CC0-1.0": 1,
+    "0BSD": 1
+  },
+  "packages": [
+    {
+      "name": "@apidevtools/json-schema-ref-parser",
+      "version": "16.0.3",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "undici",
+      "version": "8.11.2",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@apidevtools/openapi-schemas",
+      "version": "2.1.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@apidevtools/swagger-methods",
+      "version": "3.0.2",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@apidevtools/swagger-parser",
+      "version": "13.1.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "ajv-draft-04",
+      "version": "1.0.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@asamuzakjp/css-color",
+      "version": "5.1.11",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@asamuzakjp/dom-selector",
+      "version": "7.1.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@asamuzakjp/generational-cache",
+      "version": "1.0.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@asamuzakjp/nwsapi",
+      "version": "2.3.9",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@axe-core/playwright",
+      "version": "4.13.0",
+      "license": "MPL-2.0",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@babel/code-frame",
+      "version": "7.29.7",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@babel/compat-data",
+      "version": "7.29.7",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@babel/core",
+      "version": "7.29.7",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@babel/generator",
+      "version": "7.29.8",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@babel/helper-compilation-targets",
+      "version": "7.29.7",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@babel/helper-globals",
+      "version": "7.29.7",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@babel/helper-module-imports",
+      "version": "7.29.7",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@babel/helper-module-transforms",
+      "version": "7.29.7",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@babel/helper-string-parser",
+      "version": "7.29.7",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@babel/helper-validator-identifier",
+      "version": "7.29.7",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@babel/helper-validator-option",
+      "version": "7.29.7",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@babel/helpers",
+      "version": "7.29.10",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@babel/parser",
+      "version": "7.29.9",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@babel/runtime",
+      "version": "7.29.10",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@babel/template",
+      "version": "7.29.7",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@babel/traverse",
+      "version": "7.29.10",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@babel/types",
+      "version": "7.29.8",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@bramus/specificity",
+      "version": "2.4.3",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@cacheable/memory",
+      "version": "2.2.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@cacheable/utils",
+      "version": "2.5.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@csstools/color-helpers",
+      "version": "6.1.2",
+      "license": "MIT-0",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@csstools/css-calc",
+      "version": "3.4.3",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@csstools/css-color-parser",
+      "version": "4.2.6",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@csstools/css-parser-algorithms",
+      "version": "4.0.2",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@csstools/css-syntax-patches-for-csstree",
+      "version": "1.1.15",
+      "license": "MIT-0",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@csstools/css-tokenizer",
+      "version": "4.0.2",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@eslint-community/eslint-utils",
+      "version": "4.10.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "eslint-visitor-keys",
+      "version": "3.4.3",
+      "license": "Apache-2.0",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@eslint-community/regexpp",
+      "version": "4.12.2",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@eslint/config-array",
+      "version": "0.23.5",
+      "license": "Apache-2.0",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@eslint/config-helpers",
+      "version": "0.7.0",
+      "license": "Apache-2.0",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@eslint/core",
+      "version": "1.2.1",
+      "license": "Apache-2.0",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@eslint/js",
+      "version": "10.0.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@eslint/object-schema",
+      "version": "3.0.5",
+      "license": "Apache-2.0",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@eslint/plugin-kit",
+      "version": "0.7.3",
+      "license": "Apache-2.0",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@exodus/bytes",
+      "version": "1.16.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@humanfs/core",
+      "version": "0.19.2",
+      "license": "Apache-2.0",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@humanfs/node",
+      "version": "0.16.8",
+      "license": "Apache-2.0",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@humanfs/types",
+      "version": "0.15.0",
+      "license": "Apache-2.0",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@humanwhocodes/module-importer",
+      "version": "1.0.1",
+      "license": "Apache-2.0",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@humanwhocodes/retry",
+      "version": "0.4.3",
+      "license": "Apache-2.0",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@jridgewell/gen-mapping",
+      "version": "0.3.13",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@jridgewell/remapping",
+      "version": "2.3.5",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@jridgewell/resolve-uri",
+      "version": "3.1.2",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@jridgewell/sourcemap-codec",
+      "version": "1.6.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@jridgewell/trace-mapping",
+      "version": "0.3.31",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@keyv/bigmap",
+      "version": "1.3.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@keyv/serialize",
+      "version": "1.1.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@oxc-project/types",
+      "version": "0.152.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@playwright/test",
+      "version": "1.63.0",
+      "license": "Apache-2.0",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@radix-ui/primitive",
+      "version": "1.1.7",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@radix-ui/react-compose-refs",
+      "version": "1.1.5",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@radix-ui/react-context",
+      "version": "1.2.2",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@radix-ui/react-dialog",
+      "version": "1.2.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@radix-ui/react-dismissable-layer",
+      "version": "1.1.20",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@radix-ui/react-focus-guards",
+      "version": "1.1.6",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@radix-ui/react-focus-scope",
+      "version": "1.2.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@radix-ui/react-id",
+      "version": "1.1.4",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@radix-ui/react-label",
+      "version": "2.1.16",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@radix-ui/react-portal",
+      "version": "1.1.18",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@radix-ui/react-presence",
+      "version": "1.1.11",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@radix-ui/react-primitive",
+      "version": "2.1.11",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@radix-ui/react-slot",
+      "version": "1.4.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@radix-ui/react-use-callback-ref",
+      "version": "1.1.4",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@radix-ui/react-use-controllable-state",
+      "version": "1.2.6",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@radix-ui/react-use-effect-event",
+      "version": "0.0.5",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@radix-ui/react-use-layout-effect",
+      "version": "1.1.4",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@remix-run/route-pattern",
+      "version": "0.22.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@rolldown/binding-linux-x64-gnu",
+      "version": "1.2.12",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@rolldown/binding-linux-x64-musl",
+      "version": "1.2.12",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@rolldown/pluginutils",
+      "version": "1.0.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@tanstack/query-core",
+      "version": "5.104.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@tanstack/react-query",
+      "version": "5.104.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@testing-library/dom",
+      "version": "10.4.2",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@testing-library/react",
+      "version": "16.3.3",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@testing-library/user-event",
+      "version": "14.6.7",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@types/aria-query",
+      "version": "5.0.4",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@types/chai",
+      "version": "5.2.3",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@types/deep-eql",
+      "version": "4.0.2",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@types/esrecurse",
+      "version": "4.3.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@types/estree",
+      "version": "1.0.9",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@types/json-schema",
+      "version": "7.0.15",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@types/node",
+      "version": "22.20.5",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@types/react",
+      "version": "19.3.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@types/react-dom",
+      "version": "19.3.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@typescript-eslint/eslint-plugin",
+      "version": "8.71.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "ignore",
+      "version": "7.0.12",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@typescript-eslint/parser",
+      "version": "8.71.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@typescript-eslint/project-service",
+      "version": "8.71.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@typescript-eslint/scope-manager",
+      "version": "8.71.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@typescript-eslint/tsconfig-utils",
+      "version": "8.71.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@typescript-eslint/type-utils",
+      "version": "8.71.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@typescript-eslint/types",
+      "version": "8.71.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@typescript-eslint/typescript-estree",
+      "version": "8.71.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "semver",
+      "version": "7.8.5",
+      "license": "ISC",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@typescript-eslint/utils",
+      "version": "8.71.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@typescript-eslint/visitor-keys",
+      "version": "8.71.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@vitejs/plugin-react",
+      "version": "6.1.2",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@vitest/mocker",
+      "version": "5.0.3",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@vitest/spy",
+      "version": "5.0.3",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "acorn",
+      "version": "8.19.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "acorn-jsx",
+      "version": "5.3.2",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "ajv",
+      "version": "8.20.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "ajv-formats",
+      "version": "3.0.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "ansi-regex",
+      "version": "5.0.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "ansi-styles",
+      "version": "5.2.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "argparse",
+      "version": "2.0.1",
+      "license": "Python-2.0",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "aria-hidden",
+      "version": "1.2.6",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "aria-query",
+      "version": "5.3.0",
+      "license": "Apache-2.0",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "assertion-error",
+      "version": "2.0.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "axe-core",
+      "version": "4.13.0",
+      "license": "MPL-2.0",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "balanced-match",
+      "version": "4.0.4",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "baseline-browser-mapping",
+      "version": "2.11.27",
+      "license": "Apache-2.0",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "bidi-js",
+      "version": "1.1.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "brace-expansion",
+      "version": "5.0.12",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "browserslist",
+      "version": "4.29.3",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "cacheable",
+      "version": "2.5.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "call-me-maybe",
+      "version": "1.0.2",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "caniuse-lite",
+      "version": "1.0.30001815",
+      "license": "CC-BY-4.0",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "chai",
+      "version": "6.3.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "convert-source-map",
+      "version": "2.0.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "cookie-es",
+      "version": "3.1.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "cross-spawn",
+      "version": "7.0.6",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "css-tree",
+      "version": "3.2.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "csstype",
+      "version": "3.2.3",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "data-urls",
+      "version": "7.0.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "debug",
+      "version": "4.4.3",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "decimal.js",
+      "version": "10.6.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "deep-is",
+      "version": "0.1.4",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "dequal",
+      "version": "2.0.3",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "detect-libc",
+      "version": "2.1.2",
+      "license": "Apache-2.0",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "detect-node-es",
+      "version": "1.1.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "dom-accessibility-api",
+      "version": "0.5.16",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "electron-to-chromium",
+      "version": "1.5.449",
+      "license": "ISC",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "entities",
+      "version": "8.1.0",
+      "license": "BSD-2-Clause",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "es-module-lexer",
+      "version": "2.3.2",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "escalade",
+      "version": "3.2.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "escape-string-regexp",
+      "version": "4.0.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "eslint",
+      "version": "10.12.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "eslint-plugin-react-hooks",
+      "version": "7.1.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "eslint-plugin-react-refresh",
+      "version": "0.5.7",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "eslint-scope",
+      "version": "9.1.2",
+      "license": "BSD-2-Clause",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "eslint-visitor-keys",
+      "version": "5.0.1",
+      "license": "Apache-2.0",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "ajv",
+      "version": "6.15.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "json-schema-traverse",
+      "version": "0.4.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "espree",
+      "version": "11.2.0",
+      "license": "BSD-2-Clause",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "esquery",
+      "version": "1.7.0",
+      "license": "BSD-3-Clause",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "esrecurse",
+      "version": "4.3.0",
+      "license": "BSD-2-Clause",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "estraverse",
+      "version": "5.3.0",
+      "license": "BSD-2-Clause",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "estree-walker",
+      "version": "3.0.3",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "esutils",
+      "version": "2.0.3",
+      "license": "BSD-2-Clause",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "expect-type",
+      "version": "1.4.0",
+      "license": "Apache-2.0",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "fast-deep-equal",
+      "version": "3.1.3",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "fast-json-stable-stringify",
+      "version": "2.1.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "fast-levenshtein",
+      "version": "2.0.6",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "fast-uri",
+      "version": "3.1.8",
+      "license": "BSD-3-Clause",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "fdir",
+      "version": "6.5.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "file-entry-cache",
+      "version": "11.1.5",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "find-up",
+      "version": "5.0.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "flat-cache",
+      "version": "6.1.23",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "flatted",
+      "version": "3.4.4",
+      "license": "ISC",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "gensync",
+      "version": "1.0.0-beta.2",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "get-nonce",
+      "version": "1.0.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "glob-parent",
+      "version": "6.0.2",
+      "license": "ISC",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "globals",
+      "version": "17.13.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "hashery",
+      "version": "1.5.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "hermes-estree",
+      "version": "0.25.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "hermes-parser",
+      "version": "0.25.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "hookified",
+      "version": "1.15.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "html-encoding-sniffer",
+      "version": "6.0.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "ignore",
+      "version": "5.3.2",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "imurmurhash",
+      "version": "0.1.4",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "is-extglob",
+      "version": "2.1.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "is-glob",
+      "version": "4.0.3",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "is-potential-custom-element-name",
+      "version": "1.0.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "isexe",
+      "version": "2.0.0",
+      "license": "ISC",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "jose",
+      "version": "6.2.12",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "js-tokens",
+      "version": "4.0.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "js-yaml",
+      "version": "5.4.3",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "jsdom",
+      "version": "29.1.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "lru-cache",
+      "version": "11.5.3",
+      "license": "BlueOak-1.0.0",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "jsesc",
+      "version": "3.1.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "json-schema-traverse",
+      "version": "1.0.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "json-stable-stringify-without-jsonify",
+      "version": "1.0.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "json5",
+      "version": "2.2.3",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "keyv",
+      "version": "5.6.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "levn",
+      "version": "0.4.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "lightningcss",
+      "version": "1.33.0",
+      "license": "MPL-2.0",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "lightningcss-linux-x64-gnu",
+      "version": "1.33.0",
+      "license": "MPL-2.0",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "lightningcss-linux-x64-musl",
+      "version": "1.33.0",
+      "license": "MPL-2.0",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "locate-path",
+      "version": "6.0.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "lru-cache",
+      "version": "5.1.1",
+      "license": "ISC",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "lz-string",
+      "version": "1.5.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "magic-string",
+      "version": "1.4.3",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "mdn-data",
+      "version": "2.27.1",
+      "license": "CC0-1.0",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "minimatch",
+      "version": "10.2.6",
+      "license": "BlueOak-1.0.0",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "ms",
+      "version": "2.1.3",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "nanoid",
+      "version": "3.3.20",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "natural-compare",
+      "version": "1.4.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "node-releases",
+      "version": "2.0.57",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "oauth4webapi",
+      "version": "3.8.8",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "obug",
+      "version": "2.2.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "openapi-types",
+      "version": "12.1.3",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "openid-client",
+      "version": "6.8.8",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "optionator",
+      "version": "0.9.4",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "p-limit",
+      "version": "3.1.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "p-locate",
+      "version": "5.0.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "parse5",
+      "version": "8.0.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "path-exists",
+      "version": "4.0.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "path-key",
+      "version": "3.1.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "picocolors",
+      "version": "1.1.1",
+      "license": "ISC",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "picomatch",
+      "version": "4.0.7",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "playwright",
+      "version": "1.63.0",
+      "license": "Apache-2.0",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "playwright-core",
+      "version": "1.63.0",
+      "license": "Apache-2.0",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "postcss",
+      "version": "8.5.29",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "prelude-ls",
+      "version": "1.2.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "pretty-format",
+      "version": "27.5.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "punycode",
+      "version": "2.3.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "qified",
+      "version": "0.10.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "hookified",
+      "version": "2.2.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "qrcode-generator",
+      "version": "2.0.4",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "react",
+      "version": "19.3.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "react-dom",
+      "version": "19.3.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "react-hook-form",
+      "version": "7.89.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "react-is",
+      "version": "17.0.2",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "react-remove-scroll",
+      "version": "2.7.2",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "react-remove-scroll-bar",
+      "version": "2.3.8",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "react-router",
+      "version": "8.4.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "react-style-singleton",
+      "version": "2.2.3",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "require-from-string",
+      "version": "2.0.2",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "rolldown",
+      "version": "1.2.12",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "saxes",
+      "version": "6.0.0",
+      "license": "ISC",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "scheduler",
+      "version": "0.28.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "semver",
+      "version": "6.3.1",
+      "license": "ISC",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "shebang-command",
+      "version": "2.0.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "shebang-regex",
+      "version": "3.0.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "source-map-js",
+      "version": "1.2.2",
+      "license": "BSD-3-Clause",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "std-env",
+      "version": "4.3.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "symbol-tree",
+      "version": "3.2.4",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "tinybench",
+      "version": "6.2.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "tinyexec",
+      "version": "1.3.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "tinyglobby",
+      "version": "0.2.17",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "tldts",
+      "version": "7.4.16",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "tldts-core",
+      "version": "7.4.16",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "tough-cookie",
+      "version": "6.0.2",
+      "license": "BSD-3-Clause",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "tr46",
+      "version": "6.0.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "ts-api-utils",
+      "version": "2.5.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "tslib",
+      "version": "2.8.1",
+      "license": "0BSD",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "type-check",
+      "version": "0.4.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "typescript",
+      "version": "6.0.3",
+      "license": "Apache-2.0",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "typescript-eslint",
+      "version": "8.71.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "undici",
+      "version": "7.30.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "undici-types",
+      "version": "6.21.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "update-browserslist-db",
+      "version": "1.3.3",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "uri-js",
+      "version": "4.4.1",
+      "license": "BSD-2-Clause",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "use-callback-ref",
+      "version": "1.3.3",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "use-sidecar",
+      "version": "1.1.3",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "vite",
+      "version": "8.3.3",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "vitest",
+      "version": "5.0.3",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "w3c-xmlserializer",
+      "version": "5.0.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "webidl-conversions",
+      "version": "8.0.1",
+      "license": "BSD-2-Clause",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "whatwg-mimetype",
+      "version": "5.0.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "whatwg-url",
+      "version": "16.0.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "which",
+      "version": "2.0.2",
+      "license": "ISC",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "why-is-node-running",
+      "version": "3.2.1",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "word-wrap",
+      "version": "1.2.5",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "xml-name-validator",
+      "version": "5.0.0",
+      "license": "Apache-2.0",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "xmlchars",
+      "version": "2.2.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "yallist",
+      "version": "3.1.1",
+      "license": "ISC",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "yocto-queue",
+      "version": "0.1.0",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "zod",
+      "version": "4.6.5",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "zod-validation-error",
+      "version": "4.0.2",
+      "license": "MIT",
+      "source": "installed-lock-package"
+    },
+    {
+      "name": "@rolldown/binding-android-arm-eabi",
+      "version": "1.2.12",
+      "license": "MIT",
+      "source": "exact-version-registry-metadata",
+      "url": "https://registry.npmjs.org/%40rolldown%2Fbinding-android-arm-eabi/1.2.12"
+    },
+    {
+      "name": "@rolldown/binding-android-arm64",
+      "version": "1.2.12",
+      "license": "MIT",
+      "source": "exact-version-registry-metadata",
+      "url": "https://registry.npmjs.org/%40rolldown%2Fbinding-android-arm64/1.2.12"
+    },
+    {
+      "name": "@rolldown/binding-darwin-arm64",
+      "version": "1.2.12",
+      "license": "MIT",
+      "source": "exact-version-registry-metadata",
+      "url": "https://registry.npmjs.org/%40rolldown%2Fbinding-darwin-arm64/1.2.12"
+    },
+    {
+      "name": "@rolldown/binding-darwin-x64",
+      "version": "1.2.12",
+      "license": "MIT",
+      "source": "exact-version-registry-metadata",
+      "url": "https://registry.npmjs.org/%40rolldown%2Fbinding-darwin-x64/1.2.12"
+    },
+    {
+      "name": "@rolldown/binding-freebsd-x64",
+      "version": "1.2.12",
+      "license": "MIT",
+      "source": "exact-version-registry-metadata",
+      "url": "https://registry.npmjs.org/%40rolldown%2Fbinding-freebsd-x64/1.2.12"
+    },
+    {
+      "name": "@rolldown/binding-linux-arm-gnueabihf",
+      "version": "1.2.12",
+      "license": "MIT",
+      "source": "exact-version-registry-metadata",
+      "url": "https://registry.npmjs.org/%40rolldown%2Fbinding-linux-arm-gnueabihf/1.2.12"
+    },
+    {
+      "name": "@rolldown/binding-linux-arm64-gnu",
+      "version": "1.2.12",
+      "license": "MIT",
+      "source": "exact-version-registry-metadata",
+      "url": "https://registry.npmjs.org/%40rolldown%2Fbinding-linux-arm64-gnu/1.2.12"
+    },
+    {
+      "name": "@rolldown/binding-linux-arm64-musl",
+      "version": "1.2.12",
+      "license": "MIT",
+      "source": "exact-version-registry-metadata",
+      "url": "https://registry.npmjs.org/%40rolldown%2Fbinding-linux-arm64-musl/1.2.12"
+    },
+    {
+      "name": "@rolldown/binding-linux-ppc64-gnu",
+      "version": "1.2.12",
+      "license": "MIT",
+      "source": "exact-version-registry-metadata",
+      "url": "https://registry.npmjs.org/%40rolldown%2Fbinding-linux-ppc64-gnu/1.2.12"
+    },
+    {
+      "name": "@rolldown/binding-linux-s390x-gnu",
+      "version": "1.2.12",
+      "license": "MIT",
+      "source": "exact-version-registry-metadata",
+      "url": "https://registry.npmjs.org/%40rolldown%2Fbinding-linux-s390x-gnu/1.2.12"
+    },
+    {
+      "name": "@rolldown/binding-openharmony-arm64",
+      "version": "1.2.12",
+      "license": "MIT",
+      "source": "exact-version-registry-metadata",
+      "url": "https://registry.npmjs.org/%40rolldown%2Fbinding-openharmony-arm64/1.2.12"
+    },
+    {
+      "name": "@rolldown/binding-win32-arm64-msvc",
+      "version": "1.2.12",
+      "license": "MIT",
+      "source": "exact-version-registry-metadata",
+      "url": "https://registry.npmjs.org/%40rolldown%2Fbinding-win32-arm64-msvc/1.2.12"
+    },
+    {
+      "name": "@rolldown/binding-win32-x64-msvc",
+      "version": "1.2.12",
+      "license": "MIT",
+      "source": "exact-version-registry-metadata",
+      "url": "https://registry.npmjs.org/%40rolldown%2Fbinding-win32-x64-msvc/1.2.12"
+    },
+    {
+      "name": "fsevents",
+      "version": "2.3.3",
+      "license": "MIT",
+      "source": "exact-version-registry-metadata",
+      "url": "https://registry.npmjs.org/fsevents/2.3.3"
+    },
+    {
+      "name": "lightningcss-android-arm64",
+      "version": "1.33.0",
+      "license": "MPL-2.0",
+      "source": "exact-version-registry-metadata",
+      "url": "https://registry.npmjs.org/lightningcss-android-arm64/1.33.0"
+    },
+    {
+      "name": "lightningcss-darwin-arm64",
+      "version": "1.33.0",
+      "license": "MPL-2.0",
+      "source": "exact-version-registry-metadata",
+      "url": "https://registry.npmjs.org/lightningcss-darwin-arm64/1.33.0"
+    },
+    {
+      "name": "lightningcss-darwin-x64",
+      "version": "1.33.0",
+      "license": "MPL-2.0",
+      "source": "exact-version-registry-metadata",
+      "url": "https://registry.npmjs.org/lightningcss-darwin-x64/1.33.0"
+    },
+    {
+      "name": "lightningcss-freebsd-x64",
+      "version": "1.33.0",
+      "license": "MPL-2.0",
+      "source": "exact-version-registry-metadata",
+      "url": "https://registry.npmjs.org/lightningcss-freebsd-x64/1.33.0"
+    },
+    {
+      "name": "lightningcss-linux-arm-gnueabihf",
+      "version": "1.33.0",
+      "license": "MPL-2.0",
+      "source": "exact-version-registry-metadata",
+      "url": "https://registry.npmjs.org/lightningcss-linux-arm-gnueabihf/1.33.0"
+    },
+    {
+      "name": "lightningcss-linux-arm64-gnu",
+      "version": "1.33.0",
+      "license": "MPL-2.0",
+      "source": "exact-version-registry-metadata",
+      "url": "https://registry.npmjs.org/lightningcss-linux-arm64-gnu/1.33.0"
+    },
+    {
+      "name": "lightningcss-linux-arm64-musl",
+      "version": "1.33.0",
+      "license": "MPL-2.0",
+      "source": "exact-version-registry-metadata",
+      "url": "https://registry.npmjs.org/lightningcss-linux-arm64-musl/1.33.0"
+    },
+    {
+      "name": "lightningcss-win32-arm64-msvc",
+      "version": "1.33.0",
+      "license": "MPL-2.0",
+      "source": "exact-version-registry-metadata",
+      "url": "https://registry.npmjs.org/lightningcss-win32-arm64-msvc/1.33.0"
+    },
+    {
+      "name": "lightningcss-win32-x64-msvc",
+      "version": "1.33.0",
+      "license": "MPL-2.0",
+      "source": "exact-version-registry-metadata",
+      "url": "https://registry.npmjs.org/lightningcss-win32-x64-msvc/1.33.0"
+    }
+  ]
+}

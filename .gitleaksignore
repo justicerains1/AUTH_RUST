@@ -1,0 +1,8 @@
+# Reviewed non-secret fingerprints only; see docs/evidence/T20/secret-triage.md.
+23f3c8ee139d740c7fb866ce0b2246dd9eca9bef:crates/identity-store/src/passkeys.rs:generic-api-key:742
+23f3c8ee139d740c7fb866ce0b2246dd9eca9bef:crates/identity-store/src/passkeys.rs:generic-api-key:768
+7f736ac15dcb89aad792245a8a9fda5e4c89fcae:docs/evidence/T15/sha256.json:generic-api-key:36
+7f736ac15dcb89aad792245a8a9fda5e4c89fcae:docs/api/openapi.yaml:generic-api-key:16106
+7f736ac15dcb89aad792245a8a9fda5e4c89fcae:docs/api/openapi.yaml:generic-api-key:17273
+7f736ac15dcb89aad792245a8a9fda5e4c89fcae:docs/api/openapi.yaml:generic-api-key:20598
+7f736ac15dcb89aad792245a8a9fda5e4c89fcae:docs/api/openapi.yaml:generic-api-key:21197
