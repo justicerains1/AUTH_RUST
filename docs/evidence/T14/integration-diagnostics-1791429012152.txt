@@ -1,0 +1,26 @@
+
+running 1 test
+PASS T14-ADM-01 two actual stdin-only bootstrap CLI processes create exactly one initial administrator; repeat rejected and secrets not echoed
+PASS T14-ADM-02 ordinary and unbound bootstrap cannot access management; current strong-factor administrator can query all management groups
+PASS T14-ADM-03 last qualified administrator cannot be removed/disabled; grants reject users without factors
+test t14_real_admin ... FAILED
+
+failures:
+
+failures:
+    t14_real_admin
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 14.64s
+
+   Compiling identity-store v0.1.0 (/root/code/rust/auth_rust/crates/identity-store)
+   Compiling identity-server v0.1.0 (/root/code/rust/auth_rust/crates/identity-server)
+   Compiling identity-worker v0.1.0 (/root/code/rust/auth_rust/crates/identity-worker)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.68s
+     Running tests/t14_admin.rs (target/debug/deps/t14_admin-f9c6242e75573123)
+
+thread 't14_real_admin' (2788382) panicked at crates/identity-server/tests/t14_admin.rs:476:5:
+assertion `left == right` failed
+  left: 422
+ right: 200
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+error: test failed, to rerun pass `-p identity-server --test t14_admin`

@@ -1,0 +1,86 @@
+
+> rust-unified-identity@0.1.0 check
+> node scripts/run.mjs check
+
+Diff in /root/code/rust/auth_rust/crates/identity-store/src/admin.rs:65:
+     pub request_id: Uuid,
+     pub source_hash: Digest,
+ }
+-pub struct VerifiedBootstrap { input: BootstrapInput }
++pub struct VerifiedBootstrap {
++    input: BootstrapInput,
++}
+ pub struct BootstrapResult {
+     pub user_id: Uuid,
+     pub binding_only: bool,
+Diff in /root/code/rust/auth_rust/crates/identity-store/src/admin.rs:138:
+         Self { pool, clock }
+     }
+     /// Bootstrap proof is produced only after a real local password check; it is not an HTTP DTO.
+-    pub async fn verify_bootstrap(&self,email:String,password:&str,hashing:&identity_core::security::PasswordService,request_id:Uuid,source_hash:Digest)->Result<VerifiedBootstrap,AdminError>{
+-        let email=identity_core::security::normalize_email(&email).map_err(|_|AdminError::InvalidBootstrap)?;
+-        let service=crate::sessions::SessionService::new(self.pool.clone(),self.clock.clone());
+-        let existing=service.credential_by_email(&email).await.map_err(|_|AdminError::Unavailable)?;
+-        let (version,hash)=if let Some(existing)=existing{if !existing.verified||existing.status!="active"||!hashing.verify(password,&existing.password_hash).await.map_err(|_|AdminError::Unavailable)?.valid{return Err(AdminError::InvalidBootstrap);}(Some(existing.credential_version),None)}else{let password=identity_core::security::Password::new(password).map_err(|_|AdminError::InvalidBootstrap)?;(None,Some(hashing.hash(&password).await.map_err(|_|AdminError::Unavailable)?))};
+-        Ok(VerifiedBootstrap{input:BootstrapInput{email,password_hash:hash,expected_existing_version:version,request_id,source_hash}})
++    pub async fn verify_bootstrap(
++        &self,
++        email: String,
++        password: &str,
++        hashing: &identity_core::security::PasswordService,
++        request_id: Uuid,
++        source_hash: Digest,
++    ) -> Result<VerifiedBootstrap, AdminError> {
++        let email = identity_core::security::normalize_email(&email)
++            .map_err(|_| AdminError::InvalidBootstrap)?;
++        let service = crate::sessions::SessionService::new(self.pool.clone(), self.clock.clone());
++        let existing = service
++            .credential_by_email(&email)
++            .await
++            .map_err(|_| AdminError::Unavailable)?;
++        let (version, hash) = if let Some(existing) = existing {
++            if !existing.verified
++                || existing.status != "active"
++                || !hashing
++                    .verify(password, &existing.password_hash)
++                    .await
++                    .map_err(|_| AdminError::Unavailable)?
++                    .valid
++            {
++                return Err(AdminError::InvalidBootstrap);
++            }
++            (Some(existing.credential_version), None)
++        } else {
++            let password = identity_core::security::Password::new(password)
++                .map_err(|_| AdminError::InvalidBootstrap)?;
++            (
++                None,
++                Some(
++                    hashing
++                        .hash(&password)
++                        .await
++                        .map_err(|_| AdminError::Unavailable)?,
++                ),
++            )
++        };
++        Ok(VerifiedBootstrap {
++            input: BootstrapInput {
++                email,
++                password_hash: hash,
++                expected_existing_version: version,
++                request_id,
++                source_hash,
++            },
++        })
+     }
+-    pub async fn bootstrap_verified(&self,proof:&VerifiedBootstrap)->Result<BootstrapResult,AdminError>{self.bootstrap(&proof.input).await}
++    pub async fn bootstrap_verified(
++        &self,
++        proof: &VerifiedBootstrap,
++    ) -> Result<BootstrapResult, AdminError> {
++        self.bootstrap(&proof.input).await
++    }
+     async fn bootstrap(&self, input: &BootstrapInput) -> Result<BootstrapResult, AdminError> {
+         let mut tx = self.pool.begin().await?;
+         guard(&mut tx).await?;
+cargo 退出码 1。

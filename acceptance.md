@@ -81,7 +81,7 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 | T11 | 授权码交换、ID Token、Discovery 和 Userinfo | 通过 | T10 | docs/evidence/T11/test-summary.md |
 | T12 | 刷新轮换、Introspection、撤销与 RP 退出 | 通过 | T11 | docs/evidence/T12/test-summary.md |
 | T13 | 两个 BFF 演示应用与接入指南 | 通过 | T12 | docs/evidence/T13/test-summary.md |
-| T14 | 管理员初始化与管理 API | 进行中 | T08、T10、T12 | 仓储/CLI实现中 |
+| T14 | 管理员初始化与管理 API | 通过 | T08、T10、T12 | docs/evidence/T14/test-summary.md |
 | T15 | Awwwards 研究、设计稿与视觉规范 | 通过 | T00；可与后端并行 | docs/evidence/T15/user-review.md |
 | T16 | 前端基础、组件和可访问路由 | 通过 | T15、T02 | docs/evidence/T16/test-summary.md |
 | T17 | 品牌、注册登录、MFA 与密码恢复页面 | 未开始 | T05～T09、T16 | 待提供 |
@@ -575,30 +575,31 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 
 | 案例 | 前置状态 | 操作步骤 | 预期结果 | 实际结果 | 状态 | 证据 |
 |---|---|---|---|---|---|---|
-| T14-ADM-01 | 无管理员库 | 并发初始化，再次初始化 | 只有首个成功，后续拒绝；秘密不回显 | 待填写 | 未执行 | 待提供：CLI 脱敏输出 |
-| T14-ADM-02 | 未绑定/普通/合格管理员 | 调用所有后台操作 | 未绑定受限，普通 403，合格允许 | 待填写 | 未执行 | 待提供：权限矩阵测试 |
-| T14-ADM-03 | 仅一名管理员 | 删除/禁用本人 | 保护最后管理员 | 待填写 | 未执行 | 待提供：API 测试 |
-| T14-ADM-04 | 活动用户与客户端 | 禁用或停用后检查 token；模拟审计写失败 | 凭证无效；审计失败变更 rollback | 待填写 | 未执行 | 待提供：事务测试 |
+| T14-ADM-01 | 无管理员库 | 并发初始化，再次初始化 | 只有首个成功，后续拒绝；秘密不回显 | two真实CLI stdin并发仅1成功，再初始化拒；输入边界/不回显通过 | 通过 | [实际集成](docs/evidence/T14/integration.txt)、[边界](docs/evidence/T14/test-boundaries.md) |
+| T14-ADM-02 | 未绑定/普通/合格管理员 | 调用所有后台操作 | 未绑定受限，普通 403，合格允许 | 普通/未绑定后台拒；真实密码近期认证+TOTP确认后13管理路由允许 | 通过 | [实际集成](docs/evidence/T14/integration.txt)、[边界](docs/evidence/T14/test-boundaries.md) |
+| T14-ADM-03 | 仅一名管理员 | 删除/禁用本人 | 保护最后管理员 | 删除/禁用最后管理员拒；两个管理员并发删除因素只1成功且保留可用者 | 通过 | [实际集成](docs/evidence/T14/integration.txt)、[边界](docs/evidence/T14/test-boundaries.md) |
+| T14-ADM-04 | 活动用户与客户端 | 禁用或停用后检查 token；模拟审计写失败 | 凭证无效；审计失败变更 rollback | 用户禁用派生token无效；client停用/secret轮换权威拒；审计失败变更rollback | 通过 | [实际集成](docs/evidence/T14/integration.txt)、[边界](docs/evidence/T14/test-boundaries.md) |
 
 **实现子步骤检查：**
 
-- [ ] T14.01：CLI 仅数据库无管理员时创建/授予首个管理员，事务防并发重复初始化。
-- [ ] T14.02：密码由隐藏交互或 stdin 读取，不放命令行、history、日志。
-- [ ] T14.03：未配置因素的首个管理员只有绑定权限，后台必须近期强认证。
-- [ ] T14.04：后续授予仅针对已 verified 且有因素的已有用户；拒绝删除/停用最后可用管理员。
-- [ ] T14.05：实现分页用户查询、禁用/启用、全会话撤销。
-- [ ] T14.06：实现 client 创建/修改/停用/轮换，秘密一次展示；停用同时使当前凭证检查无效。
-- [ ] T14.07：实现管理员成员和审计分页；每个 handler 独立校验身份/权限，不依赖 UI 隐藏。
-- [ ] T14.08：高风险操作审计与数据库变更同事务，使用明确目标、结果、request_id。
+- [x] T14.01：CLI 仅数据库无管理员时创建/授予首个管理员，事务防并发重复初始化。
+- [x] T14.02：密码由隐藏交互或 stdin 读取，不放命令行、history、日志。
+- [x] T14.03：未配置因素的首个管理员只有绑定权限，后台必须近期强认证。
+- [x] T14.04：后续授予仅针对已 verified 且有因素的已有用户；拒绝删除/停用最后可用管理员。
+- [x] T14.05：实现分页用户查询、禁用/启用、全会话撤销。
+- [x] T14.06：实现 client 创建/修改/停用/轮换，秘密一次展示；停用同时使当前凭证检查无效。
+- [x] T14.07：实现管理员成员和审计分页；每个 handler 独立校验身份/权限，不依赖 UI 隐藏。
+- [x] T14.08：高风险操作审计与数据库变更同事务，使用明确目标、结果、request_id。
 
 **验收记录：**
 
-- 代码版本：待填写。
-- 环境与时间：待填写。
-- 命令退出码：待填写。
-- 失败/阻塞项：待填写。
-- 修复与复测：待填写。
-- 任务结论：进行中。
+- 代码版本：本模块Git提交（父f44afd7）。
+- 环境与时间：2026-10-08 Linux/Rust1.98/Node22、PG17/Redis7.4；实际CLI/HTTP、独立TOTP验证码。
+- 命令退出码：integration/check/unit/build/docs/openapi/tooling最终均0；T08/T09真实回归0；65工具及52前端测试通过。
+- 失败/阻塞项：空body测试/编译格式已修；末位factor及不存在target404补验通过；生产/实体设备待验收。
+- 修复与复测：[T14总结](docs/evidence/T14/test-summary.md)、[事务](docs/admin-transactions.md)、[契约修订](docs/evidence/T14/contract-revisions.md)。
+- 任务结论：通过（真实本地CLI/管理API，管理UI/发布仍待后续）。
+
 
 ### T15 — Awwwards 研究、设计稿与视觉规范
 

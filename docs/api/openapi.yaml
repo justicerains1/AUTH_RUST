@@ -6202,7 +6202,7 @@
             }
           },
           "409": {
-            "description": "AUTH_LAST_LOGIN_METHOD",
+            "description": "AUTH_LAST_LOGIN_METHOD; ADMIN_LAST_MEMBER（最后可用管理员不能移除最后因素）",
             "headers": {
               "X-Request-ID": {
                 "$ref": "#/components/headers/RequestId"
@@ -6221,6 +6221,15 @@
                     "value": {
                       "error": {
                         "code": "AUTH_LAST_LOGIN_METHOD",
+                        "message": "操作无法完成，请按错误码处理",
+                        "request_id": "65d69320-97e8-4de0-a062-4c0f948a1b80"
+                      }
+                    }
+                  },
+                  "last_admin": {
+                    "value": {
+                      "error": {
+                        "code": "ADMIN_LAST_MEMBER",
                         "message": "操作无法完成，请按错误码处理",
                         "request_id": "65d69320-97e8-4de0-a062-4c0f948a1b80"
                       }
@@ -6269,7 +6278,8 @@
             "AUTH_SESSION_REQUIRED"
           ],
           "409": [
-            "AUTH_LAST_LOGIN_METHOD"
+            "AUTH_LAST_LOGIN_METHOD",
+            "ADMIN_LAST_MEMBER"
           ]
         },
         "x-max-body-bytes": 65536
@@ -8450,7 +8460,7 @@
             }
           },
           "409": {
-            "description": "AUTH_LAST_LOGIN_METHOD",
+            "description": "AUTH_LAST_LOGIN_METHOD; ADMIN_LAST_MEMBER（最后可用管理员不能移除最后因素）",
             "headers": {
               "X-Request-ID": {
                 "$ref": "#/components/headers/RequestId"
@@ -8469,6 +8479,15 @@
                     "value": {
                       "error": {
                         "code": "AUTH_LAST_LOGIN_METHOD",
+                        "message": "操作无法完成，请按错误码处理",
+                        "request_id": "65d69320-97e8-4de0-a062-4c0f948a1b80"
+                      }
+                    }
+                  },
+                  "last_admin": {
+                    "value": {
+                      "error": {
+                        "code": "ADMIN_LAST_MEMBER",
                         "message": "操作无法完成，请按错误码处理",
                         "request_id": "65d69320-97e8-4de0-a062-4c0f948a1b80"
                       }
@@ -8520,7 +8539,8 @@
             "RESOURCE_NOT_FOUND"
           ],
           "409": [
-            "AUTH_LAST_LOGIN_METHOD"
+            "AUTH_LAST_LOGIN_METHOD",
+            "ADMIN_LAST_MEMBER"
           ]
         },
         "x-max-body-bytes": 65536
@@ -11257,7 +11277,7 @@
             }
           },
           "403": {
-            "description": "ADMIN_FORBIDDEN; ADMIN_STRONG_AUTH_REQUIRED",
+            "description": "ADMIN_FORBIDDEN; AUTH_REAUTH_REQUIRED",
             "headers": {
               "X-Request-ID": {
                 "$ref": "#/components/headers/RequestId"
@@ -11304,7 +11324,7 @@
             }
           }
         },
-        "x-implementation-status": "planned",
+        "x-implementation-status": "implemented",
         "x-task": "T14",
         "x-auth-level": "admin",
         "x-auth-policy": "已验证enabled管理员成员且已绑定因素；每个请求必须最近5分钟强认证，未绑定仅限本人受限因素绑定。",
@@ -11332,7 +11352,7 @@
           ],
           "403": [
             "ADMIN_FORBIDDEN",
-            "ADMIN_STRONG_AUTH_REQUIRED"
+            "AUTH_REAUTH_REQUIRED"
           ]
         },
         "x-max-body-bytes": 32768
@@ -11542,7 +11562,7 @@
             }
           },
           "403": {
-            "description": "ADMIN_FORBIDDEN; ADMIN_STRONG_AUTH_REQUIRED",
+            "description": "ADMIN_FORBIDDEN; AUTH_REAUTH_REQUIRED",
             "headers": {
               "X-Request-ID": {
                 "$ref": "#/components/headers/RequestId"
@@ -11589,7 +11609,7 @@
             }
           }
         },
-        "x-implementation-status": "planned",
+        "x-implementation-status": "implemented",
         "x-task": "T14",
         "x-auth-level": "admin",
         "x-auth-policy": "已验证enabled管理员成员且已绑定因素；每个请求必须最近5分钟强认证，未绑定仅限本人受限因素绑定。",
@@ -11620,7 +11640,7 @@
           ],
           "403": [
             "ADMIN_FORBIDDEN",
-            "ADMIN_STRONG_AUTH_REQUIRED"
+            "AUTH_REAUTH_REQUIRED"
           ]
         },
         "x-max-body-bytes": 32768
@@ -11778,7 +11798,7 @@
             }
           },
           "403": {
-            "description": "AUTH_CSRF_INVALID; AUTH_ORIGIN_INVALID; ADMIN_FORBIDDEN; ADMIN_STRONG_AUTH_REQUIRED",
+            "description": "AUTH_CSRF_INVALID; AUTH_ORIGIN_INVALID; ADMIN_FORBIDDEN; AUTH_REAUTH_REQUIRED",
             "headers": {
               "X-Request-ID": {
                 "$ref": "#/components/headers/RequestId"
@@ -11970,7 +11990,7 @@
             }
           }
         },
-        "x-implementation-status": "planned",
+        "x-implementation-status": "implemented",
         "x-task": "T14",
         "x-auth-level": "admin",
         "x-auth-policy": "已验证enabled管理员成员且已绑定因素；每个请求必须最近5分钟强认证，未绑定仅限本人受限因素绑定。",
@@ -11997,7 +12017,7 @@
             "AUTH_CSRF_INVALID",
             "AUTH_ORIGIN_INVALID",
             "ADMIN_FORBIDDEN",
-            "ADMIN_STRONG_AUTH_REQUIRED"
+            "AUTH_REAUTH_REQUIRED"
           ],
           "413": [
             "REQUEST_TOO_LARGE"
@@ -12184,7 +12204,7 @@
             }
           },
           "403": {
-            "description": "AUTH_CSRF_INVALID; AUTH_ORIGIN_INVALID; ADMIN_FORBIDDEN; ADMIN_STRONG_AUTH_REQUIRED",
+            "description": "AUTH_CSRF_INVALID; AUTH_ORIGIN_INVALID; ADMIN_FORBIDDEN; AUTH_REAUTH_REQUIRED",
             "headers": {
               "X-Request-ID": {
                 "$ref": "#/components/headers/RequestId"
@@ -12347,7 +12367,7 @@
             }
           }
         },
-        "x-implementation-status": "planned",
+        "x-implementation-status": "implemented",
         "x-task": "T14",
         "x-auth-level": "admin",
         "x-auth-policy": "已验证enabled管理员成员且已绑定因素；每个请求必须最近5分钟强认证，未绑定仅限本人受限因素绑定。",
@@ -12374,7 +12394,7 @@
             "AUTH_CSRF_INVALID",
             "AUTH_ORIGIN_INVALID",
             "ADMIN_FORBIDDEN",
-            "ADMIN_STRONG_AUTH_REQUIRED"
+            "AUTH_REAUTH_REQUIRED"
           ],
           "413": [
             "REQUEST_TOO_LARGE"
@@ -12580,7 +12600,7 @@
             }
           },
           "403": {
-            "description": "ADMIN_FORBIDDEN; ADMIN_STRONG_AUTH_REQUIRED",
+            "description": "ADMIN_FORBIDDEN; AUTH_REAUTH_REQUIRED",
             "headers": {
               "X-Request-ID": {
                 "$ref": "#/components/headers/RequestId"
@@ -12627,7 +12647,7 @@
             }
           }
         },
-        "x-implementation-status": "planned",
+        "x-implementation-status": "implemented",
         "x-task": "T14",
         "x-auth-level": "admin",
         "x-auth-policy": "已验证enabled管理员成员且已绑定因素；每个请求必须最近5分钟强认证，未绑定仅限本人受限因素绑定。",
@@ -12655,7 +12675,7 @@
           ],
           "403": [
             "ADMIN_FORBIDDEN",
-            "ADMIN_STRONG_AUTH_REQUIRED"
+            "AUTH_REAUTH_REQUIRED"
           ]
         },
         "x-max-body-bytes": 32768
@@ -12817,7 +12837,7 @@
             }
           },
           "403": {
-            "description": "AUTH_CSRF_INVALID; AUTH_ORIGIN_INVALID; ADMIN_FORBIDDEN; ADMIN_STRONG_AUTH_REQUIRED",
+            "description": "AUTH_CSRF_INVALID; AUTH_ORIGIN_INVALID; ADMIN_FORBIDDEN; AUTH_REAUTH_REQUIRED",
             "headers": {
               "X-Request-ID": {
                 "$ref": "#/components/headers/RequestId"
@@ -12951,7 +12971,7 @@
             }
           }
         },
-        "x-implementation-status": "planned",
+        "x-implementation-status": "implemented",
         "x-task": "T14",
         "x-auth-level": "admin",
         "x-auth-policy": "已验证enabled管理员成员且已绑定因素；每个请求必须最近5分钟强认证，未绑定仅限本人受限因素绑定。",
@@ -12978,7 +12998,7 @@
             "AUTH_CSRF_INVALID",
             "AUTH_ORIGIN_INVALID",
             "ADMIN_FORBIDDEN",
-            "ADMIN_STRONG_AUTH_REQUIRED"
+            "AUTH_REAUTH_REQUIRED"
           ],
           "413": [
             "REQUEST_TOO_LARGE"
@@ -13236,7 +13256,7 @@
             }
           },
           "403": {
-            "description": "ADMIN_FORBIDDEN; ADMIN_STRONG_AUTH_REQUIRED",
+            "description": "ADMIN_FORBIDDEN; AUTH_REAUTH_REQUIRED",
             "headers": {
               "X-Request-ID": {
                 "$ref": "#/components/headers/RequestId"
@@ -13283,7 +13303,7 @@
             }
           }
         },
-        "x-implementation-status": "planned",
+        "x-implementation-status": "implemented",
         "x-task": "T14",
         "x-auth-level": "admin",
         "x-auth-policy": "已验证enabled管理员成员且已绑定因素；每个请求必须最近5分钟强认证，未绑定仅限本人受限因素绑定。",
@@ -13314,7 +13334,7 @@
           ],
           "403": [
             "ADMIN_FORBIDDEN",
-            "ADMIN_STRONG_AUTH_REQUIRED"
+            "AUTH_REAUTH_REQUIRED"
           ]
         },
         "x-max-body-bytes": 32768
@@ -13480,7 +13500,7 @@
             }
           },
           "403": {
-            "description": "AUTH_CSRF_INVALID; AUTH_ORIGIN_INVALID; ADMIN_FORBIDDEN; ADMIN_STRONG_AUTH_REQUIRED",
+            "description": "AUTH_CSRF_INVALID; AUTH_ORIGIN_INVALID; ADMIN_FORBIDDEN; AUTH_REAUTH_REQUIRED",
             "headers": {
               "X-Request-ID": {
                 "$ref": "#/components/headers/RequestId"
@@ -13643,7 +13663,7 @@
             }
           }
         },
-        "x-implementation-status": "planned",
+        "x-implementation-status": "implemented",
         "x-task": "T14",
         "x-auth-level": "admin",
         "x-auth-policy": "已验证enabled管理员成员且已绑定因素；每个请求必须最近5分钟强认证，未绑定仅限本人受限因素绑定。",
@@ -13670,7 +13690,7 @@
             "AUTH_CSRF_INVALID",
             "AUTH_ORIGIN_INVALID",
             "ADMIN_FORBIDDEN",
-            "ADMIN_STRONG_AUTH_REQUIRED"
+            "AUTH_REAUTH_REQUIRED"
           ],
           "413": [
             "REQUEST_TOO_LARGE"
@@ -13855,7 +13875,7 @@
             }
           },
           "403": {
-            "description": "AUTH_CSRF_INVALID; AUTH_ORIGIN_INVALID; ADMIN_FORBIDDEN; ADMIN_STRONG_AUTH_REQUIRED",
+            "description": "AUTH_CSRF_INVALID; AUTH_ORIGIN_INVALID; ADMIN_FORBIDDEN; AUTH_REAUTH_REQUIRED",
             "headers": {
               "X-Request-ID": {
                 "$ref": "#/components/headers/RequestId"
@@ -14018,7 +14038,7 @@
             }
           }
         },
-        "x-implementation-status": "planned",
+        "x-implementation-status": "implemented",
         "x-task": "T14",
         "x-auth-level": "admin",
         "x-auth-policy": "已验证enabled管理员成员且已绑定因素；每个请求必须最近5分钟强认证，未绑定仅限本人受限因素绑定。",
@@ -14045,7 +14065,7 @@
             "AUTH_CSRF_INVALID",
             "AUTH_ORIGIN_INVALID",
             "ADMIN_FORBIDDEN",
-            "ADMIN_STRONG_AUTH_REQUIRED"
+            "AUTH_REAUTH_REQUIRED"
           ],
           "413": [
             "REQUEST_TOO_LARGE"
@@ -14239,7 +14259,7 @@
             }
           },
           "403": {
-            "description": "ADMIN_FORBIDDEN; ADMIN_STRONG_AUTH_REQUIRED",
+            "description": "ADMIN_FORBIDDEN; AUTH_REAUTH_REQUIRED",
             "headers": {
               "X-Request-ID": {
                 "$ref": "#/components/headers/RequestId"
@@ -14286,7 +14306,7 @@
             }
           }
         },
-        "x-implementation-status": "planned",
+        "x-implementation-status": "implemented",
         "x-task": "T14",
         "x-auth-level": "admin",
         "x-auth-policy": "已验证enabled管理员成员且已绑定因素；每个请求必须最近5分钟强认证，未绑定仅限本人受限因素绑定。",
@@ -14314,7 +14334,7 @@
           ],
           "403": [
             "ADMIN_FORBIDDEN",
-            "ADMIN_STRONG_AUTH_REQUIRED"
+            "AUTH_REAUTH_REQUIRED"
           ]
         },
         "x-max-body-bytes": 32768
@@ -14460,7 +14480,7 @@
             }
           },
           "403": {
-            "description": "AUTH_CSRF_INVALID; AUTH_ORIGIN_INVALID; ADMIN_FORBIDDEN; ADMIN_STRONG_AUTH_REQUIRED",
+            "description": "AUTH_CSRF_INVALID; AUTH_ORIGIN_INVALID; ADMIN_FORBIDDEN; AUTH_REAUTH_REQUIRED",
             "headers": {
               "X-Request-ID": {
                 "$ref": "#/components/headers/RequestId"
@@ -14623,7 +14643,7 @@
             }
           }
         },
-        "x-implementation-status": "planned",
+        "x-implementation-status": "implemented",
         "x-task": "T14",
         "x-auth-level": "admin",
         "x-auth-policy": "已验证enabled管理员成员且已绑定因素；每个请求必须最近5分钟强认证，未绑定仅限本人受限因素绑定。",
@@ -14650,7 +14670,7 @@
             "AUTH_CSRF_INVALID",
             "AUTH_ORIGIN_INVALID",
             "ADMIN_FORBIDDEN",
-            "ADMIN_STRONG_AUTH_REQUIRED"
+            "AUTH_REAUTH_REQUIRED"
           ],
           "413": [
             "REQUEST_TOO_LARGE"
@@ -14819,7 +14839,7 @@
             }
           },
           "403": {
-            "description": "AUTH_CSRF_INVALID; AUTH_ORIGIN_INVALID; ADMIN_FORBIDDEN; ADMIN_STRONG_AUTH_REQUIRED",
+            "description": "AUTH_CSRF_INVALID; AUTH_ORIGIN_INVALID; ADMIN_FORBIDDEN; AUTH_REAUTH_REQUIRED",
             "headers": {
               "X-Request-ID": {
                 "$ref": "#/components/headers/RequestId"
@@ -15011,7 +15031,7 @@
             }
           }
         },
-        "x-implementation-status": "planned",
+        "x-implementation-status": "implemented",
         "x-task": "T14",
         "x-auth-level": "admin",
         "x-auth-policy": "已验证enabled管理员成员且已绑定因素；每个请求必须最近5分钟强认证，未绑定仅限本人受限因素绑定。",
@@ -15038,7 +15058,7 @@
             "AUTH_CSRF_INVALID",
             "AUTH_ORIGIN_INVALID",
             "ADMIN_FORBIDDEN",
-            "ADMIN_STRONG_AUTH_REQUIRED"
+            "AUTH_REAUTH_REQUIRED"
           ],
           "413": [
             "REQUEST_TOO_LARGE"
@@ -15103,7 +15123,7 @@
                       "items": [
                         {
                           "id": "65d69320-97e8-4de0-a062-4c0f948a1b80",
-                          "event": "session.revoked",
+                          "event": "auth.session_revoked",
                           "actor_user_id": "65d69320-97e8-4de0-a062-4c0f948a1b80",
                           "target_type": "session",
                           "target_id": "65d69320-97e8-4de0-a062-4c0f948a1b80",
@@ -15240,7 +15260,7 @@
             }
           },
           "403": {
-            "description": "ADMIN_FORBIDDEN; ADMIN_STRONG_AUTH_REQUIRED",
+            "description": "ADMIN_FORBIDDEN; AUTH_REAUTH_REQUIRED",
             "headers": {
               "X-Request-ID": {
                 "$ref": "#/components/headers/RequestId"
@@ -15287,7 +15307,7 @@
             }
           }
         },
-        "x-implementation-status": "planned",
+        "x-implementation-status": "implemented",
         "x-task": "T14",
         "x-auth-level": "admin",
         "x-auth-policy": "已验证enabled管理员成员且已绑定因素；每个请求必须最近5分钟强认证，未绑定仅限本人受限因素绑定。",
@@ -15315,7 +15335,7 @@
           ],
           "403": [
             "ADMIN_FORBIDDEN",
-            "ADMIN_STRONG_AUTH_REQUIRED"
+            "AUTH_REAUTH_REQUIRED"
           ]
         },
         "x-max-body-bytes": 32768
@@ -19734,33 +19754,49 @@
           "event": {
             "type": "string",
             "enum": [
-              "auth.login.succeeded",
-              "auth.login.failed",
-              "auth.email.verified",
-              "auth.password.reset",
-              "auth.password.changed",
+              "auth.session_created",
+              "auth.password_failed",
+              "email.verified",
+              "password.reset_completed",
+              "password.changed",
               "auth.reauthenticated",
-              "auth.totp.enabled",
-              "auth.totp.disabled",
-              "auth.recovery.used",
-              "auth.recovery.regenerated",
-              "auth.passkey.registered",
-              "auth.passkey.renamed",
-              "auth.passkey.deleted",
-              "session.revoked",
-              "session.all_revoked",
-              "oauth.consent.approved",
-              "oauth.consent.denied",
-              "oauth.token.refreshed",
-              "oauth.refresh.reuse_detected",
-              "oauth.grant.revoked",
-              "admin.user.status_changed",
-              "admin.user.sessions_revoked",
-              "admin.client.created",
-              "admin.client.updated",
-              "admin.client.secret_rotated",
-              "admin.member.added",
-              "admin.member.removed"
+              "mfa.totp_enrolled",
+              "mfa.totp_removed",
+              "mfa.recovery_code_used",
+              "mfa.recovery_codes_regenerated",
+              "passkey.registered",
+              "passkey.renamed",
+              "passkey.removed",
+              "auth.session_revoked",
+              "auth.sessions_revoked_all",
+              "oauth.consent_granted",
+              "oauth.consent_denied",
+              "oauth.refresh_rotated",
+              "oauth.refresh_replay_detected",
+              "oauth.grant_revoked",
+              "admin.user_disabled",
+              "admin.user_sessions_revoked",
+              "oauth.client_created",
+              "oauth.client_updated",
+              "oauth.client_secret_rotated",
+              "admin.member_granted",
+              "admin.member_removed",
+              "identity.registration_requested",
+              "email.verification_requested",
+              "auth.challenge_failed",
+              "auth.challenge_exhausted",
+              "password.reset_requested",
+              "oauth.code_consumed",
+              "oauth.client_disabled",
+              "admin.initialized",
+              "admin.last_member_removal_denied",
+              "admin.user_enabled",
+              "system.rate_limited",
+              "system.dependency_unavailable",
+              "email.delivery_failed",
+              "email.delivery_succeeded",
+              "keys.signing_rotated",
+              "keys.encryption_rotated"
             ]
           },
           "actor_user_id": {
@@ -19823,7 +19859,7 @@
         "examples": [
           {
             "id": "65d69320-97e8-4de0-a062-4c0f948a1b80",
-            "event": "session.revoked",
+            "event": "auth.session_revoked",
             "actor_user_id": "65d69320-97e8-4de0-a062-4c0f948a1b80",
             "target_type": "session",
             "target_id": "65d69320-97e8-4de0-a062-4c0f948a1b80",
@@ -20108,7 +20144,7 @@
             "items": [
               {
                 "id": "65d69320-97e8-4de0-a062-4c0f948a1b80",
-                "event": "session.revoked",
+                "event": "auth.session_revoked",
                 "actor_user_id": "65d69320-97e8-4de0-a062-4c0f948a1b80",
                 "target_type": "session",
                 "target_id": "65d69320-97e8-4de0-a062-4c0f948a1b80",

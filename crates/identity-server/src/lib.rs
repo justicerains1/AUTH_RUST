@@ -1,5 +1,6 @@
 //! Startup and dependency health routes only. Authentication routes belong to later tasks.
 pub mod accounts;
+pub mod admin;
 pub mod grants;
 pub mod mfa;
 pub mod oauth;

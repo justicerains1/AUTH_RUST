@@ -32,7 +32,7 @@ async function integration(args) {
     throw new CommandError('用法：npm run test:integration -- --task=T01（任务参数只能提供一次）。');
   }
   const task = args[0]?.slice('--task='.length);
-  if (task && !['T01', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T10', 'T11', 'T12', 'T13'].includes(task)) throw new CommandError(`${task} 的真实集成套件尚未实现；不能作为验收通过。`);
+  if (task && !['T01', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T10', 'T11', 'T12', 'T13', 'T14'].includes(task)) throw new CommandError(`${task} 的真实集成套件尚未实现；不能作为验收通过。`);
   if (!task) throw new CommandError('全量集成套件尚未实现。可使用 npm run test:integration -- --task=T01、T03 或 T04。');
   const path = resolve(ROOT, 'tests', 'integration', `${task}.mjs`);
   await requireFile(path, `${task} 的真实 Postgres/Redis/API 集成测试尚未创建；不能作为验收通过。`);

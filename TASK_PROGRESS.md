@@ -22,7 +22,7 @@
 | T11 | 通过 | 原子授权码交换、RS256及旧公钥、scope Userinfo、成熟OIDC互操作与真实并发/故障；[结果](docs/evidence/T11/test-summary.md) |
 | T12 | 通过 | 刷新重放家族撤销、权威introspection/RP确认、scope限制、真实并发/故障及2E2E；[结果](docs/evidence/T12/test-summary.md) |
 | T13 | 通过 | 双BFF持久会话、维护SDK/SSO、共享刷新、真实故障/撤销及4E2E；[结果](docs/evidence/T13/test-summary.md) |
-| T14 | 进行中 | 管理员初始化CLI/事务仓储并行实现，前置T08/T10/T12已过 |
+| T14 | 通过 | 真实初始化CLI、13管理API、强认证、最后管理员/因素与审计事务；[结果](docs/evidence/T14/test-summary.md) |
 | T15 | 通过 | 官方设计研究、视觉稿与状态规范；用户明确采用方案并进入 T16；[用户确认](docs/evidence/T15/user-review.md) |
 | T16 | 通过 | 设计组件、响应式布局、API/CSRF 客户端、可访问基础路由与保护提示；[结果](docs/evidence/T16/test-summary.md)、[UI 模块记录](docs/evidence/T16/ui-summary.md) |
 | T17～T24 | 未开始 | 完整认证/账号/后台产品页面、全面安全验收、性能、生产部署、发布与高可用 |
@@ -143,3 +143,7 @@ WindowsOpenSSL构建前置已按实际MSVC失败诊断修复并推送3a06d16，�
 ## 最近完成：T13
 
 同包A/B/A2真实SSO与PG跨实例单次刷新、状态故障503、本地撤销失败清会话、平台确认退出和callback篡改验证4E2E通过；52前端测试、BFF6单元及完整检查/构建通过。开发10服务真实healthy与secret受限初始化已验证。[结果](docs/evidence/T13/test-summary.md)。下一T14草稿恢复后接HTTP与真实权限/并发测试。
+
+## 最近完成：T14
+
+真实双CLI并发初始化、13后台API强认证、最后管理员及因素并发保护、即时撤销/secret轮换/审计rollback通过；T08/T09回归0，T09设备仍待验收。f44afd7截至T13远端Linux/Windows及全部集成CI成功，run37718112029。下一进入T17完整认证产品页，再T18账号/同意及T19管理UI，[T14记录](docs/evidence/T14/test-summary.md)。

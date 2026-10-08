@@ -115,6 +115,7 @@ fn error(error: MfaError, id: Uuid) -> Response {
         }
         MfaError::InvalidCode => (StatusCode::UNAUTHORIZED, "AUTH_FACTOR_INVALID"),
         MfaError::AlreadyConfigured => (StatusCode::CONFLICT, "STATE_CONFLICT"),
+        MfaError::LastAdministrator => (StatusCode::CONFLICT, "ADMIN_LAST_MEMBER"),
         _ => (StatusCode::SERVICE_UNAVAILABLE, "DEPENDENCY_UNAVAILABLE"),
     };
     ApiError::new(status, code, id).into_response()

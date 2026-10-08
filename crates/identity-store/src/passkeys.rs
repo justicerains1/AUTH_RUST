@@ -30,6 +30,7 @@ pub enum PasskeyStoreError {
     NotFound,
     LimitReached,
     InvalidName,
+    LastAdministrator,
     ReauthRequired { strong: bool, methods: Vec<String> },
     Unavailable,
 }
@@ -44,6 +45,7 @@ impl fmt::Display for PasskeyStoreError {
             Self::NotFound => "passkey not found",
             Self::LimitReached => "passkey limit reached",
             Self::InvalidName => "invalid passkey name",
+            Self::LastAdministrator => "last available administrator factor is protected",
             Self::ReauthRequired { .. } => "recent authentication required",
             Self::Unavailable => "passkey storage unavailable",
         })
@@ -522,7 +524,7 @@ impl PasskeyService {
         event: MfaAudit,
     ) -> Result<(), PasskeyStoreError> {
         let now = self.clock.now();
-        let (mut tx, user, session) = self.lock_session(hash, now).await?;
+        let (mut tx, user, session) = self.lock_session_guarded(hash, now, true).await?;
         let id = user.try_get("id")?;
         let belongs: bool = sqlx::query_scalar(
             "SELECT EXISTS(SELECT 1 FROM webauthn_credentials WHERE id=$1 AND user_id=$2)",
@@ -535,6 +537,15 @@ impl PasskeyService {
             return Err(PasskeyStoreError::NotFound);
         }
         recent(&mut tx, id, session, now).await?;
+        crate::admin::protect_factor_removal(&mut tx, id, false, Some(target))
+            .await
+            .map_err(|error| {
+                if error == crate::admin::AdminError::LastAdministrator {
+                    PasskeyStoreError::LastAdministrator
+                } else {
+                    PasskeyStoreError::Unavailable
+                }
+            })?;
         sqlx::query("DELETE FROM webauthn_credentials WHERE id=$1 AND user_id=$2")
             .bind(target)
             .bind(id)
@@ -552,6 +563,14 @@ impl PasskeyService {
         hash: Digest,
         now: OffsetDateTime,
     ) -> Result<(Transaction<'_, Postgres>, PgRow, Uuid), PasskeyStoreError> {
+        self.lock_session_guarded(hash, now, false).await
+    }
+    async fn lock_session_guarded(
+        &self,
+        hash: Digest,
+        now: OffsetDateTime,
+        admin_guard: bool,
+    ) -> Result<(Transaction<'_, Postgres>, PgRow, Uuid), PasskeyStoreError> {
         let id: Option<Uuid> =
             sqlx::query_scalar("SELECT user_id FROM sessions WHERE token_hash=$1")
                 .bind(hash.as_bytes())
@@ -559,6 +578,11 @@ impl PasskeyService {
                 .await?;
         let id = id.ok_or(PasskeyStoreError::InvalidSession)?;
         let mut tx = self.pool.begin().await?;
+        if admin_guard {
+            crate::admin::guard(&mut tx)
+                .await
+                .map_err(|_| PasskeyStoreError::Unavailable)?;
+        }
         let user = sqlx::query(
             "SELECT id,email,verified,status,credential_version FROM users WHERE id=$1 FOR UPDATE",
         )

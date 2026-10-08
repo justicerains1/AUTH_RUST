@@ -39,6 +39,7 @@ pub struct AuthAppState {
     pub(crate) passkeys: identity_store::passkeys::PasskeyService,
     pub(crate) oauth: identity_store::oauth::OAuthStore,
     pub(crate) tokens: identity_store::tokens::TokenStore,
+    pub(crate) admin: identity_store::admin::AdminStore,
     pub(crate) signer: Arc<identity_core::jose::Signer>,
 }
 pub(crate) struct AccountsInner {
@@ -46,6 +47,7 @@ pub(crate) struct AccountsInner {
     pub(crate) passwords: PasswordService,
     pub(crate) keys: Arc<AeadKeyRing>,
     pub(crate) issuer: String,
+    pub(crate) environment: identity_core::config::Environment,
 }
 impl AuthAppState {
     pub async fn new(config: &Config, dependencies: Dependencies) -> Result<Self, &'static str> {
@@ -71,6 +73,10 @@ impl AuthAppState {
             .map_err(|_| "password service unavailable")?;
         Ok(Self {
             security,
+            admin: identity_store::admin::AdminStore::new(
+                dependencies.postgres.clone(),
+                clock.clone(),
+            ),
             tokens: identity_store::tokens::TokenStore::new(
                 dependencies.postgres.clone(),
                 clock.clone(),
@@ -110,6 +116,7 @@ impl AuthAppState {
                 passwords,
                 keys,
                 issuer: config.issuer.origin().ascii_serialization(),
+                environment: config.environment,
             }),
         })
     }
@@ -159,7 +166,12 @@ pub fn accounts_router(state: AuthAppState, existing: Router) -> Router {
             .merge(crate::oauth::oauth_routes(state.clone()))
             .merge(crate::oidc::oidc_routes(state.clone()))
             .merge(crate::rp_logout::logout_routes(state.clone()))
-            .merge(crate::grants::grant_routes(state)),
+            .merge(crate::grants::grant_routes(state.clone()))
+            .merge(crate::admin::admin_routes(state.clone()))
+            .layer(axum::middleware::from_fn_with_state(
+                state,
+                crate::admin::binding_boundary,
+            )),
     )
 }
 

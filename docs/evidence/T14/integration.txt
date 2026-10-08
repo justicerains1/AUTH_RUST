@@ -1,0 +1,9 @@
+T14 real administrator integration 2026-10-08T03:53:09.391Z
+PASS T14-ADM-01 two actual stdin-only bootstrap CLI processes create exactly one initial administrator; repeat rejected and secrets not echoed
+PASS T14-ADM-02 ordinary and unbound bootstrap cannot access management; current strong-factor administrator can query all management groups
+PASS T14 nonexistent revoke target returns404; first revocation counts one active session and repeat counts zero
+PASS T14-ADM-03 last qualified administrator cannot be removed/disabled; grants reject users without factors
+PASS T14-ADM-04 real user/client disable and secret rotation invalidate credentials; forced audit failure rolls back security mutation
+PASS T14 last administrator factor cannot be deleted; two qualified admins concurrently remove factors with one success and one protected survivor
+Completed 2026-10-08T03:53:36.916Z
+Exit code 0

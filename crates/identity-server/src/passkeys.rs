@@ -204,6 +204,7 @@ fn error(failure: PasskeyStoreError, id: Uuid) -> Response {
         PasskeyStoreError::NotFound => (StatusCode::NOT_FOUND, "RESOURCE_NOT_FOUND"),
         PasskeyStoreError::LimitReached => (StatusCode::CONFLICT, "AUTH_FACTOR_LIMIT_REACHED"),
         PasskeyStoreError::InvalidName => (StatusCode::UNPROCESSABLE_ENTITY, "INPUT_INVALID"),
+        PasskeyStoreError::LastAdministrator => (StatusCode::CONFLICT, "ADMIN_LAST_MEMBER"),
         _ => (StatusCode::SERVICE_UNAVAILABLE, "DEPENDENCY_UNAVAILABLE"),
     };
     ApiError::new(status, code, id).into_response()

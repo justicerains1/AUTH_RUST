@@ -80,6 +80,9 @@ impl IntoResponse for ApiError {
             "STATE_CONFLICT" => "当前状态不允许此操作，请刷新后重试",
             "AUTH_REAUTH_REQUIRED" => "请先完成近期重新认证",
             "ADMIN_STRONG_AUTH_REQUIRED" => "请先完成近期强认证",
+            "ADMIN_FORBIDDEN" => "当前账号无权访问管理功能",
+            "ADMIN_TARGET_INELIGIBLE" => "目标账号须已验证并绑定认证因素",
+            "ADMIN_LAST_MEMBER" => "必须保留至少一名可用管理员",
             "AUTH_ACTION_INVALID" => "验证链接无效，请重新申请验证邮件",
             "AUTH_ACTION_EXPIRED" => "验证链接已过期，请重新申请验证邮件",
             "AUTH_ACTION_CONSUMED" => "验证链接已使用或已被新邮件替换，请使用最新邮件",
@@ -289,6 +292,7 @@ impl SecurityState {
             LimitPolicy::Preauth => (30, 60),
             LimitPolicy::Token => (30, 60),
             LimitPolicy::Status => (60_000, 60),
+            LimitPolicy::Admin => (60, 60),
         };
         budgets.push((
             self.limit_key(&format!("{}:ip", policy.key()), &source.to_string()),
@@ -296,7 +300,10 @@ impl SecurityState {
             seconds,
         ));
         if let Some(account) = account {
-            let normalized = if matches!(policy, LimitPolicy::Token | LimitPolicy::Status) {
+            let normalized = if matches!(
+                policy,
+                LimitPolicy::Token | LimitPolicy::Status | LimitPolicy::Admin
+            ) {
                 account.to_string()
             } else {
                 normalize_email(account).map_err(|_| BoundaryUnavailable)?
@@ -305,7 +312,7 @@ impl SecurityState {
                 (3, 3600)
             } else if matches!(policy, LimitPolicy::Status) {
                 (60_000, 60)
-            } else if matches!(policy, LimitPolicy::Token) {
+            } else if matches!(policy, LimitPolicy::Token | LimitPolicy::Admin) {
                 (30, 60)
             } else {
                 (5, 60)
@@ -377,6 +384,7 @@ pub enum LimitPolicy {
     Preauth,
     Token,
     Status,
+    Admin,
 }
 impl LimitPolicy {
     fn key(self) -> &'static str {
@@ -387,6 +395,7 @@ impl LimitPolicy {
             Self::Preauth => "preauth",
             Self::Token => "token",
             Self::Status => "status",
+            Self::Admin => "admin",
         }
     }
 }

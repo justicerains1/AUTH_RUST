@@ -7,6 +7,12 @@ publish.workspace = true
 
 [dependencies]
 identity-core = { path = "../identity-core" }
+identity-store = { path = "../identity-store" }
+rpassword.workspace = true
+sqlx.workspace = true
+tokio.workspace = true
+uuid.workspace = true
+zeroize.workspace = true
 
 [lints]
 workspace = true

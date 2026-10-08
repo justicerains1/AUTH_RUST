@@ -26,6 +26,7 @@ pub enum MfaError {
     InvalidCode,
     AttemptsExhausted,
     AlreadyConfigured,
+    LastAdministrator,
     ReauthRequired { strong: bool, methods: Vec<String> },
     Unavailable,
 }
@@ -39,6 +40,7 @@ impl fmt::Display for MfaError {
             Self::InvalidCode => "invalid factor code",
             Self::AttemptsExhausted => "factor challenge attempt budget exhausted",
             Self::AlreadyConfigured => "factor already configured",
+            Self::LastAdministrator => "last available administrator factor is protected",
             Self::ReauthRequired { .. } => "recent authentication required",
             Self::Unavailable => "factor storage unavailable",
         })
@@ -217,9 +219,18 @@ impl MfaService {
     }
     pub async fn disable_totp(&self, hash: Digest, audit: MfaAudit) -> Result<(), MfaError> {
         let now = self.clock.now();
-        let (mut tx, user, session) = self.lock_session(hash, now).await?;
+        let (mut tx, user, session) = self.lock_session_guarded(hash, now, true).await?;
         let id: Uuid = user.try_get("id")?;
         require_recent(&mut tx, id, session, now).await?;
+        crate::admin::protect_factor_removal(&mut tx, id, true, None)
+            .await
+            .map_err(|error| {
+                if error == crate::admin::AdminError::LastAdministrator {
+                    MfaError::LastAdministrator
+                } else {
+                    MfaError::Unavailable
+                }
+            })?;
         sqlx::query("DELETE FROM totp_factors WHERE user_id=$1")
             .bind(id)
             .execute(&mut *tx)
@@ -418,6 +429,14 @@ impl MfaService {
         hash: Digest,
         now: OffsetDateTime,
     ) -> Result<(Transaction<'_, Postgres>, PgRow, Uuid), MfaError> {
+        self.lock_session_guarded(hash, now, false).await
+    }
+    async fn lock_session_guarded(
+        &self,
+        hash: Digest,
+        now: OffsetDateTime,
+        admin_guard: bool,
+    ) -> Result<(Transaction<'_, Postgres>, PgRow, Uuid), MfaError> {
         let id: Option<Uuid> =
             sqlx::query_scalar("SELECT user_id FROM sessions WHERE token_hash=$1")
                 .bind(hash.as_bytes())
@@ -425,6 +444,11 @@ impl MfaService {
                 .await?;
         let id = id.ok_or(MfaError::InvalidSession)?;
         let mut tx = self.pool.begin().await?;
+        if admin_guard {
+            crate::admin::guard(&mut tx)
+                .await
+                .map_err(|_| MfaError::Unavailable)?;
+        }
         let user=sqlx::query("SELECT id,email,verified,status,credential_version,created_at FROM users WHERE id=$1 FOR UPDATE").bind(id).fetch_one(&mut *tx).await?;
         if !user.try_get::<bool, _>("verified")? || user.try_get::<String, _>("status")? != "active"
         {
