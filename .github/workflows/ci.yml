@@ -25,6 +25,10 @@ jobs:
         with:
           toolchain: 1.98.0
           components: rustfmt, clippy
+      - name: Configure Windows OpenSSL
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: ./infra/windows/setup-openssl.ps1
       - run: npm ci
       - run: npm run verify:docs
       - run: npm run test:tooling
