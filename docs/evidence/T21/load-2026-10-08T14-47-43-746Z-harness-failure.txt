@@ -1,0 +1,16 @@
+   Compiling identity-server v0.1.0 (/root/code/rust/auth_rust/crates/identity-server)
+    Finished `release` profile [optimized] target(s) in 28.65s
+     Running tests/t21_load.rs (target/release/deps/t21_load-61ebc50be672c099)
+
+running 1 test
+Error: Database(PgDatabaseError { severity: Error, code: "23503", message: "insert or update on table \"sessions\" violates foreign key constraint \"sessions_user_id_fkey\"", detail: Some("Key (user_id)=([REDACTED UUID]) is not present in table \"users\"."), hint: None, position: None, where: None, schema: Some("[OPAQUE]"), table: Some("sessions"), column: None, data_type: None, constraint: Some("sessions_user_id_fkey"), file: Some("ri_triggers.c"), line: Some(2599), routine: Some("ri_ReportViolation") })
+test t21_load_harness ... FAILED
+
+failures:
+
+failures:
+    t21_load_harness
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 2 filtered out; finished in 13.62s
+
+error: test failed, to rerun pass `-p identity-server --test t21_load`

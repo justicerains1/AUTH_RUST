@@ -1,0 +1,68 @@
+{
+  "observedAt": "2026-10-08T15:34:26.417738+00:00",
+  "report": "sql-probe-2026-10-08T15-06-29-301Z.json",
+  "reportSha256": "7d7c146e37ba28fcd705afbfaba351226fceaa8008b17efc6242523c31491a94",
+  "sourceHashes": [
+    {
+      "path": "tests/load/run.mjs",
+      "reportSha256": "a7710f97de0e1950df55239f53b6175368ea27925913ae4bb798dd006710b3d1",
+      "currentSha256": "a7710f97de0e1950df55239f53b6175368ea27925913ae4bb798dd006710b3d1",
+      "matches": true
+    },
+    {
+      "path": "tests/load/scenarios.js",
+      "reportSha256": "05947b7eeb16a43afe9995467a8a0db774b01cb4a294031069d904cb956d94f7",
+      "currentSha256": "05947b7eeb16a43afe9995467a8a0db774b01cb4a294031069d904cb956d94f7",
+      "matches": true
+    },
+    {
+      "path": "tests/load/query-evidence.rs",
+      "reportSha256": "a053ecc52b502a7a3ad1edc14cff66c182f984a6ccb64efff66e60ddd0faed14",
+      "currentSha256": "a053ecc52b502a7a3ad1edc14cff66c182f984a6ccb64efff66e60ddd0faed14",
+      "matches": true
+    },
+    {
+      "path": "crates/identity-server/tests/t21_load.rs",
+      "reportSha256": "e8c9209f0991138a877a08092b012cebde51f54d9e460a32a029782129c76c99",
+      "currentSha256": "e8c9209f0991138a877a08092b012cebde51f54d9e460a32a029782129c76c99",
+      "matches": true
+    },
+    {
+      "path": "crates/identity-store/src/sessions.rs",
+      "reportSha256": "dc5183bbf9cfe91882e2d67c98278a7abcddf1f8b180f9af213f5dd5cfd736c2",
+      "currentSha256": "dc5183bbf9cfe91882e2d67c98278a7abcddf1f8b180f9af213f5dd5cfd736c2",
+      "matches": true
+    },
+    {
+      "path": "crates/identity-store/src/tokens.rs",
+      "reportSha256": "4555cefef951c2d74566a218e1cf3b0e65cfca4e221dab2a38482c0b8f95e52c",
+      "currentSha256": "4555cefef951c2d74566a218e1cf3b0e65cfca4e221dab2a38482c0b8f95e52c",
+      "matches": true
+    },
+    {
+      "path": "crates/identity-store/src/security.rs",
+      "reportSha256": "1ebfbb6d91687426afc09f12953dfcc0916b43956631a8ad1ca774483aab5b3c",
+      "currentSha256": "1ebfbb6d91687426afc09f12953dfcc0916b43956631a8ad1ca774483aab5b3c",
+      "matches": true
+    },
+    {
+      "path": "crates/identity-store/src/repository.rs",
+      "reportSha256": "1574a56b657357aa3b0c4cc1a612da632b025bfd78b6a1e2ed05d84b85e1c41b",
+      "currentSha256": "1574a56b657357aa3b0c4cc1a612da632b025bfd78b6a1e2ed05d84b85e1c41b",
+      "matches": true
+    },
+    {
+      "path": "Cargo.lock",
+      "reportSha256": "47ffcb0545416af76dd26346f42a3f583f60d6a4f5f84f8fd6a1f36dea6539d8",
+      "currentSha256": "47ffcb0545416af76dd26346f42a3f583f60d6a4f5f84f8fd6a1f36dea6539d8",
+      "matches": true
+    }
+  ],
+  "redactionChecks": {
+    "sensitivePlanExpressionFieldsPresent": [],
+    "userUuidLiterals": 0,
+    "emailLiterals": 0,
+    "credentialJsonFieldsPresent": []
+  },
+  "scope": "Read-only report/source consistency and explicit redaction review, no new load test."
+}

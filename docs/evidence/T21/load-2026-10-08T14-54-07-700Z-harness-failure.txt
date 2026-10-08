@@ -1,0 +1,17 @@
+   Compiling identity-server v0.1.0 (/root/code/rust/auth_rust/crates/identity-server)
+    Finished `release` profile [optimized] target(s) in 29.40s
+     Running tests/t21_load.rs (target/release/deps/t21_load-61ebc50be672c099)
+
+running 1 test
+SQL evidence rejected: real query probe account request rejected
+Error: "T21 isolated query evidence setup failed"
+test t21_load_harness ... FAILED
+
+failures:
+
+failures:
+    t21_load_harness
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 4 filtered out; finished in 14.97s
+
+error: test failed, to rerun pass `-p identity-server --test t21_load`

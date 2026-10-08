@@ -1,0 +1,16 @@
+   Compiling identity-server v0.1.0 (/root/code/rust/auth_rust/crates/identity-server)
+    Finished `release` profile [optimized] target(s) in 27.46s
+     Running tests/t21_load.rs (target/release/deps/t21_load-61ebc50be672c099)
+
+running 1 test
+Error: "unknown plan field rejected"
+test t21_load_harness ... FAILED
+
+failures:
+
+failures:
+    t21_load_harness
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 2 filtered out; finished in 13.50s
+
+error: test failed, to rerun pass `-p identity-server --test t21_load`

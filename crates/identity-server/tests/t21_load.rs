@@ -11,12 +11,14 @@ use identity_core::{
     security::{Password, PasswordService, Token, token_digest},
 };
 use identity_server::accounts::{AuthAppState, accounts_router};
+#[path = "../../../tests/load/query-evidence.rs"]
+mod query_evidence;
 use identity_store::{
     Dependencies,
     migrations::{MigrationTarget, migrate},
 };
 use serde_json::{Value, json};
-use sqlx::{PgPool, Postgres, QueryBuilder, Row, postgres::PgPoolOptions};
+use sqlx::{ConnectOptions, PgPool, Postgres, QueryBuilder, Row, postgres::PgPoolOptions};
 use std::{
     collections::BTreeMap,
     error::Error,
@@ -28,6 +30,8 @@ use std::{
     },
 };
 use time::{Duration, OffsetDateTime};
+use tracing::Instrument;
+use tracing_subscriber::prelude::*;
 use uuid::Uuid;
 use zeroize::Zeroizing;
 
@@ -51,6 +55,8 @@ struct Control {
     failures: Arc<AtomicU64>,
     passwords: PasswordService,
     pool: PgPool,
+    observer: query_evidence::Observer,
+    application_name: Arc<String>,
 }
 fn allowed(state: &Control, request: &Request) -> bool {
     request
@@ -78,16 +84,17 @@ async fn stats(State(state): State<Control>, request: Request) -> (StatusCode, J
         return (StatusCode::NOT_FOUND, Json(json!({})));
     }
     let m = state.passwords.metrics();
-    let active = sqlx::query_scalar::<_, i64>(
-        "SELECT count(*) FROM pg_stat_activity WHERE datname=current_database() AND state='active'",
-    )
-    .fetch_one(&state.pool)
-    .await
-    .unwrap_or(0);
+    let waits=sqlx::query("SELECT COALESCE(state,'unknown') AS state,COALESCE(wait_event_type,'none') AS wait_type,COALESCE(wait_event,'none') AS wait_event,count(*) AS connections FROM pg_stat_activity WHERE datname=current_database() AND application_name=$1 AND pid<>pg_backend_pid() GROUP BY state,wait_event_type,wait_event ORDER BY state,wait_event_type,wait_event").bind(state.application_name.as_str()).fetch_all(&state.pool).await;
+    let waits=match waits {Ok(rows)=>rows.into_iter().map(|row|json!({"state":row.try_get::<String,_>("state").ok(),"wait_type":row.try_get::<String,_>("wait_type").ok(),"wait_event":row.try_get::<String,_>("wait_event").ok(),"connections":row.try_get::<i64,_>("connections").ok()})).collect::<Vec<_>>(),Err(_)=>return(StatusCode::SERVICE_UNAVAILABLE,Json(json!({"unavailable":true})))};
+    let active = waits
+        .iter()
+        .filter(|row| row["state"] == "active")
+        .filter_map(|row| row["connections"].as_i64())
+        .sum::<i64>();
     (
         StatusCode::OK,
         Json(
-            json!({"refreshes":state.refreshes.load(Ordering::Relaxed),"refresh_failures":state.failures.load(Ordering::Relaxed),"password_hashes":m.hashes,"password_verifications":m.verifications,"password_queue_timeouts":m.queue_timeouts,"password_hash_nanoseconds":m.hash_nanoseconds,"password_verification_nanoseconds":m.verification_nanoseconds,"argon2_memory_kib":m.memory_kib,"argon2_iterations":m.iterations,"argon2_lanes":m.lanes,"pool_size":state.pool.size(),"pool_idle":state.pool.num_idle(),"database_active_connections":active}),
+            json!({"refreshes":state.refreshes.load(Ordering::Relaxed),"refresh_failures":state.failures.load(Ordering::Relaxed),"password_hashes":m.hashes,"password_verifications":m.verifications,"password_queue_timeouts":m.queue_timeouts,"password_waiting":m.waiting,"password_waiting_high_watermark":m.waiting_high_watermark,"password_slots_in_use":m.slots_in_use,"password_slots_high_watermark":m.slots_high_watermark,"password_running":m.running,"password_running_high_watermark":m.running_high_watermark,"password_queue_wait_nanoseconds":m.queue_wait_nanoseconds,"password_queue_wait_buckets":m.queue_wait_buckets,"password_queue_wait_bucket_le_nanoseconds":identity_core::security::PASSWORD_WAIT_BUCKET_NANOSECONDS,"password_hash_nanoseconds":m.hash_nanoseconds,"password_verification_nanoseconds":m.verification_nanoseconds,"argon2_memory_kib":m.memory_kib,"argon2_iterations":m.iterations,"argon2_lanes":m.lanes,"pool_size":state.pool.size(),"pool_idle":state.pool.num_idle(),"database_active_connections":active,"database_waits":waits,"query_observation":state.observer.snapshot()}),
         ),
     )
 }
@@ -370,20 +377,365 @@ async fn t21_load_harness() -> TestResult {
     sqlx::query(sqlx::AssertSqlSafe(format!("CREATE SCHEMA {schema}")))
         .execute(&admin)
         .await?;
+    let observer = query_evidence::Observer::new();
+    tracing::subscriber::set_global_default(tracing_subscriber::registry().with(observer.clone()))
+        .map_err(|_| "query observer already installed")?;
+    let application_name = format!("t21_{}", Uuid::new_v4().simple());
+    let options = target
+        .test_schema_options(&schema)?
+        .application_name(&application_name)
+        .log_statements("debug".parse()?)
+        .log_slow_statements("debug".parse()?, std::time::Duration::from_millis(100));
     let pool = PgPoolOptions::new()
         .max_connections(32)
-        .connect_with(target.test_schema_options(&schema)?)
+        .acquire_timeout(std::time::Duration::from_secs(2))
+        .acquire_time_level("debug".parse()?)
+        .acquire_slow_level("debug".parse()?)
+        .connect_with(options)
         .await?;
-    let result = run(&config, &pool, &private).await;
+    let result = run(&config, &pool, &private, observer, application_name).await;
     pool.close().await;
     let cleanup = sqlx::query(sqlx::AssertSqlSafe(format!("DROP SCHEMA {schema} CASCADE")))
         .execute(&admin)
         .await;
     admin.close().await;
     cleanup.map_err(|_| "T21 own schema cleanup failed")?;
-    result
+    result.map_err(|error| {
+        if let Some(database) = error.downcast_ref::<sqlx::Error>() {
+            eprintln!(
+                "SQL evidence database operation failed; code={}",
+                database
+                    .as_database_error()
+                    .and_then(|value| value.code())
+                    .unwrap_or_default()
+            );
+        } else {
+            let text = error.to_string();
+            if text.len() < 160 && !text.contains('@') && !text.contains("postgres:") {
+                eprintln!("SQL evidence rejected: {text}");
+            }
+        }
+        "T21 isolated query evidence setup failed".into()
+    })
 }
-async fn run(config: &Config, pool: &PgPool, private: &Path) -> TestResult {
+
+async fn observed_requests(
+    observer: &query_evidence::Observer,
+    endpoint: &str,
+    count: u64,
+) -> TestResult<Value> {
+    for _ in 0..100 {
+        let value = observer.snapshot();
+        if value["endpoints"][endpoint]["requests"].as_u64() == Some(count) {
+            return Ok(value);
+        }
+        tokio::time::sleep(std::time::Duration::from_millis(10)).await;
+    }
+    Err("actual SQL observation completion deadline exceeded".into())
+}
+async fn observe_endpoint(
+    request: Request,
+    next: axum::middleware::Next,
+) -> axum::response::Response {
+    let endpoint = match (request.method().as_str(), request.uri().path()) {
+        ("GET", "/api/v1/me") => "account",
+        ("GET", "/api/v1/me/sessions") => "session_page",
+        ("GET", "/api/v1/me/grants") => "grant_page",
+        ("POST", "/oauth/introspect") => "introspection",
+        ("POST", "/oauth/token") => "token",
+        ("POST", "/api/v1/auth/login/password") => "password",
+        ("GET", "/api/v1/auth/csrf") => "csrf",
+        _ => "other",
+    };
+    let span = tracing::info_span!("t21_endpoint", endpoint, status = tracing::field::Empty);
+    let response = next.run(request).instrument(span.clone()).await;
+    span.record("status", u64::from(response.status().as_u16()));
+    response
+}
+
+async fn exact_query_plans(
+    pool: &PgPool,
+    clients: &[Client],
+    sessions: &[(Uuid, Token, Token)],
+    tokens: &[TokenPair],
+) -> TestResult<Value> {
+    let (_, cookie, _) = sessions.first().ok_or("session fixture missing")?;
+    let pair = tokens.first().ok_or("token fixture missing")?;
+    let client = &clients[pair.client];
+    let now = OffsetDateTime::now_utc();
+    let located=sqlx::query("SELECT g.id AS grant_id,g.user_id,g.session_id,t.family_id,u.email,u.credential_version FROM oauth_tokens t JOIN oauth_grants g ON g.id=t.grant_id JOIN users u ON u.id=g.user_id WHERE t.token_hash=$1").bind(token_digest(&pair.refresh).as_slice()).fetch_one(pool).await?;
+    let user: Uuid = located.try_get("user_id")?;
+    let sid: Uuid = located.try_get("session_id")?;
+    let grant: Uuid = located.try_get("grant_id")?;
+    let family: Uuid = located.try_get("family_id")?;
+    let version: i64 = located.try_get("credential_version")?;
+    let email: Zeroizing<String> = Zeroizing::new(located.try_get("email")?);
+    let account_user: Uuid = sqlx::query_scalar("SELECT user_id FROM sessions WHERE token_hash=$1")
+        .bind(token_digest(cookie.expose()).as_slice())
+        .fetch_one(pool)
+        .await?;
+    sqlx::query("ANALYZE users,sessions,oauth_grants,oauth_tokens,oauth_clients,totp_factors,webauthn_credentials,recovery_codes,admin_memberships").execute(pool).await?;
+    let mut tx = pool.begin().await?;
+    let mut plans = Vec::new();
+    macro_rules! plan {($module:literal,$function:literal,$prefix:literal;$($value:expr),*$(,)?)=>{{
+        let sql=query_evidence::source_sql($module,$function,$prefix)?;
+        let explained=sqlx::query_scalar::<_,Value>(sqlx::AssertSqlSafe(format!("EXPLAIN (ANALYZE,BUFFERS,FORMAT JSON) {sql}")))$(.bind($value))* .fetch_one(&mut *tx).await?;
+        let safe=query_evidence::safe_plan(&explained)?;
+        plans.push(json!({"source":format!("crates/identity-store/src/{}.rs",$module),"function":$function,"shape_id":query_evidence::fingerprint(&sql),"parameterized_sql":sql,"plan":safe,"bindings":"actual isolated fixture values, retained only in memory"}));
+    }};}
+    plan!("sessions","me","SELECT u.id";token_digest(cookie.expose()).to_vec(),now);
+    plan!("security","valid_session","SELECT EXISTS";token_digest(cookie.expose()).to_vec(),now);
+    plan!("repository","session_authority","SELECT s.id";token_digest(cookie.expose()).to_vec(),now);
+    plan!("sessions","credential_by_email","SELECT u.id";email.as_str());
+    plan!("sessions","complete_password_login","SELECT id,email";user);
+    plan!("tokens","authenticate_client","SELECT id,client_id";client.public.as_str());
+    plan!("tokens","introspect","SELECT t.kind";token_digest(&pair.access).to_vec(),client.id,token_digest(client.secret.expose()).to_vec(),now);
+    plan!("sessions","session_page","SELECT s.id";account_user,now,None::<OffsetDateTime>,None::<Uuid>,21_i64,token_digest(cookie.expose()).to_vec());
+    plan!("tokens","grant_page","SELECT g.id";user,now,None::<OffsetDateTime>,None::<Uuid>,21_i64);
+    plan!("tokens","refresh","SELECT t.family_id";token_digest(&pair.refresh).to_vec(),client.id);
+    plan!("tokens","refresh","SELECT verified,status";user);
+    plan!("tokens","refresh","SELECT amr,auth_time";sid,user,version,now);
+    plan!("tokens","refresh","SELECT expires_at,scopes";grant,user,sid,client.id,now);
+    plan!("tokens","refresh","SELECT id FROM oauth_tokens";grant,family);
+    plan!("tokens","refresh","SELECT consumed_at,revoked_at";token_digest(&pair.refresh).to_vec(),grant,family);
+    tx.rollback().await?;
+    Ok(
+        json!({"scope":"exact repository SELECT shapes, typed real fixture binds, ANALYZE statistics and EXPLAIN ANALYZE BUFFERS; locks rolled back","plans":plans,"redaction":"expression/output/parameter values removed by positive field schema; no user/token identifiers"}),
+    )
+}
+
+async fn probe_queries(
+    pool: &PgPool,
+    http: &reqwest::Client,
+    clients: &[Client],
+    sessions: &[(Uuid, Token, Token)],
+    tokens: &mut [TokenPair],
+    password: &str,
+    observer: &query_evidence::Observer,
+) -> TestResult<Value> {
+    let (_, cookie, _) = sessions.first().ok_or("probe session missing")?;
+    let user: Uuid = sqlx::query_scalar("SELECT user_id FROM sessions WHERE token_hash=$1")
+        .bind(token_digest(cookie.expose()).as_slice())
+        .fetch_one(pool)
+        .await?;
+    let now = OffsetDateTime::now_utc();
+    // Deliberate isolated setup: enough rows to compare 1 vs 20 item pages, no identity success claim.
+    let mut probe_sessions = Vec::new();
+    for _ in 0..25 {
+        let id = Uuid::new_v4();
+        probe_sessions.push(id);
+        sqlx::query("INSERT INTO sessions(id,token_hash,user_id,amr,auth_time,csrf_hash,expires_at,credential_version,created_at) VALUES($1,$2,$3,ARRAY['pwd']::text[],$4,$5,$6,1,$4)").bind(id).bind(token_digest(Token::generate()?.expose()).as_slice()).bind(user).bind(now).bind(token_digest(Token::generate()?.expose()).as_slice()).bind(now+Duration::hours(1)).execute(pool).await?;
+    }
+    let grant_session: Uuid = sqlx::query_scalar("SELECT id FROM sessions WHERE token_hash=$1")
+        .bind(token_digest(cookie.expose()).as_slice())
+        .fetch_one(pool)
+        .await?;
+    let mut probe_grants = Vec::new();
+    for _ in 0..25 {
+        let id = Uuid::new_v4();
+        probe_grants.push(id);
+        sqlx::query("INSERT INTO oauth_grants(id,user_id,session_id,client_id,scopes,created_at,expires_at) VALUES($1,$2,$3,$4,ARRAY['openid']::text[],$5,$6)").bind(id).bind(user).bind(grant_session).bind(clients[0].id).bind(now).bind(now+Duration::hours(1)).execute(pool).await?;
+    }
+    let cookie = format!("identity-dev={}", cookie.expose());
+    let mut probes = Vec::new();
+    for (path, label, rows) in [
+        ("/api/v1/me", "account", None),
+        ("/api/v1/me/sessions?limit=1", "session_page", Some(1)),
+        ("/api/v1/me/sessions?limit=20", "session_page", Some(20)),
+        ("/api/v1/me/grants?limit=1", "grant_page", Some(1)),
+        ("/api/v1/me/grants?limit=20", "grant_page", Some(20)),
+    ] {
+        observer.reset();
+        for _ in 0..3 {
+            let response = http
+                .get(format!("http://127.0.0.1:5310{path}"))
+                .header("cookie", &cookie)
+                .send()
+                .await?;
+            if response.status() != reqwest::StatusCode::OK {
+                eprintln!(
+                    "Query probe fixed endpoint={label}; actual status={}",
+                    response.status().as_u16()
+                );
+                return Err("real query probe account request rejected".into());
+            }
+            let value: Value = response.json().await?;
+            if let Some(rows) = rows
+                && value["items"]
+                    .as_array()
+                    .is_none_or(|items| items.len() != rows)
+            {
+                return Err("query probe page row count missing".into());
+            }
+        }
+        let observed = observed_requests(observer, label, 3).await?;
+        let entry = &observed["endpoints"][label];
+        if entry["requests"] != 3
+            || entry["sql_per_request_min"] != entry["sql_per_request_max"]
+            || entry["sql_per_request_min"].as_u64().unwrap_or(0) == 0
+            || entry["unknown_statement_count"] != 0
+        {
+            eprintln!(
+                "Query probe fixed endpoint={label}; completed={}; count_min={}; count_max={}; invalid={}",
+                entry["requests"],
+                entry["sql_per_request_min"],
+                entry["sql_per_request_max"],
+                entry["unknown_statement_count"]
+            );
+            return Err("actual request SQL count evidence incomplete".into());
+        }
+        probes.push(json!({"endpoint":label,"page_size":rows,"observation":observed}));
+    }
+    for pair in tokens.iter().take(3) {
+        let client = &clients[pair.client];
+        observer.reset();
+        let response = http
+            .post("http://127.0.0.1:5310/oauth/introspect")
+            .basic_auth(&client.public, Some(client.secret.expose()))
+            .header("x-forwarded-for", "198.18.230.1")
+            .header("content-type", "application/x-www-form-urlencoded")
+            .body(
+                url::form_urlencoded::Serializer::new(String::new())
+                    .append_pair("token", pair.access.as_str())
+                    .finish(),
+            )
+            .send()
+            .await?;
+        if response.status() != reqwest::StatusCode::OK
+            || response.json::<Value>().await?["active"] != true
+        {
+            return Err("real query introspection probe rejected".into());
+        }
+        let observed = observed_requests(observer, "introspection", 1).await?;
+        if observed["endpoints"]["introspection"]["sql_per_request_min"] != 2 {
+            return Err("introspection must execute client and full token queries once".into());
+        }
+        probes.push(json!({"endpoint":"introspection","observation":observed}));
+    }
+    let pair = tokens.first_mut().ok_or("probe refresh missing")?;
+    let client = &clients[pair.client];
+    observer.reset();
+    let body = url::form_urlencoded::Serializer::new(String::new())
+        .append_pair("grant_type", "refresh_token")
+        .append_pair("refresh_token", &pair.refresh)
+        .finish();
+    let response = http
+        .post("http://127.0.0.1:5310/oauth/token")
+        .basic_auth(&client.public, Some(client.secret.expose()))
+        .header("x-forwarded-for", "198.18.230.3")
+        .header("content-type", "application/x-www-form-urlencoded")
+        .body(body)
+        .send()
+        .await?;
+    if response.status() != reqwest::StatusCode::OK {
+        return Err("real refresh SQL probe rejected".into());
+    }
+    let value: Value = response.json().await?;
+    pair.access = Zeroizing::new(
+        value["access_token"]
+            .as_str()
+            .ok_or("probe refreshed access missing")?
+            .into(),
+    );
+    pair.refresh = Zeroizing::new(
+        value["refresh_token"]
+            .as_str()
+            .ok_or("probe refreshed token missing")?
+            .into(),
+    );
+    let observed = observed_requests(observer, "token", 1).await?;
+    if observed["endpoints"]["token"]["unknown_statement_count"] != 0
+        || observed["endpoints"]["token"]["sql_per_request_min"]
+            .as_u64()
+            .unwrap_or(0)
+            == 0
+    {
+        return Err("refresh SQL observation incomplete".into());
+    }
+    probes.push(json!({"endpoint":"refresh","observation":observed}));
+    let email: Zeroizing<String> = Zeroizing::new(
+        sqlx::query_scalar("SELECT email FROM users WHERE id=$1")
+            .bind(user)
+            .fetch_one(pool)
+            .await?,
+    );
+    observer.reset();
+    let csrf_response = http
+        .get("http://127.0.0.1:5310/api/v1/auth/csrf")
+        .send()
+        .await?;
+    let cookie = csrf_response
+        .headers()
+        .get(reqwest::header::SET_COOKIE)
+        .and_then(|v| v.to_str().ok())
+        .ok_or("probe csrf cookie missing")?
+        .split(';')
+        .next()
+        .ok_or("probe cookie missing")?
+        .to_string();
+    let csrf: Value = csrf_response.json().await?;
+    let response = http
+        .post("http://127.0.0.1:5310/api/v1/auth/login/password")
+        .header("cookie", cookie)
+        .header("origin", "http://localhost:5310")
+        .header(
+            "x-csrf-token",
+            csrf["csrf_token"].as_str().ok_or("probe csrf missing")?,
+        )
+        .header("x-forwarded-for", "198.18.230.2")
+        .json(&json!({"email":email.as_str(),"password":password}))
+        .send()
+        .await?;
+    if response.status() != reqwest::StatusCode::OK
+        || response.json::<Value>().await?["status"] != "authenticated"
+    {
+        return Err("real password SQL probe rejected".into());
+    }
+    let observed = observed_requests(observer, "password", 1).await?;
+    if observed["endpoints"]["password"]["unknown_statement_count"] != 0
+        || observed["endpoints"]["password"]["sql_per_request_min"]
+            .as_u64()
+            .unwrap_or(0)
+            == 0
+    {
+        return Err("password SQL observation incomplete".into());
+    }
+    probes.push(json!({"endpoint":"password","observation":observed}));
+    // Page sizes change result rows, not the number of SQL statements. All queries came from actual endpoints.
+    for label in ["session_page", "grant_page"] {
+        let counts = probes
+            .iter()
+            .filter(|probe| probe["endpoint"] == label)
+            .map(|probe| {
+                probe["observation"]["endpoints"][label]["sql_per_request_max"]
+                    .as_u64()
+                    .unwrap_or(0)
+            })
+            .collect::<Vec<_>>();
+        if counts.len() != 2 || counts[0] != counts[1] {
+            return Err("page query count grows with returned items".into());
+        }
+    }
+    sqlx::query("DELETE FROM oauth_grants WHERE id=ANY($1::uuid[])")
+        .bind(&probe_grants)
+        .execute(pool)
+        .await?;
+    sqlx::query("DELETE FROM sessions WHERE id=ANY($1::uuid[])")
+        .bind(&probe_sessions)
+        .execute(pool)
+        .await?;
+    Ok(
+        json!({"scope":"real HTTP endpoint probes on 100k fixtures; page-size 1 and 20 request statement counts compared; no per-row repository calls","probes":probes}),
+    )
+}
+
+async fn run(
+    config: &Config,
+    pool: &PgPool,
+    private: &Path,
+    observer: query_evidence::Observer,
+    application_name: String,
+) -> TestResult {
     migrate(pool).await?;
     let password = Zeroizing::new(
         std::env::var("T21_PASSWORD").map_err(|_| "private load password required")?,
@@ -392,7 +744,8 @@ async fn run(config: &Config, pool: &PgPool, private: &Path) -> TestResult {
     let mut dependencies = Dependencies::new(config).map_err(|_| "private dependencies invalid")?;
     dependencies.postgres = pool.clone();
     let state = AuthAppState::new_with_clock(config, dependencies, Arc::new(SystemClock)).await?;
-    let app = accounts_router(state, Router::new());
+    let app =
+        accounts_router(state, Router::new()).layer(axum::middleware::from_fn(observe_endpoint));
     let listener = tokio::net::TcpListener::bind("127.0.0.1:5310").await?;
     let api = tokio::spawn(async move {
         let _ = axum::serve(
@@ -419,10 +772,20 @@ async fn run(config: &Config, pool: &PgPool, private: &Path) -> TestResult {
         pair.client = index;
         tokens.push(pair);
     }
-    let measured = sqlx::query("SELECT u.id,s.id AS session,g.id AS grant,c.id AS client FROM oauth_grants g JOIN users u ON u.id=g.user_id JOIN sessions s ON s.id=g.session_id JOIN oauth_clients c ON c.id=g.client_id ORDER BY g.id LIMIT 1").fetch_one(pool).await?;
-    let account_plan: Value = sqlx::query_scalar("EXPLAIN (ANALYZE,BUFFERS,FORMAT JSON) SELECT u.id,u.email,s.expires_at FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.user_id=$1 AND s.revoked_at IS NULL AND u.verified AND u.status='active'").bind(measured.try_get::<Uuid,_>("id")?).fetch_one(pool).await?;
-    let introspection_plan: Value = sqlx::query_scalar("EXPLAIN (ANALYZE,BUFFERS,FORMAT JSON) SELECT t.id,u.id FROM oauth_tokens t JOIN oauth_grants g ON g.id=t.grant_id JOIN sessions s ON s.id=g.session_id JOIN users u ON u.id=g.user_id AND u.id=s.user_id JOIN oauth_clients c ON c.id=g.client_id WHERE g.id=$1 AND c.enabled AND g.revoked_at IS NULL AND s.revoked_at IS NULL AND u.verified AND u.status='active'").bind(measured.try_get::<Uuid,_>("grant")?).fetch_one(pool).await?;
-    write_private(&private.join("query-plans.json"), &json!({"account_equivalent_index_path":account_plan,"introspection_equivalent_join_path":introspection_plan,"note":"SQL constants deliberately omit secret token digests; actual endpoints are timed separately."})).await?;
+    let plans = exact_query_plans(pool, &clients, &sessions, &tokens).await?;
+    write_private(&private.join("query-plans.json"), &plans).await?;
+    let query_probe = probe_queries(
+        pool,
+        &http,
+        &clients,
+        &sessions,
+        &mut tokens,
+        &password,
+        &observer,
+    )
+    .await?;
+    write_private(&private.join("query-evidence.json"), &query_probe).await?;
+    observer.reset();
     let credentials = json!({"base":"http://127.0.0.1:5310","control":"http://127.0.0.1:5311","origin":"http://localhost:5310","key":std::env::var("T21_CONTROL_KEY").map_err(|_|"private control key")?,"clients":clients.iter().map(|client|json!({"id":client.public,"secret":client.secret.expose()})).collect::<Vec<_>>(),"sessions":sessions.iter().map(|(_,token,csrf)|json!({"cookie":token.expose(),"csrf":csrf.expose()})).collect::<Vec<_>>(),"password":password.as_str(),"emails":sqlx::query_scalar::<_,String>("SELECT email FROM users ORDER BY created_at,id LIMIT 2048").fetch_all(pool).await?});
     write_private(&private.join("credentials.json"), &credentials).await?;
     let service = PasswordService::initialize(4).await?;
@@ -436,6 +799,8 @@ async fn run(config: &Config, pool: &PgPool, private: &Path) -> TestResult {
         failures: Arc::new(AtomicU64::new(0)),
         passwords: service,
         pool: pool.clone(),
+        observer,
+        application_name: Arc::new(application_name),
     };
     let control_listener = tokio::net::TcpListener::bind("127.0.0.1:5311").await?;
     let control_app = Router::new()

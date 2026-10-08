@@ -1,0 +1,20 @@
+   Compiling identity-core v0.1.0 (/root/code/rust/auth_rust/crates/identity-core)
+   Compiling identity-store v0.1.0 (/root/code/rust/auth_rust/crates/identity-store)
+   Compiling demo-bff v0.1.0 (/root/code/rust/auth_rust/crates/demo-bff)
+   Compiling identity-server v0.1.0 (/root/code/rust/auth_rust/crates/identity-server)
+   Compiling identity-worker v0.1.0 (/root/code/rust/auth_rust/crates/identity-worker)
+    Finished `release` profile [optimized] target(s) in 1m 04s
+     Running tests/t21_load.rs (target/release/deps/t21_load-61ebc50be672c099)
+
+running 1 test
+Error: "plan label rejected"
+test t21_load_harness ... FAILED
+
+failures:
+
+failures:
+    t21_load_harness
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 2 filtered out; finished in 12.75s
+
+error: test failed, to rerun pass `-p identity-server --test t21_load`

@@ -1,0 +1,22 @@
+{
+  "kind": "T21 load independent submodule, not overall acceptance",
+  "scenario": "sql-probe",
+  "started": "2026-10-08T14:46:27.940Z",
+  "environment": {
+    "os": "linux 6.18.40.1-microsoft-standard-WSL2",
+    "cpuModel": "AMD Ryzen 7 7700X 8-Core Processor",
+    "logicalCpus": 16,
+    "memoryGiB": 15.217361450195312,
+    "referenceMatches": false,
+    "note": "Same-host WSL2 Ryzen7700X16logical15.2GiB differs from Linux8vCPU16GiBSSD reference; load generator shares CPU with API/PG/Redis."
+  },
+  "warmupSeconds": 0,
+  "measurementSeconds": 0,
+  "resources": [],
+  "errors": [
+    "Actual isolated load harness failed to become ready.",
+    "Load harness or own schema cleanup failed."
+  ],
+  "completed": "2026-10-08T14:47:09.010Z",
+  "exitCode": 1
+}
