@@ -1,0 +1,1628 @@
+{
+  "observedAt": "2026-10-08T12:57:17.004567+00:00",
+  "provider": "GitHub Actions public REST API",
+  "repository": "justicerains1/AUTH_RUST",
+  "source": "https://api.github.com/repos/justicerains1/AUTH_RUST/actions/runs?per_page=20",
+  "readOnly": true,
+  "scope": "Current remote status only, not full system or production acceptance. In-progress runs cannot be called passed.",
+  "limitations": [
+    "Public run/job/step metadata accessible without credentials.",
+    "Admin-only job logs are not read; an earlier audit received HTTP403 Must have admin rights to Repository.",
+    "Step failure metadata alone does not prove a root cause.",
+    "Historical failed runs and local failure evidence are retained."
+  ],
+  "runs": [
+    {
+      "id": 37778455558,
+      "head_sha": "1c0c9eaace5c8ddb9fd77803d6bc42b5abf967f8",
+      "created_at": "2026-10-08T12:39:38Z",
+      "updated_at": "2026-10-08T12:39:43Z",
+      "status": "in_progress",
+      "conclusion": null,
+      "html_url": "https://github.com/justicerains1/AUTH_RUST/actions/runs/37778455558",
+      "jobs": [
+        {
+          "id": 113315203991,
+          "name": "check-and-build (ubuntu-24.04)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-08T12:39:41Z",
+          "completed_at": "2026-10-08T12:46:25Z",
+          "html_url": "https://github.com/justicerains1/AUTH_RUST/actions/runs/37778455558/job/113315203991",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-08T12:39:42Z",
+              "completed_at": "2026-10-08T12:39:42Z"
+            },
+            {
+              "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-08T12:39:43Z",
+              "completed_at": "2026-10-08T12:39:44Z"
+            },
+            {
+              "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-08T12:39:44Z",
+              "completed_at": "2026-10-08T12:39:51Z"
+            },
+            {
+              "name": "Run dtolnay/rust-toolchain@7e38f4b43b4db5c8dd498af069a4f6196df1d067",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-08T12:39:51Z",
+              "completed_at": "2026-10-08T12:39:59Z"
+            },
+            {
+              "name": "Configure Windows OpenSSL",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 5,
+              "started_at": "2026-10-08T12:39:59Z",
+              "completed_at": "2026-10-08T12:39:59Z"
+            },
+            {
+              "name": "Run npm ci",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-10-08T12:39:59Z",
+              "completed_at": "2026-10-08T12:40:01Z"
+            },
+            {
+              "name": "Run npm run verify:docs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-10-08T12:40:01Z",
+              "completed_at": "2026-10-08T12:40:01Z"
+            },
+            {
+              "name": "Run npm run test:tooling",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-10-08T12:40:01Z",
+              "completed_at": "2026-10-08T12:40:05Z"
+            },
+            {
+              "name": "Run node scripts/ci-command.mjs check",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-10-08T12:40:05Z",
+              "completed_at": "2026-10-08T12:41:35Z"
+            },
+            {
+              "name": "Run node scripts/ci-command.mjs test:unit",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-10-08T12:41:35Z",
+              "completed_at": "2026-10-08T12:43:16Z"
+            },
+            {
+              "name": "Run node scripts/ci-command.mjs build",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-10-08T12:43:16Z",
+              "completed_at": "2026-10-08T12:46:22Z"
+            },
+            {
+              "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 21,
+              "started_at": "2026-10-08T12:46:22Z",
+              "completed_at": "2026-10-08T12:46:22Z"
+            },
+            {
+              "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 22,
+              "started_at": "2026-10-08T12:46:22Z",
+              "completed_at": "2026-10-08T12:46:22Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 23,
+              "started_at": "2026-10-08T12:46:22Z",
+              "completed_at": "2026-10-08T12:46:22Z"
+            }
+          ]
+        },
+        {
+          "id": 113315204185,
+          "name": "integration-t01",
+          "status": "in_progress",
+          "conclusion": null,
+          "started_at": "2026-10-08T12:39:41Z",
+          "completed_at": null,
+          "html_url": "https://github.com/justicerains1/AUTH_RUST/actions/runs/37778455558/job/113315204185",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-08T12:39:43Z",
+              "completed_at": "2026-10-08T12:39:44Z"
+            },
+            {
+              "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-08T12:39:44Z",
+              "completed_at": "2026-10-08T12:39:46Z"
+            },
+            {
+              "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-08T12:39:46Z",
+              "completed_at": "2026-10-08T12:39:53Z"
+            },
+            {
+              "name": "Run dtolnay/rust-toolchain@7e38f4b43b4db5c8dd498af069a4f6196df1d067",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-08T12:39:53Z",
+              "completed_at": "2026-10-08T12:40:02Z"
+            },
+            {
+              "name": "Run npm ci",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-08T12:40:02Z",
+              "completed_at": "2026-10-08T12:40:05Z"
+            },
+            {
+              "name": "Run npm run dev:secrets",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-10-08T12:40:05Z",
+              "completed_at": "2026-10-08T12:40:06Z"
+            },
+            {
+              "name": "Run node scripts/ci-dev-up.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-10-08T12:40:06Z",
+              "completed_at": "2026-10-08T12:43:00Z"
+            },
+            {
+              "name": "Run npm run test:integration -- --task=T01",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-10-08T12:43:00Z",
+              "completed_at": "2026-10-08T12:43:21Z"
+            },
+            {
+              "name": "Run npm run test:integration -- --task=T03",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-10-08T12:43:21Z",
+              "completed_at": "2026-10-08T12:44:44Z"
+            },
+            {
+              "name": "Run npm run test:security -- --task=T04",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-10-08T12:44:44Z",
+              "completed_at": "2026-10-08T12:46:18Z"
+            },
+            {
+              "name": "Run npm run test:integration -- --task=T05",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-10-08T12:46:18Z",
+              "completed_at": "2026-10-08T12:46:49Z"
+            },
+            {
+              "name": "Run node node_modules/playwright/cli.js install --with-deps chromium",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12,
+              "started_at": "2026-10-08T12:46:49Z",
+              "completed_at": "2026-10-08T12:47:16Z"
+            },
+            {
+              "name": "Run npm run test:e2e -- --task=T05",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13,
+              "started_at": "2026-10-08T12:47:16Z",
+              "completed_at": "2026-10-08T12:47:36Z"
+            },
+            {
+              "name": "Run npm run test:integration -- --task=T06",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14,
+              "started_at": "2026-10-08T12:47:36Z",
+              "completed_at": "2026-10-08T12:48:21Z"
+            },
+            {
+              "name": "Run npm run test:e2e -- --task=T06",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15,
+              "started_at": "2026-10-08T12:48:21Z",
+              "completed_at": "2026-10-08T12:48:38Z"
+            },
+            {
+              "name": "Run npm run test:integration -- --task=T07",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 16,
+              "started_at": "2026-10-08T12:48:38Z",
+              "completed_at": "2026-10-08T12:49:48Z"
+            },
+            {
+              "name": "Run npm run test:e2e -- --task=T07",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 17,
+              "started_at": "2026-10-08T12:49:48Z",
+              "completed_at": "2026-10-08T12:50:22Z"
+            },
+            {
+              "name": "Publish sanitized T07 browser diagnostics",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 18,
+              "started_at": "2026-10-08T12:50:22Z",
+              "completed_at": "2026-10-08T12:50:22Z"
+            },
+            {
+              "name": "Run npm run test:integration -- --task=T08",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 19,
+              "started_at": "2026-10-08T12:50:22Z",
+              "completed_at": "2026-10-08T12:50:59Z"
+            },
+            {
+              "name": "Run npm run test:e2e -- --task=T08",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 20,
+              "started_at": "2026-10-08T12:50:59Z",
+              "completed_at": "2026-10-08T12:51:24Z"
+            },
+            {
+              "name": "Run npm run test:integration -- --task=T09",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 21,
+              "started_at": "2026-10-08T12:51:24Z",
+              "completed_at": "2026-10-08T12:51:38Z"
+            },
+            {
+              "name": "Run npm run test:e2e -- --task=T09",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 22,
+              "started_at": "2026-10-08T12:51:38Z",
+              "completed_at": "2026-10-08T12:52:12Z"
+            },
+            {
+              "name": "Run npm run test:integration -- --task=T10",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 23,
+              "started_at": "2026-10-08T12:52:12Z",
+              "completed_at": "2026-10-08T12:52:30Z"
+            },
+            {
+              "name": "Run npm run test:e2e -- --task=T10",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 24,
+              "started_at": "2026-10-08T12:52:30Z",
+              "completed_at": "2026-10-08T12:52:46Z"
+            },
+            {
+              "name": "Run npm run test:integration -- --task=T11",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 25,
+              "started_at": "2026-10-08T12:52:46Z",
+              "completed_at": "2026-10-08T12:53:08Z"
+            },
+            {
+              "name": "Run npm run test:integration -- --task=T12",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 26,
+              "started_at": "2026-10-08T12:53:08Z",
+              "completed_at": "2026-10-08T12:53:56Z"
+            },
+            {
+              "name": "Run npm run test:e2e -- --task=T12",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 27,
+              "started_at": "2026-10-08T12:53:56Z",
+              "completed_at": "2026-10-08T12:54:16Z"
+            },
+            {
+              "name": "Run npm run test:integration -- --task=T13",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 28,
+              "started_at": "2026-10-08T12:54:16Z",
+              "completed_at": "2026-10-08T12:55:16Z"
+            },
+            {
+              "name": "Run npm run test:integration -- --task=T14",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 29,
+              "started_at": "2026-10-08T12:55:16Z",
+              "completed_at": "2026-10-08T12:55:56Z"
+            },
+            {
+              "name": "Run npm run test:e2e -- --task=T17",
+              "status": "in_progress",
+              "conclusion": null,
+              "number": 30,
+              "started_at": "2026-10-08T12:55:56Z",
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:e2e -- --task=T18",
+              "status": "pending",
+              "conclusion": null,
+              "number": 31,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:e2e -- --task=T19",
+              "status": "pending",
+              "conclusion": null,
+              "number": 32,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run dev:down",
+              "status": "pending",
+              "conclusion": null,
+              "number": 33,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+              "status": "pending",
+              "conclusion": null,
+              "number": 65,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+              "status": "pending",
+              "conclusion": null,
+              "number": 66,
+              "started_at": null,
+              "completed_at": null
+            }
+          ]
+        },
+        {
+          "id": 113315204377,
+          "name": "check-and-build (windows-2025)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-08T12:39:43Z",
+          "completed_at": "2026-10-08T12:56:51Z",
+          "html_url": "https://github.com/justicerains1/AUTH_RUST/actions/runs/37778455558/job/113315204377",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-08T12:39:44Z",
+              "completed_at": "2026-10-08T12:39:45Z"
+            },
+            {
+              "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-08T12:39:45Z",
+              "completed_at": "2026-10-08T12:39:51Z"
+            },
+            {
+              "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-08T12:39:51Z",
+              "completed_at": "2026-10-08T12:40:13Z"
+            },
+            {
+              "name": "Run dtolnay/rust-toolchain@7e38f4b43b4db5c8dd498af069a4f6196df1d067",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-08T12:40:13Z",
+              "completed_at": "2026-10-08T12:40:28Z"
+            },
+            {
+              "name": "Configure Windows OpenSSL",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-08T12:40:28Z",
+              "completed_at": "2026-10-08T12:40:29Z"
+            },
+            {
+              "name": "Run npm ci",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-10-08T12:40:29Z",
+              "completed_at": "2026-10-08T12:40:37Z"
+            },
+            {
+              "name": "Run npm run verify:docs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-10-08T12:40:37Z",
+              "completed_at": "2026-10-08T12:40:38Z"
+            },
+            {
+              "name": "Run npm run test:tooling",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-10-08T12:40:38Z",
+              "completed_at": "2026-10-08T12:40:43Z"
+            },
+            {
+              "name": "Run node scripts/ci-command.mjs check",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-10-08T12:40:43Z",
+              "completed_at": "2026-10-08T12:44:32Z"
+            },
+            {
+              "name": "Run node scripts/ci-command.mjs test:unit",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-10-08T12:44:32Z",
+              "completed_at": "2026-10-08T12:48:38Z"
+            },
+            {
+              "name": "Run node scripts/ci-command.mjs build",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-10-08T12:48:38Z",
+              "completed_at": "2026-10-08T12:56:47Z"
+            },
+            {
+              "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 21,
+              "started_at": "2026-10-08T12:56:47Z",
+              "completed_at": "2026-10-08T12:56:47Z"
+            },
+            {
+              "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 22,
+              "started_at": "2026-10-08T12:56:47Z",
+              "completed_at": "2026-10-08T12:56:49Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 23,
+              "started_at": "2026-10-08T12:56:49Z",
+              "completed_at": "2026-10-08T12:56:49Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 37780190542,
+      "head_sha": "f5e764057750c7607df66a2df0cb5b5a28514aff",
+      "created_at": "2026-10-08T12:53:53Z",
+      "updated_at": "2026-10-08T12:53:57Z",
+      "status": "in_progress",
+      "conclusion": null,
+      "html_url": "https://github.com/justicerains1/AUTH_RUST/actions/runs/37780190542",
+      "jobs": [
+        {
+          "id": 113321044821,
+          "name": "check-and-build (windows-2025)",
+          "status": "in_progress",
+          "conclusion": null,
+          "started_at": "2026-10-08T12:53:56Z",
+          "completed_at": null,
+          "html_url": "https://github.com/justicerains1/AUTH_RUST/actions/runs/37780190542/job/113321044821",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-08T12:53:56Z",
+              "completed_at": "2026-10-08T12:53:57Z"
+            },
+            {
+              "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-08T12:53:57Z",
+              "completed_at": "2026-10-08T12:54:02Z"
+            },
+            {
+              "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-08T12:54:02Z",
+              "completed_at": "2026-10-08T12:54:15Z"
+            },
+            {
+              "name": "Run dtolnay/rust-toolchain@7e38f4b43b4db5c8dd498af069a4f6196df1d067",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-08T12:54:15Z",
+              "completed_at": "2026-10-08T12:54:27Z"
+            },
+            {
+              "name": "Configure Windows OpenSSL",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-08T12:54:27Z",
+              "completed_at": "2026-10-08T12:54:28Z"
+            },
+            {
+              "name": "Run npm ci",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-10-08T12:54:28Z",
+              "completed_at": "2026-10-08T12:54:33Z"
+            },
+            {
+              "name": "Run npm run verify:docs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-10-08T12:54:33Z",
+              "completed_at": "2026-10-08T12:54:33Z"
+            },
+            {
+              "name": "Run npm run test:tooling",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-10-08T12:54:33Z",
+              "completed_at": "2026-10-08T12:54:37Z"
+            },
+            {
+              "name": "Run node scripts/ci-command.mjs check",
+              "status": "in_progress",
+              "conclusion": null,
+              "number": 9,
+              "started_at": "2026-10-08T12:54:37Z",
+              "completed_at": null
+            },
+            {
+              "name": "Run node scripts/ci-command.mjs test:unit",
+              "status": "pending",
+              "conclusion": null,
+              "number": 10,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run node scripts/ci-command.mjs build",
+              "status": "pending",
+              "conclusion": null,
+              "number": 11,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+              "status": "pending",
+              "conclusion": null,
+              "number": 21,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+              "status": "pending",
+              "conclusion": null,
+              "number": 22,
+              "started_at": null,
+              "completed_at": null
+            }
+          ]
+        },
+        {
+          "id": 113321045213,
+          "name": "check-and-build (ubuntu-24.04)",
+          "status": "in_progress",
+          "conclusion": null,
+          "started_at": "2026-10-08T12:53:56Z",
+          "completed_at": null,
+          "html_url": "https://github.com/justicerains1/AUTH_RUST/actions/runs/37780190542/job/113321045213",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-08T12:53:57Z",
+              "completed_at": "2026-10-08T12:53:58Z"
+            },
+            {
+              "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-08T12:53:58Z",
+              "completed_at": "2026-10-08T12:54:00Z"
+            },
+            {
+              "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-08T12:54:00Z",
+              "completed_at": "2026-10-08T12:54:06Z"
+            },
+            {
+              "name": "Run dtolnay/rust-toolchain@7e38f4b43b4db5c8dd498af069a4f6196df1d067",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-08T12:54:06Z",
+              "completed_at": "2026-10-08T12:54:14Z"
+            },
+            {
+              "name": "Configure Windows OpenSSL",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 5,
+              "started_at": "2026-10-08T12:54:14Z",
+              "completed_at": "2026-10-08T12:54:14Z"
+            },
+            {
+              "name": "Run npm ci",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-10-08T12:54:14Z",
+              "completed_at": "2026-10-08T12:54:16Z"
+            },
+            {
+              "name": "Run npm run verify:docs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-10-08T12:54:16Z",
+              "completed_at": "2026-10-08T12:54:17Z"
+            },
+            {
+              "name": "Run npm run test:tooling",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-10-08T12:54:17Z",
+              "completed_at": "2026-10-08T12:54:20Z"
+            },
+            {
+              "name": "Run node scripts/ci-command.mjs check",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-10-08T12:54:20Z",
+              "completed_at": "2026-10-08T12:55:48Z"
+            },
+            {
+              "name": "Run node scripts/ci-command.mjs test:unit",
+              "status": "in_progress",
+              "conclusion": null,
+              "number": 10,
+              "started_at": "2026-10-08T12:55:48Z",
+              "completed_at": null
+            },
+            {
+              "name": "Run node scripts/ci-command.mjs build",
+              "status": "pending",
+              "conclusion": null,
+              "number": 11,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+              "status": "pending",
+              "conclusion": null,
+              "number": 21,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+              "status": "pending",
+              "conclusion": null,
+              "number": 22,
+              "started_at": null,
+              "completed_at": null
+            }
+          ]
+        },
+        {
+          "id": 113321045224,
+          "name": "integration-t01",
+          "status": "in_progress",
+          "conclusion": null,
+          "started_at": "2026-10-08T12:53:56Z",
+          "completed_at": null,
+          "html_url": "https://github.com/justicerains1/AUTH_RUST/actions/runs/37780190542/job/113321045224",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-08T12:53:57Z",
+              "completed_at": "2026-10-08T12:53:58Z"
+            },
+            {
+              "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-08T12:53:58Z",
+              "completed_at": "2026-10-08T12:53:59Z"
+            },
+            {
+              "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-08T12:53:59Z",
+              "completed_at": "2026-10-08T12:54:05Z"
+            },
+            {
+              "name": "Run dtolnay/rust-toolchain@7e38f4b43b4db5c8dd498af069a4f6196df1d067",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-08T12:54:05Z",
+              "completed_at": "2026-10-08T12:54:12Z"
+            },
+            {
+              "name": "Run npm ci",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-08T12:54:12Z",
+              "completed_at": "2026-10-08T12:54:15Z"
+            },
+            {
+              "name": "Run npm run dev:secrets",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-10-08T12:54:15Z",
+              "completed_at": "2026-10-08T12:54:16Z"
+            },
+            {
+              "name": "Run node scripts/ci-dev-up.mjs",
+              "status": "in_progress",
+              "conclusion": null,
+              "number": 7,
+              "started_at": "2026-10-08T12:54:16Z",
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:integration -- --task=T01",
+              "status": "pending",
+              "conclusion": null,
+              "number": 8,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:integration -- --task=T03",
+              "status": "pending",
+              "conclusion": null,
+              "number": 9,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:security -- --task=T04",
+              "status": "pending",
+              "conclusion": null,
+              "number": 10,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:integration -- --task=T05",
+              "status": "pending",
+              "conclusion": null,
+              "number": 11,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run node node_modules/playwright/cli.js install --with-deps chromium",
+              "status": "pending",
+              "conclusion": null,
+              "number": 12,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:e2e -- --task=T05",
+              "status": "pending",
+              "conclusion": null,
+              "number": 13,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:integration -- --task=T06",
+              "status": "pending",
+              "conclusion": null,
+              "number": 14,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:e2e -- --task=T06",
+              "status": "pending",
+              "conclusion": null,
+              "number": 15,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:integration -- --task=T07",
+              "status": "pending",
+              "conclusion": null,
+              "number": 16,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:e2e -- --task=T07",
+              "status": "pending",
+              "conclusion": null,
+              "number": 17,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Publish sanitized T07 browser diagnostics",
+              "status": "pending",
+              "conclusion": null,
+              "number": 18,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:integration -- --task=T08",
+              "status": "pending",
+              "conclusion": null,
+              "number": 19,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:e2e -- --task=T08",
+              "status": "pending",
+              "conclusion": null,
+              "number": 20,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:integration -- --task=T09",
+              "status": "pending",
+              "conclusion": null,
+              "number": 21,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:e2e -- --task=T09",
+              "status": "pending",
+              "conclusion": null,
+              "number": 22,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:integration -- --task=T10",
+              "status": "pending",
+              "conclusion": null,
+              "number": 23,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:e2e -- --task=T10",
+              "status": "pending",
+              "conclusion": null,
+              "number": 24,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:integration -- --task=T11",
+              "status": "pending",
+              "conclusion": null,
+              "number": 25,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:integration -- --task=T12",
+              "status": "pending",
+              "conclusion": null,
+              "number": 26,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:e2e -- --task=T12",
+              "status": "pending",
+              "conclusion": null,
+              "number": 27,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:integration -- --task=T13",
+              "status": "pending",
+              "conclusion": null,
+              "number": 28,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:integration -- --task=T14",
+              "status": "pending",
+              "conclusion": null,
+              "number": 29,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:e2e -- --task=T17",
+              "status": "pending",
+              "conclusion": null,
+              "number": 30,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:e2e -- --task=T18",
+              "status": "pending",
+              "conclusion": null,
+              "number": 31,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:e2e -- --task=T19",
+              "status": "pending",
+              "conclusion": null,
+              "number": 32,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run dev:down",
+              "status": "pending",
+              "conclusion": null,
+              "number": 33,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+              "status": "pending",
+              "conclusion": null,
+              "number": 65,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+              "status": "pending",
+              "conclusion": null,
+              "number": 66,
+              "started_at": null,
+              "completed_at": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 37780426239,
+      "head_sha": "0f190e642788b9164b536a4de3b27dc74cdd744d",
+      "created_at": "2026-10-08T12:55:48Z",
+      "updated_at": "2026-10-08T12:55:53Z",
+      "status": "in_progress",
+      "conclusion": null,
+      "html_url": "https://github.com/justicerains1/AUTH_RUST/actions/runs/37780426239",
+      "jobs": [
+        {
+          "id": 113321835675,
+          "name": "integration-t01",
+          "status": "in_progress",
+          "conclusion": null,
+          "started_at": "2026-10-08T12:55:50Z",
+          "completed_at": null,
+          "html_url": "https://github.com/justicerains1/AUTH_RUST/actions/runs/37780426239/job/113321835675",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-08T12:55:51Z",
+              "completed_at": "2026-10-08T12:55:51Z"
+            },
+            {
+              "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-08T12:55:51Z",
+              "completed_at": "2026-10-08T12:55:53Z"
+            },
+            {
+              "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-08T12:55:53Z",
+              "completed_at": "2026-10-08T12:55:58Z"
+            },
+            {
+              "name": "Run dtolnay/rust-toolchain@7e38f4b43b4db5c8dd498af069a4f6196df1d067",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-08T12:55:58Z",
+              "completed_at": "2026-10-08T12:56:05Z"
+            },
+            {
+              "name": "Run npm ci",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-08T12:56:05Z",
+              "completed_at": "2026-10-08T12:56:06Z"
+            },
+            {
+              "name": "Run npm run dev:secrets",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-10-08T12:56:06Z",
+              "completed_at": "2026-10-08T12:56:07Z"
+            },
+            {
+              "name": "Run node scripts/ci-dev-up.mjs",
+              "status": "in_progress",
+              "conclusion": null,
+              "number": 7,
+              "started_at": "2026-10-08T12:56:07Z",
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:integration -- --task=T01",
+              "status": "pending",
+              "conclusion": null,
+              "number": 8,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:integration -- --task=T03",
+              "status": "pending",
+              "conclusion": null,
+              "number": 9,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:security -- --task=T04",
+              "status": "pending",
+              "conclusion": null,
+              "number": 10,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:integration -- --task=T05",
+              "status": "pending",
+              "conclusion": null,
+              "number": 11,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run node node_modules/playwright/cli.js install --with-deps chromium",
+              "status": "pending",
+              "conclusion": null,
+              "number": 12,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:e2e -- --task=T05",
+              "status": "pending",
+              "conclusion": null,
+              "number": 13,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:integration -- --task=T06",
+              "status": "pending",
+              "conclusion": null,
+              "number": 14,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:e2e -- --task=T06",
+              "status": "pending",
+              "conclusion": null,
+              "number": 15,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:integration -- --task=T07",
+              "status": "pending",
+              "conclusion": null,
+              "number": 16,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:e2e -- --task=T07",
+              "status": "pending",
+              "conclusion": null,
+              "number": 17,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Publish sanitized T07 browser diagnostics",
+              "status": "pending",
+              "conclusion": null,
+              "number": 18,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:integration -- --task=T08",
+              "status": "pending",
+              "conclusion": null,
+              "number": 19,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:e2e -- --task=T08",
+              "status": "pending",
+              "conclusion": null,
+              "number": 20,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:integration -- --task=T09",
+              "status": "pending",
+              "conclusion": null,
+              "number": 21,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:e2e -- --task=T09",
+              "status": "pending",
+              "conclusion": null,
+              "number": 22,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:integration -- --task=T10",
+              "status": "pending",
+              "conclusion": null,
+              "number": 23,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:e2e -- --task=T10",
+              "status": "pending",
+              "conclusion": null,
+              "number": 24,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:integration -- --task=T11",
+              "status": "pending",
+              "conclusion": null,
+              "number": 25,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:integration -- --task=T12",
+              "status": "pending",
+              "conclusion": null,
+              "number": 26,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:e2e -- --task=T12",
+              "status": "pending",
+              "conclusion": null,
+              "number": 27,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:integration -- --task=T13",
+              "status": "pending",
+              "conclusion": null,
+              "number": 28,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:integration -- --task=T14",
+              "status": "pending",
+              "conclusion": null,
+              "number": 29,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:e2e -- --task=T17",
+              "status": "pending",
+              "conclusion": null,
+              "number": 30,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:e2e -- --task=T18",
+              "status": "pending",
+              "conclusion": null,
+              "number": 31,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run test:e2e -- --task=T19",
+              "status": "pending",
+              "conclusion": null,
+              "number": 32,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run npm run dev:down",
+              "status": "pending",
+              "conclusion": null,
+              "number": 33,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+              "status": "pending",
+              "conclusion": null,
+              "number": 65,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+              "status": "pending",
+              "conclusion": null,
+              "number": 66,
+              "started_at": null,
+              "completed_at": null
+            }
+          ]
+        },
+        {
+          "id": 113321835988,
+          "name": "check-and-build (windows-2025)",
+          "status": "in_progress",
+          "conclusion": null,
+          "started_at": "2026-10-08T12:55:52Z",
+          "completed_at": null,
+          "html_url": "https://github.com/justicerains1/AUTH_RUST/actions/runs/37780426239/job/113321835988",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-08T12:55:53Z",
+              "completed_at": "2026-10-08T12:55:55Z"
+            },
+            {
+              "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-08T12:55:55Z",
+              "completed_at": "2026-10-08T12:56:03Z"
+            },
+            {
+              "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-08T12:56:03Z",
+              "completed_at": "2026-10-08T12:56:19Z"
+            },
+            {
+              "name": "Run dtolnay/rust-toolchain@7e38f4b43b4db5c8dd498af069a4f6196df1d067",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-08T12:56:19Z",
+              "completed_at": "2026-10-08T12:56:35Z"
+            },
+            {
+              "name": "Configure Windows OpenSSL",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-08T12:56:35Z",
+              "completed_at": "2026-10-08T12:56:36Z"
+            },
+            {
+              "name": "Run npm ci",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-10-08T12:56:36Z",
+              "completed_at": "2026-10-08T12:56:44Z"
+            },
+            {
+              "name": "Run npm run verify:docs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-10-08T12:56:44Z",
+              "completed_at": "2026-10-08T12:56:45Z"
+            },
+            {
+              "name": "Run npm run test:tooling",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-10-08T12:56:45Z",
+              "completed_at": "2026-10-08T12:56:50Z"
+            },
+            {
+              "name": "Run node scripts/ci-command.mjs check",
+              "status": "in_progress",
+              "conclusion": null,
+              "number": 9,
+              "started_at": "2026-10-08T12:56:50Z",
+              "completed_at": null
+            },
+            {
+              "name": "Run node scripts/ci-command.mjs test:unit",
+              "status": "pending",
+              "conclusion": null,
+              "number": 10,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run node scripts/ci-command.mjs build",
+              "status": "pending",
+              "conclusion": null,
+              "number": 11,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+              "status": "pending",
+              "conclusion": null,
+              "number": 21,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+              "status": "pending",
+              "conclusion": null,
+              "number": 22,
+              "started_at": null,
+              "completed_at": null
+            }
+          ]
+        },
+        {
+          "id": 113321837036,
+          "name": "check-and-build (ubuntu-24.04)",
+          "status": "in_progress",
+          "conclusion": null,
+          "started_at": "2026-10-08T12:55:51Z",
+          "completed_at": null,
+          "html_url": "https://github.com/justicerains1/AUTH_RUST/actions/runs/37780426239/job/113321837036",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-08T12:55:52Z",
+              "completed_at": "2026-10-08T12:55:53Z"
+            },
+            {
+              "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-08T12:55:53Z",
+              "completed_at": "2026-10-08T12:55:54Z"
+            },
+            {
+              "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-08T12:55:54Z",
+              "completed_at": "2026-10-08T12:56:01Z"
+            },
+            {
+              "name": "Run dtolnay/rust-toolchain@7e38f4b43b4db5c8dd498af069a4f6196df1d067",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-08T12:56:01Z",
+              "completed_at": "2026-10-08T12:56:09Z"
+            },
+            {
+              "name": "Configure Windows OpenSSL",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 5,
+              "started_at": "2026-10-08T12:56:09Z",
+              "completed_at": "2026-10-08T12:56:09Z"
+            },
+            {
+              "name": "Run npm ci",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-10-08T12:56:09Z",
+              "completed_at": "2026-10-08T12:56:13Z"
+            },
+            {
+              "name": "Run npm run verify:docs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-10-08T12:56:13Z",
+              "completed_at": "2026-10-08T12:56:13Z"
+            },
+            {
+              "name": "Run npm run test:tooling",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-10-08T12:56:13Z",
+              "completed_at": "2026-10-08T12:56:17Z"
+            },
+            {
+              "name": "Run node scripts/ci-command.mjs check",
+              "status": "in_progress",
+              "conclusion": null,
+              "number": 9,
+              "started_at": "2026-10-08T12:56:17Z",
+              "completed_at": null
+            },
+            {
+              "name": "Run node scripts/ci-command.mjs test:unit",
+              "status": "pending",
+              "conclusion": null,
+              "number": 10,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Run node scripts/ci-command.mjs build",
+              "status": "pending",
+              "conclusion": null,
+              "number": 11,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+              "status": "pending",
+              "conclusion": null,
+              "number": 21,
+              "started_at": null,
+              "completed_at": null
+            },
+            {
+              "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+              "status": "pending",
+              "conclusion": null,
+              "number": 22,
+              "started_at": null,
+              "completed_at": null
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

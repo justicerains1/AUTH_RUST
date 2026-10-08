@@ -13,3 +13,6 @@
 早期失败保留：scope fixture缺profile、测试共用consent、导航取消responsebody Promise、平台退出浏览器上下文、13个expect_used检查失败、同期依赖停机；分别精确修fixture/测试隔离/Promise等待/Result错误处理，未放宽安全检查。T14草稿未导出且依赖隔离，不混入本模块。
 
 截至T12的远端a499520/run37711498834 Linux/Windows构建单元与集成全部成功；T13本提交远端结果待查询，仍不宣称全量T20～T23或生产/实体设备验收通过。
+
+
+最终回归修复：Redis恢复需实际PONG；原组合故障案例总60秒失败，拆成独立故障后T13六案例真实通过，全部原断言/默认时限/生产请求预算保留，修复f5e7640。[失败与复测](../tooling/t13-fault-isolation/test-summary.md)；最终整套回归另记录，不以局部通过替代失败报告。

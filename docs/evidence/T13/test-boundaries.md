@@ -1,6 +1,6 @@
 # T13 真实双 BFF 测试边界
 
-真实身份 API、PostgreSQL identity_test 临时 schema、Redis，以及同一 Rust demo-bff 包的 A/B 和第二 A 实例；三个 Vite 页面使用各自真实代理，维护中的 Rust OIDC 客户端实际执行 discovery、state、nonce、PKCE、授权码交换和 ID Token 验证。测试结果为 4 passed / 0 failed。
+真实身份 API、PostgreSQL identity_test 临时 schema、Redis，以及同一 Rust demo-bff 包的 A/B 和第二 A 实例；三个 Vite 页面使用各自真实代理，维护中的 Rust OIDC 客户端实际执行 discovery、state、nonce、PKCE、授权码交换和 ID Token 验证。原模块测试为4 passed；最终回归将组合故障拆成独立案例后为6 passed / 0 failed，全部原断言保留，默认时限未增加，见[拆分记录](../tooling/t13-fault-isolation/test-summary.md)。
 
 A 登录后 B 复用身份会话但首次独立同意；身份平台全部退出后 A/B 下一次保护请求拒绝。浏览器不发 token 交换请求，不在存储或 /bff/session JSON 获得 access/refresh/ID Token/client secret；仅检查 Cookie 元数据，不保存秘密值。
 

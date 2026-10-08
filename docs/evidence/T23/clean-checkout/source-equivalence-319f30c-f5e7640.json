@@ -1,0 +1,78 @@
+{
+  "observedAt": "2026-10-08T13:02:38.579629+00:00",
+  "verifiedCleanCommit": "319f30c4e7de8090cb7055011acc2471530f4e5c",
+  "comparedCommit": "f5e764057750c7607df66a2df0cb5b5a28514aff",
+  "cleanReport": "2026-10-08T12-36-47-083Z.json",
+  "changedProductionRustFrontendLocksMigrationsData": [],
+  "productionRustFrontendLocksMigrationsDataIdentical": true,
+  "changedRustTests": [
+    "crates/identity-server/tests/t13_bff.rs"
+  ],
+  "changedOtherTests": [
+    "tests/e2e/T13.spec.ts",
+    "tests/integration/T13.mjs"
+  ],
+  "changedBuildDefinitions": [
+    "infra/Dockerfile.edge.prod"
+  ],
+  "allChangedFiles": [
+    ".gitleaksignore",
+    "TASK_PROGRESS.md",
+    "TEST_SUMMARY.md",
+    "acceptance.md",
+    "crates/identity-server/tests/t13_bff.rs",
+    "docs/evidence/T13/browser-diagnostics-1791462071889.txt",
+    "docs/evidence/T13/browser-diagnostics-1791463638643.txt",
+    "docs/evidence/T13/integration-failure-2026-10-08T12-21-11Z.txt",
+    "docs/evidence/T13/integration-failure-2026-10-08T12-47-18Z.txt",
+    "docs/evidence/T13/integration.txt",
+    "docs/evidence/T19/browser-diagnostics-1791462511854.txt",
+    "docs/evidence/T19/e2e-failure-2026-10-08T12-28-31Z.txt",
+    "docs/evidence/T20/artifact-secret-triage.json",
+    "docs/evidence/T20/secret-triage.md",
+    "docs/evidence/T20/security-checks-2026-10-08T12-28-32-006Z.json",
+    "docs/evidence/T20/test-summary.md",
+    "docs/evidence/T20/zap/scan-1791462536435.json",
+    "docs/evidence/T23/clean-checkout/2026-10-08T12-11-26-363Z-failure-analysis.md",
+    "docs/evidence/T23/clean-checkout/2026-10-08T12-11-26-363Z-progress.json",
+    "docs/evidence/T23/clean-checkout/2026-10-08T12-11-26-363Z.json",
+    "docs/evidence/T23/clean-checkout/2026-10-08T12-11-26-363Z.md",
+    "docs/evidence/T23/clean-checkout/2026-10-08T12-36-47-083Z-progress.json",
+    "docs/evidence/T23/clean-checkout/2026-10-08T12-36-47-083Z.json",
+    "docs/evidence/T23/clean-checkout/2026-10-08T12-36-47-083Z.md",
+    "docs/evidence/T23/clean-checkout/2026-10-08T12-39-retry2-setup-error.json",
+    "docs/evidence/T23/clean-checkout/source-equivalence-319f30c-1c0c9ea.json",
+    "docs/evidence/T23/clean-checkout/test-summary.md",
+    "docs/evidence/T23/final-artifacts-edge-capfix-build.txt",
+    "docs/evidence/T23/final-artifacts-final-edge-build.txt",
+    "docs/evidence/T23/final-artifacts-final-runtime-build.txt",
+    "docs/evidence/T23/final-artifacts-initial-edge-build.txt",
+    "docs/evidence/T23/final-artifacts-initial-runtime-build.txt",
+    "docs/evidence/T23/final-artifacts.json",
+    "docs/evidence/T23/final-artifacts.md",
+    "docs/evidence/T23/remaining-verification.md",
+    "docs/evidence/T23/source-freshness-and-e28.md",
+    "docs/evidence/complete-e2e/2026-10-08T12-23-47-692Z.json",
+    "docs/evidence/complete-integration/2026-10-08T12-15-13-584Z.json",
+    "docs/evidence/full-test/2026-10-08T12-14-09-892Z.md",
+    "docs/evidence/tooling/caddy-capabilities/test-summary.md",
+    "docs/evidence/tooling/t13-fault-isolation/test-summary.md",
+    "infra/Dockerfile.edge.prod",
+    "plan.md",
+    "tests/e2e/T13.spec.ts",
+    "tests/integration/T13.mjs"
+  ],
+  "separateVerification": [
+    {
+      "scope": "T13 harness/E2E changes; six cases using actual HTTP/PG/Redis including three independent faults",
+      "evidence": "../../tooling/t13-fault-isolation/test-summary.md",
+      "note": "Separate actual local six-case pass; final complete run remains its own report."
+    },
+    {
+      "scope": "Production Dockerfile edge capability removal; final archive-based images and runtime restrictions",
+      "evidence": "../final-artifacts.md",
+      "note": "Actual final image snapshot 1c0c9ea. Production source same; do not imply image digest from clean checkout artifacts."
+    }
+  ],
+  "scope": "Clean seven-stage report remains at actual 319f30c. Production Rust/frontend/locks unchanged; Rust test harness and T13 E2E/integration changed and were independently executed. Do not claim all tests identical or that final SHA itself ran in that clean worktree."
+}

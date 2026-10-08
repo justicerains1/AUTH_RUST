@@ -26,7 +26,7 @@ Compose 创建 PostgreSQL 17、Redis 7.4、Mailpit、API、Worker 和三个前�
 | 服务 | 地址 | 当前行为 |
 |---|---|---|
 | 身份页面 | http://localhost:5173 | 已确认设计、真实注册/验证、密码/MFA/Passkey与账号安全页面 |
-| 演示 A / B | http://localhost:5174 / http://localhost:5175 | 开发应用空路由，尚无 SSO |
+| 演示 A / B | http://localhost:5174 / http://localhost:5175 | 两个独立 BFF 真实 SSO；按下文显式初始化客户端并启动 bff profile |
 | API liveness | http://localhost:8080/health/live | 进程存活返回 200 |
 | API readiness | http://localhost:8080/health/ready | PG/Redis 均可用 200，否则 503 |
 | Worker liveness | http://localhost:8081/health/live | 真实 outbox SMTP Worker，开发环境 Mailpit |
@@ -68,15 +68,15 @@ npm run test:integration -- --task=T01
 
 `check` 执行 fmt、Clippy `-D warnings`、TypeScript strict 和 ESLint；`build` 编译全部 Rust release 与三前端 production；`test:unit` 运行实际 Rust/Vitest 测试，零测试拒绝成功。T01 集成测试需要先 `dev:up`，验证所有服务健康、页面/代理可达、真实 production 配置拒绝，以及分别停止 PG/Redis 后的 503 和恢复 200。它只控制本项目 Compose 的开发服务，故障测试后会恢复依赖；脱敏报告保存到 `docs/evidence/T01/`。
 
-完整integration/E2E已按固定任务manifest逐项运行，失败继续并记录退出码；security执行依赖/秘密/协议和本地生产构建ZAP。load必须明确选择场景，seed只白名单测试库。verify:openapi、数据库迁移与T16 accessibility已经有实际套件。`npm run db:migrate -- --env=development` 对本机开发目标应用SQLx校验迁移；test仅允许identity_test，production需显式环境和--allow-production。启动不会隐式迁移。测试数据 seed 禁止用于生产，T21再补完整种子，未实现命令仍非零。
+完整integration/E2E已按固定任务manifest逐项运行，失败继续并记录退出码；security执行依赖/秘密/协议和本地生产构建ZAP。load必须明确选择场景，seed只白名单测试库。verify:openapi、数据库迁移与T16 accessibility已经有实际套件。`npm run db:migrate -- --env=development` 对本机开发目标应用SQLx校验迁移；test仅允许identity_test，production需显式环境和--allow-production。启动不会隐式迁移。测试数据 seed 禁止用于生产，T21已提供隔离十万账号/授权种子，错误环境及缺必要工具真实非零。
 
 CI 复用相同根脚本，分别配置 Linux/Windows 构建，以及 Linux Compose T01 集成任务。CI 配置存在不代表远端已经运行，实际执行记录以 [acceptance.md](acceptance.md) 和 [docs/evidence/T01](docs/evidence/T01) 为准。
 
-## 目录与下一任务
+## 目录与任务状态
 
 `identity-core` 负责规则/配置，`identity-store` 负责 SQLx 和依赖连接，`identity-server` 负责 Axum，`identity-worker`负责真实outbox发送/重试，`identity-admin-cli` 在 T14 实现初始化，`demo-bff` 在 T13 实现两个独立客户端实例。身份前端已完成T17～T19认证/账号/同意/后台产品流程整合，A/B的实际BFF/SSO已在T13实现。T15视觉稿获用户确认，T16基础已完成。
 
-当前通过与待验收任务见进度表；完整OpenAPI包括未来端点契约，端点能力以真实任务证据为准。T17认证页面代码与浏览器案例通过，前置实体设备待验收；当前继续独立T18/T19账号与后台实现；对应任务全部必要验收通过后推进下一任务。文档后续页面和跨模块验收的依赖问题已记录于 [T00 审计](docs/evidence/T00/document-audit.md)，进入相关任务前同步修订，不通过跳过测试消除依赖。
+当前通过与待验收任务见进度表；OpenAPI能力以真实任务证据为准。T17/T18认证和账号页面已实现并通过自动案例，但前置实体设备待验收；T19后台真实案例通过。最终完整测试和发布待验项目以任务进度为准。文档后续页面和跨模块验收的依赖问题已记录于 [T00 审计](docs/evidence/T00/document-audit.md)，进入相关任务前同步修订，不通过跳过测试消除依赖。
 
 ## 前端基础与数据库测试
 
@@ -84,7 +84,9 @@ CI 复用相同根脚本，分别配置 Linux/Windows 构建，以及 Linux Comp
 
 ## 完整检查与总结
 
-`npm run test:full`依次执行npm ci、文档/契约/工具检查、check、unit、全部integration/e2e/security/accessibility及build。任一失败仍执行剩余项，整体返回非零，生成`TEST_SUMMARY.md`及带时间戳的`docs/evidence/full-test/`报告。原始进程输出只保存到受限的`.local/full-test/`，避免把秘密写入提交。尚未实现的全量套件会如实失败；此命令不代替性能、真实设备或生产恢复验收。
+`npm run test:full`依次执行npm ci、文档/契约/工具检查、check、unit、全部integration/e2e/security/accessibility及build。任一失败仍执行剩余项，整体返回非零，生成`TEST_SUMMARY.md`及带时间戳的`docs/evidence/full-test/`报告。原始进程输出只保存到受限的`.local/full-test/`，避免把秘密写入提交。缺必要套件或工具会如实失败；此命令不代替性能、真实设备或生产恢复验收。
+
+运行完整安全与运维检查需准备固定 Gitleaks、cargo-deny、ZAP/Java 和 age 工具；版本/摘要见 [安全工具记录](docs/evidence/T20/scan-tool-versions.json) 和 [age来源与默认路径](docs/evidence/T22/age-source.md)。T22 会真实运行隔离 PG 备份/WAL 测试，缺 age 工具不会跳过返回成功。
 
 
 ## 双 BFF 演示开发环境（T13）
