@@ -5,14 +5,14 @@ import { api, ApiError } from '../lib/api';
 import { FactorChallenge } from './FactorChallenge';
 import { RecoveryCodes } from './RecoveryCodes';
 
-const challenge = { challenge_id: '65d69320-97e8-4de0-a062-4c0f948a1b80', methods: ['totp', 'recovery_code'] as const, expires_at: '2026-10-08T12:05:00Z' };
+const challenge = () => ({ challenge_id: '65d69320-97e8-4de0-a062-4c0f948a1b80', methods: ['totp', 'recovery_code'] as const, expires_at: new Date(Date.now() + 300_000).toISOString() });
 afterEach(() => { cleanup(); vi.restoreAllMocks(); });
 
 describe('T08 因素与恢复码行为', () => {
   it('允许粘贴完整验证码，失败清码并保留安全错误', async () => {
     const user = userEvent.setup();
     const request = vi.spyOn(api, 'request').mockRejectedValue(new ApiError(401, 'AUTH_FACTOR_INVALID', '验证码无效'));
-    render(<FactorChallenge challenge={challenge} purpose="login" onComplete={() => undefined} onRestart={() => undefined} />);
+    render(<FactorChallenge challenge={challenge()} purpose="login" onComplete={() => undefined} onRestart={() => undefined} />);
     const code = screen.getByLabelText<HTMLInputElement>('验证码');
     await user.click(code); await user.paste('123456');
     await user.click(screen.getByRole('button', { name: '验证并登录' }));
@@ -25,7 +25,7 @@ describe('T08 因素与恢复码行为', () => {
   it('恢复码切换按对应用途端点提交，次数耗尽仅能重新开始', async () => {
     const user = userEvent.setup();
     const request = vi.spyOn(api, 'request').mockRejectedValue(new ApiError(409, 'AUTH_CHALLENGE_CONSUMED', '挑战已失效'));
-    render(<FactorChallenge challenge={challenge} purpose="reauthentication" onComplete={() => undefined} onRestart={() => undefined} />);
+    render(<FactorChallenge challenge={challenge()} purpose="reauthentication" onComplete={() => undefined} onRestart={() => undefined} />);
     await user.click(screen.getByRole('button', { name: '使用恢复码' }));
     await user.type(screen.getByLabelText('恢复码'), 'EXAMPLE_INVALID_RECOVERY_CODE');
     await user.click(screen.getByRole('button', { name: '完成强认证' }));

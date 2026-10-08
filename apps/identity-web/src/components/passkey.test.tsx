@@ -12,7 +12,7 @@ it('用户取消Passkey时不发送验证请求或制造强认证成功', async 
   const original = navigator.credentials;
   Object.defineProperty(navigator, 'credentials', { configurable: true, value: { create: vi.fn(), get } });
   try {
-    const request = vi.spyOn(api, 'request').mockResolvedValue({ challenge_id: '65d69320-97e8-4de0-a062-4c0f948a1b80', purpose: 'passkey_reauthentication', expires_at: '2026-10-08T12:05:00Z', publicKey: { challenge: 'AQID', rpId: 'localhost', userVerification: 'required' } });
+    const request = vi.spyOn(api, 'request').mockResolvedValue({ challenge_id: '65d69320-97e8-4de0-a062-4c0f948a1b80', purpose: 'passkey_reauthentication', expires_at: new Date(Date.now() + 300_000).toISOString(), publicKey: { challenge: 'AQID', rpId: 'localhost', userVerification: 'required' } });
     const confirmed = vi.fn();
     render(<PasskeyReauth onConfirmed={confirmed} />);
     await user.click(screen.getByRole('button', { name: '使用Passkey确认身份' }));
