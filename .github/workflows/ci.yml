@@ -62,6 +62,9 @@ jobs:
       - run: npm run test:e2e -- --task=T06
       - run: npm run test:integration -- --task=T07
       - run: npm run test:e2e -- --task=T07
+      - name: Publish sanitized T07 browser diagnostics
+        if: failure()
+        run: node scripts/ci-e2e-diagnostics.mjs T07
       - run: npm run test:integration -- --task=T08
       - run: npm run test:e2e -- --task=T08
       - run: npm run test:integration -- --task=T09
