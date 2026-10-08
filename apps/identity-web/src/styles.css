@@ -191,3 +191,63 @@ h3 { margin: 0 0 16px; line-height: 1.25; }
   .auth-panel { padding: 20px; }
   .object-row { flex-wrap: wrap; }
 }
+
+/* T18 account pages retain the approved side navigation and stacked security panels. */
+.account-title { padding-top: 0; padding-bottom: 12px; }
+.account-title h1 { font-size: clamp(2rem, 4vw, 2.5rem); margin-bottom: 12px; }
+.account-title .eyebrow { margin-bottom: 12px; }
+.account-layout { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 40px; align-items: start; padding-top: 24px; }
+.account-navigation { display: grid; gap: 8px; align-self: start; }
+.account-navigation a { min-height: 48px; padding: 11px 16px; color: var(--muted); text-decoration: none; border-radius: var(--radius-control); }
+.account-navigation a[aria-current] { color: var(--accent); background: var(--accent-wash); font-weight: 650; }
+.account-content { display: grid; gap: 24px; min-width: 0; }
+.security-header { display: flex; justify-content: space-between; align-items: start; gap: 24px; margin-bottom: 24px; }
+.security-header h2 { margin-bottom: 12px; }
+.security-header p { margin-bottom: 0; }
+.badge, .current-device { display: inline-block; color: var(--success); background: #edf6ef; padding: 5px 10px; border: 1px solid #b7d2c0; border-radius: var(--radius-control); font-size: .75rem; font-weight: 600; }
+.badge--neutral { color: var(--muted); border-color: var(--control-border); background: var(--background); }
+.current-device { display: block; width: fit-content; margin-top: 8px; }
+.detail-row { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border); padding: 20px 0; gap: 20px; }
+.detail-row:last-child { padding-bottom: 0; }
+.detail-row > div { min-width: 0; }
+.detail-row strong { font-size: 1rem; }
+.detail-row h3 { font-size: 1.125rem; overflow-wrap: anywhere; margin-bottom: 8px; }
+.detail-row p { color: var(--muted); font-size: .875rem; margin: 4px 0 0; overflow-wrap: anywhere; }
+.detail-row > .button { flex-shrink: 0; }
+.account-details { display: grid; grid-template-columns: minmax(96px, 1fr) minmax(0, 3fr); gap: 12px 20px; margin: 0; }
+.account-details dt { color: var(--muted); }
+.account-details dd { margin: 0; overflow-wrap: anywhere; }
+.grant-list, .credential-list { list-style: none; padding: 0; margin: 0; }
+.credential-list .actions { flex-shrink: 0; }
+.credential-edit { border-top: 1px solid var(--border); padding-top: 24px; margin-top: 24px; }
+.consent-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; padding-top: 16px; }
+.consent-panel { max-width: 480px; }
+.consent-panel .status { margin-top: 20px; }
+.scope-list { list-style: none; padding: 0; margin: 24px 0; }
+.scope-list li { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 12px 0; border-top: 1px solid var(--border); }
+.scope-list li > span:first-child { color: var(--accent); }
+.admin-panel { margin-block: 24px; }
+.admin-navigation { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; }
+.admin-filters { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: end; gap: 16px; margin: 24px 0; }
+.admin-filters label { display: grid; gap: 8px; font-weight: 600; }
+textarea, select { font: inherit; min-height: 48px; max-width: 100%; border: 1px solid var(--control-border); border-radius: var(--radius-control); background: var(--panel); color: var(--text); padding: 12px; }
+textarea { resize: vertical; }
+@media (max-width: 1023px) { .account-layout { grid-template-columns: 160px minmax(0, 1fr); gap: 24px; } .consent-layout { gap: 32px; } }
+@media (max-width: 767px) {
+  .account-layout { display: block; padding-top: 12px; }
+  .account-navigation { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .account-navigation a { padding: 10px 12px; font-size: .875rem; }
+  .consent-layout { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  .consent-panel { max-width: none; }
+  .security-header { flex-wrap: wrap; gap: 16px; }
+  .detail-row { align-items: start; flex-wrap: wrap; gap: 12px; }
+  .detail-row > div { width: 100%; }
+  .admin-filters { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 639px) {
+  .account-details { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .account-details dd { margin-bottom: 12px; }
+  .table .button { padding: 8px; font-size: .8125rem; }
+  .date-value { font-size: .8125rem; }
+  .recovery-codes code { font-size: .875rem; }
+}

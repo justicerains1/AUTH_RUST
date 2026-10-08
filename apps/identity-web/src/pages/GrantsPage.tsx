@@ -1,19 +1,19 @@
 import { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Link } from 'react-router';
-import { api, ApiError, grantPageSchema, noContentSchema } from '../lib/api';
+import { api, grantPageSchema, noContentSchema } from '../lib/api';
 import { Button } from '../components/Button';
-import { ConfirmDialog } from '../components/ConfirmDialog';
+import { AccountAction } from '../components/AccountAction';
+import { AccountLayout } from '../components/AccountLayout';
 import { CursorPagination } from '../components/CursorPagination';
+import { Empty } from '../components/Empty';
 import { Status } from '../components/Status';
-import { PageTitle } from './PageTitle';
 
+const labels = { openid: '身份标识', profile: '显示名称', email: '邮箱地址与验证状态' } as const;
 export default function GrantsPage() {
   const client = useQueryClient();
   const [cursors, setCursors] = useState<string[]>([]);
-  const [failure, setFailure] = useState<ApiError | null>(null);
   const cursor = cursors.at(-1);
-  const query = useQuery({ queryKey: ['identity', 'grants', cursor ?? ''], queryFn: ({ signal }) => api.request(`/me/grants?limit=20${cursor ? `&cursor=${encodeURIComponent(cursor)}` : ''}`, grantPageSchema, { signal }) });
-  async function revoke(id: string) { try { await api.request(`/me/grants/${id}`, noContentSchema, { method: 'DELETE' }); setFailure(null); await client.invalidateQueries({ queryKey: ['identity', 'grants'] }); } catch (error) { setFailure(error instanceof ApiError ? error : new ApiError(0, 'CLIENT_NETWORK_UNAVAILABLE', '请求暂未完成')); throw error; } }
-  return <><PageTitle title="应用授权" /><p className="eyebrow">ACCOUNT / GRANTS</p><h1>已授权应用</h1><p><Link to="/me">返回账号安全</Link></p><p className="muted">撤销后，应用下一次认证检查会立即失效。</p>{failure && <Status kind="error" title="撤销未完成" description={failure.message} requestId={failure.requestId} />}<section className="panel">{query.isPending ? <Status kind="loading" title="正在加载授权…" /> : query.isError ? <Status kind="unavailable" title="暂时无法加载授权" onRetry={() => { void query.refetch(); }} /> : query.data.items.length ? <ul>{query.data.items.map((grant) => <li key={grant.id}><h2>{grant.client_name}</h2><p>已授权范围：{grant.scope.join('、')}</p><ConfirmDialog trigger={<Button variant="danger">撤销授权</Button>} title={`撤销${grant.client_name}的授权？`} description="此授权的访问令牌与刷新令牌将失效，需要重新同意。其他应用授权不受影响。" confirmLabel="确认撤销" onConfirm={() => revoke(grant.id)} /></li>)}</ul> : <p>还没有授权应用。</p>}<CursorPagination hasPrevious={cursors.length > 0} hasNext={Boolean(query.data?.next_cursor)} loading={query.isFetching} onPrevious={() => { setCursors((values) => values.slice(0, -1)); }} onNext={() => { const cursor = query.data?.next_cursor; if (cursor) setCursors((values) => [...values, cursor]); }} /></section></>;
+  const query = useQuery({ queryKey: ['identity', 'grants', cursor ?? ''], queryFn: ({ signal }) => api.request(`/me/grants?limit=20${cursor === undefined ? '' : `&cursor=${encodeURIComponent(cursor)}`}`, grantPageSchema, { signal }) });
+  async function revoke(id: string) { await api.request(`/me/grants/${id}`, noContentSchema, { method: 'DELETE' }); await client.invalidateQueries({ queryKey: ['identity', 'grants'] }); }
+  return <AccountLayout title="已授权应用" description="只保留仍在使用的连接。撤销后，应用下一次认证检查会立即失效。"><section className="panel"><h2>你的应用连接</h2>{query.isPending ? <Status kind="loading" title="正在加载授权…" /> : query.isError ? <Status kind="unavailable" title="暂时无法加载授权" onRetry={() => { void query.refetch(); }} /> : query.data.items.length > 0 ? <ul className="grant-list">{query.data.items.map((grant) => <li className="detail-row" key={grant.id}><div><h3>{grant.client_name}</h3><p>已授权范围：{grant.scope.map((scope) => labels[scope]).join('、')}</p><p>授权时间：{new Date(grant.created_at).toLocaleString('zh-CN')}</p></div><AccountAction trigger={<Button variant="danger">撤销授权</Button>} title={`撤销${grant.client_name}的授权？`} description="此授权的访问令牌与刷新令牌将失效，继续连接需要重新同意。其他应用授权不受影响。" confirmLabel="确认撤销" onConfirm={() => revoke(grant.id)} /></li>)}</ul> : <Empty title="还没有授权应用" description="连接应用并明确同意后，授权会显示在这里。" />}<CursorPagination hasPrevious={cursors.length > 0} hasNext={Boolean(query.data?.next_cursor)} loading={query.isFetching} onPrevious={() => { setCursors((values) => values.slice(0, -1)); }} onNext={() => { const next = query.data?.next_cursor; if (next) setCursors((values) => [...values, next]); }} /></section></AccountLayout>;
 }

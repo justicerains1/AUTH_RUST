@@ -1,0 +1,43 @@
+import { test, expect, type Page } from '@playwright/test';
+import { createHmac } from 'node:crypto';
+async function material(query = ''): Promise<{ secret: string; recovery: string; seconds: number }> { const key = process.env.T18_CLOCK_KEY; if (!key) throw new Error('Private test key required.'); return (await fetch(`http://127.0.0.1:5197/__test/material${query}`, { headers: { 'x-test-key': key } })).json() as Promise<{ secret: string; recovery: string; seconds: number }>; }
+function totp(secret: string, seconds: number): string { let accumulator = 0, bits = 0; const bytes: number[] = []; for (const ch of secret) { accumulator = accumulator << 5 | 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567'.indexOf(ch); bits += 5; if (bits >= 8) { bits -= 8; bytes.push(accumulator >> bits & 255); accumulator &= (1 << bits) - 1; } } const counter = Buffer.alloc(8); counter.writeBigUInt64BE(BigInt(Math.floor(seconds / 30))); const hash = createHmac('sha1', Buffer.from(bytes)).update(counter).digest(); return String((hash.readUInt32BE((hash[19] ?? 0) & 15) & 0x7fffffff) % 1_000_000).padStart(6, '0'); }
+async function login(page: Page, email: string, mfa = false) { const password = process.env.T18_BROWSER_PASSWORD; if (!password) throw new Error('Private password required.'); await page.goto('/login'); await page.getByLabel('邮箱地址').fill(email); await page.getByLabel('密码', { exact: true }).fill(password); await page.getByRole('button', { name: '登录', exact: true }).click(); if (mfa) { const value = await material('?advance=1'); await page.getByLabel('验证码', { exact: true }).fill(totp(value.secret, value.seconds)); await page.getByRole('button', { name: '验证并登录', exact: true }).click(); } await expect(page).toHaveURL(/\/me$/u); }
+
+test('@T18 revoking a second device updates the list and removes its real authority', async ({ page, browser }) => {
+  await login(page, 'browser-devices@example.test'); const context = await browser.newContext(); const other = await context.newPage();
+  try { await login(other, 'browser-devices@example.test'); await page.goto('/me/sessions'); await expect(page.getByRole('heading', { name: '设备会话', exact: true })).toBeVisible(); await page.getByRole('button', { name: '撤销会话', exact: true }).click(); const revoke = page.waitForResponse((response) => response.request().method() === 'DELETE' && /\/me\/sessions\//u.test(response.url())); await page.getByRole('dialog').getByRole('button', { name: '确认撤销', exact: true }).click(); expect((await revoke).status()).toBe(204); await expect(page.getByRole('button', { name: '撤销会话', exact: true })).toHaveCount(0); const status = await other.evaluate(async () => (await fetch('/api/v1/me', { credentials: 'same-origin' })).status); expect(status).toBe(401); } finally { await context.close(); }
+});
+
+test('@T18 expired strong authentication requires a real proof without automatic mutation replay', async ({ page }) => {
+  await login(page, 'browser-account@example.test', true); await material('?strong-expire=1'); await page.goto('/me/mfa');
+  let mutations = 0; page.on('request', (request) => { if (request.url().endsWith('/mfa/recovery-codes/regenerate')) mutations += 1; });
+  await page.getByRole('button', { name: '重新生成恢复码', exact: true }).click(); await page.getByRole('dialog').getByRole('button', { name: '确认重新生成', exact: true }).click();
+  const auth = page.getByRole('dialog', { name: /确认|认证/u }); await expect(auth).toBeVisible(); const password = process.env.T18_BROWSER_PASSWORD; if (!password) throw new Error('Private password required.'); await auth.getByLabel('当前密码', { exact: true }).fill(password); await auth.getByRole('button', { name: '确认密码', exact: true }).click(); const value = await material('?advance=1'); await auth.getByLabel('验证码', { exact: true }).fill(totp(value.secret, value.seconds)); await auth.getByRole('button', { name: '完成强认证', exact: true }).click();
+  const count = mutations; await page.waitForTimeout(300); expect(mutations).toBe(count);
+  await page.getByRole('button', { name: '重新生成恢复码', exact: true }).click(); await page.getByRole('dialog').getByRole('button', { name: '确认重新生成', exact: true }).click(); await expect(page.getByRole('region', { name: '一次性恢复码' })).toBeVisible();
+  await page.context().grantPermissions(['clipboard-read', 'clipboard-write']);
+  await page.getByRole('button', { name: '复制恢复码', exact: true }).click(); await expect(page.getByRole('status').filter({ hasText: '已复制到剪贴板' })).toBeVisible(); const copied = await page.evaluate(() => navigator.clipboard.readText()); expect(copied.split('\n').length).toBe(10);
+  const download = page.waitForEvent('download'); await page.getByRole('button', { name: '下载恢复码', exact: true }).click(); expect((await download).suggestedFilename()).toBe('identity-recovery-codes.txt');
+  await page.getByRole('button', { name: '已保存，关闭恢复码', exact: true }).click(); await expect(page.getByRole('region', { name: '一次性恢复码' })).toHaveCount(0);
+  await page.getByRole('button', { name: '关闭TOTP', exact: true }).click(); await page.getByRole('dialog').getByRole('button', { name: '确认关闭TOTP', exact: true }).click(); await expect(page.getByText('TOTP未启用', { exact: true })).toBeVisible();
+});
+
+test('@T18 consent shows validated scopes and explicit rejection never returns a code', async ({ page }) => {
+  await login(page, 'browser-devices@example.test'); const query = new URLSearchParams({ client_id: 't18-transaction', response_type: 'code', redirect_uri: 'http://localhost:5190/callback', scope: 'openid', state: 'T18_BROWSER_STATE_FIXTURE_123', nonce: 'T18_BROWSER_NONCE_FIXTURE_456', code_challenge: 'A'.repeat(43), code_challenge_method: 'S256', prompt: 'consent' });
+  await page.goto(`/oauth/authorize?${query}`); await expect(page.getByRole('heading', { name: 'T18 verified transaction', exact: true })).toBeVisible(); await page.getByRole('button', { name: '拒绝授权', exact: true }).click(); await page.waitForURL((url) => url.pathname === '/callback'); const redirect = new URL(page.url()); expect(redirect.searchParams.get('error')).toBe('access_denied'); expect(redirect.searchParams.has('code')).toBe(false);
+  await page.goto(`/oauth/authorize?${query}`); await page.getByRole('button', { name: '同意授权', exact: true }).click(); await page.waitForURL((url) => url.pathname === '/callback'); expect(new URL(page.url()).searchParams.has('code')).toBe(true);
+  await page.goto('/me/grants'); await page.getByRole('button', { name: '撤销授权', exact: true }).click(); await page.getByRole('dialog').getByRole('button', { name: '确认撤销', exact: true }).click(); await expect(page.getByText('还没有授权应用', { exact: true })).toBeVisible();
+});
+
+test('@T18 Passkey deletion keeps an explicit confirmation after real registration', async ({ page }) => {
+  await login(page, 'browser-passkey-account@example.test');
+  const cdp = await page.context().newCDPSession(page); await cdp.send('WebAuthn.enable'); const virtual = await cdp.send('WebAuthn.addVirtualAuthenticator', { options: { protocol: 'ctap2', transport: 'internal', hasResidentKey: true, hasUserVerification: true, isUserVerified: true, automaticPresenceSimulation: true } });
+  try {
+    await page.goto('/me/passkeys'); await page.getByRole('button', { name: '确认当前身份', exact: true }).click(); const auth = page.getByRole('dialog', { name: '确认当前身份' }); const password = process.env.T18_BROWSER_PASSWORD; if (!password) throw new Error('Private password required.'); await auth.getByLabel('当前密码', { exact: true }).fill(password); await auth.getByRole('button', { name: '确认密码', exact: true }).click();
+    await page.getByLabel('Passkey名称', { exact: true }).fill('T18 virtual fixture'); await page.getByRole('button', { name: '注册Passkey', exact: true }).click(); await expect(page.getByText('T18 virtual fixture', { exact: true })).toBeVisible();
+    await page.getByRole('button', { name: '确认当前身份', exact: true }).click(); await page.getByRole('dialog', { name: '确认当前身份' }).getByRole('button', { name: '使用Passkey确认身份', exact: true }).click();
+    await page.getByRole('button', { name: '删除Passkey', exact: true }).click(); const dialog = page.getByRole('dialog'); await expect(dialog).toBeVisible(); await dialog.getByRole('button', { name: '取消', exact: true }).click(); await expect(page.getByText('T18 virtual fixture', { exact: true })).toBeVisible();
+    await page.getByRole('button', { name: '删除Passkey', exact: true }).click(); await page.getByRole('dialog').getByRole('button', { name: '确认删除', exact: true }).click(); await expect(page.getByText('T18 virtual fixture', { exact: true })).toHaveCount(0);
+  } finally { await cdp.send('WebAuthn.removeVirtualAuthenticator', { authenticatorId: virtual.authenticatorId }); await cdp.detach(); }
+});

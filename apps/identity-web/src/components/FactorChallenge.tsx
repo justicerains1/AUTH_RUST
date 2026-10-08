@@ -7,7 +7,7 @@ import { Input } from './Input';
 import { Status } from './Status';
 
 type Challenge = { challenge_id: string; methods: readonly ('totp' | 'recovery_code')[]; expires_at: string };
-export function FactorChallenge({ challenge, purpose, onComplete, onRestart }: { challenge: Challenge; purpose: 'login' | 'reauthentication'; onComplete: (result: MfaVerification) => void | Promise<void>; onRestart: () => void }) {
+export function FactorChallenge({ challenge, purpose, onComplete, onRestart, onBusyChange }: { challenge: Challenge; purpose: 'login' | 'reauthentication'; onComplete: (result: MfaVerification) => void | Promise<void>; onRestart: () => void; onBusyChange?: (busy: boolean) => void }) {
   const [method, setMethod] = useState<'totp' | 'recovery_code'>(() => challenge.methods.includes('totp') ? 'totp' : 'recovery_code');
   const [failure, setFailure] = useState<ApiError | null>(null);
   const [expired, setExpired] = useState(false);
@@ -28,6 +28,7 @@ export function FactorChallenge({ challenge, purpose, onComplete, onRestart }: {
     if (submitting.current || isExpired || retrySeconds > 0) return;
     if (method === 'totp' ? !/^\d{6}$/u.test(values.code) : !/^[A-Za-z0-9_-]{22,128}$/u.test(values.code)) { setError('code', { message: method === 'totp' ? '请输入6位数字验证码' : '请输入完整恢复码' }); resetField('code', { keepError: true }); return; }
     submitting.current = true;
+    onBusyChange?.(true);
     const controller = new AbortController(); currentRequest.current = controller;
     setFailure(null);
     try {
@@ -40,7 +41,7 @@ export function FactorChallenge({ challenge, purpose, onComplete, onRestart }: {
       const failure = error instanceof ApiError ? error : new ApiError(0, 'CLIENT_NETWORK_UNAVAILABLE', '请求暂未完成，请重试'); setFailure(failure);
       if (failure.retryAfter !== undefined) setRetryUntil(Date.now() + failure.retryAfter * 1000);
       if (['AUTH_CHALLENGE_EXPIRED', 'AUTH_CHALLENGE_CONSUMED', 'AUTH_CHALLENGE_INVALID', 'AUTH_CHALLENGE_EXHAUSTED'].includes(failure.code)) setExpired(true);
-    } finally { resetField('code'); submitting.current = false; currentRequest.current = null; }
+    } finally { resetField('code'); submitting.current = false; currentRequest.current = null; onBusyChange?.(false); }
   }
   function restart() { currentRequest.current?.abort(); resetField('code'); onRestart(); }
   return <section aria-label={purpose === 'login' ? '第二因素验证' : '近期强认证'}>

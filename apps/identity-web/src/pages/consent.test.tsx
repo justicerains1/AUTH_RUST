@@ -9,7 +9,7 @@ import ConsentPage from './ConsentPage';
 const id = '65d69320-97e8-4de0-a062-4c0f948a1b80';
 afterEach(() => { cleanup(); vi.restoreAllMocks(); });
 function page() { const client = new QueryClient({ defaultOptions: { queries: { retry: false, gcTime: 0 } } }); render(<QueryClientProvider client={client}><MemoryRouter initialEntries={[`/oauth/consent/${id}`]}><Routes><Route path="/oauth/consent/:id" element={<ConsentPage />} /></Routes></MemoryRouter></QueryClientProvider>); }
-const transaction = { id, client: { client_id: 'demo-a', name: '<script>Application</script>' }, requested_scopes: ['openid', 'email'], previously_approved_scopes: [], expires_at: '2026-10-08T12:05:00Z', status: 'consent_required' };
+const transaction = { id, client: { client_id: 'demo-a', name: '<script>Application</script>' }, requested_scopes: ['openid', 'email'], previously_approved_scopes: [], expires_at: new Date(Date.now() + 60_000).toISOString(), status: 'consent_required' };
 
 it('同意页面展示服务端客户端/范围且不自动提交授权决定', async () => {
   const request = vi.spyOn(api, 'request').mockResolvedValue(transaction);

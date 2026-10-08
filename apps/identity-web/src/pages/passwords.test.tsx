@@ -44,28 +44,31 @@ describe('T07 密码操作页面边界', () => {
 
   it('已有MFA的密码确认不解锁修改按钮', async () => {
     const user = userEvent.setup();
-    vi.spyOn(api, 'request').mockImplementation((path) => path === '/me' ? Promise.reject(new ApiError(401, 'AUTH_SESSION_REQUIRED', '请登录')) : Promise.resolve({ status: 'mfa_required', challenge_id: '65d69320-97e8-4de0-a062-4c0f948a1b80', purpose: 'reauthentication', methods: ['totp'], expires_at: '2026-10-08T12:05:00Z' }));
+    vi.spyOn(api, 'request').mockImplementation((path) => path === '/me' ? Promise.reject(new ApiError(401, 'AUTH_SESSION_REQUIRED', '请登录')) : Promise.resolve({ status: 'mfa_required', challenge_id: '65d69320-97e8-4de0-a062-4c0f948a1b80', purpose: 'reauthentication', methods: ['totp'], expires_at: new Date(Date.now() + 60_000).toISOString() }));
     page(<PasswordChangePage />);
+    await user.click(screen.getByRole('button', { name: '确认当前身份' }));
     const current = screen.getByLabelText<HTMLInputElement>('当前密码');
     await user.type(current, 'uncommon current password');
-    await user.click(screen.getByRole('button', { name: '确认当前密码' }));
-    expect((await screen.findByRole('status')).textContent).toContain('不能仅凭密码修改密码');
-    expect(current.value).toBe('');
-    expect(screen.getByRole<HTMLButtonElement>('button', { name: '修改密码' }).disabled).toBe(true);
-    expect(screen.getByLabelText<HTMLInputElement>('新密码').disabled).toBe(true);
+    await user.click(screen.getByRole('button', { name: '确认密码' }));
+    expect(await screen.findByRole('region', { name: '近期强认证' })).toBeTruthy();
+    expect(screen.queryByLabelText('当前密码')).toBeNull();
+    expect(document.querySelector<HTMLButtonElement>('button[disabled][data-state="closed"]')?.disabled).toBe(true);
+    expect(document.querySelector<HTMLInputElement>('input[name="next"]')?.disabled).toBe(true);
   });
 
   it('过期近期认证按403响应重新锁定新密码操作', async () => {
     const user = userEvent.setup();
     const request = vi.spyOn(api, 'request').mockImplementation((path) => { if (path === '/me') return Promise.reject(new ApiError(401, 'AUTH_SESSION_REQUIRED', '请登录')); if (path === '/me/reauth/password') return Promise.resolve({ status: 'reauthenticated', reauthenticated_at: '2026-10-08T12:00:00Z', valid_until: '2026-10-08T12:05:00Z', strong: false, amr: ['pwd'] }); return Promise.reject(new ApiError(403, 'AUTH_REAUTH_REQUIRED', '请先完成近期重新认证', { next: { status: 'reauth_required', required_strength: 'password', methods: ['password'] } })); });
     page(<PasswordChangePage />);
+    await user.click(screen.getByRole('button', { name: '确认当前身份' }));
     await user.type(screen.getByLabelText('当前密码'), 'uncommon current password');
-    await user.click(screen.getByRole('button', { name: '确认当前密码' }));
-    await screen.findByText('当前密码已确认');
+    await user.click(screen.getByRole('button', { name: '确认密码' }));
+    await screen.findByText('近期认证已完成');
     const password = screen.getByLabelText<HTMLInputElement>('新密码');
     await user.type(password, 'uncommon replacement password');
     await user.click(screen.getByRole('button', { name: '修改密码' }));
-    expect((await screen.findByRole('alert')).textContent).toContain('请先完成近期重新认证');
+    await user.click(screen.getByRole('button', { name: '确认修改密码' }));
+    expect(await screen.findByRole('dialog')).toBeTruthy();
     expect(password.value).toBe('');
     expect(password.disabled).toBe(true);
     expect(request.mock.calls.filter(([path]) => path !== '/me')).toHaveLength(2);
