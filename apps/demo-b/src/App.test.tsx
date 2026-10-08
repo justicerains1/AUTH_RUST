@@ -30,7 +30,7 @@ describe('演示应用 B BFF 页面', () => {
       root.render(<MemoryRouter initialEntries={[path]}><App /></MemoryRouter>);
       await Promise.resolve();
     });
-    await vi.waitFor(() => { expect(container.querySelector('main h1')).not.toBeNull(); });
+    await vi.waitFor(() => { expect(container.querySelector('main h1')).not.toBeNull(); expect(container.textContent).not.toContain('正在检查身份…'); });
   }
   async function click(label: string) {
     const button = Array.from(container.querySelectorAll('button')).find((element) => element.textContent === label);

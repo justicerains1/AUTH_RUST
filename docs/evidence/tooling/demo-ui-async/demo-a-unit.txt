@@ -1,0 +1,8 @@
+
+ RUN  v5.0.3 /root/code/rust/auth_rust/apps/demo-a
+
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  19:03:13
+   Duration  1.38s (tests 53%, environment 38%, import 6%, transform 3%)
