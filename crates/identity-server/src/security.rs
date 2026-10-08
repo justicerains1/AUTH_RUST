@@ -750,7 +750,7 @@ async fn browser_boundary(
         "x-content-type-options",
         HeaderValue::from_static("nosniff"),
     );
-    headers.insert("content-security-policy",HeaderValue::from_static("default-src 'self'; script-src 'self'; frame-ancestors 'none'; object-src 'none'; base-uri 'none'"));
+    headers.insert("content-security-policy",HeaderValue::from_static("default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; object-src 'none'; base-uri 'none'; form-action 'self'"));
     response
 }
 

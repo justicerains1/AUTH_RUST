@@ -1,0 +1,432 @@
+
+> rust-unified-identity@0.1.0 test:tooling
+> node scripts/run.mjs test:tooling
+
+TAP version 13
+# Subtest: CI diagnostics preserve compiler errors while removing credentials and private material
+ok 1 - CI diagnostics preserve compiler errors while removing credentials and private material
+  ---
+  duration_ms: 3.1916
+  type: 'test'
+  ...
+# Subtest: CI wrapper rejects commands outside its read-only verification list
+ok 2 - CI wrapper rejects commands outside its read-only verification list
+  ---
+  duration_ms: 0.6869
+  type: 'test'
+  ...
+# Subtest: migrations require one explicit environment and production acknowledgement
+ok 3 - migrations require one explicit environment and production acknowledgement
+  ---
+  duration_ms: 2.5109
+  type: 'test'
+  ...
+# Subtest: test database whitelist uses effective dbname and rejects production before connecting
+ok 4 - test database whitelist uses effective dbname and rejects production before connecting
+  ---
+  duration_ms: 1.5613
+  type: 'test'
+  ...
+# Subtest: full test keeps later stages after a failure and records missing commands as failures
+ok 5 - full test keeps later stages after a failure and records missing commands as failures
+  ---
+  duration_ms: 3.4391
+  type: 'test'
+  ...
+# Subtest: full summary reports failure without persisting private process output
+ok 6 - full summary reports failure without persisting private process output
+  ---
+  duration_ms: 0.4929
+  type: 'test'
+  ...
+# Subtest: missing executable has a nonzero result without interrupting report generation
+ok 7 - missing executable has a nonzero result without interrupting report generation
+  ---
+  duration_ms: 62.9451
+  type: 'test'
+  ...
+# Subtest: subprocess errors retain a nonzero exit code
+ok 8 - subprocess errors retain a nonzero exit code
+  ---
+  duration_ms: 96.3873
+  type: 'test'
+  ...
+# Subtest: missing executables fail with an installation hint
+ok 9 - missing executables fail with an installation hint
+  ---
+  duration_ms: 53.846801
+  type: 'test'
+  ...
+# Subtest: shell metacharacters remain literal arguments
+ok 10 - shell metacharacters remain literal arguments
+  ---
+  duration_ms: 91.6699
+  type: 'test'
+  ...
+# Subtest: test:load cannot report success before implementation
+ok 11 - test:load cannot report success before implementation
+  ---
+  duration_ms: 0.733
+  type: 'test'
+  ...
+# Subtest: seed:acceptance cannot report success before implementation
+ok 12 - seed:acceptance cannot report success before implementation
+  ---
+  duration_ms: 0.1186
+  type: 'test'
+  ...
+# Subtest: unsupported complete suite selectors fail without running a child
+ok 13 - unsupported complete suite selectors fail without running a child
+  ---
+  duration_ms: 0.2117
+  type: 'test'
+  ...
+# Subtest: integration selection rejects missing tasks and invalid or duplicate selectors
+ok 14 - integration selection rejects missing tasks and invalid or duplicate selectors
+  ---
+  duration_ms: 0.4314
+  type: 'test'
+  ...
+# Subtest: complete suites fail for missing task files before running any child
+ok 15 - complete suites fail for missing task files before running any child
+  ---
+  duration_ms: 14.8232
+  type: 'test'
+  ...
+# Complete e2e: T05
+# T05 exit 0
+# Complete e2e: T06
+# T06 exit 0
+# Complete e2e: T07
+# T07 exit 7
+# Complete e2e: T08
+# T08 exit 0
+# Complete e2e: T09
+# T09 exit 0
+# Complete e2e: T10
+# T10 exit 0
+# Complete e2e: T12
+# T12 exit 0
+# Complete e2e: T13
+# T13 exit 0
+# Complete e2e: T17
+# T17 exit 0
+# Complete e2e: T18
+# T18 exit 0
+# Complete e2e: T19
+# T19 exit 0
+# Subtest: complete suites keep later tasks after a failed module and preserve nonzero status
+ok 16 - complete suites keep later tasks after a failed module and preserve nonzero status
+  ---
+  duration_ms: 18.0474
+  type: 'test'
+  ...
+# Subtest: actual documents have exactly 25 tasks and 199 mapped steps
+ok 17 - actual documents have exactly 25 tasks and 199 mapped steps
+  ---
+  duration_ms: 15.43
+  type: 'test'
+  ...
+# Subtest: fenced method examples are not actual task declarations or links
+ok 18 - fenced method examples are not actual task declarations or links
+  ---
+  duration_ms: 8.5605
+  type: 'test'
+  ...
+# Subtest: rejects duplicate task heading
+ok 19 - rejects duplicate task heading
+  ---
+  duration_ms: 0.8326
+  type: 'test'
+  ...
+# Subtest: rejects missing task heading
+ok 20 - rejects missing task heading
+  ---
+  duration_ms: 0.2673
+  type: 'test'
+  ...
+# Subtest: rejects duplicate implementation step
+ok 21 - rejects duplicate implementation step
+  ---
+  duration_ms: 1.1248
+  type: 'test'
+  ...
+# Subtest: rejects duplicate acceptance mapping
+ok 22 - rejects duplicate acceptance mapping
+  ---
+  duration_ms: 1.4927
+  type: 'test'
+  ...
+# Subtest: rejects unknown dependency
+ok 23 - rejects unknown dependency
+  ---
+  duration_ms: 0.5239
+  type: 'test'
+  ...
+# Subtest: rejects summary dependency drift
+ok 24 - rejects summary dependency drift
+  ---
+  duration_ms: 1.736
+  type: 'test'
+  ...
+# Subtest: rejects invalid task state
+ok 25 - rejects invalid task state
+  ---
+  duration_ms: 1.6196
+  type: 'test'
+  ...
+# Subtest: rejects invalid case state
+ok 26 - rejects invalid case state
+  ---
+  duration_ms: 1.0948
+  type: 'test'
+  ...
+# Subtest: rejects invalid performance state
+ok 27 - rejects invalid performance state
+  ---
+  duration_ms: 1.4383
+  type: 'test'
+  ...
+# Subtest: rejects invalid browser state
+ok 28 - rejects invalid browser state
+  ---
+  duration_ms: 0.7469
+  type: 'test'
+  ...
+# Subtest: rejects conclusion disagrees with summary
+ok 29 - rejects conclusion disagrees with summary
+  ---
+  duration_ms: 0.9627
+  type: 'test'
+  ...
+# Subtest: rejects duplicate case
+ok 30 - rejects duplicate case
+  ---
+  duration_ms: 2.4631
+  type: 'test'
+  ...
+# Subtest: rejects duplicate end-to-end case
+ok 31 - rejects duplicate end-to-end case
+  ---
+  duration_ms: 2.1914
+  type: 'test'
+  ...
+# Subtest: rejects broken relative link
+ok 32 - rejects broken relative link
+  ---
+  duration_ms: 2.1388
+  type: 'test'
+  ...
+# Subtest: rejects broken relative anchor
+ok 33 - rejects broken relative anchor
+  ---
+  duration_ms: 3.5389
+  type: 'test'
+  ...
+# Subtest: rejects passed case without evidence
+ok 34 - rejects passed case without evidence
+  ---
+  duration_ms: 0.8139
+  type: 'test'
+  ...
+# Subtest: passed functional task must have passed cases and checked steps
+ok 35 - passed functional task must have passed cases and checked steps
+  ---
+  duration_ms: 1.2199
+  type: 'test'
+  ...
+# Subtest: dependency cycles fail even when both documents and summary agree
+ok 36 - dependency cycles fail even when both documents and summary agree
+  ---
+  duration_ms: 6.7484
+  type: 'test'
+  ...
+# Subtest: encoding replacement characters fail
+ok 37 - encoding replacement characters fail
+  ---
+  duration_ms: 0.3421
+  type: 'test'
+  ...
+# Subtest: valid 3.1 local-ref fixture is actually parsed and its examples validated
+ok 38 - valid 3.1 local-ref fixture is actually parsed and its examples validated
+  ---
+  duration_ms: 170.836101
+  type: 'test'
+  ...
+# Subtest: fixture rejects missing document metadata
+ok 39 - fixture rejects missing document metadata
+  ---
+  duration_ms: 58.9013
+  type: 'test'
+  ...
+# Subtest: fixture rejects unresolved reference
+ok 40 - fixture rejects unresolved reference
+  ---
+  duration_ms: 1.2794
+  type: 'test'
+  ...
+# Subtest: fixture rejects external reference
+ok 41 - fixture rejects external reference
+  ---
+  duration_ms: 0.3252
+  type: 'test'
+  ...
+# Subtest: fixture rejects invalid JSON Schema type
+ok 42 - fixture rejects invalid JSON Schema type
+  ---
+  duration_ms: 48.8845
+  type: 'test'
+  ...
+# Subtest: fixture rejects example inconsistent with schema
+ok 43 - fixture rejects example inconsistent with schema
+  ---
+  duration_ms: 46.6537
+  type: 'test'
+  ...
+# Subtest: fixture rejects missing success schema
+ok 44 - fixture rejects missing success schema
+  ---
+  duration_ms: 43.0874
+  type: 'test'
+  ...
+# Subtest: fixture rejects unknown auth level
+ok 45 - fixture rejects unknown auth level
+  ---
+  duration_ms: 46.790201
+  type: 'test'
+  ...
+# Subtest: fixture rejects missing explicit security
+ok 46 - fixture rejects missing explicit security
+  ---
+  duration_ms: 53.4206
+  type: 'test'
+  ...
+# Subtest: fixture rejects anonymous protected security
+ok 47 - fixture rejects anonymous protected security
+  ---
+  duration_ms: 45.4067
+  type: 'test'
+  ...
+# Subtest: fixture rejects missing CSRF metadata
+ok 48 - fixture rejects missing CSRF metadata
+  ---
+  duration_ms: 36.6117
+  type: 'test'
+  ...
+# Subtest: fixture rejects CSRF on read-only operation
+ok 49 - fixture rejects CSRF on read-only operation
+  ---
+  duration_ms: 37.2009
+  type: 'test'
+  ...
+# Subtest: fixture rejects missing idempotency description
+ok 50 - fixture rejects missing idempotency description
+  ---
+  duration_ms: 33.9482
+  type: 'test'
+  ...
+# Subtest: fixture rejects invalid rate limit failure policy
+ok 51 - fixture rejects invalid rate limit failure policy
+  ---
+  duration_ms: 37.7641
+  type: 'test'
+  ...
+# Subtest: fixture rejects missing route
+ok 52 - fixture rejects missing route
+  ---
+  duration_ms: 42.0083
+  type: 'test'
+  ...
+# Subtest: extra paths cannot silently bypass plan coverage
+ok 53 - extra paths cannot silently bypass plan coverage
+  ---
+  duration_ms: 39.667301
+  type: 'test'
+  ...
+# Subtest: actual plan 6.1/6.2 declarations expand methods and sibling paths
+ok 54 - actual plan 6.1/6.2 declarations expand methods and sibling paths
+  ---
+  duration_ms: 11.2429
+  type: 'test'
+  ...
+# Subtest: actual OpenAPI validates every plan operation and real schema/example
+ok 55 - actual OpenAPI validates every plan operation and real schema/example
+  ---
+  duration_ms: 244.5696
+  type: 'test'
+  ...
+# Subtest: actual contract rejects non-canonical PKCE example
+ok 56 - actual contract rejects non-canonical PKCE example
+  ---
+  duration_ms: 222.918001
+  type: 'test'
+  ...
+# Subtest: actual contract rejects administrator auth downgrade
+ok 57 - actual contract rejects administrator auth downgrade
+  ---
+  duration_ms: 143.2595
+  type: 'test'
+  ...
+# Subtest: actual contract rejects missing mutating CSRF
+ok 58 - actual contract rejects missing mutating CSRF
+  ---
+  duration_ms: 144.550201
+  type: 'test'
+  ...
+# Subtest: actual contract rejects missing Origin requirement
+ok 59 - actual contract rejects missing Origin requirement
+  ---
+  duration_ms: 145.2615
+  type: 'test'
+  ...
+# Subtest: actual contract rejects non-UUID path id
+ok 60 - actual contract rejects non-UUID path id
+  ---
+  duration_ms: 66.957201
+  type: 'test'
+  ...
+# Subtest: actual contract rejects unknown API error code
+ok 61 - actual contract rejects unknown API error code
+  ---
+  duration_ms: 168.8544
+  type: 'test'
+  ...
+# Subtest: actual contract rejects list limit beyond maximum
+ok 62 - actual contract rejects list limit beyond maximum
+  ---
+  duration_ms: 142.595
+  type: 'test'
+  ...
+# Subtest: actual contract rejects scope expansion
+ok 63 - actual contract rejects scope expansion
+  ---
+  duration_ms: 144.034001
+  type: 'test'
+  ...
+# Subtest: actual contract rejects token without form
+ok 64 - actual contract rejects token without form
+  ---
+  duration_ms: 146.8031
+  type: 'test'
+  ...
+# Subtest: actual contract rejects authorize HTML error without schema
+ok 65 - actual contract rejects authorize HTML error without schema
+  ---
+  duration_ms: 135.433201
+  type: 'test'
+  ...
+# Subtest: actual contract rejects authorize nonstandard error code
+ok 66 - actual contract rejects authorize nonstandard error code
+  ---
+  duration_ms: 143.1601
+  type: 'test'
+  ...
+1..66
+# tests 66
+# suites 0
+# pass 66
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2802.063508

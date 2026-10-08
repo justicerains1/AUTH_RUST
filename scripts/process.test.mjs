@@ -24,19 +24,13 @@ for (const command of ['test:load', 'seed:acceptance']) {
   });
 }
 
-test('whole security suite stays nonzero until all protocol tasks are implemented', async () => {
-  await assert.rejects(runCommand('test:security'), /全量安全\/协议验收尚未完成/u);
-  await assert.rejects(runCommand('test:security', ['--task=T20']), /全量安全\/协议验收尚未完成/u);
-});
-
-test('whole E2E suite stays nonzero until remaining tasks are implemented', async () => {
-  await assert.rejects(runCommand('test:e2e'), /全量 E2E 尚未完成/u);
+test('unsupported complete suite selectors fail without running a child', async () => {
+  await assert.rejects(runCommand('test:security', ['--task=T23']), /只接受已实现/u);
   await assert.rejects(runCommand('test:e2e', ['--task=T23']), /全量 E2E 尚未完成/u);
 });
 
 test('integration selection rejects missing tasks and invalid or duplicate selectors', async () => {
   await assert.rejects(runCommand('test:integration', ['--task=T02']), /尚未实现/u);
-  await assert.rejects(runCommand('test:integration'), /全量集成套件尚未实现/u);
   await assert.rejects(runCommand('test:integration', ['--task=T01', '--task=T01']), /只能提供一次/u);
   await assert.rejects(runCommand('test:integration', ['--task=../../something']), /用法/u);
 });

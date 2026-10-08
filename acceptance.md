@@ -87,7 +87,7 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 | T17 | 品牌、注册登录、MFA 与密码恢复页面 | 待验收 | T05～T09、T16 | docs/evidence/T17/test-summary.md |
 | T18 | 账号安全、会话、授权及同意界面 | 待验收 | T12、T16、T17 | docs/evidence/T18/test-summary.md |
 | T19 | 管理后台 UI | 通过 | T14、T16 | docs/evidence/T19/test-summary.md |
-| T20 | 安全、协议、并发和故障全面验收 | 未开始 | T13、T18、T19 | 待提供 |
+| T20 | 安全、协议、并发和故障全面验收 | 待验收 | T13、T18、T19 | docs/evidence/T20/test-summary.md |
 | T21 | 性能、容量和交互优化 | 未开始 | T20 | 待提供 |
 | T22 | 单机生产、监控、备份和密钥轮换 | 未开始 | T20、T21 | 待提供 |
 | T23 | 第一版发布与总体验收 | 未开始 | T00～T22 全通过 | 待提供 |
@@ -778,29 +778,30 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 
 | 案例 | 前置状态 | 操作步骤 | 预期结果 | 实际结果 | 状态 | 证据 |
 |---|---|---|---|---|---|---|
-| T20-AUDIT-01 | 全部服务 | 运行威胁矩阵与安全测试 | 关键场景全过，确认 High/Critical 为零 | 待填写 | 未执行 | 待提供：报告及分诊 |
-| T20-AUDIT-02 | 真实依赖 | 停止并恢复各依赖 | 无认证旁路，邮件不丢 | 待填写 | 未执行 | 待提供：故障时间线 |
-| T20-AUDIT-03 | 独立客户端 | 完成协议验证和非法 token 测试 | 互操作通过，非法声明拒绝 | 待填写 | 未执行 | 待提供：外部客户端输出 |
+| T20-AUDIT-01 | 全部服务 | 运行威胁矩阵与安全测试 | 关键场景全过，确认 High/Critical 为零 | 六阶段扫描及威胁映射实际完成，High/Critical0；全量manifest回归待执行，不能提前放行 | 未执行 | [汇总](docs/evidence/T20/cross-module-summary.md)、[真实记录](docs/evidence/T20/test-summary.md) |
+| T20-AUDIT-02 | 真实依赖 | 停止并恢复各依赖 | 无认证旁路，邮件不丢 | 本次T04/T05/T12真实PG/Redis/SMTP停机恢复均0，失败关闭/outbox重试且healthy | 通过 | [汇总](docs/evidence/T20/cross-module-summary.md)、[真实记录](docs/evidence/T20/test-summary.md) |
+| T20-AUDIT-03 | 独立客户端 | 完成协议验证和非法 token 测试 | 互操作通过，非法声明拒绝 | 成熟OIDC/JOSE已有真实互操作，新跨模块clientrotation/code/user/RP绑定四场景0，未宣称官方认证 | 通过 | [汇总](docs/evidence/T20/cross-module-summary.md)、[真实记录](docs/evidence/T20/test-summary.md) |
 
 **实现子步骤检查：**
 
-- [ ] T20.01：执行依赖漏洞与许可证扫描、秘密扫描，分诊真实风险和误报。
-- [ ] T20.02：按威胁表验证 CSRF/XSS/枚举/固定会话/越权/开放重定向/代理伪造。
-- [ ] T20.03：检查 PKCE/state/nonce/client/redirect 绑定与 scope、算法混淆、ID Token 错误 audience。
-- [ ] T20.04：用同步屏障测试 code、refresh、恢复码双消费、refresh/logout、login/disable。
-- [ ] T20.05：真实停止 PG/Redis/SMTP，验证失败关闭或 outbox 重试。
-- [ ] T20.06：ZAP 对测试站点 authenticated/unauthenticated 扫描，禁止攻击生产。
-- [ ] T20.07：运行维护中 OIDC client 互操作；能运行 OpenID conformance suite 则记录实际模块，未认证不得宣称认证。
+- [x] T20.01：执行依赖漏洞与许可证扫描、秘密扫描，分诊真实风险和误报。
+- [x] T20.02：按威胁表验证 CSRF/XSS/枚举/固定会话/越权/开放重定向/代理伪造。
+- [x] T20.03：检查 PKCE/state/nonce/client/redirect 绑定与 scope、算法混淆、ID Token 错误 audience。
+- [x] T20.04：用同步屏障测试 code、refresh、恢复码双消费、refresh/logout、login/disable。
+- [x] T20.05：真实停止 PG/Redis/SMTP，验证失败关闭或 outbox 重试。
+- [x] T20.06：ZAP 对测试站点 authenticated/unauthenticated 扫描，禁止攻击生产。
+- [x] T20.07：运行维护中 OIDC client 互操作；能运行 OpenID conformance suite 则记录实际模块，未认证不得宣称认证。
 - [ ] T20.08：高危/严重问题全部修复再复测；残留低/中风险明确影响和是否阻塞。
 
 **验收记录：**
 
-- 代码版本：待填写。
-- 环境与时间：待填写。
-- 命令退出码：待填写。
-- 失败/阻塞项：待填写。
-- 修复与复测：待填写。
-- 任务结论：未开始。
+- 代码版本：本次安全模块Git提交（父10067a5）。
+- 环境与时间：2026-10-08 Linux/Rust1.98/Node22、PG17/Redis7.4/Mailpit、ZAP2.17.0/Gitleaks8.30.1/cargo-deny0.20.2。
+- 命令退出码：六阶段security、check/unit/build/docs/openapi/tooling已执行退出0；全量manifest回归尚待依赖窗口。
+- 失败/阻塞项：原ZAP/私有工具lint/worker审计DTO已修；T18设备前置待验收，全面manifest回归待执行，性能调度失败未放行。
+- 修复与复测：[T20记录](docs/evidence/T20/test-summary.md)、[威胁映射](docs/evidence/T20/cross-module-summary.md)、[ZAP分诊](docs/evidence/T20/zap/triage.md)。
+- 任务结论：待验收（已执行安全子套件通过，完整回归和原前置未放行）。
+
 
 ### T21 — 性能、容量和交互优化
 

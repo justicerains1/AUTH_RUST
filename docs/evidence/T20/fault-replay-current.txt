@@ -1,0 +1,6 @@
+T20 actual dependency fault replay started 2026-10-08T09:16:03.557455+00:00
+Commands executed sequentially; shared dependency faults exclusively reserved.
+T04: current actual command exited 0; T04 security primitives; real dependencies; 2026-10-08T09:16:03.988Z; evidence docs/evidence/T20/T04-fault-replay-20261008.txt
+T05: current actual command exited 0; T05 real account/SMTP integration 2026-10-08T09:16:25.795Z; evidence docs/evidence/T20/T05-fault-replay-20261008.txt
+T12: current actual command exited 0; T12 real OIDC integration 2026-10-08T09:16:45.267Z; evidence docs/evidence/T20/T12-fault-replay-20261008.txt
+Completed 2026-10-08T09:19:29.915850+00:00; all PG/Redis/SMTP services restored and suites completed.

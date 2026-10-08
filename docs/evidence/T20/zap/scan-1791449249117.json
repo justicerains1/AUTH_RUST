@@ -1,0 +1,12 @@
+{
+  "started": "2026-10-08T08:47:24.840Z",
+  "target": "local isolated identity_test",
+  "version": "2.17.0",
+  "phases": [],
+  "alerts": [],
+  "failures": [
+    "ZAP ascan/scan failed."
+  ],
+  "completed": "2026-10-08T08:47:29.116Z",
+  "exitCode": 1
+}

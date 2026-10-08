@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { afterEach, expect, it, vi } from 'vitest';
 import ClientsPage from './ClientsPage';
 import { AdminAction } from './AdminShared';
-import { adminApi, adminClientSchema } from '../../lib/admin-api';
+import { adminApi, adminClientSchema, auditEventSchema } from '../../lib/admin-api';
 import { api } from '../../lib/api';
 
 afterEach(() => { cleanup(); vi.restoreAllMocks(); });
@@ -38,4 +38,9 @@ it('a high-risk admin action requires identity confirmation and then a separate 
   expect(screen.getAllByRole('dialog')).toHaveLength(1); await user.type(screen.getByLabelText('当前密码'), 'synthetic test password'); await user.click(screen.getByRole('button', { name: '确认密码' }));
   expect(await screen.findByRole('button', { name: '确认停用客户端' })).toBeTruthy(); expect(action).not.toHaveBeenCalled(); expect(screen.getAllByRole('dialog')).toHaveLength(1);
   await user.click(screen.getByRole('button', { name: '确认停用客户端' })); expect(action).toHaveBeenCalledOnce(); expect(completed).toHaveBeenCalledOnce();
+});
+
+it('worker delivery audit targets remain readable after real mail delivery', () => {
+  const event = auditEventSchema.parse({ id:userId,event:'email.delivery_succeeded',actor_user_id:null,target_type:'outbox',target_id:userId,result:'success',request_id:userId,source:'worker',occurred_at:'2026-10-08T12:00:00Z' });
+  expect(event.target_type).toBe('outbox');
 });

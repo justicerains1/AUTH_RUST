@@ -19855,7 +19855,8 @@
               "client",
               "admin_member",
               "credential",
-              "challenge"
+              "challenge",
+              "outbox"
             ]
           },
           "target_id": {
