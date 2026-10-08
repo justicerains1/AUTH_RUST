@@ -1,0 +1,7 @@
+T05 real account/SMTP integration 2026-10-08T18:06:44.361Z
+FAIL T05 real integration failed; output suppressed to protect passwords/tokens.
+
+101 !== 0
+
+Completed 2026-10-08T18:07:05.150Z
+Exit code 1

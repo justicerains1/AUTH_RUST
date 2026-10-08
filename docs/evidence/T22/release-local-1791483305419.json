@@ -1,0 +1,199 @@
+{
+  "started": "2026-10-08T18:14:10.977Z",
+  "scope": "Actual isolated local release/backup/migration failure/compatible rollback; no production TLS/SMTP/HA",
+  "phases": [
+    "Owned PostgreSQL/Redis started privately; actual CLI created a verified fixture identity without granting full admin access.",
+    {
+      "action": "first-release",
+      "status": "complete",
+      "stages": [
+        {
+          "stage": "compose-config",
+          "exitCode": 0
+        },
+        {
+          "stage": "image-present",
+          "exitCode": 0
+        },
+        {
+          "stage": "image-present",
+          "exitCode": 0
+        },
+        {
+          "stage": "check-config-api",
+          "exitCode": 0
+        },
+        {
+          "stage": "current-schema-key-facts",
+          "exitCode": 0
+        },
+        {
+          "stage": "base-backup",
+          "exitCode": 0
+        },
+        {
+          "stage": "backup-verified",
+          "exitCode": 0
+        },
+        {
+          "stage": "migrate",
+          "exitCode": 0
+        },
+        {
+          "stage": "post-migration-schema-key-facts",
+          "exitCode": 0
+        },
+        {
+          "stage": "up",
+          "exitCode": 0
+        },
+        {
+          "stage": "ready",
+          "exitCode": 0
+        },
+        {
+          "stage": "smoke",
+          "exitCode": 0
+        }
+      ],
+      "images": {
+        "rustImage": "auth-rust-runtime:t22-review",
+        "edgeImage": "auth-rust-edge:t23-1c0c9ea"
+      },
+      "backup": {
+        "name": "20261008T181415Z-129.tar.age",
+        "sha256": "d02294340e25e46e451d838166c739cb5604d856f724b8ac7c689f7d179393b1",
+        "completedAt": 1791483260
+      }
+    },
+    {
+      "action": "second-release",
+      "status": "complete",
+      "stages": [
+        {
+          "stage": "compose-config",
+          "exitCode": 0
+        },
+        {
+          "stage": "image-present",
+          "exitCode": 0
+        },
+        {
+          "stage": "image-present",
+          "exitCode": 0
+        },
+        {
+          "stage": "check-config-api",
+          "exitCode": 0
+        },
+        {
+          "stage": "current-schema-key-facts",
+          "exitCode": 0
+        },
+        {
+          "stage": "base-backup",
+          "exitCode": 0
+        },
+        {
+          "stage": "backup-verified",
+          "exitCode": 0
+        },
+        {
+          "stage": "migrate",
+          "exitCode": 0
+        },
+        {
+          "stage": "post-migration-schema-key-facts",
+          "exitCode": 0
+        },
+        {
+          "stage": "up",
+          "exitCode": 0
+        },
+        {
+          "stage": "ready",
+          "exitCode": 0
+        },
+        {
+          "stage": "smoke",
+          "exitCode": 0
+        }
+      ],
+      "images": {
+        "rustImage": "auth-rust-runtime:t23-1c0c9ea",
+        "edgeImage": "auth-rust-edge:t23-1c0c9ea"
+      },
+      "backup": {
+        "name": "20261008T181429Z-313.tar.age",
+        "sha256": "9963ce2cfbacec8ba6ea0f14aca09f3214b7239b3498c8746ebb6afac1275207",
+        "completedAt": 1791483274
+      }
+    },
+    "Actual checksum-invalid SQLx migration failed; no up/ready/smoke ran, original API container and recorded new release remained unchanged.",
+    {
+      "action": "compatible-rollback",
+      "status": "complete",
+      "stages": [
+        {
+          "stage": "compose-config",
+          "exitCode": 0
+        },
+        {
+          "stage": "image-present",
+          "exitCode": 0
+        },
+        {
+          "stage": "image-present",
+          "exitCode": 0
+        },
+        {
+          "stage": "check-config-api",
+          "exitCode": 0
+        },
+        {
+          "stage": "current-schema-key-facts",
+          "exitCode": 0
+        },
+        {
+          "stage": "base-backup",
+          "exitCode": 0
+        },
+        {
+          "stage": "backup-verified",
+          "exitCode": 0
+        },
+        {
+          "stage": "up",
+          "exitCode": 0
+        },
+        {
+          "stage": "ready",
+          "exitCode": 0
+        },
+        {
+          "stage": "smoke",
+          "exitCode": 0
+        }
+      ],
+      "images": {
+        "rustImage": "auth-rust-runtime:t22-review",
+        "edgeImage": "auth-rust-edge:t23-1c0c9ea"
+      },
+      "backup": {
+        "name": "20261008T181452Z-674.tar.age",
+        "sha256": "a5ea16ed84adec87f8056ef584a1bd946dee03dbd7aaf9fa83932a4573e078d6",
+        "completedAt": 1791483297
+      },
+      "compatibilitySha256": "28f97a7cfe63d2b2ab2d7daf27f75327202c1ecc83b0180288c208a7ccdeb404"
+    }
+  ],
+  "exitCode": 0,
+  "schemaMigrationSha256": "66b31145a6027bba6a5d2d33c33444206a25e36ba511f962a3f72080e08b4f14",
+  "sourceSha256": {
+    "infra/ops/release.mjs": "b840b59e1a5c4e2146de5fcbb625fd37cb67a05df3936237d01f8fa2ff3eff13",
+    "tests/ops/release-local.mjs": "f8bdf5778aba8ec486dd112304bab19b11ed23a8b1d864df5b41e673ef75189d",
+    "infra/ops/base-backup.sh": "c1d53de508cef5df69b34bb199c0665daefe30ab7bf9bd8fff8b6d46d8ee3786"
+  },
+  "commit": "c3885fa566597dff81424b5ffdf63eab55669377",
+  "completed": "2026-10-08T18:15:05.419Z"
+}

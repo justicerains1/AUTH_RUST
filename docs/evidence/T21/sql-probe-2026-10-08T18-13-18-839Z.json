@@ -1,0 +1,4625 @@
+{
+  "kind": "T21 load independent submodule, not overall acceptance",
+  "scenario": "sql-probe",
+  "started": "2026-10-08T18:13:18.839Z",
+  "environment": {
+    "os": "linux 6.18.40.1-microsoft-standard-WSL2",
+    "cpuModel": "AMD Ryzen 7 7700X 8-Core Processor",
+    "logicalCpus": 16,
+    "memoryGiB": 15.217361450195312,
+    "referenceMatches": false,
+    "note": "Same-host WSL2 Ryzen7700X16logical15.2GiB differs from Linux8vCPU16GiBSSD reference; load generator shares CPU with API/PG/Redis.",
+    "git": "c3885fa566597dff81424b5ffdf63eab55669377"
+  },
+  "warmupSeconds": 0,
+  "measurementSeconds": 0,
+  "resources": [
+    {
+      "at": "2026-10-08T18:13:31.070Z",
+      "service": {
+        "refreshes": 0,
+        "refresh_failures": 0,
+        "password_hashes": 1,
+        "password_verifications": 1,
+        "password_queue_timeouts": 0,
+        "password_waiting": 0,
+        "password_waiting_high_watermark": 1,
+        "password_slots_in_use": 0,
+        "password_slots_high_watermark": 1,
+        "password_running": 0,
+        "password_running_high_watermark": 1,
+        "password_queue_wait_nanoseconds": 2700,
+        "password_queue_wait_buckets": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "password_queue_wait_bucket_le_nanoseconds": [
+          1000000,
+          5000000,
+          10000000,
+          25000000,
+          50000000,
+          100000000,
+          250000000
+        ],
+        "password_hash_nanoseconds": 92742500,
+        "password_verification_nanoseconds": 90467000,
+        "argon2_memory_kib": 65536,
+        "argon2_iterations": 3,
+        "argon2_lanes": 1,
+        "pool_size": 2,
+        "pool_idle": 1,
+        "database_active_connections": 0,
+        "database_waits": [
+          {
+            "state": "idle",
+            "wait_type": "Client",
+            "wait_event": "ClientRead",
+            "connections": 1
+          }
+        ],
+        "query_observation": {
+          "scope": "actual SQLx completion events inside fixed endpoint spans; no bind values",
+          "endpoints": {}
+        },
+        "redis_connection_metrics": {
+          "gate": {
+            "attempts": 1,
+            "successes": 1,
+            "failures": 0,
+            "timeouts": 0,
+            "cancellations": 0,
+            "total_nanoseconds": 400,
+            "max_nanoseconds": 400,
+            "buckets": [
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1
+            ]
+          },
+          "connection": {
+            "attempts": 1,
+            "successes": 1,
+            "failures": 0,
+            "timeouts": 0,
+            "cancellations": 0,
+            "total_nanoseconds": 471300,
+            "max_nanoseconds": 471300,
+            "buckets": [
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1
+            ]
+          },
+          "invocation": {
+            "attempts": 518,
+            "successes": 518,
+            "failures": 0,
+            "timeouts": 0,
+            "cancellations": 0,
+            "total_nanoseconds": 108826400,
+            "max_nanoseconds": 450600,
+            "buckets": [
+              518,
+              518,
+              518,
+              518,
+              518,
+              518,
+              518,
+              518
+            ]
+          },
+          "reused": 517,
+          "invalidations": 0,
+          "generation": 1,
+          "cached": true,
+          "bucket_le_nanoseconds": [
+            1000000,
+            5000000,
+            10000000,
+            25000000,
+            50000000,
+            100000000,
+            2000000000
+          ]
+        }
+      },
+      "containers": [
+        {
+          "BlockIO": "31.4MB / 361MB",
+          "CPUPerc": "0.33%",
+          "Container": "auth-rust-development-postgres-1",
+          "ID": "3bf879589022",
+          "MemPerc": "1.43%",
+          "MemUsage": "222.2MiB / 15.22GiB",
+          "Name": "auth-rust-development-postgres-1",
+          "NetIO": "60.3MB / 3.28MB",
+          "PIDs": "11"
+        },
+        {
+          "BlockIO": "49MB / 561kB",
+          "CPUPerc": "0.24%",
+          "Container": "auth-rust-development-redis-1",
+          "ID": "06d9f610aee7",
+          "MemPerc": "0.11%",
+          "MemUsage": "17.32MiB / 15.22GiB",
+          "Name": "auth-rust-development-redis-1",
+          "NetIO": "244kB / 69.4kB",
+          "PIDs": "6"
+        }
+      ],
+      "apiHarness": {
+        "fields": [
+          "VmHWM:\t   87152 kB",
+          "VmRSS:\t   24804 kB",
+          "Threads:\t3"
+        ],
+        "userCpuTicks": 94,
+        "systemCpuTicks": 76
+      },
+      "loadGenerator": {}
+    }
+  ],
+  "errors": [],
+  "seed": {
+    "users": 100000,
+    "clients": 20,
+    "active_grants": 100000,
+    "token_pool": 512,
+    "session_pool": 2048,
+    "argon2_memory_kib": 65536,
+    "argon2_iterations": 3,
+    "argon2_lanes": 1,
+    "hash_parallelism": 4,
+    "database_pool_max": 32,
+    "schema_isolation": true
+  },
+  "queryPlans": {
+    "scope": "exact repository SELECT shapes, typed real fixture binds, ANALYZE statistics and EXPLAIN ANALYZE BUFFERS; locks rolled back",
+    "plans": [
+      {
+        "source": "crates/identity-store/src/sessions.rs",
+        "function": "me",
+        "shape_id": "48db75021c2cc587b13deb863bcbf388e080432f17d93ceabf40a48c48f1c3a8",
+        "parameterized_sql": "SELECT u.id,u.email,u.display_name,u.verified,u.status,u.created_at,s.id AS session_id,s.amr,s.auth_time,s.strong_at,s.expires_at,s.created_at AS session_created_at,s.user_agent,EXISTS(SELECT 1 FROM totp_factors f WHERE f.user_id=u.id AND f.confirmed) AS totp_enabled,(SELECT count(*) FROM webauthn_credentials k WHERE k.user_id=u.id) AS passkey_count,(SELECT count(*) FROM recovery_codes r WHERE r.user_id=u.id AND r.consumed_at IS NULL) AS recovery_codes_remaining,EXISTS(SELECT 1 FROM admin_memberships a WHERE a.user_id=u.id AND a.enabled) AS is_admin FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.token_hash=$1 AND s.revoked_at IS NULL AND s.expires_at>$2 AND s.credential_version=u.credential_version AND u.verified AND u.status='active'",
+        "plan": [
+          {
+            "Plan": {
+              "Node Type": "Nested Loop",
+              "Parallel Aware": false,
+              "Async Capable": false,
+              "Join Type": "Inner",
+              "Startup Cost": 0.83,
+              "Total Cost": 16.91,
+              "Plan Rows": 1,
+              "Plan Width": 217,
+              "Actual Startup Time": 0.027,
+              "Actual Total Time": 0.029,
+              "Actual Rows": 1,
+              "Actual Loops": 1,
+              "Inner Unique": true,
+              "Shared Hit Blocks": 8,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0,
+              "Plans": [
+                {
+                  "Node Type": "Index Scan",
+                  "Parent Relationship": "Outer",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Scan Direction": "Forward",
+                  "Index Name": "sessions_token_hash_key",
+                  "Relation Name": "sessions",
+                  "Alias": "s",
+                  "Startup Cost": 0.42,
+                  "Total Cost": 8.44,
+                  "Plan Rows": 1,
+                  "Plan Width": 102,
+                  "Actual Startup Time": 0.011,
+                  "Actual Total Time": 0.011,
+                  "Actual Rows": 1,
+                  "Actual Loops": 1,
+                  "Rows Removed by Index Recheck": 0,
+                  "Rows Removed by Filter": 0,
+                  "Shared Hit Blocks": 4,
+                  "Shared Read Blocks": 0,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0
+                },
+                {
+                  "Node Type": "Index Scan",
+                  "Parent Relationship": "Inner",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Scan Direction": "Forward",
+                  "Index Name": "users_pkey",
+                  "Relation Name": "users",
+                  "Alias": "u",
+                  "Startup Cost": 0.42,
+                  "Total Cost": 8.44,
+                  "Plan Rows": 1,
+                  "Plan Width": 129,
+                  "Actual Startup Time": 0.005,
+                  "Actual Total Time": 0.005,
+                  "Actual Rows": 1,
+                  "Actual Loops": 1,
+                  "Rows Removed by Index Recheck": 0,
+                  "Rows Removed by Filter": 0,
+                  "Shared Hit Blocks": 4,
+                  "Shared Read Blocks": 0,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0
+                },
+                {
+                  "Node Type": "Seq Scan",
+                  "Parent Relationship": "SubPlan",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Relation Name": "totp_factors",
+                  "Alias": "f",
+                  "Startup Cost": 0,
+                  "Total Cost": 0,
+                  "Plan Rows": 1,
+                  "Plan Width": 0,
+                  "Actual Startup Time": 0.003,
+                  "Actual Total Time": 0.003,
+                  "Actual Rows": 0,
+                  "Actual Loops": 1,
+                  "Rows Removed by Filter": 0,
+                  "Shared Hit Blocks": 0,
+                  "Shared Read Blocks": 0,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0
+                },
+                {
+                  "Node Type": "Aggregate",
+                  "Strategy": "Plain",
+                  "Partial Mode": "Simple",
+                  "Parent Relationship": "SubPlan",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Startup Cost": 0,
+                  "Total Cost": 0.01,
+                  "Plan Rows": 1,
+                  "Plan Width": 8,
+                  "Actual Startup Time": 0.002,
+                  "Actual Total Time": 0.002,
+                  "Actual Rows": 1,
+                  "Actual Loops": 1,
+                  "Shared Hit Blocks": 0,
+                  "Shared Read Blocks": 0,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0,
+                  "Plans": [
+                    {
+                      "Node Type": "Seq Scan",
+                      "Parent Relationship": "Outer",
+                      "Parallel Aware": false,
+                      "Async Capable": false,
+                      "Relation Name": "webauthn_credentials",
+                      "Alias": "k",
+                      "Startup Cost": 0,
+                      "Total Cost": 0,
+                      "Plan Rows": 1,
+                      "Plan Width": 0,
+                      "Actual Startup Time": 0.001,
+                      "Actual Total Time": 0.001,
+                      "Actual Rows": 0,
+                      "Actual Loops": 1,
+                      "Rows Removed by Filter": 0,
+                      "Shared Hit Blocks": 0,
+                      "Shared Read Blocks": 0,
+                      "Shared Dirtied Blocks": 0,
+                      "Shared Written Blocks": 0,
+                      "Local Hit Blocks": 0,
+                      "Local Read Blocks": 0,
+                      "Local Dirtied Blocks": 0,
+                      "Local Written Blocks": 0,
+                      "Temp Read Blocks": 0,
+                      "Temp Written Blocks": 0
+                    }
+                  ]
+                },
+                {
+                  "Node Type": "Aggregate",
+                  "Strategy": "Plain",
+                  "Partial Mode": "Simple",
+                  "Parent Relationship": "SubPlan",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Startup Cost": 0,
+                  "Total Cost": 0.01,
+                  "Plan Rows": 1,
+                  "Plan Width": 8,
+                  "Actual Startup Time": 0.001,
+                  "Actual Total Time": 0.001,
+                  "Actual Rows": 1,
+                  "Actual Loops": 1,
+                  "Shared Hit Blocks": 0,
+                  "Shared Read Blocks": 0,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0,
+                  "Plans": [
+                    {
+                      "Node Type": "Seq Scan",
+                      "Parent Relationship": "Outer",
+                      "Parallel Aware": false,
+                      "Async Capable": false,
+                      "Relation Name": "recovery_codes",
+                      "Alias": "r",
+                      "Startup Cost": 0,
+                      "Total Cost": 0,
+                      "Plan Rows": 1,
+                      "Plan Width": 0,
+                      "Actual Startup Time": 0.001,
+                      "Actual Total Time": 0.001,
+                      "Actual Rows": 0,
+                      "Actual Loops": 1,
+                      "Rows Removed by Filter": 0,
+                      "Shared Hit Blocks": 0,
+                      "Shared Read Blocks": 0,
+                      "Shared Dirtied Blocks": 0,
+                      "Shared Written Blocks": 0,
+                      "Local Hit Blocks": 0,
+                      "Local Read Blocks": 0,
+                      "Local Dirtied Blocks": 0,
+                      "Local Written Blocks": 0,
+                      "Temp Read Blocks": 0,
+                      "Temp Written Blocks": 0
+                    }
+                  ]
+                },
+                {
+                  "Node Type": "Seq Scan",
+                  "Parent Relationship": "SubPlan",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Relation Name": "admin_memberships",
+                  "Alias": "a",
+                  "Startup Cost": 0,
+                  "Total Cost": 0,
+                  "Plan Rows": 1,
+                  "Plan Width": 0,
+                  "Actual Startup Time": 0.001,
+                  "Actual Total Time": 0.001,
+                  "Actual Rows": 0,
+                  "Actual Loops": 1,
+                  "Rows Removed by Filter": 0,
+                  "Shared Hit Blocks": 0,
+                  "Shared Read Blocks": 0,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0
+                }
+              ]
+            },
+            "Planning": {
+              "Shared Hit Blocks": 305,
+              "Shared Read Blocks": 11,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0
+            },
+            "Planning Time": 2.043,
+            "Triggers": [],
+            "Execution Time": 0.067
+          }
+        ],
+        "bindings": "actual isolated fixture values, retained only in memory"
+      },
+      {
+        "source": "crates/identity-store/src/security.rs",
+        "function": "valid_session",
+        "shape_id": "32c7555846b81d9de17f192317c7308c34ff59379eb7fa4cff79549ad425c9cb",
+        "parameterized_sql": "SELECT EXISTS(SELECT 1 FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.token_hash=$1 AND s.revoked_at IS NULL AND s.expires_at>$2 AND s.credential_version=u.credential_version AND u.verified AND u.status='active')",
+        "plan": [
+          {
+            "Plan": {
+              "Node Type": "Result",
+              "Parallel Aware": false,
+              "Async Capable": false,
+              "Startup Cost": 16.89,
+              "Total Cost": 16.9,
+              "Plan Rows": 1,
+              "Plan Width": 1,
+              "Actual Startup Time": 0.008,
+              "Actual Total Time": 0.008,
+              "Actual Rows": 1,
+              "Actual Loops": 1,
+              "Shared Hit Blocks": 8,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0,
+              "Plans": [
+                {
+                  "Node Type": "Nested Loop",
+                  "Parent Relationship": "InitPlan",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Join Type": "Inner",
+                  "Startup Cost": 0.83,
+                  "Total Cost": 16.89,
+                  "Plan Rows": 1,
+                  "Plan Width": 0,
+                  "Actual Startup Time": 0.007,
+                  "Actual Total Time": 0.007,
+                  "Actual Rows": 1,
+                  "Actual Loops": 1,
+                  "Inner Unique": true,
+                  "Shared Hit Blocks": 8,
+                  "Shared Read Blocks": 0,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0,
+                  "Plans": [
+                    {
+                      "Node Type": "Index Scan",
+                      "Parent Relationship": "Outer",
+                      "Parallel Aware": false,
+                      "Async Capable": false,
+                      "Scan Direction": "Forward",
+                      "Index Name": "sessions_token_hash_key",
+                      "Relation Name": "sessions",
+                      "Alias": "s",
+                      "Startup Cost": 0.42,
+                      "Total Cost": 8.44,
+                      "Plan Rows": 1,
+                      "Plan Width": 24,
+                      "Actual Startup Time": 0.004,
+                      "Actual Total Time": 0.004,
+                      "Actual Rows": 1,
+                      "Actual Loops": 1,
+                      "Rows Removed by Index Recheck": 0,
+                      "Rows Removed by Filter": 0,
+                      "Shared Hit Blocks": 4,
+                      "Shared Read Blocks": 0,
+                      "Shared Dirtied Blocks": 0,
+                      "Shared Written Blocks": 0,
+                      "Local Hit Blocks": 0,
+                      "Local Read Blocks": 0,
+                      "Local Dirtied Blocks": 0,
+                      "Local Written Blocks": 0,
+                      "Temp Read Blocks": 0,
+                      "Temp Written Blocks": 0
+                    },
+                    {
+                      "Node Type": "Index Scan",
+                      "Parent Relationship": "Inner",
+                      "Parallel Aware": false,
+                      "Async Capable": false,
+                      "Scan Direction": "Forward",
+                      "Index Name": "users_pkey",
+                      "Relation Name": "users",
+                      "Alias": "u",
+                      "Startup Cost": 0.42,
+                      "Total Cost": 8.44,
+                      "Plan Rows": 1,
+                      "Plan Width": 24,
+                      "Actual Startup Time": 0.002,
+                      "Actual Total Time": 0.002,
+                      "Actual Rows": 1,
+                      "Actual Loops": 1,
+                      "Rows Removed by Index Recheck": 0,
+                      "Rows Removed by Filter": 0,
+                      "Shared Hit Blocks": 4,
+                      "Shared Read Blocks": 0,
+                      "Shared Dirtied Blocks": 0,
+                      "Shared Written Blocks": 0,
+                      "Local Hit Blocks": 0,
+                      "Local Read Blocks": 0,
+                      "Local Dirtied Blocks": 0,
+                      "Local Written Blocks": 0,
+                      "Temp Read Blocks": 0,
+                      "Temp Written Blocks": 0
+                    }
+                  ]
+                }
+              ]
+            },
+            "Planning": {
+              "Shared Hit Blocks": 8,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0
+            },
+            "Planning Time": 0.112,
+            "Triggers": [],
+            "Execution Time": 0.018
+          }
+        ],
+        "bindings": "actual isolated fixture values, retained only in memory"
+      },
+      {
+        "source": "crates/identity-store/src/repository.rs",
+        "function": "session_authority",
+        "shape_id": "5566518276b610dc550db735db479fb501af588cb3927853ceb31ee47d92735e",
+        "parameterized_sql": "SELECT s.id AS session_id,u.id AS user_id,u.credential_version,s.auth_time,s.strong_at,s.expires_at FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.token_hash=$1 AND s.revoked_at IS NULL AND s.expires_at>$2 AND u.verified AND u.status='active' AND s.credential_version=u.credential_version",
+        "plan": [
+          {
+            "Plan": {
+              "Node Type": "Nested Loop",
+              "Parallel Aware": false,
+              "Async Capable": false,
+              "Join Type": "Inner",
+              "Startup Cost": 0.83,
+              "Total Cost": 16.89,
+              "Plan Rows": 1,
+              "Plan Width": 64,
+              "Actual Startup Time": 0.006,
+              "Actual Total Time": 0.006,
+              "Actual Rows": 1,
+              "Actual Loops": 1,
+              "Inner Unique": true,
+              "Shared Hit Blocks": 8,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0,
+              "Plans": [
+                {
+                  "Node Type": "Index Scan",
+                  "Parent Relationship": "Outer",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Scan Direction": "Forward",
+                  "Index Name": "sessions_token_hash_key",
+                  "Relation Name": "sessions",
+                  "Alias": "s",
+                  "Startup Cost": 0.42,
+                  "Total Cost": 8.44,
+                  "Plan Rows": 1,
+                  "Plan Width": 64,
+                  "Actual Startup Time": 0.003,
+                  "Actual Total Time": 0.003,
+                  "Actual Rows": 1,
+                  "Actual Loops": 1,
+                  "Rows Removed by Index Recheck": 0,
+                  "Rows Removed by Filter": 0,
+                  "Shared Hit Blocks": 4,
+                  "Shared Read Blocks": 0,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0
+                },
+                {
+                  "Node Type": "Index Scan",
+                  "Parent Relationship": "Inner",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Scan Direction": "Forward",
+                  "Index Name": "users_pkey",
+                  "Relation Name": "users",
+                  "Alias": "u",
+                  "Startup Cost": 0.42,
+                  "Total Cost": 8.44,
+                  "Plan Rows": 1,
+                  "Plan Width": 24,
+                  "Actual Startup Time": 0.002,
+                  "Actual Total Time": 0.002,
+                  "Actual Rows": 1,
+                  "Actual Loops": 1,
+                  "Rows Removed by Index Recheck": 0,
+                  "Rows Removed by Filter": 0,
+                  "Shared Hit Blocks": 4,
+                  "Shared Read Blocks": 0,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0
+                }
+              ]
+            },
+            "Planning": {
+              "Shared Hit Blocks": 8,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0
+            },
+            "Planning Time": 0.083,
+            "Triggers": [],
+            "Execution Time": 0.012
+          }
+        ],
+        "bindings": "actual isolated fixture values, retained only in memory"
+      },
+      {
+        "source": "crates/identity-store/src/sessions.rs",
+        "function": "credential_by_email",
+        "shape_id": "f24e693e202c01a926ab04a37f259999f40007ca1da34a44ad656a13f96654be",
+        "parameterized_sql": "SELECT u.id,u.email,u.password_hash,u.verified,u.status,u.credential_version,EXISTS(SELECT 1 FROM totp_factors f WHERE f.user_id=u.id AND f.confirmed) AS totp_enabled FROM users u WHERE u.email=$1",
+        "plan": [
+          {
+            "Plan": {
+              "Node Type": "Index Scan",
+              "Parallel Aware": false,
+              "Async Capable": false,
+              "Scan Direction": "Forward",
+              "Index Name": "users_email_key",
+              "Relation Name": "users",
+              "Alias": "u",
+              "Startup Cost": 0.42,
+              "Total Cost": 8.44,
+              "Plan Rows": 1,
+              "Plan Width": 188,
+              "Actual Startup Time": 0.023,
+              "Actual Total Time": 0.024,
+              "Actual Rows": 1,
+              "Actual Loops": 1,
+              "Rows Removed by Index Recheck": 0,
+              "Shared Hit Blocks": 2,
+              "Shared Read Blocks": 2,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0,
+              "Plans": [
+                {
+                  "Node Type": "Seq Scan",
+                  "Parent Relationship": "SubPlan",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Relation Name": "totp_factors",
+                  "Alias": "f",
+                  "Startup Cost": 0,
+                  "Total Cost": 0,
+                  "Plan Rows": 1,
+                  "Plan Width": 0,
+                  "Actual Startup Time": 0.001,
+                  "Actual Total Time": 0.001,
+                  "Actual Rows": 0,
+                  "Actual Loops": 1,
+                  "Rows Removed by Filter": 0,
+                  "Shared Hit Blocks": 0,
+                  "Shared Read Blocks": 0,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0
+                }
+              ]
+            },
+            "Planning": {
+              "Shared Hit Blocks": 7,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0
+            },
+            "Planning Time": 0.049,
+            "Triggers": [],
+            "Execution Time": 0.029
+          }
+        ],
+        "bindings": "actual isolated fixture values, retained only in memory"
+      },
+      {
+        "source": "crates/identity-store/src/sessions.rs",
+        "function": "complete_password_login",
+        "shape_id": "deef9b6a3ae66491fc3add0317d941d2af242857fc63e023c6fe2fb277bfbac9",
+        "parameterized_sql": "SELECT id,email,display_name,verified,status,credential_version,created_at FROM users WHERE id=$1 FOR UPDATE",
+        "plan": [
+          {
+            "Plan": {
+              "Node Type": "LockRows",
+              "Parallel Aware": false,
+              "Async Capable": false,
+              "Startup Cost": 0.42,
+              "Total Cost": 8.45,
+              "Plan Rows": 1,
+              "Plan Width": 135,
+              "Actual Startup Time": 0.008,
+              "Actual Total Time": 0.009,
+              "Actual Rows": 1,
+              "Actual Loops": 1,
+              "Shared Hit Blocks": 5,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0,
+              "Plans": [
+                {
+                  "Node Type": "Index Scan",
+                  "Parent Relationship": "Outer",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Scan Direction": "Forward",
+                  "Index Name": "users_pkey",
+                  "Relation Name": "users",
+                  "Alias": "users",
+                  "Startup Cost": 0.42,
+                  "Total Cost": 8.44,
+                  "Plan Rows": 1,
+                  "Plan Width": 135,
+                  "Actual Startup Time": 0.005,
+                  "Actual Total Time": 0.006,
+                  "Actual Rows": 1,
+                  "Actual Loops": 1,
+                  "Rows Removed by Index Recheck": 0,
+                  "Shared Hit Blocks": 4,
+                  "Shared Read Blocks": 0,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0
+                }
+              ]
+            },
+            "Planning": {
+              "Shared Hit Blocks": 0,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0
+            },
+            "Planning Time": 0.02,
+            "Triggers": [],
+            "Execution Time": 0.014
+          }
+        ],
+        "bindings": "actual isolated fixture values, retained only in memory"
+      },
+      {
+        "source": "crates/identity-store/src/tokens.rs",
+        "function": "authenticate_client",
+        "shape_id": "ca746dbb67095caa68229af8fca58529246cf6b93f6854a84b4d227987509e8a",
+        "parameterized_sql": "SELECT id,client_id,secret_hash FROM oauth_clients WHERE client_id=$1 AND enabled",
+        "plan": [
+          {
+            "Plan": {
+              "Node Type": "Seq Scan",
+              "Parallel Aware": false,
+              "Async Capable": false,
+              "Relation Name": "oauth_clients",
+              "Alias": "oauth_clients",
+              "Startup Cost": 0,
+              "Total Cost": 1.25,
+              "Plan Rows": 1,
+              "Plan Width": 62,
+              "Actual Startup Time": 0.004,
+              "Actual Total Time": 0.005,
+              "Actual Rows": 1,
+              "Actual Loops": 1,
+              "Rows Removed by Filter": 19,
+              "Shared Hit Blocks": 1,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0
+            },
+            "Planning": {
+              "Shared Hit Blocks": 12,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0
+            },
+            "Planning Time": 0.039,
+            "Triggers": [],
+            "Execution Time": 0.009
+          }
+        ],
+        "bindings": "actual isolated fixture values, retained only in memory"
+      },
+      {
+        "source": "crates/identity-store/src/tokens.rs",
+        "function": "introspect",
+        "shape_id": "f91169722b213ce9ed8a8eb7bd3fc02f26239c4e3166d6fed8d591a0bd84ead8",
+        "parameterized_sql": "SELECT t.kind,t.scopes,t.created_at,LEAST(t.expires_at,g.expires_at,s.expires_at) AS expires_at,u.id FROM oauth_tokens t JOIN oauth_grants g ON g.id=t.grant_id JOIN sessions s ON s.id=g.session_id JOIN users u ON u.id=g.user_id AND u.id=s.user_id JOIN oauth_clients c ON c.id=g.client_id WHERE t.token_hash=$1 AND c.id=$2 AND c.secret_hash=$3 AND c.enabled AND t.revoked_at IS NULL AND t.consumed_at IS NULL AND t.expires_at>$4 AND g.revoked_at IS NULL AND g.expires_at>$4 AND s.revoked_at IS NULL AND s.expires_at>$4 AND s.credential_version=u.credential_version AND u.verified AND u.status='active'",
+        "plan": [
+          {
+            "Plan": {
+              "Node Type": "Nested Loop",
+              "Parallel Aware": false,
+              "Async Capable": false,
+              "Join Type": "Inner",
+              "Startup Cost": 1.53,
+              "Total Cost": 21.59,
+              "Plan Rows": 1,
+              "Plan Width": 96,
+              "Actual Startup Time": 0.026,
+              "Actual Total Time": 0.028,
+              "Actual Rows": 1,
+              "Actual Loops": 1,
+              "Inner Unique": false,
+              "Shared Hit Blocks": 16,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0,
+              "Plans": [
+                {
+                  "Node Type": "Nested Loop",
+                  "Parent Relationship": "Outer",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Join Type": "Inner",
+                  "Startup Cost": 1.53,
+                  "Total Cost": 20.28,
+                  "Plan Rows": 1,
+                  "Plan Width": 128,
+                  "Actual Startup Time": 0.023,
+                  "Actual Total Time": 0.023,
+                  "Actual Rows": 1,
+                  "Actual Loops": 1,
+                  "Inner Unique": true,
+                  "Rows Removed by Join Filter": 0,
+                  "Shared Hit Blocks": 15,
+                  "Shared Read Blocks": 0,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0,
+                  "Plans": [
+                    {
+                      "Node Type": "Nested Loop",
+                      "Parent Relationship": "Outer",
+                      "Parallel Aware": false,
+                      "Async Capable": false,
+                      "Join Type": "Inner",
+                      "Startup Cost": 1.11,
+                      "Total Cost": 19.68,
+                      "Plan Rows": 1,
+                      "Plan Width": 152,
+                      "Actual Startup Time": 0.019,
+                      "Actual Total Time": 0.02,
+                      "Actual Rows": 1,
+                      "Actual Loops": 1,
+                      "Inner Unique": true,
+                      "Shared Hit Blocks": 11,
+                      "Shared Read Blocks": 0,
+                      "Shared Dirtied Blocks": 0,
+                      "Shared Written Blocks": 0,
+                      "Local Hit Blocks": 0,
+                      "Local Read Blocks": 0,
+                      "Local Dirtied Blocks": 0,
+                      "Local Written Blocks": 0,
+                      "Temp Read Blocks": 0,
+                      "Temp Written Blocks": 0,
+                      "Plans": [
+                        {
+                          "Node Type": "Nested Loop",
+                          "Parent Relationship": "Outer",
+                          "Parallel Aware": false,
+                          "Async Capable": false,
+                          "Join Type": "Inner",
+                          "Startup Cost": 0.69,
+                          "Total Cost": 16.74,
+                          "Plan Rows": 1,
+                          "Plan Width": 136,
+                          "Actual Startup Time": 0.011,
+                          "Actual Total Time": 0.012,
+                          "Actual Rows": 1,
+                          "Actual Loops": 1,
+                          "Inner Unique": true,
+                          "Shared Hit Blocks": 7,
+                          "Shared Read Blocks": 0,
+                          "Shared Dirtied Blocks": 0,
+                          "Shared Written Blocks": 0,
+                          "Local Hit Blocks": 0,
+                          "Local Read Blocks": 0,
+                          "Local Dirtied Blocks": 0,
+                          "Local Written Blocks": 0,
+                          "Temp Read Blocks": 0,
+                          "Temp Written Blocks": 0,
+                          "Plans": [
+                            {
+                              "Node Type": "Index Scan",
+                              "Parent Relationship": "Outer",
+                              "Parallel Aware": false,
+                              "Async Capable": false,
+                              "Scan Direction": "Forward",
+                              "Index Name": "oauth_tokens_token_hash_key",
+                              "Relation Name": "oauth_tokens",
+                              "Alias": "t",
+                              "Startup Cost": 0.28,
+                              "Total Cost": 8.29,
+                              "Plan Rows": 1,
+                              "Plan Width": 96,
+                              "Actual Startup Time": 0.005,
+                              "Actual Total Time": 0.005,
+                              "Actual Rows": 1,
+                              "Actual Loops": 1,
+                              "Rows Removed by Index Recheck": 0,
+                              "Rows Removed by Filter": 0,
+                              "Shared Hit Blocks": 3,
+                              "Shared Read Blocks": 0,
+                              "Shared Dirtied Blocks": 0,
+                              "Shared Written Blocks": 0,
+                              "Local Hit Blocks": 0,
+                              "Local Read Blocks": 0,
+                              "Local Dirtied Blocks": 0,
+                              "Local Written Blocks": 0,
+                              "Temp Read Blocks": 0,
+                              "Temp Written Blocks": 0
+                            },
+                            {
+                              "Node Type": "Index Scan",
+                              "Parent Relationship": "Inner",
+                              "Parallel Aware": false,
+                              "Async Capable": false,
+                              "Scan Direction": "Forward",
+                              "Index Name": "oauth_grants_client_idx",
+                              "Relation Name": "oauth_grants",
+                              "Alias": "g",
+                              "Startup Cost": 0.42,
+                              "Total Cost": 8.44,
+                              "Plan Rows": 1,
+                              "Plan Width": 72,
+                              "Actual Startup Time": 0.006,
+                              "Actual Total Time": 0.006,
+                              "Actual Rows": 1,
+                              "Actual Loops": 1,
+                              "Rows Removed by Index Recheck": 0,
+                              "Rows Removed by Filter": 0,
+                              "Shared Hit Blocks": 4,
+                              "Shared Read Blocks": 0,
+                              "Shared Dirtied Blocks": 0,
+                              "Shared Written Blocks": 0,
+                              "Local Hit Blocks": 0,
+                              "Local Read Blocks": 0,
+                              "Local Dirtied Blocks": 0,
+                              "Local Written Blocks": 0,
+                              "Temp Read Blocks": 0,
+                              "Temp Written Blocks": 0
+                            }
+                          ]
+                        },
+                        {
+                          "Node Type": "Index Scan",
+                          "Parent Relationship": "Inner",
+                          "Parallel Aware": false,
+                          "Async Capable": false,
+                          "Scan Direction": "Forward",
+                          "Index Name": "sessions_pkey",
+                          "Relation Name": "sessions",
+                          "Alias": "s",
+                          "Startup Cost": 0.42,
+                          "Total Cost": 2.93,
+                          "Plan Rows": 1,
+                          "Plan Width": 48,
+                          "Actual Startup Time": 0.008,
+                          "Actual Total Time": 0.008,
+                          "Actual Rows": 1,
+                          "Actual Loops": 1,
+                          "Rows Removed by Index Recheck": 0,
+                          "Rows Removed by Filter": 0,
+                          "Shared Hit Blocks": 4,
+                          "Shared Read Blocks": 0,
+                          "Shared Dirtied Blocks": 0,
+                          "Shared Written Blocks": 0,
+                          "Local Hit Blocks": 0,
+                          "Local Read Blocks": 0,
+                          "Local Dirtied Blocks": 0,
+                          "Local Written Blocks": 0,
+                          "Temp Read Blocks": 0,
+                          "Temp Written Blocks": 0
+                        }
+                      ]
+                    },
+                    {
+                      "Node Type": "Index Scan",
+                      "Parent Relationship": "Inner",
+                      "Parallel Aware": false,
+                      "Async Capable": false,
+                      "Scan Direction": "Forward",
+                      "Index Name": "users_pkey",
+                      "Relation Name": "users",
+                      "Alias": "u",
+                      "Startup Cost": 0.42,
+                      "Total Cost": 0.58,
+                      "Plan Rows": 1,
+                      "Plan Width": 24,
+                      "Actual Startup Time": 0.003,
+                      "Actual Total Time": 0.003,
+                      "Actual Rows": 1,
+                      "Actual Loops": 1,
+                      "Rows Removed by Index Recheck": 0,
+                      "Rows Removed by Filter": 0,
+                      "Shared Hit Blocks": 4,
+                      "Shared Read Blocks": 0,
+                      "Shared Dirtied Blocks": 0,
+                      "Shared Written Blocks": 0,
+                      "Local Hit Blocks": 0,
+                      "Local Read Blocks": 0,
+                      "Local Dirtied Blocks": 0,
+                      "Local Written Blocks": 0,
+                      "Temp Read Blocks": 0,
+                      "Temp Written Blocks": 0
+                    }
+                  ]
+                },
+                {
+                  "Node Type": "Seq Scan",
+                  "Parent Relationship": "Inner",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Relation Name": "oauth_clients",
+                  "Alias": "c",
+                  "Startup Cost": 0,
+                  "Total Cost": 1.3,
+                  "Plan Rows": 1,
+                  "Plan Width": 16,
+                  "Actual Startup Time": 0.003,
+                  "Actual Total Time": 0.004,
+                  "Actual Rows": 1,
+                  "Actual Loops": 1,
+                  "Rows Removed by Filter": 19,
+                  "Shared Hit Blocks": 1,
+                  "Shared Read Blocks": 0,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0
+                }
+              ]
+            },
+            "Planning": {
+              "Shared Hit Blocks": 179,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0
+            },
+            "Planning Time": 0.745,
+            "Triggers": [],
+            "Execution Time": 0.056
+          }
+        ],
+        "bindings": "actual isolated fixture values, retained only in memory"
+      },
+      {
+        "source": "crates/identity-store/src/sessions.rs",
+        "function": "session_page",
+        "shape_id": "c29b51ced6f35f51f5b2e9b156c3f8a78cf932feed90e6adf7ff3a14fda80e1a",
+        "parameterized_sql": "SELECT s.id AS session_id,s.amr,s.auth_time,s.strong_at,s.expires_at,s.created_at AS session_created_at,s.user_agent FROM sessions s JOIN users u ON u.id=s.user_id JOIN sessions current_session ON current_session.user_id=u.id AND current_session.token_hash=$6 AND current_session.revoked_at IS NULL AND current_session.expires_at>$2 AND current_session.credential_version=u.credential_version WHERE s.user_id=$1 AND s.revoked_at IS NULL AND s.expires_at>$2 AND s.credential_version=u.credential_version AND u.verified AND u.status='active' AND ($3::timestamptz IS NULL OR (s.created_at,s.id)<($3,$4::uuid)) ORDER BY s.created_at DESC,s.id DESC LIMIT $5",
+        "plan": [
+          {
+            "Plan": {
+              "Node Type": "Limit",
+              "Parallel Aware": false,
+              "Async Capable": false,
+              "Startup Cost": 25.35,
+              "Total Cost": 25.35,
+              "Plan Rows": 1,
+              "Plan Width": 78,
+              "Actual Startup Time": 0.017,
+              "Actual Total Time": 0.018,
+              "Actual Rows": 1,
+              "Actual Loops": 1,
+              "Shared Hit Blocks": 12,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0,
+              "Plans": [
+                {
+                  "Node Type": "Sort",
+                  "Parent Relationship": "Outer",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Startup Cost": 25.35,
+                  "Total Cost": 25.35,
+                  "Plan Rows": 1,
+                  "Plan Width": 78,
+                  "Actual Startup Time": 0.017,
+                  "Actual Total Time": 0.017,
+                  "Actual Rows": 1,
+                  "Actual Loops": 1,
+                  "Sort Method": "quicksort",
+                  "Sort Space Used": 25,
+                  "Sort Space Type": "Memory",
+                  "Shared Hit Blocks": 12,
+                  "Shared Read Blocks": 0,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0,
+                  "Plans": [
+                    {
+                      "Node Type": "Nested Loop",
+                      "Parent Relationship": "Outer",
+                      "Parallel Aware": false,
+                      "Async Capable": false,
+                      "Join Type": "Inner",
+                      "Startup Cost": 1.25,
+                      "Total Cost": 25.34,
+                      "Plan Rows": 1,
+                      "Plan Width": 78,
+                      "Actual Startup Time": 0.012,
+                      "Actual Total Time": 0.013,
+                      "Actual Rows": 1,
+                      "Actual Loops": 1,
+                      "Inner Unique": true,
+                      "Rows Removed by Join Filter": 0,
+                      "Shared Hit Blocks": 12,
+                      "Shared Read Blocks": 0,
+                      "Shared Dirtied Blocks": 0,
+                      "Shared Written Blocks": 0,
+                      "Local Hit Blocks": 0,
+                      "Local Read Blocks": 0,
+                      "Local Dirtied Blocks": 0,
+                      "Local Written Blocks": 0,
+                      "Temp Read Blocks": 0,
+                      "Temp Written Blocks": 0,
+                      "Plans": [
+                        {
+                          "Node Type": "Nested Loop",
+                          "Parent Relationship": "Outer",
+                          "Parallel Aware": false,
+                          "Async Capable": false,
+                          "Join Type": "Inner",
+                          "Startup Cost": 0.83,
+                          "Total Cost": 16.89,
+                          "Plan Rows": 1,
+                          "Plan Width": 110,
+                          "Actual Startup Time": 0.01,
+                          "Actual Total Time": 0.011,
+                          "Actual Rows": 1,
+                          "Actual Loops": 1,
+                          "Inner Unique": true,
+                          "Rows Removed by Join Filter": 0,
+                          "Shared Hit Blocks": 8,
+                          "Shared Read Blocks": 0,
+                          "Shared Dirtied Blocks": 0,
+                          "Shared Written Blocks": 0,
+                          "Local Hit Blocks": 0,
+                          "Local Read Blocks": 0,
+                          "Local Dirtied Blocks": 0,
+                          "Local Written Blocks": 0,
+                          "Temp Read Blocks": 0,
+                          "Temp Written Blocks": 0,
+                          "Plans": [
+                            {
+                              "Node Type": "Index Scan",
+                              "Parent Relationship": "Outer",
+                              "Parallel Aware": false,
+                              "Async Capable": false,
+                              "Scan Direction": "Forward",
+                              "Index Name": "sessions_active_user_idx",
+                              "Relation Name": "sessions",
+                              "Alias": "s",
+                              "Startup Cost": 0.42,
+                              "Total Cost": 8.44,
+                              "Plan Rows": 1,
+                              "Plan Width": 102,
+                              "Actual Startup Time": 0.006,
+                              "Actual Total Time": 0.007,
+                              "Actual Rows": 1,
+                              "Actual Loops": 1,
+                              "Rows Removed by Index Recheck": 0,
+                              "Shared Hit Blocks": 4,
+                              "Shared Read Blocks": 0,
+                              "Shared Dirtied Blocks": 0,
+                              "Shared Written Blocks": 0,
+                              "Local Hit Blocks": 0,
+                              "Local Read Blocks": 0,
+                              "Local Dirtied Blocks": 0,
+                              "Local Written Blocks": 0,
+                              "Temp Read Blocks": 0,
+                              "Temp Written Blocks": 0
+                            },
+                            {
+                              "Node Type": "Index Scan",
+                              "Parent Relationship": "Inner",
+                              "Parallel Aware": false,
+                              "Async Capable": false,
+                              "Scan Direction": "Forward",
+                              "Index Name": "users_pkey",
+                              "Relation Name": "users",
+                              "Alias": "u",
+                              "Startup Cost": 0.42,
+                              "Total Cost": 8.44,
+                              "Plan Rows": 1,
+                              "Plan Width": 24,
+                              "Actual Startup Time": 0.003,
+                              "Actual Total Time": 0.003,
+                              "Actual Rows": 1,
+                              "Actual Loops": 1,
+                              "Rows Removed by Index Recheck": 0,
+                              "Rows Removed by Filter": 0,
+                              "Shared Hit Blocks": 4,
+                              "Shared Read Blocks": 0,
+                              "Shared Dirtied Blocks": 0,
+                              "Shared Written Blocks": 0,
+                              "Local Hit Blocks": 0,
+                              "Local Read Blocks": 0,
+                              "Local Dirtied Blocks": 0,
+                              "Local Written Blocks": 0,
+                              "Temp Read Blocks": 0,
+                              "Temp Written Blocks": 0
+                            }
+                          ]
+                        },
+                        {
+                          "Node Type": "Index Scan",
+                          "Parent Relationship": "Inner",
+                          "Parallel Aware": false,
+                          "Async Capable": false,
+                          "Scan Direction": "Forward",
+                          "Index Name": "sessions_active_user_idx",
+                          "Relation Name": "sessions",
+                          "Alias": "current_session",
+                          "Startup Cost": 0.42,
+                          "Total Cost": 8.44,
+                          "Plan Rows": 1,
+                          "Plan Width": 24,
+                          "Actual Startup Time": 0.002,
+                          "Actual Total Time": 0.002,
+                          "Actual Rows": 1,
+                          "Actual Loops": 1,
+                          "Rows Removed by Index Recheck": 0,
+                          "Rows Removed by Filter": 0,
+                          "Shared Hit Blocks": 4,
+                          "Shared Read Blocks": 0,
+                          "Shared Dirtied Blocks": 0,
+                          "Shared Written Blocks": 0,
+                          "Local Hit Blocks": 0,
+                          "Local Read Blocks": 0,
+                          "Local Dirtied Blocks": 0,
+                          "Local Written Blocks": 0,
+                          "Temp Read Blocks": 0,
+                          "Temp Written Blocks": 0
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "Planning": {
+              "Shared Hit Blocks": 10,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0
+            },
+            "Planning Time": 0.137,
+            "Triggers": [],
+            "Execution Time": 0.029
+          }
+        ],
+        "bindings": "actual isolated fixture values, retained only in memory"
+      },
+      {
+        "source": "crates/identity-store/src/tokens.rs",
+        "function": "grant_page",
+        "shape_id": "097cc4a3144cdc88fe95ab2242b183f9f1c292c3210e5eb3e1906806ec1ebec2",
+        "parameterized_sql": "SELECT g.id,c.client_id,c.name AS client_name,g.scopes,g.created_at,LEAST(g.expires_at,s.expires_at) AS expires_at FROM oauth_grants g JOIN oauth_clients c ON c.id=g.client_id JOIN sessions s ON s.id=g.session_id JOIN users u ON u.id=g.user_id WHERE g.user_id=$1 AND g.revoked_at IS NULL AND g.expires_at>$2 AND s.revoked_at IS NULL AND s.expires_at>$2 AND s.credential_version=u.credential_version AND c.enabled AND u.verified AND u.status='active' AND ($3::timestamptz IS NULL OR (g.created_at,g.id)<($3,$4::uuid)) ORDER BY g.created_at DESC,g.id DESC LIMIT $5",
+        "plan": [
+          {
+            "Plan": {
+              "Node Type": "Limit",
+              "Parallel Aware": false,
+              "Async Capable": false,
+              "Startup Cost": 26.79,
+              "Total Cost": 26.79,
+              "Plan Rows": 1,
+              "Plan Width": 115,
+              "Actual Startup Time": 0.019,
+              "Actual Total Time": 0.019,
+              "Actual Rows": 1,
+              "Actual Loops": 1,
+              "Shared Hit Blocks": 13,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0,
+              "Plans": [
+                {
+                  "Node Type": "Sort",
+                  "Parent Relationship": "Outer",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Startup Cost": 26.79,
+                  "Total Cost": 26.79,
+                  "Plan Rows": 1,
+                  "Plan Width": 115,
+                  "Actual Startup Time": 0.018,
+                  "Actual Total Time": 0.019,
+                  "Actual Rows": 1,
+                  "Actual Loops": 1,
+                  "Sort Method": "quicksort",
+                  "Sort Space Used": 25,
+                  "Sort Space Type": "Memory",
+                  "Shared Hit Blocks": 13,
+                  "Shared Read Blocks": 0,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0,
+                  "Plans": [
+                    {
+                      "Node Type": "Nested Loop",
+                      "Parent Relationship": "Outer",
+                      "Parallel Aware": false,
+                      "Async Capable": false,
+                      "Join Type": "Inner",
+                      "Startup Cost": 1.25,
+                      "Total Cost": 26.78,
+                      "Plan Rows": 1,
+                      "Plan Width": 115,
+                      "Actual Startup Time": 0.016,
+                      "Actual Total Time": 0.017,
+                      "Actual Rows": 1,
+                      "Actual Loops": 1,
+                      "Inner Unique": true,
+                      "Rows Removed by Join Filter": 0,
+                      "Shared Hit Blocks": 13,
+                      "Shared Read Blocks": 0,
+                      "Shared Dirtied Blocks": 0,
+                      "Shared Written Blocks": 0,
+                      "Local Hit Blocks": 0,
+                      "Local Read Blocks": 0,
+                      "Local Dirtied Blocks": 0,
+                      "Local Written Blocks": 0,
+                      "Temp Read Blocks": 0,
+                      "Temp Written Blocks": 0,
+                      "Plans": [
+                        {
+                          "Node Type": "Nested Loop",
+                          "Parent Relationship": "Outer",
+                          "Parallel Aware": false,
+                          "Async Capable": false,
+                          "Join Type": "Inner",
+                          "Startup Cost": 0.83,
+                          "Total Cost": 18.33,
+                          "Plan Rows": 1,
+                          "Plan Width": 147,
+                          "Actual Startup Time": 0.014,
+                          "Actual Total Time": 0.015,
+                          "Actual Rows": 1,
+                          "Actual Loops": 1,
+                          "Inner Unique": true,
+                          "Shared Hit Blocks": 9,
+                          "Shared Read Blocks": 0,
+                          "Shared Dirtied Blocks": 0,
+                          "Shared Written Blocks": 0,
+                          "Local Hit Blocks": 0,
+                          "Local Read Blocks": 0,
+                          "Local Dirtied Blocks": 0,
+                          "Local Written Blocks": 0,
+                          "Temp Read Blocks": 0,
+                          "Temp Written Blocks": 0,
+                          "Plans": [
+                            {
+                              "Node Type": "Nested Loop",
+                              "Parent Relationship": "Outer",
+                              "Parallel Aware": false,
+                              "Async Capable": false,
+                              "Join Type": "Inner",
+                              "Startup Cost": 0.42,
+                              "Total Cost": 9.89,
+                              "Plan Rows": 1,
+                              "Plan Width": 147,
+                              "Actual Startup Time": 0.009,
+                              "Actual Total Time": 0.01,
+                              "Actual Rows": 1,
+                              "Actual Loops": 1,
+                              "Inner Unique": true,
+                              "Rows Removed by Join Filter": 13,
+                              "Shared Hit Blocks": 5,
+                              "Shared Read Blocks": 0,
+                              "Shared Dirtied Blocks": 0,
+                              "Shared Written Blocks": 0,
+                              "Local Hit Blocks": 0,
+                              "Local Read Blocks": 0,
+                              "Local Dirtied Blocks": 0,
+                              "Local Written Blocks": 0,
+                              "Temp Read Blocks": 0,
+                              "Temp Written Blocks": 0,
+                              "Plans": [
+                                {
+                                  "Node Type": "Index Scan",
+                                  "Parent Relationship": "Outer",
+                                  "Parallel Aware": false,
+                                  "Async Capable": false,
+                                  "Scan Direction": "Forward",
+                                  "Index Name": "oauth_grants_user_client_idx",
+                                  "Relation Name": "oauth_grants",
+                                  "Alias": "g",
+                                  "Startup Cost": 0.42,
+                                  "Total Cost": 8.44,
+                                  "Plan Rows": 1,
+                                  "Plan Width": 137,
+                                  "Actual Startup Time": 0.006,
+                                  "Actual Total Time": 0.006,
+                                  "Actual Rows": 1,
+                                  "Actual Loops": 1,
+                                  "Rows Removed by Index Recheck": 0,
+                                  "Rows Removed by Filter": 0,
+                                  "Shared Hit Blocks": 4,
+                                  "Shared Read Blocks": 0,
+                                  "Shared Dirtied Blocks": 0,
+                                  "Shared Written Blocks": 0,
+                                  "Local Hit Blocks": 0,
+                                  "Local Read Blocks": 0,
+                                  "Local Dirtied Blocks": 0,
+                                  "Local Written Blocks": 0,
+                                  "Temp Read Blocks": 0,
+                                  "Temp Written Blocks": 0
+                                },
+                                {
+                                  "Node Type": "Seq Scan",
+                                  "Parent Relationship": "Inner",
+                                  "Parallel Aware": false,
+                                  "Async Capable": false,
+                                  "Relation Name": "oauth_clients",
+                                  "Alias": "c",
+                                  "Startup Cost": 0,
+                                  "Total Cost": 1.2,
+                                  "Plan Rows": 20,
+                                  "Plan Width": 42,
+                                  "Actual Startup Time": 0.002,
+                                  "Actual Total Time": 0.002,
+                                  "Actual Rows": 14,
+                                  "Actual Loops": 1,
+                                  "Rows Removed by Filter": 0,
+                                  "Shared Hit Blocks": 1,
+                                  "Shared Read Blocks": 0,
+                                  "Shared Dirtied Blocks": 0,
+                                  "Shared Written Blocks": 0,
+                                  "Local Hit Blocks": 0,
+                                  "Local Read Blocks": 0,
+                                  "Local Dirtied Blocks": 0,
+                                  "Local Written Blocks": 0,
+                                  "Temp Read Blocks": 0,
+                                  "Temp Written Blocks": 0
+                                }
+                              ]
+                            },
+                            {
+                              "Node Type": "Index Scan",
+                              "Parent Relationship": "Inner",
+                              "Parallel Aware": false,
+                              "Async Capable": false,
+                              "Scan Direction": "Forward",
+                              "Index Name": "sessions_id_user_id_key",
+                              "Relation Name": "sessions",
+                              "Alias": "s",
+                              "Startup Cost": 0.42,
+                              "Total Cost": 8.44,
+                              "Plan Rows": 1,
+                              "Plan Width": 32,
+                              "Actual Startup Time": 0.004,
+                              "Actual Total Time": 0.004,
+                              "Actual Rows": 1,
+                              "Actual Loops": 1,
+                              "Rows Removed by Index Recheck": 0,
+                              "Rows Removed by Filter": 0,
+                              "Shared Hit Blocks": 4,
+                              "Shared Read Blocks": 0,
+                              "Shared Dirtied Blocks": 0,
+                              "Shared Written Blocks": 0,
+                              "Local Hit Blocks": 0,
+                              "Local Read Blocks": 0,
+                              "Local Dirtied Blocks": 0,
+                              "Local Written Blocks": 0,
+                              "Temp Read Blocks": 0,
+                              "Temp Written Blocks": 0
+                            }
+                          ]
+                        },
+                        {
+                          "Node Type": "Index Scan",
+                          "Parent Relationship": "Inner",
+                          "Parallel Aware": false,
+                          "Async Capable": false,
+                          "Scan Direction": "Forward",
+                          "Index Name": "users_pkey",
+                          "Relation Name": "users",
+                          "Alias": "u",
+                          "Startup Cost": 0.42,
+                          "Total Cost": 8.44,
+                          "Plan Rows": 1,
+                          "Plan Width": 24,
+                          "Actual Startup Time": 0.002,
+                          "Actual Total Time": 0.002,
+                          "Actual Rows": 1,
+                          "Actual Loops": 1,
+                          "Rows Removed by Index Recheck": 0,
+                          "Rows Removed by Filter": 0,
+                          "Shared Hit Blocks": 4,
+                          "Shared Read Blocks": 0,
+                          "Shared Dirtied Blocks": 0,
+                          "Shared Written Blocks": 0,
+                          "Local Hit Blocks": 0,
+                          "Local Read Blocks": 0,
+                          "Local Dirtied Blocks": 0,
+                          "Local Written Blocks": 0,
+                          "Temp Read Blocks": 0,
+                          "Temp Written Blocks": 0
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "Planning": {
+              "Shared Hit Blocks": 29,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0
+            },
+            "Planning Time": 0.213,
+            "Triggers": [],
+            "Execution Time": 0.031
+          }
+        ],
+        "bindings": "actual isolated fixture values, retained only in memory"
+      },
+      {
+        "source": "crates/identity-store/src/tokens.rs",
+        "function": "refresh",
+        "shape_id": "0ff57957ad8d8520c5a4053b9810b88c6ab45c3881615e6378f4e60e9a504c21",
+        "parameterized_sql": "SELECT t.family_id,g.id AS grant_id,g.user_id,g.session_id FROM oauth_tokens t JOIN oauth_grants g ON g.id=t.grant_id WHERE t.token_hash=$1 AND t.kind='refresh' AND g.client_id=$2",
+        "plan": [
+          {
+            "Plan": {
+              "Node Type": "Nested Loop",
+              "Parallel Aware": false,
+              "Async Capable": false,
+              "Join Type": "Inner",
+              "Startup Cost": 0.69,
+              "Total Cost": 16.74,
+              "Plan Rows": 1,
+              "Plan Width": 64,
+              "Actual Startup Time": 0.006,
+              "Actual Total Time": 0.007,
+              "Actual Rows": 1,
+              "Actual Loops": 1,
+              "Inner Unique": true,
+              "Shared Hit Blocks": 7,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0,
+              "Plans": [
+                {
+                  "Node Type": "Index Scan",
+                  "Parent Relationship": "Outer",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Scan Direction": "Forward",
+                  "Index Name": "oauth_tokens_token_hash_key",
+                  "Relation Name": "oauth_tokens",
+                  "Alias": "t",
+                  "Startup Cost": 0.28,
+                  "Total Cost": 8.29,
+                  "Plan Rows": 1,
+                  "Plan Width": 32,
+                  "Actual Startup Time": 0.003,
+                  "Actual Total Time": 0.004,
+                  "Actual Rows": 1,
+                  "Actual Loops": 1,
+                  "Rows Removed by Index Recheck": 0,
+                  "Rows Removed by Filter": 0,
+                  "Shared Hit Blocks": 3,
+                  "Shared Read Blocks": 0,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0
+                },
+                {
+                  "Node Type": "Index Scan",
+                  "Parent Relationship": "Inner",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Scan Direction": "Forward",
+                  "Index Name": "oauth_grants_client_idx",
+                  "Relation Name": "oauth_grants",
+                  "Alias": "g",
+                  "Startup Cost": 0.42,
+                  "Total Cost": 8.44,
+                  "Plan Rows": 1,
+                  "Plan Width": 48,
+                  "Actual Startup Time": 0.002,
+                  "Actual Total Time": 0.002,
+                  "Actual Rows": 1,
+                  "Actual Loops": 1,
+                  "Rows Removed by Index Recheck": 0,
+                  "Shared Hit Blocks": 4,
+                  "Shared Read Blocks": 0,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0
+                }
+              ]
+            },
+            "Planning": {
+              "Shared Hit Blocks": 22,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0
+            },
+            "Planning Time": 0.108,
+            "Triggers": [],
+            "Execution Time": 0.013
+          }
+        ],
+        "bindings": "actual isolated fixture values, retained only in memory"
+      },
+      {
+        "source": "crates/identity-store/src/tokens.rs",
+        "function": "refresh",
+        "shape_id": "f414e92855b3aadc1cf1c398cedfb4f3ca57358b92a33e8c8f4ff53117e8159b",
+        "parameterized_sql": "SELECT verified,status,credential_version FROM users WHERE id=$1 FOR UPDATE",
+        "plan": [
+          {
+            "Plan": {
+              "Node Type": "LockRows",
+              "Parallel Aware": false,
+              "Async Capable": false,
+              "Startup Cost": 0.42,
+              "Total Cost": 8.45,
+              "Plan Rows": 1,
+              "Plan Width": 22,
+              "Actual Startup Time": 0.006,
+              "Actual Total Time": 0.006,
+              "Actual Rows": 1,
+              "Actual Loops": 1,
+              "Shared Hit Blocks": 5,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0,
+              "Plans": [
+                {
+                  "Node Type": "Index Scan",
+                  "Parent Relationship": "Outer",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Scan Direction": "Forward",
+                  "Index Name": "users_pkey",
+                  "Relation Name": "users",
+                  "Alias": "users",
+                  "Startup Cost": 0.42,
+                  "Total Cost": 8.44,
+                  "Plan Rows": 1,
+                  "Plan Width": 22,
+                  "Actual Startup Time": 0.005,
+                  "Actual Total Time": 0.005,
+                  "Actual Rows": 1,
+                  "Actual Loops": 1,
+                  "Rows Removed by Index Recheck": 0,
+                  "Shared Hit Blocks": 4,
+                  "Shared Read Blocks": 0,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0
+                }
+              ]
+            },
+            "Planning": {
+              "Shared Hit Blocks": 0,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0
+            },
+            "Planning Time": 0.021,
+            "Triggers": [],
+            "Execution Time": 0.012
+          }
+        ],
+        "bindings": "actual isolated fixture values, retained only in memory"
+      },
+      {
+        "source": "crates/identity-store/src/tokens.rs",
+        "function": "refresh",
+        "shape_id": "604c834032892fff2b74ee4843f3c5a3852e28dc18bdb417e0c9de6243a3d8d9",
+        "parameterized_sql": "SELECT amr,auth_time,expires_at FROM sessions WHERE id=$1 AND user_id=$2 AND credential_version=$3 AND revoked_at IS NULL AND expires_at>$4 FOR UPDATE",
+        "plan": [
+          {
+            "Plan": {
+              "Node Type": "LockRows",
+              "Parallel Aware": false,
+              "Async Capable": false,
+              "Startup Cost": 0.42,
+              "Total Cost": 8.45,
+              "Plan Rows": 1,
+              "Plan Width": 51,
+              "Actual Startup Time": 0.01,
+              "Actual Total Time": 0.011,
+              "Actual Rows": 1,
+              "Actual Loops": 1,
+              "Shared Hit Blocks": 5,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0,
+              "Plans": [
+                {
+                  "Node Type": "Index Scan",
+                  "Parent Relationship": "Outer",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Scan Direction": "Forward",
+                  "Index Name": "sessions_active_user_idx",
+                  "Relation Name": "sessions",
+                  "Alias": "sessions",
+                  "Startup Cost": 0.42,
+                  "Total Cost": 8.44,
+                  "Plan Rows": 1,
+                  "Plan Width": 51,
+                  "Actual Startup Time": 0.009,
+                  "Actual Total Time": 0.009,
+                  "Actual Rows": 1,
+                  "Actual Loops": 1,
+                  "Rows Removed by Index Recheck": 0,
+                  "Rows Removed by Filter": 0,
+                  "Shared Hit Blocks": 4,
+                  "Shared Read Blocks": 0,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0
+                }
+              ]
+            },
+            "Planning": {
+              "Shared Hit Blocks": 0,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0
+            },
+            "Planning Time": 0.036,
+            "Triggers": [],
+            "Execution Time": 0.018
+          }
+        ],
+        "bindings": "actual isolated fixture values, retained only in memory"
+      },
+      {
+        "source": "crates/identity-store/src/tokens.rs",
+        "function": "refresh",
+        "shape_id": "e6a0b93e4868be45bbedc5cdf91d31e67465cd1a361755dec2a171ad7f96dabd",
+        "parameterized_sql": "SELECT expires_at,scopes FROM oauth_grants WHERE id=$1 AND user_id=$2 AND session_id=$3 AND client_id=$4 AND revoked_at IS NULL AND expires_at>$5 FOR UPDATE",
+        "plan": [
+          {
+            "Plan": {
+              "Node Type": "LockRows",
+              "Parallel Aware": false,
+              "Async Capable": false,
+              "Startup Cost": 0.42,
+              "Total Cost": 8.46,
+              "Plan Rows": 1,
+              "Plan Width": 71,
+              "Actual Startup Time": 0.007,
+              "Actual Total Time": 0.008,
+              "Actual Rows": 1,
+              "Actual Loops": 1,
+              "Shared Hit Blocks": 5,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0,
+              "Plans": [
+                {
+                  "Node Type": "Index Scan",
+                  "Parent Relationship": "Outer",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Scan Direction": "Forward",
+                  "Index Name": "oauth_grants_client_idx",
+                  "Relation Name": "oauth_grants",
+                  "Alias": "oauth_grants",
+                  "Startup Cost": 0.42,
+                  "Total Cost": 8.45,
+                  "Plan Rows": 1,
+                  "Plan Width": 71,
+                  "Actual Startup Time": 0.006,
+                  "Actual Total Time": 0.006,
+                  "Actual Rows": 1,
+                  "Actual Loops": 1,
+                  "Rows Removed by Index Recheck": 0,
+                  "Rows Removed by Filter": 0,
+                  "Shared Hit Blocks": 4,
+                  "Shared Read Blocks": 0,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0
+                }
+              ]
+            },
+            "Planning": {
+              "Shared Hit Blocks": 0,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0
+            },
+            "Planning Time": 0.037,
+            "Triggers": [],
+            "Execution Time": 0.014
+          }
+        ],
+        "bindings": "actual isolated fixture values, retained only in memory"
+      },
+      {
+        "source": "crates/identity-store/src/tokens.rs",
+        "function": "refresh",
+        "shape_id": "a900277bec24009458fcf33eb1dc11062cd16d0d644cde820f8ab703854c5587",
+        "parameterized_sql": "SELECT id FROM oauth_tokens WHERE grant_id=$1 AND family_id=$2 ORDER BY id FOR UPDATE",
+        "plan": [
+          {
+            "Plan": {
+              "Node Type": "LockRows",
+              "Parallel Aware": false,
+              "Async Capable": false,
+              "Startup Cost": 0.28,
+              "Total Cost": 10.43,
+              "Plan Rows": 1,
+              "Plan Width": 22,
+              "Actual Startup Time": 0.005,
+              "Actual Total Time": 0.006,
+              "Actual Rows": 2,
+              "Actual Loops": 1,
+              "Shared Hit Blocks": 5,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0,
+              "Plans": [
+                {
+                  "Node Type": "Index Scan",
+                  "Parent Relationship": "Outer",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Scan Direction": "Forward",
+                  "Index Name": "oauth_tokens_grant_idx",
+                  "Relation Name": "oauth_tokens",
+                  "Alias": "oauth_tokens",
+                  "Startup Cost": 0.28,
+                  "Total Cost": 10.42,
+                  "Plan Rows": 1,
+                  "Plan Width": 22,
+                  "Actual Startup Time": 0.003,
+                  "Actual Total Time": 0.004,
+                  "Actual Rows": 2,
+                  "Actual Loops": 1,
+                  "Rows Removed by Index Recheck": 0,
+                  "Rows Removed by Filter": 0,
+                  "Shared Hit Blocks": 3,
+                  "Shared Read Blocks": 0,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0
+                }
+              ]
+            },
+            "Planning": {
+              "Shared Hit Blocks": 3,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0
+            },
+            "Planning Time": 0.041,
+            "Triggers": [],
+            "Execution Time": 0.011
+          }
+        ],
+        "bindings": "actual isolated fixture values, retained only in memory"
+      },
+      {
+        "source": "crates/identity-store/src/tokens.rs",
+        "function": "refresh",
+        "shape_id": "86323798ba7ced1a2083eca31b38ca5b88ec201693d27f3b01c0d0490d1ef38f",
+        "parameterized_sql": "SELECT consumed_at,revoked_at,expires_at,family_expires_at,scopes FROM oauth_tokens WHERE token_hash=$1 AND kind='refresh' AND grant_id=$2 AND family_id=$3",
+        "plan": [
+          {
+            "Plan": {
+              "Node Type": "Index Scan",
+              "Parallel Aware": false,
+              "Async Capable": false,
+              "Scan Direction": "Forward",
+              "Index Name": "oauth_tokens_family_idx",
+              "Relation Name": "oauth_tokens",
+              "Alias": "oauth_tokens",
+              "Startup Cost": 0.28,
+              "Total Cost": 8.3,
+              "Plan Rows": 1,
+              "Plan Width": 89,
+              "Actual Startup Time": 0.008,
+              "Actual Total Time": 0.009,
+              "Actual Rows": 1,
+              "Actual Loops": 1,
+              "Rows Removed by Index Recheck": 0,
+              "Rows Removed by Filter": 0,
+              "Shared Hit Blocks": 3,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0
+            },
+            "Planning": {
+              "Shared Hit Blocks": 0,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0
+            },
+            "Planning Time": 0.036,
+            "Triggers": [],
+            "Execution Time": 0.013
+          }
+        ],
+        "bindings": "actual isolated fixture values, retained only in memory"
+      }
+    ],
+    "redaction": "expression/output/parameter values removed by positive field schema; no user/token identifiers"
+  },
+  "queryEvidence": {
+    "scope": "real HTTP endpoint probes on 100k fixtures; page-size 1 and 20 request statement counts compared; no per-row repository calls",
+    "probes": [
+      {
+        "endpoint": "account",
+        "page_size": null,
+        "observation": {
+          "scope": "actual SQLx completion events inside fixed endpoint spans; no bind values",
+          "endpoints": {
+            "account": {
+              "requests": 3,
+              "sql_per_request_min": 1,
+              "sql_per_request_max": 1,
+              "query_completions": [
+                {
+                  "shape_id": "48db75021c2cc587b13deb863bcbf388e080432f17d93ceabf40a48c48f1c3a8",
+                  "source": "crates/identity-store/src/sessions.rs",
+                  "parameterized_sql": "SELECT u.id,u.email,u.display_name,u.verified,u.status,u.created_at,s.id AS session_id,s.amr,s.auth_time,s.strong_at,s.expires_at,s.created_at AS session_created_at,s.user_agent,EXISTS(SELECT 1 FROM totp_factors f WHERE f.user_id=u.id AND f.confirmed) AS totp_enabled,(SELECT count(*) FROM webauthn_credentials k WHERE k.user_id=u.id) AS passkey_count,(SELECT count(*) FROM recovery_codes r WHERE r.user_id=u.id AND r.consumed_at IS NULL) AS recovery_codes_remaining,EXISTS(SELECT 1 FROM admin_memberships a WHERE a.user_id=u.id AND a.enabled) AS is_admin FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.token_hash=$1 AND s.revoked_at IS NULL AND s.expires_at>$2 AND s.credential_version=u.credential_version AND u.verified AND u.status='active'",
+                  "timing": {
+                    "count": 3,
+                    "total_nanoseconds": 1983499,
+                    "max_nanoseconds": 981099,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      3,
+                      3,
+                      3,
+                      3,
+                      3,
+                      3
+                    ]
+                  },
+                  "rows_returned": 3,
+                  "rows_affected": 3
+                }
+              ],
+              "statuses": {
+                "200": 3
+              },
+              "request_duration": {
+                "count": 3,
+                "total_nanoseconds": 2616100,
+                "max_nanoseconds": 1249800,
+                "bucket_le_nanoseconds": [
+                  100000,
+                  500000,
+                  1000000,
+                  5000000,
+                  25000000,
+                  100000000,
+                  250000000
+                ],
+                "cumulative_buckets": [
+                  0,
+                  0,
+                  2,
+                  3,
+                  3,
+                  3,
+                  3,
+                  3
+                ]
+              },
+              "pool_acquisition": {
+                "count": 3,
+                "total_nanoseconds": 432700,
+                "max_nanoseconds": 157700,
+                "bucket_le_nanoseconds": [
+                  100000,
+                  500000,
+                  1000000,
+                  5000000,
+                  25000000,
+                  100000000,
+                  250000000
+                ],
+                "cumulative_buckets": [
+                  0,
+                  3,
+                  3,
+                  3,
+                  3,
+                  3,
+                  3,
+                  3
+                ]
+              },
+              "unknown_statement_count": 0
+            }
+          }
+        }
+      },
+      {
+        "endpoint": "session_page",
+        "page_size": 1,
+        "observation": {
+          "scope": "actual SQLx completion events inside fixed endpoint spans; no bind values",
+          "endpoints": {
+            "session_page": {
+              "requests": 3,
+              "sql_per_request_min": 3,
+              "sql_per_request_max": 3,
+              "query_completions": [
+                {
+                  "shape_id": "48db75021c2cc587b13deb863bcbf388e080432f17d93ceabf40a48c48f1c3a8",
+                  "source": "crates/identity-store/src/sessions.rs",
+                  "parameterized_sql": "SELECT u.id,u.email,u.display_name,u.verified,u.status,u.created_at,s.id AS session_id,s.amr,s.auth_time,s.strong_at,s.expires_at,s.created_at AS session_created_at,s.user_agent,EXISTS(SELECT 1 FROM totp_factors f WHERE f.user_id=u.id AND f.confirmed) AS totp_enabled,(SELECT count(*) FROM webauthn_credentials k WHERE k.user_id=u.id) AS passkey_count,(SELECT count(*) FROM recovery_codes r WHERE r.user_id=u.id AND r.consumed_at IS NULL) AS recovery_codes_remaining,EXISTS(SELECT 1 FROM admin_memberships a WHERE a.user_id=u.id AND a.enabled) AS is_admin FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.token_hash=$1 AND s.revoked_at IS NULL AND s.expires_at>$2 AND s.credential_version=u.credential_version AND u.verified AND u.status='active'",
+                  "timing": {
+                    "count": 6,
+                    "total_nanoseconds": 2168800,
+                    "max_nanoseconds": 430400,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      6,
+                      6,
+                      6,
+                      6,
+                      6,
+                      6,
+                      6
+                    ]
+                  },
+                  "rows_returned": 6,
+                  "rows_affected": 6
+                },
+                {
+                  "shape_id": "c29b51ced6f35f51f5b2e9b156c3f8a78cf932feed90e6adf7ff3a14fda80e1a",
+                  "source": "crates/identity-store/src/sessions.rs",
+                  "parameterized_sql": "SELECT s.id AS session_id,s.amr,s.auth_time,s.strong_at,s.expires_at,s.created_at AS session_created_at,s.user_agent FROM sessions s JOIN users u ON u.id=s.user_id JOIN sessions current_session ON current_session.user_id=u.id AND current_session.token_hash=$6 AND current_session.revoked_at IS NULL AND current_session.expires_at>$2 AND current_session.credential_version=u.credential_version WHERE s.user_id=$1 AND s.revoked_at IS NULL AND s.expires_at>$2 AND s.credential_version=u.credential_version AND u.verified AND u.status='active' AND ($3::timestamptz IS NULL OR (s.created_at,s.id)<($3,$4::uuid)) ORDER BY s.created_at DESC,s.id DESC LIMIT $5",
+                  "timing": {
+                    "count": 3,
+                    "total_nanoseconds": 1749600,
+                    "max_nanoseconds": 747800,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      3,
+                      3,
+                      3,
+                      3,
+                      3,
+                      3
+                    ]
+                  },
+                  "rows_returned": 6,
+                  "rows_affected": 6
+                }
+              ],
+              "statuses": {
+                "200": 3
+              },
+              "request_duration": {
+                "count": 3,
+                "total_nanoseconds": 5373900,
+                "max_nanoseconds": 2029200,
+                "bucket_le_nanoseconds": [
+                  100000,
+                  500000,
+                  1000000,
+                  5000000,
+                  25000000,
+                  100000000,
+                  250000000
+                ],
+                "cumulative_buckets": [
+                  0,
+                  0,
+                  0,
+                  3,
+                  3,
+                  3,
+                  3,
+                  3
+                ]
+              },
+              "pool_acquisition": {
+                "count": 9,
+                "total_nanoseconds": 1200200,
+                "max_nanoseconds": 177300,
+                "bucket_le_nanoseconds": [
+                  100000,
+                  500000,
+                  1000000,
+                  5000000,
+                  25000000,
+                  100000000,
+                  250000000
+                ],
+                "cumulative_buckets": [
+                  0,
+                  9,
+                  9,
+                  9,
+                  9,
+                  9,
+                  9,
+                  9
+                ]
+              },
+              "unknown_statement_count": 0
+            }
+          }
+        }
+      },
+      {
+        "endpoint": "session_page",
+        "page_size": 20,
+        "observation": {
+          "scope": "actual SQLx completion events inside fixed endpoint spans; no bind values",
+          "endpoints": {
+            "session_page": {
+              "requests": 3,
+              "sql_per_request_min": 3,
+              "sql_per_request_max": 3,
+              "query_completions": [
+                {
+                  "shape_id": "48db75021c2cc587b13deb863bcbf388e080432f17d93ceabf40a48c48f1c3a8",
+                  "source": "crates/identity-store/src/sessions.rs",
+                  "parameterized_sql": "SELECT u.id,u.email,u.display_name,u.verified,u.status,u.created_at,s.id AS session_id,s.amr,s.auth_time,s.strong_at,s.expires_at,s.created_at AS session_created_at,s.user_agent,EXISTS(SELECT 1 FROM totp_factors f WHERE f.user_id=u.id AND f.confirmed) AS totp_enabled,(SELECT count(*) FROM webauthn_credentials k WHERE k.user_id=u.id) AS passkey_count,(SELECT count(*) FROM recovery_codes r WHERE r.user_id=u.id AND r.consumed_at IS NULL) AS recovery_codes_remaining,EXISTS(SELECT 1 FROM admin_memberships a WHERE a.user_id=u.id AND a.enabled) AS is_admin FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.token_hash=$1 AND s.revoked_at IS NULL AND s.expires_at>$2 AND s.credential_version=u.credential_version AND u.verified AND u.status='active'",
+                  "timing": {
+                    "count": 6,
+                    "total_nanoseconds": 1783500,
+                    "max_nanoseconds": 470200,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      6,
+                      6,
+                      6,
+                      6,
+                      6,
+                      6,
+                      6
+                    ]
+                  },
+                  "rows_returned": 6,
+                  "rows_affected": 6
+                },
+                {
+                  "shape_id": "c29b51ced6f35f51f5b2e9b156c3f8a78cf932feed90e6adf7ff3a14fda80e1a",
+                  "source": "crates/identity-store/src/sessions.rs",
+                  "parameterized_sql": "SELECT s.id AS session_id,s.amr,s.auth_time,s.strong_at,s.expires_at,s.created_at AS session_created_at,s.user_agent FROM sessions s JOIN users u ON u.id=s.user_id JOIN sessions current_session ON current_session.user_id=u.id AND current_session.token_hash=$6 AND current_session.revoked_at IS NULL AND current_session.expires_at>$2 AND current_session.credential_version=u.credential_version WHERE s.user_id=$1 AND s.revoked_at IS NULL AND s.expires_at>$2 AND s.credential_version=u.credential_version AND u.verified AND u.status='active' AND ($3::timestamptz IS NULL OR (s.created_at,s.id)<($3,$4::uuid)) ORDER BY s.created_at DESC,s.id DESC LIMIT $5",
+                  "timing": {
+                    "count": 3,
+                    "total_nanoseconds": 1258700,
+                    "max_nanoseconds": 439900,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      3,
+                      3,
+                      3,
+                      3,
+                      3,
+                      3,
+                      3
+                    ]
+                  },
+                  "rows_returned": 63,
+                  "rows_affected": 63
+                }
+              ],
+              "statuses": {
+                "200": 3
+              },
+              "request_duration": {
+                "count": 3,
+                "total_nanoseconds": 4391400,
+                "max_nanoseconds": 1787200,
+                "bucket_le_nanoseconds": [
+                  100000,
+                  500000,
+                  1000000,
+                  5000000,
+                  25000000,
+                  100000000,
+                  250000000
+                ],
+                "cumulative_buckets": [
+                  0,
+                  0,
+                  0,
+                  3,
+                  3,
+                  3,
+                  3,
+                  3
+                ]
+              },
+              "pool_acquisition": {
+                "count": 9,
+                "total_nanoseconds": 1084400,
+                "max_nanoseconds": 145400,
+                "bucket_le_nanoseconds": [
+                  100000,
+                  500000,
+                  1000000,
+                  5000000,
+                  25000000,
+                  100000000,
+                  250000000
+                ],
+                "cumulative_buckets": [
+                  0,
+                  9,
+                  9,
+                  9,
+                  9,
+                  9,
+                  9,
+                  9
+                ]
+              },
+              "unknown_statement_count": 0
+            }
+          }
+        }
+      },
+      {
+        "endpoint": "grant_page",
+        "page_size": 1,
+        "observation": {
+          "scope": "actual SQLx completion events inside fixed endpoint spans; no bind values",
+          "endpoints": {
+            "grant_page": {
+              "requests": 3,
+              "sql_per_request_min": 3,
+              "sql_per_request_max": 3,
+              "query_completions": [
+                {
+                  "shape_id": "097cc4a3144cdc88fe95ab2242b183f9f1c292c3210e5eb3e1906806ec1ebec2",
+                  "source": "crates/identity-store/src/tokens.rs",
+                  "parameterized_sql": "SELECT g.id,c.client_id,c.name AS client_name,g.scopes,g.created_at,LEAST(g.expires_at,s.expires_at) AS expires_at FROM oauth_grants g JOIN oauth_clients c ON c.id=g.client_id JOIN sessions s ON s.id=g.session_id JOIN users u ON u.id=g.user_id WHERE g.user_id=$1 AND g.revoked_at IS NULL AND g.expires_at>$2 AND s.revoked_at IS NULL AND s.expires_at>$2 AND s.credential_version=u.credential_version AND c.enabled AND u.verified AND u.status='active' AND ($3::timestamptz IS NULL OR (g.created_at,g.id)<($3,$4::uuid)) ORDER BY g.created_at DESC,g.id DESC LIMIT $5",
+                  "timing": {
+                    "count": 3,
+                    "total_nanoseconds": 1830900,
+                    "max_nanoseconds": 726800,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      3,
+                      3,
+                      3,
+                      3,
+                      3,
+                      3
+                    ]
+                  },
+                  "rows_returned": 6,
+                  "rows_affected": 6
+                },
+                {
+                  "shape_id": "48db75021c2cc587b13deb863bcbf388e080432f17d93ceabf40a48c48f1c3a8",
+                  "source": "crates/identity-store/src/sessions.rs",
+                  "parameterized_sql": "SELECT u.id,u.email,u.display_name,u.verified,u.status,u.created_at,s.id AS session_id,s.amr,s.auth_time,s.strong_at,s.expires_at,s.created_at AS session_created_at,s.user_agent,EXISTS(SELECT 1 FROM totp_factors f WHERE f.user_id=u.id AND f.confirmed) AS totp_enabled,(SELECT count(*) FROM webauthn_credentials k WHERE k.user_id=u.id) AS passkey_count,(SELECT count(*) FROM recovery_codes r WHERE r.user_id=u.id AND r.consumed_at IS NULL) AS recovery_codes_remaining,EXISTS(SELECT 1 FROM admin_memberships a WHERE a.user_id=u.id AND a.enabled) AS is_admin FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.token_hash=$1 AND s.revoked_at IS NULL AND s.expires_at>$2 AND s.credential_version=u.credential_version AND u.verified AND u.status='active'",
+                  "timing": {
+                    "count": 3,
+                    "total_nanoseconds": 589100,
+                    "max_nanoseconds": 222300,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      3,
+                      3,
+                      3,
+                      3,
+                      3,
+                      3,
+                      3
+                    ]
+                  },
+                  "rows_returned": 3,
+                  "rows_affected": 3
+                },
+                {
+                  "shape_id": "5566518276b610dc550db735db479fb501af588cb3927853ceb31ee47d92735e",
+                  "source": "crates/identity-store/src/repository.rs",
+                  "parameterized_sql": "SELECT s.id AS session_id,u.id AS user_id,u.credential_version,s.auth_time,s.strong_at,s.expires_at FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.token_hash=$1 AND s.revoked_at IS NULL AND s.expires_at>$2 AND u.verified AND u.status='active' AND s.credential_version=u.credential_version",
+                  "timing": {
+                    "count": 3,
+                    "total_nanoseconds": 1199400,
+                    "max_nanoseconds": 473200,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      3,
+                      3,
+                      3,
+                      3,
+                      3,
+                      3,
+                      3
+                    ]
+                  },
+                  "rows_returned": 3,
+                  "rows_affected": 3
+                }
+              ],
+              "statuses": {
+                "200": 3
+              },
+              "request_duration": {
+                "count": 3,
+                "total_nanoseconds": 5040600,
+                "max_nanoseconds": 1869500,
+                "bucket_le_nanoseconds": [
+                  100000,
+                  500000,
+                  1000000,
+                  5000000,
+                  25000000,
+                  100000000,
+                  250000000
+                ],
+                "cumulative_buckets": [
+                  0,
+                  0,
+                  0,
+                  3,
+                  3,
+                  3,
+                  3,
+                  3
+                ]
+              },
+              "pool_acquisition": {
+                "count": 9,
+                "total_nanoseconds": 1221100,
+                "max_nanoseconds": 171200,
+                "bucket_le_nanoseconds": [
+                  100000,
+                  500000,
+                  1000000,
+                  5000000,
+                  25000000,
+                  100000000,
+                  250000000
+                ],
+                "cumulative_buckets": [
+                  0,
+                  9,
+                  9,
+                  9,
+                  9,
+                  9,
+                  9,
+                  9
+                ]
+              },
+              "unknown_statement_count": 0
+            }
+          }
+        }
+      },
+      {
+        "endpoint": "grant_page",
+        "page_size": 20,
+        "observation": {
+          "scope": "actual SQLx completion events inside fixed endpoint spans; no bind values",
+          "endpoints": {
+            "grant_page": {
+              "requests": 3,
+              "sql_per_request_min": 3,
+              "sql_per_request_max": 3,
+              "query_completions": [
+                {
+                  "shape_id": "097cc4a3144cdc88fe95ab2242b183f9f1c292c3210e5eb3e1906806ec1ebec2",
+                  "source": "crates/identity-store/src/tokens.rs",
+                  "parameterized_sql": "SELECT g.id,c.client_id,c.name AS client_name,g.scopes,g.created_at,LEAST(g.expires_at,s.expires_at) AS expires_at FROM oauth_grants g JOIN oauth_clients c ON c.id=g.client_id JOIN sessions s ON s.id=g.session_id JOIN users u ON u.id=g.user_id WHERE g.user_id=$1 AND g.revoked_at IS NULL AND g.expires_at>$2 AND s.revoked_at IS NULL AND s.expires_at>$2 AND s.credential_version=u.credential_version AND c.enabled AND u.verified AND u.status='active' AND ($3::timestamptz IS NULL OR (g.created_at,g.id)<($3,$4::uuid)) ORDER BY g.created_at DESC,g.id DESC LIMIT $5",
+                  "timing": {
+                    "count": 3,
+                    "total_nanoseconds": 1271500,
+                    "max_nanoseconds": 440400,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      3,
+                      3,
+                      3,
+                      3,
+                      3,
+                      3,
+                      3
+                    ]
+                  },
+                  "rows_returned": 63,
+                  "rows_affected": 63
+                },
+                {
+                  "shape_id": "48db75021c2cc587b13deb863bcbf388e080432f17d93ceabf40a48c48f1c3a8",
+                  "source": "crates/identity-store/src/sessions.rs",
+                  "parameterized_sql": "SELECT u.id,u.email,u.display_name,u.verified,u.status,u.created_at,s.id AS session_id,s.amr,s.auth_time,s.strong_at,s.expires_at,s.created_at AS session_created_at,s.user_agent,EXISTS(SELECT 1 FROM totp_factors f WHERE f.user_id=u.id AND f.confirmed) AS totp_enabled,(SELECT count(*) FROM webauthn_credentials k WHERE k.user_id=u.id) AS passkey_count,(SELECT count(*) FROM recovery_codes r WHERE r.user_id=u.id AND r.consumed_at IS NULL) AS recovery_codes_remaining,EXISTS(SELECT 1 FROM admin_memberships a WHERE a.user_id=u.id AND a.enabled) AS is_admin FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.token_hash=$1 AND s.revoked_at IS NULL AND s.expires_at>$2 AND s.credential_version=u.credential_version AND u.verified AND u.status='active'",
+                  "timing": {
+                    "count": 3,
+                    "total_nanoseconds": 542400,
+                    "max_nanoseconds": 181200,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      3,
+                      3,
+                      3,
+                      3,
+                      3,
+                      3,
+                      3
+                    ]
+                  },
+                  "rows_returned": 3,
+                  "rows_affected": 3
+                },
+                {
+                  "shape_id": "5566518276b610dc550db735db479fb501af588cb3927853ceb31ee47d92735e",
+                  "source": "crates/identity-store/src/repository.rs",
+                  "parameterized_sql": "SELECT s.id AS session_id,u.id AS user_id,u.credential_version,s.auth_time,s.strong_at,s.expires_at FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.token_hash=$1 AND s.revoked_at IS NULL AND s.expires_at>$2 AND u.verified AND u.status='active' AND s.credential_version=u.credential_version",
+                  "timing": {
+                    "count": 3,
+                    "total_nanoseconds": 739400,
+                    "max_nanoseconds": 252000,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      3,
+                      3,
+                      3,
+                      3,
+                      3,
+                      3,
+                      3
+                    ]
+                  },
+                  "rows_returned": 3,
+                  "rows_affected": 3
+                }
+              ],
+              "statuses": {
+                "200": 3
+              },
+              "request_duration": {
+                "count": 3,
+                "total_nanoseconds": 3857900,
+                "max_nanoseconds": 1325900,
+                "bucket_le_nanoseconds": [
+                  100000,
+                  500000,
+                  1000000,
+                  5000000,
+                  25000000,
+                  100000000,
+                  250000000
+                ],
+                "cumulative_buckets": [
+                  0,
+                  0,
+                  0,
+                  3,
+                  3,
+                  3,
+                  3,
+                  3
+                ]
+              },
+              "pool_acquisition": {
+                "count": 9,
+                "total_nanoseconds": 1069500,
+                "max_nanoseconds": 163300,
+                "bucket_le_nanoseconds": [
+                  100000,
+                  500000,
+                  1000000,
+                  5000000,
+                  25000000,
+                  100000000,
+                  250000000
+                ],
+                "cumulative_buckets": [
+                  0,
+                  9,
+                  9,
+                  9,
+                  9,
+                  9,
+                  9,
+                  9
+                ]
+              },
+              "unknown_statement_count": 0
+            }
+          }
+        }
+      },
+      {
+        "endpoint": "introspection",
+        "observation": {
+          "scope": "actual SQLx completion events inside fixed endpoint spans; no bind values",
+          "endpoints": {
+            "introspection": {
+              "requests": 1,
+              "sql_per_request_min": 2,
+              "sql_per_request_max": 2,
+              "query_completions": [
+                {
+                  "shape_id": "ca746dbb67095caa68229af8fca58529246cf6b93f6854a84b4d227987509e8a",
+                  "source": "crates/identity-store/src/tokens.rs",
+                  "parameterized_sql": "SELECT id,client_id,secret_hash FROM oauth_clients WHERE client_id=$1 AND enabled",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 144900,
+                    "max_nanoseconds": 144900,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 1,
+                  "rows_affected": 1
+                },
+                {
+                  "shape_id": "f91169722b213ce9ed8a8eb7bd3fc02f26239c4e3166d6fed8d591a0bd84ead8",
+                  "source": "crates/identity-store/src/tokens.rs",
+                  "parameterized_sql": "SELECT t.kind,t.scopes,t.created_at,LEAST(t.expires_at,g.expires_at,s.expires_at) AS expires_at,u.id FROM oauth_tokens t JOIN oauth_grants g ON g.id=t.grant_id JOIN sessions s ON s.id=g.session_id JOIN users u ON u.id=g.user_id AND u.id=s.user_id JOIN oauth_clients c ON c.id=g.client_id WHERE t.token_hash=$1 AND c.id=$2 AND c.secret_hash=$3 AND c.enabled AND t.revoked_at IS NULL AND t.consumed_at IS NULL AND t.expires_at>$4 AND g.revoked_at IS NULL AND g.expires_at>$4 AND s.revoked_at IS NULL AND s.expires_at>$4 AND s.credential_version=u.credential_version AND u.verified AND u.status='active'",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 1287700,
+                    "max_nanoseconds": 1287700,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      0,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 1,
+                  "rows_affected": 1
+                }
+              ],
+              "statuses": {
+                "200": 1
+              },
+              "request_duration": {
+                "count": 1,
+                "total_nanoseconds": 2023699,
+                "max_nanoseconds": 2023699,
+                "bucket_le_nanoseconds": [
+                  100000,
+                  500000,
+                  1000000,
+                  5000000,
+                  25000000,
+                  100000000,
+                  250000000
+                ],
+                "cumulative_buckets": [
+                  0,
+                  0,
+                  0,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1
+                ]
+              },
+              "pool_acquisition": {
+                "count": 2,
+                "total_nanoseconds": 235200,
+                "max_nanoseconds": 128600,
+                "bucket_le_nanoseconds": [
+                  100000,
+                  500000,
+                  1000000,
+                  5000000,
+                  25000000,
+                  100000000,
+                  250000000
+                ],
+                "cumulative_buckets": [
+                  0,
+                  2,
+                  2,
+                  2,
+                  2,
+                  2,
+                  2,
+                  2
+                ]
+              },
+              "unknown_statement_count": 0
+            }
+          }
+        }
+      },
+      {
+        "endpoint": "introspection",
+        "observation": {
+          "scope": "actual SQLx completion events inside fixed endpoint spans; no bind values",
+          "endpoints": {
+            "introspection": {
+              "requests": 1,
+              "sql_per_request_min": 2,
+              "sql_per_request_max": 2,
+              "query_completions": [
+                {
+                  "shape_id": "ca746dbb67095caa68229af8fca58529246cf6b93f6854a84b4d227987509e8a",
+                  "source": "crates/identity-store/src/tokens.rs",
+                  "parameterized_sql": "SELECT id,client_id,secret_hash FROM oauth_clients WHERE client_id=$1 AND enabled",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 153200,
+                    "max_nanoseconds": 153200,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 1,
+                  "rows_affected": 1
+                },
+                {
+                  "shape_id": "f91169722b213ce9ed8a8eb7bd3fc02f26239c4e3166d6fed8d591a0bd84ead8",
+                  "source": "crates/identity-store/src/tokens.rs",
+                  "parameterized_sql": "SELECT t.kind,t.scopes,t.created_at,LEAST(t.expires_at,g.expires_at,s.expires_at) AS expires_at,u.id FROM oauth_tokens t JOIN oauth_grants g ON g.id=t.grant_id JOIN sessions s ON s.id=g.session_id JOIN users u ON u.id=g.user_id AND u.id=s.user_id JOIN oauth_clients c ON c.id=g.client_id WHERE t.token_hash=$1 AND c.id=$2 AND c.secret_hash=$3 AND c.enabled AND t.revoked_at IS NULL AND t.consumed_at IS NULL AND t.expires_at>$4 AND g.revoked_at IS NULL AND g.expires_at>$4 AND s.revoked_at IS NULL AND s.expires_at>$4 AND s.credential_version=u.credential_version AND u.verified AND u.status='active'",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 642400,
+                    "max_nanoseconds": 642400,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 1,
+                  "rows_affected": 1
+                }
+              ],
+              "statuses": {
+                "200": 1
+              },
+              "request_duration": {
+                "count": 1,
+                "total_nanoseconds": 1371600,
+                "max_nanoseconds": 1371600,
+                "bucket_le_nanoseconds": [
+                  100000,
+                  500000,
+                  1000000,
+                  5000000,
+                  25000000,
+                  100000000,
+                  250000000
+                ],
+                "cumulative_buckets": [
+                  0,
+                  0,
+                  0,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1
+                ]
+              },
+              "pool_acquisition": {
+                "count": 2,
+                "total_nanoseconds": 296500,
+                "max_nanoseconds": 167900,
+                "bucket_le_nanoseconds": [
+                  100000,
+                  500000,
+                  1000000,
+                  5000000,
+                  25000000,
+                  100000000,
+                  250000000
+                ],
+                "cumulative_buckets": [
+                  0,
+                  2,
+                  2,
+                  2,
+                  2,
+                  2,
+                  2,
+                  2
+                ]
+              },
+              "unknown_statement_count": 0
+            }
+          }
+        }
+      },
+      {
+        "endpoint": "introspection",
+        "observation": {
+          "scope": "actual SQLx completion events inside fixed endpoint spans; no bind values",
+          "endpoints": {
+            "introspection": {
+              "requests": 1,
+              "sql_per_request_min": 2,
+              "sql_per_request_max": 2,
+              "query_completions": [
+                {
+                  "shape_id": "ca746dbb67095caa68229af8fca58529246cf6b93f6854a84b4d227987509e8a",
+                  "source": "crates/identity-store/src/tokens.rs",
+                  "parameterized_sql": "SELECT id,client_id,secret_hash FROM oauth_clients WHERE client_id=$1 AND enabled",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 148900,
+                    "max_nanoseconds": 148900,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 1,
+                  "rows_affected": 1
+                },
+                {
+                  "shape_id": "f91169722b213ce9ed8a8eb7bd3fc02f26239c4e3166d6fed8d591a0bd84ead8",
+                  "source": "crates/identity-store/src/tokens.rs",
+                  "parameterized_sql": "SELECT t.kind,t.scopes,t.created_at,LEAST(t.expires_at,g.expires_at,s.expires_at) AS expires_at,u.id FROM oauth_tokens t JOIN oauth_grants g ON g.id=t.grant_id JOIN sessions s ON s.id=g.session_id JOIN users u ON u.id=g.user_id AND u.id=s.user_id JOIN oauth_clients c ON c.id=g.client_id WHERE t.token_hash=$1 AND c.id=$2 AND c.secret_hash=$3 AND c.enabled AND t.revoked_at IS NULL AND t.consumed_at IS NULL AND t.expires_at>$4 AND g.revoked_at IS NULL AND g.expires_at>$4 AND s.revoked_at IS NULL AND s.expires_at>$4 AND s.credential_version=u.credential_version AND u.verified AND u.status='active'",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 627600,
+                    "max_nanoseconds": 627600,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 1,
+                  "rows_affected": 1
+                }
+              ],
+              "statuses": {
+                "200": 1
+              },
+              "request_duration": {
+                "count": 1,
+                "total_nanoseconds": 1279500,
+                "max_nanoseconds": 1279500,
+                "bucket_le_nanoseconds": [
+                  100000,
+                  500000,
+                  1000000,
+                  5000000,
+                  25000000,
+                  100000000,
+                  250000000
+                ],
+                "cumulative_buckets": [
+                  0,
+                  0,
+                  0,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1
+                ]
+              },
+              "pool_acquisition": {
+                "count": 2,
+                "total_nanoseconds": 271500,
+                "max_nanoseconds": 163800,
+                "bucket_le_nanoseconds": [
+                  100000,
+                  500000,
+                  1000000,
+                  5000000,
+                  25000000,
+                  100000000,
+                  250000000
+                ],
+                "cumulative_buckets": [
+                  0,
+                  2,
+                  2,
+                  2,
+                  2,
+                  2,
+                  2,
+                  2
+                ]
+              },
+              "unknown_statement_count": 0
+            }
+          }
+        }
+      },
+      {
+        "endpoint": "refresh",
+        "observation": {
+          "scope": "actual SQLx completion events inside fixed endpoint spans; no bind values",
+          "endpoints": {
+            "token": {
+              "requests": 1,
+              "sql_per_request_min": 13,
+              "sql_per_request_max": 13,
+              "query_completions": [
+                {
+                  "shape_id": "0ff57957ad8d8520c5a4053b9810b88c6ab45c3881615e6378f4e60e9a504c21",
+                  "source": "crates/identity-store/src/tokens.rs",
+                  "parameterized_sql": "SELECT t.family_id,g.id AS grant_id,g.user_id,g.session_id FROM oauth_tokens t JOIN oauth_grants g ON g.id=t.grant_id WHERE t.token_hash=$1 AND t.kind='refresh' AND g.client_id=$2",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 416000,
+                    "max_nanoseconds": 416000,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 1,
+                  "rows_affected": 1
+                },
+                {
+                  "shape_id": "52c74b088bbfbf3e45ab6f00861025a514fc860d96dc36a71785c7e82911c74e",
+                  "source": "crates/identity-store/src/tokens.rs",
+                  "parameterized_sql": "UPDATE oauth_tokens SET consumed_at=$2 WHERE token_hash=$1",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 400400,
+                    "max_nanoseconds": 400400,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 0,
+                  "rows_affected": 1
+                },
+                {
+                  "shape_id": "604c834032892fff2b74ee4843f3c5a3852e28dc18bdb417e0c9de6243a3d8d9",
+                  "source": "crates/identity-store/src/tokens.rs",
+                  "parameterized_sql": "SELECT amr,auth_time,expires_at FROM sessions WHERE id=$1 AND user_id=$2 AND credential_version=$3 AND revoked_at IS NULL AND expires_at>$4 FOR UPDATE",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 205300,
+                    "max_nanoseconds": 205300,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 1,
+                  "rows_affected": 1
+                },
+                {
+                  "shape_id": "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f",
+                  "source": "SQLx transaction lifecycle",
+                  "parameterized_sql": "COMMIT",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 1177300,
+                    "max_nanoseconds": 1177300,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      0,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 0,
+                  "rows_affected": 0
+                },
+                {
+                  "shape_id": "86323798ba7ced1a2083eca31b38ca5b88ec201693d27f3b01c0d0490d1ef38f",
+                  "source": "crates/identity-store/src/tokens.rs",
+                  "parameterized_sql": "SELECT consumed_at,revoked_at,expires_at,family_expires_at,scopes FROM oauth_tokens WHERE token_hash=$1 AND kind='refresh' AND grant_id=$2 AND family_id=$3",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 322200,
+                    "max_nanoseconds": 322200,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 1,
+                  "rows_affected": 1
+                },
+                {
+                  "shape_id": "98b3d51e2f58e73577f5cec974e05eedf48e1120346dd388c9abaa57ebaa062d",
+                  "source": "crates/identity-store/src/tokens.rs",
+                  "parameterized_sql": "INSERT INTO oauth_tokens(id,token_hash,kind,grant_id,family_id,family_expires_at,expires_at,created_at,scopes) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)",
+                  "timing": {
+                    "count": 2,
+                    "total_nanoseconds": 403500,
+                    "max_nanoseconds": 214200,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2
+                    ]
+                  },
+                  "rows_returned": 0,
+                  "rows_affected": 2
+                },
+                {
+                  "shape_id": "a900277bec24009458fcf33eb1dc11062cd16d0d644cde820f8ab703854c5587",
+                  "source": "crates/identity-store/src/tokens.rs",
+                  "parameterized_sql": "SELECT id FROM oauth_tokens WHERE grant_id=$1 AND family_id=$2 ORDER BY id FOR UPDATE",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 320700,
+                    "max_nanoseconds": 320700,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 2,
+                  "rows_affected": 2
+                },
+                {
+                  "shape_id": "b3e8a21cb2f3f05a5653d06034c662dbd94d357c6e72403cbe434c73843f9f06",
+                  "source": "crates/identity-store/src/tokens.rs",
+                  "parameterized_sql": "SELECT enabled,secret_hash FROM oauth_clients WHERE id=$1 FOR SHARE",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 137700,
+                    "max_nanoseconds": 137700,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 1,
+                  "rows_affected": 1
+                },
+                {
+                  "shape_id": "ca746dbb67095caa68229af8fca58529246cf6b93f6854a84b4d227987509e8a",
+                  "source": "crates/identity-store/src/tokens.rs",
+                  "parameterized_sql": "SELECT id,client_id,secret_hash FROM oauth_clients WHERE client_id=$1 AND enabled",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 144800,
+                    "max_nanoseconds": 144800,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 1,
+                  "rows_affected": 1
+                },
+                {
+                  "shape_id": "e6a0b93e4868be45bbedc5cdf91d31e67465cd1a361755dec2a171ad7f96dabd",
+                  "source": "crates/identity-store/src/tokens.rs",
+                  "parameterized_sql": "SELECT expires_at,scopes FROM oauth_grants WHERE id=$1 AND user_id=$2 AND session_id=$3 AND client_id=$4 AND revoked_at IS NULL AND expires_at>$5 FOR UPDATE",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 337500,
+                    "max_nanoseconds": 337500,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 1,
+                  "rows_affected": 1
+                },
+                {
+                  "shape_id": "e84034a87cdef25215c96e0a2b53d9ad5e9e3e88348dc1cee9729d960bc53281",
+                  "source": "crates/identity-store/src/security.rs",
+                  "parameterized_sql": "INSERT INTO audit_events(id,event,actor_id,target_type,target_id,result,request_id,source,occurred_at) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 215300,
+                    "max_nanoseconds": 215300,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 0,
+                  "rows_affected": 1
+                },
+                {
+                  "shape_id": "f414e92855b3aadc1cf1c398cedfb4f3ca57358b92a33e8c8f4ff53117e8159b",
+                  "source": "crates/identity-store/src/tokens.rs",
+                  "parameterized_sql": "SELECT verified,status,credential_version FROM users WHERE id=$1 FOR UPDATE",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 154500,
+                    "max_nanoseconds": 154500,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 1,
+                  "rows_affected": 1
+                }
+              ],
+              "statuses": {
+                "200": 1
+              },
+              "request_duration": {
+                "count": 1,
+                "total_nanoseconds": 6125400,
+                "max_nanoseconds": 6125400,
+                "bucket_le_nanoseconds": [
+                  100000,
+                  500000,
+                  1000000,
+                  5000000,
+                  25000000,
+                  100000000,
+                  250000000
+                ],
+                "cumulative_buckets": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  1,
+                  1,
+                  1
+                ]
+              },
+              "pool_acquisition": {
+                "count": 3,
+                "total_nanoseconds": 373500,
+                "max_nanoseconds": 159800,
+                "bucket_le_nanoseconds": [
+                  100000,
+                  500000,
+                  1000000,
+                  5000000,
+                  25000000,
+                  100000000,
+                  250000000
+                ],
+                "cumulative_buckets": [
+                  0,
+                  3,
+                  3,
+                  3,
+                  3,
+                  3,
+                  3,
+                  3
+                ]
+              },
+              "unknown_statement_count": 0
+            }
+          }
+        }
+      },
+      {
+        "endpoint": "password",
+        "observation": {
+          "scope": "actual SQLx completion events inside fixed endpoint spans; no bind values",
+          "endpoints": {
+            "csrf": {
+              "requests": 1,
+              "sql_per_request_min": 2,
+              "sql_per_request_max": 2,
+              "query_completions": [
+                {
+                  "shape_id": "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f",
+                  "source": "SQLx transaction lifecycle",
+                  "parameterized_sql": "COMMIT",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 1767100,
+                    "max_nanoseconds": 1767100,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      0,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 0,
+                  "rows_affected": 0
+                },
+                {
+                  "shape_id": "9ed3a70a37c642d350c65b1dd78af7e2c34664e65019e7b02eab02a0cfec4c06",
+                  "source": "crates/identity-store/src/sessions.rs",
+                  "parameterized_sql": "INSERT INTO preauthentication_contexts(id,token_hash,csrf_hash,created_at,expires_at) VALUES($1,$2,$3,$4,$5)",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 968200,
+                    "max_nanoseconds": 968200,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 0,
+                  "rows_affected": 1
+                }
+              ],
+              "statuses": {
+                "200": 1
+              },
+              "request_duration": {
+                "count": 1,
+                "total_nanoseconds": 3245300,
+                "max_nanoseconds": 3245300,
+                "bucket_le_nanoseconds": [
+                  100000,
+                  500000,
+                  1000000,
+                  5000000,
+                  25000000,
+                  100000000,
+                  250000000
+                ],
+                "cumulative_buckets": [
+                  0,
+                  0,
+                  0,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1
+                ]
+              },
+              "pool_acquisition": {
+                "count": 1,
+                "total_nanoseconds": 138600,
+                "max_nanoseconds": 138600,
+                "bucket_le_nanoseconds": [
+                  100000,
+                  500000,
+                  1000000,
+                  5000000,
+                  25000000,
+                  100000000,
+                  250000000
+                ],
+                "cumulative_buckets": [
+                  0,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1
+                ]
+              },
+              "unknown_statement_count": 0
+            },
+            "password": {
+              "requests": 1,
+              "sql_per_request_min": 22,
+              "sql_per_request_max": 22,
+              "query_completions": [
+                {
+                  "shape_id": "0fd76882cf6ad2a1982d7100027bd487f111de6df1c24c5b357b525e7be6c4e0",
+                  "source": "crates/identity-store/src/security.rs",
+                  "parameterized_sql": "SELECT EXISTS(SELECT 1 FROM preauthentication_contexts WHERE token_hash=$1 AND csrf_hash=$2 AND revoked_at IS NULL AND expires_at>$3)",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 482600,
+                    "max_nanoseconds": 482600,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 1,
+                  "rows_affected": 1
+                },
+                {
+                  "shape_id": "1de5027c96b21926a8854bd2ee661e64f6f38d817a4c3b51d74fc6cc313260ce",
+                  "source": "crates/identity-store/src/sessions.rs",
+                  "parameterized_sql": "UPDATE authentication_challenges SET consumed_at=COALESCE(consumed_at,$2) WHERE preauth_hash=$1",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 318800,
+                    "max_nanoseconds": 318800,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 0,
+                  "rows_affected": 0
+                },
+                {
+                  "shape_id": "3e5d65312667694b15a2a37698024580870da721429e279a3582351374e26218",
+                  "source": "crates/identity-store/src/sessions.rs",
+                  "parameterized_sql": "SELECT EXISTS(SELECT 1 FROM totp_factors WHERE user_id=$1 AND confirmed)",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 350400,
+                    "max_nanoseconds": 350400,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 1,
+                  "rows_affected": 1
+                },
+                {
+                  "shape_id": "55a859a48b891f2f2917213fbbd42abe7010b98098673736f69d191631a09585",
+                  "source": "crates/identity-store/src/sessions.rs",
+                  "parameterized_sql": "SELECT id FROM oauth_grants WHERE user_id=$1 AND session_id=ANY($2::uuid[]) ORDER BY id FOR UPDATE",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 406400,
+                    "max_nanoseconds": 406400,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 0,
+                  "rows_affected": 0
+                },
+                {
+                  "shape_id": "5f06ce40a1cc24a7b22e7b3cc879a103976a544f361ca187c6dc0262690718bb",
+                  "source": "crates/identity-store/src/sessions.rs",
+                  "parameterized_sql": "SELECT id FROM authorization_transactions WHERE consumed_at IS NULL AND expires_at>$3 AND (($1::bytea IS NOT NULL AND preauth_hash=$1 AND session_id IS NULL) OR session_id=ANY($2::uuid[])) ORDER BY id FOR UPDATE",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 1090200,
+                    "max_nanoseconds": 1090200,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      0,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 0,
+                  "rows_affected": 0
+                },
+                {
+                  "shape_id": "654486f3e444cd686e2cc46a0ca9a3c0562cc3759f0b8c0c96a9e645bdc7cb19",
+                  "source": "crates/identity-store/src/sessions.rs",
+                  "parameterized_sql": "SELECT t.id FROM oauth_tokens t JOIN oauth_grants g ON g.id=t.grant_id WHERE g.user_id=$1 AND g.session_id=ANY($2::uuid[]) ORDER BY t.id FOR UPDATE OF t",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 523700,
+                    "max_nanoseconds": 523700,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 0,
+                  "rows_affected": 0
+                },
+                {
+                  "shape_id": "74b89802f50f32ed891ddedd627d463347cd9f5f575bc251652ea3a2aa210b41",
+                  "source": "crates/identity-store/src/sessions.rs",
+                  "parameterized_sql": "UPDATE authorization_transactions SET consumed_at=COALESCE(consumed_at,$3) WHERE session_id=ANY($2::uuid[]) AND session_id IN(SELECT id FROM sessions WHERE user_id=$1) AND NOT(id=ANY($4::uuid[]))",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 533700,
+                    "max_nanoseconds": 533700,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 0,
+                  "rows_affected": 0
+                },
+                {
+                  "shape_id": "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f",
+                  "source": "SQLx transaction lifecycle",
+                  "parameterized_sql": "COMMIT",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 1278500,
+                    "max_nanoseconds": 1278500,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      0,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 0,
+                  "rows_affected": 0
+                },
+                {
+                  "shape_id": "888a286a7a13f75d0edf0434a58eef46681a728c494013186680b8d736c737f7",
+                  "source": "crates/identity-store/src/sessions.rs",
+                  "parameterized_sql": "UPDATE oauth_grants SET revoked_at=COALESCE(revoked_at,$3) WHERE user_id=$1 AND session_id=ANY($2::uuid[])",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 387600,
+                    "max_nanoseconds": 387600,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 0,
+                  "rows_affected": 0
+                },
+                {
+                  "shape_id": "96c384137ca978c5ccc755f1134d94303a291f5f9291d2bd09b13db686cbf29d",
+                  "source": "crates/identity-store/src/sessions.rs",
+                  "parameterized_sql": "SELECT c.id FROM authorization_codes c JOIN oauth_grants g ON g.id=c.grant_id WHERE g.user_id=$1 AND g.session_id=ANY($2::uuid[]) ORDER BY c.id FOR UPDATE OF c",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 518299,
+                    "max_nanoseconds": 518299,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 0,
+                  "rows_affected": 0
+                },
+                {
+                  "shape_id": "9ed3a70a37c642d350c65b1dd78af7e2c34664e65019e7b02eab02a0cfec4c06",
+                  "source": "crates/identity-store/src/sessions.rs",
+                  "parameterized_sql": "INSERT INTO preauthentication_contexts(id,token_hash,csrf_hash,created_at,expires_at) VALUES($1,$2,$3,$4,$5)",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 329100,
+                    "max_nanoseconds": 329100,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 0,
+                  "rows_affected": 1
+                },
+                {
+                  "shape_id": "9f76313d01e7372012a4d6e3d82945a6630d98298eeb9d6dc5b36ed927eebfc4",
+                  "source": "crates/identity-store/src/sessions.rs",
+                  "parameterized_sql": "UPDATE authentication_challenges SET consumed_at=COALESCE(consumed_at,$3) WHERE user_id=$1 AND session_id=ANY($2::uuid[])",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 1111400,
+                    "max_nanoseconds": 1111400,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      0,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 0,
+                  "rows_affected": 0
+                },
+                {
+                  "shape_id": "aeccdc32addeee57ce7fd3bb495b6b7546827c8d0d7ffa931e5703efeabf12d1",
+                  "source": "crates/identity-store/src/sessions.rs",
+                  "parameterized_sql": "INSERT INTO sessions(id,token_hash,user_id,amr,auth_time,strong_at,csrf_hash,credential_version,user_agent,created_at,expires_at) VALUES($1,$2,$3,ARRAY['pwd']::text[],$4,NULL,$5,$6,$7,$4,$8)",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 420200,
+                    "max_nanoseconds": 420200,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 0,
+                  "rows_affected": 1
+                },
+                {
+                  "shape_id": "c03ef1a11f998f8074d7cd92a242c0eb601c3480e08580259a5ed25f482252c5",
+                  "source": "crates/identity-store/src/sessions.rs",
+                  "parameterized_sql": "SELECT id FROM sessions WHERE user_id=$1 AND id=ANY($2::uuid[]) ORDER BY id FOR UPDATE",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 500099,
+                    "max_nanoseconds": 500099,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 0,
+                  "rows_affected": 0
+                },
+                {
+                  "shape_id": "d2f4184ad2cc789f952bc3ba184e8d58398d9ebca7898adc85b134b2508a8f8d",
+                  "source": "crates/identity-store/src/sessions.rs",
+                  "parameterized_sql": "UPDATE preauthentication_contexts SET revoked_at=COALESCE(revoked_at,$2) WHERE token_hash=$1",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 384400,
+                    "max_nanoseconds": 384400,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 0,
+                  "rows_affected": 1
+                },
+                {
+                  "shape_id": "deef9b6a3ae66491fc3add0317d941d2af242857fc63e023c6fe2fb277bfbac9",
+                  "source": "crates/identity-store/src/sessions.rs",
+                  "parameterized_sql": "SELECT id,email,display_name,verified,status,credential_version,created_at FROM users WHERE id=$1 FOR UPDATE",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 592900,
+                    "max_nanoseconds": 592900,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 1,
+                  "rows_affected": 1
+                },
+                {
+                  "shape_id": "e31f08696ffd61b1fa68f887acf5f2410db7d92ec786873cc2c7c7021c2a2c48",
+                  "source": "crates/identity-store/src/sessions.rs",
+                  "parameterized_sql": "UPDATE sessions SET revoked_at=COALESCE(revoked_at,$3) WHERE user_id=$1 AND id=ANY($2::uuid[])",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 367000,
+                    "max_nanoseconds": 367000,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 0,
+                  "rows_affected": 0
+                },
+                {
+                  "shape_id": "e51697175b71af3c27dc6e6bf662f9a739c1f9b1f5c6fce4593086ae62a23a5e",
+                  "source": "crates/identity-store/src/tokens.rs",
+                  "parameterized_sql": "SELECT id FROM preauthentication_contexts WHERE token_hash=$1 AND revoked_at IS NULL AND expires_at>$2 FOR UPDATE",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 408200,
+                    "max_nanoseconds": 408200,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 1,
+                  "rows_affected": 1
+                },
+                {
+                  "shape_id": "e5f87474fc9103d61c1c23c01b18414f781a39c33057e8b3da9dc4e1e27e6af2",
+                  "source": "crates/identity-store/src/sessions.rs",
+                  "parameterized_sql": "UPDATE authorization_transactions SET preauth_hash=NULL,session_id=$2 WHERE id=ANY($1::uuid[])",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 346900,
+                    "max_nanoseconds": 346900,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 0,
+                  "rows_affected": 0
+                },
+                {
+                  "shape_id": "e84034a87cdef25215c96e0a2b53d9ad5e9e3e88348dc1cee9729d960bc53281",
+                  "source": "crates/identity-store/src/security.rs",
+                  "parameterized_sql": "INSERT INTO audit_events(id,event,actor_id,target_type,target_id,result,request_id,source,occurred_at) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 576000,
+                    "max_nanoseconds": 576000,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 0,
+                  "rows_affected": 1
+                },
+                {
+                  "shape_id": "ed1e2284b0aace9f9508557689326972f1f849176190c9312906882667d0dc5b",
+                  "source": "crates/identity-store/src/sessions.rs",
+                  "parameterized_sql": "UPDATE oauth_tokens SET revoked_at=COALESCE(revoked_at,$3) WHERE grant_id IN(SELECT id FROM oauth_grants WHERE user_id=$1 AND session_id=ANY($2::uuid[]))",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 595000,
+                    "max_nanoseconds": 595000,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 0,
+                  "rows_affected": 0
+                },
+                {
+                  "shape_id": "f24e693e202c01a926ab04a37f259999f40007ca1da34a44ad656a13f96654be",
+                  "source": "crates/identity-store/src/sessions.rs",
+                  "parameterized_sql": "SELECT u.id,u.email,u.password_hash,u.verified,u.status,u.credential_version,EXISTS(SELECT 1 FROM totp_factors f WHERE f.user_id=u.id AND f.confirmed) AS totp_enabled FROM users u WHERE u.email=$1",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 394200,
+                    "max_nanoseconds": 394200,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 1,
+                  "rows_affected": 1
+                }
+              ],
+              "statuses": {
+                "200": 1
+              },
+              "request_duration": {
+                "count": 1,
+                "total_nanoseconds": 103953000,
+                "max_nanoseconds": 103953000,
+                "bucket_le_nanoseconds": [
+                  100000,
+                  500000,
+                  1000000,
+                  5000000,
+                  25000000,
+                  100000000,
+                  250000000
+                ],
+                "cumulative_buckets": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  1
+                ]
+              },
+              "pool_acquisition": {
+                "count": 3,
+                "total_nanoseconds": 664700,
+                "max_nanoseconds": 361900,
+                "bucket_le_nanoseconds": [
+                  100000,
+                  500000,
+                  1000000,
+                  5000000,
+                  25000000,
+                  100000000,
+                  250000000
+                ],
+                "cumulative_buckets": [
+                  0,
+                  3,
+                  3,
+                  3,
+                  3,
+                  3,
+                  3,
+                  3
+                ]
+              },
+              "unknown_statement_count": 0
+            }
+          }
+        }
+      }
+    ]
+  },
+  "sourceSha256": {
+    "tests/load/run.mjs": "ad81e4c2b2c46bcc1d2ec7061027286279cde7e4d4311e57f1caefdabb1d9203",
+    "tests/load/scenarios.js": "05947b7eeb16a43afe9995467a8a0db774b01cb4a294031069d904cb956d94f7",
+    "tests/load/query-evidence.rs": "a053ecc52b502a7a3ad1edc14cff66c182f984a6ccb64efff66e60ddd0faed14",
+    "crates/identity-server/tests/t21_load.rs": "19c33eb7c8c3f37c8dcf2be0a32d09500cb1cf5ca28c6e7bb89f458c600aa4ac",
+    "crates/identity-store/src/sessions.rs": "dc5183bbf9cfe91882e2d67c98278a7abcddf1f8b180f9af213f5dd5cfd736c2",
+    "crates/identity-store/src/tokens.rs": "4555cefef951c2d74566a218e1cf3b0e65cfca4e221dab2a38482c0b8f95e52c",
+    "crates/identity-store/src/security.rs": "1ebfbb6d91687426afc09f12953dfcc0916b43956631a8ad1ca774483aab5b3c",
+    "crates/identity-store/src/repository.rs": "1574a56b657357aa3b0c4cc1a612da632b025bfd78b6a1e2ed05d84b85e1c41b",
+    "Cargo.lock": "47ffcb0545416af76dd26346f42a3f583f60d6a4f5f84f8fd6a1f36dea6539d8"
+  },
+  "apiExecutableSha256": "8d6944a7a4d0c70e19e0124d782574d0b5872e74e4b2db30fc211f3e8e4d2079",
+  "completed": "2026-10-08T18:13:31.122Z",
+  "exitCode": 0
+}

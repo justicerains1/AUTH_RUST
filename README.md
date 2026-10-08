@@ -70,7 +70,7 @@ npm run test:integration -- --task=T01
 
 完整integration/E2E已按固定任务manifest逐项运行，失败继续并记录退出码；security执行依赖/秘密/协议和本地生产构建ZAP。load必须明确选择场景，seed只白名单测试库。verify:openapi、数据库迁移与T16 accessibility已经有实际套件。`npm run db:migrate -- --env=development` 对本机开发目标应用SQLx校验迁移；test仅允许identity_test，production需显式环境和--allow-production。启动不会隐式迁移。测试数据 seed 禁止用于生产，T21已提供隔离十万账号/授权种子，错误环境及缺必要工具真实非零。
 
-CI 复用相同根脚本，分别配置 Linux/Windows 构建及 Linux Compose 模块集成；产品可访问性同时安装并执行Chromium/Firefox。CI 配置存在不代表远端已经运行，实际执行记录以 [acceptance.md](acceptance.md) 和 [docs/evidence/T01](docs/evidence/T01) 为准。
+CI 复用相同根脚本，分别配置 Linux/Windows 构建及 Linux Compose 模块集成；产品可访问性同时安装并执行Chromium/Firefox（当前12个完整案例）。CI 配置存在不代表远端已经运行，实际执行记录以 [acceptance.md](acceptance.md) 和 [docs/evidence/T01](docs/evidence/T01) 为准。
 
 ## 目录与任务状态
 
@@ -132,3 +132,5 @@ TTY会隐藏密码输入；自动化可通过受控stdin传入单行密码，密
 T22集成还包含受控主机指标/告警规则、签名先发布公钥与真实BFF刷新、完整身份加密备份恢复以及本地发布/迁移失败中止/兼容回滚。工具固定版本与权限见[主机指标](docs/runbooks/host-metrics.md)、[备份恢复](docs/runbooks/backup-recovery.md)和[单机部署](docs/runbooks/single-host-deployment.md)。生产发布脚本需要明确`--allow-production`及实际准备的受控配置，Git推送和本地演练不启动生产。
 
 后续[高可用升级设计](docs/runbooks/high-availability-upgrade.md)已补规划；它没有实现T24的HA数据服务、滚动升级或故障切换，实际阶段仍须满足T23前置及独立验收。
+
+每日备份样例与保守基础备份catalog/保留工具见[备份操作稿](docs/runbooks/backup-recovery.md)，默认只生成计划，缺真实窗口前恢复锚点或分叉/损坏/pin变化时拒清理，WAL/历史/密钥一律保留；不代表已安装生产timer或已有14天恢复历史。

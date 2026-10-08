@@ -1,4 +1,4 @@
-T12 real OIDC integration 2026-10-08T13:46:47.094Z
+T12 real OIDC integration 2026-10-08T18:09:22.112Z
 PASS T12-REV-02 real refresh rotation; old token replay commits whole-family revocation and persistent audit
 PASS T12-REV-03 client B cannot inspect/revoke client A token; unknown token and unknown hint remain safely inactive/idempotent
 PASS T12 refresh scope narrows per token; userinfo/introspection never restore email and later widening returns invalid_scope
@@ -18,5 +18,5 @@ PASS T12 independent JOSE rejects none/HS256, wrong issuer/audience/key and expi
 PASS T12 mature OIDC client rotates refresh without replaying nonce; old-refresh replay makes entire family inactive.
 PASS T12 real redis container stopped: introspection503 and no fabricated active status.
 PASS T12 real postgres container stopped: introspection503 and no fabricated active status.
-Completed 2026-10-08T13:47:27.117Z
+Completed 2026-10-08T18:09:59.418Z
 Exit code 0

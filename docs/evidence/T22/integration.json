@@ -1,5 +1,5 @@
 {
-  "completed": "2026-10-08T16:59:57.710Z",
+  "completed": "2026-10-08T19:05:33.257Z",
   "results": [
     {
       "name": "metrics",
@@ -23,6 +23,10 @@
     },
     {
       "name": "release-and-compatible-rollback",
+      "exitCode": 0
+    },
+    {
+      "name": "verified-backup-catalog-and-conservative-retention",
       "exitCode": 0
     }
   ],
