@@ -287,3 +287,7 @@ aeb40648915bef2386c84c623ab75dac0be1b301:docs/evidence/T21/load-mixed-2026-10-08
 0d86f02251d43a53a4d398271f21ae724d772559:docs/evidence/T23/final-artifacts-20261009-focus.json:generic-api-key:508
 0d86f02251d43a53a4d398271f21ae724d772559:docs/evidence/T23/final-artifacts-20261009-focus.json:generic-api-key:509
 0d86f02251d43a53a4d398271f21ae724d772559:docs/evidence/T23/final-artifacts-20261009-focus.json:generic-api-key:510
+
+# Final required SQL probe public integrity hashes.
+2bad9529eb46779371a7c4a1e0421d58f65c8cab:docs/evidence/T21/sql-probe-2026-10-08T19-30-34-253Z.json:generic-api-key:4617
+2bad9529eb46779371a7c4a1e0421d58f65c8cab:docs/evidence/T21/sql-probe-2026-10-08T19-30-34-253Z.json:generic-api-key:4622
