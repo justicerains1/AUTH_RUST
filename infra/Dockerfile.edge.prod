@@ -10,7 +10,8 @@ RUN npm run build --workspaces
 
 FROM docker.m.daocloud.io/library/caddy:2.11.7-alpine@sha256:d8542f48d34a9cf4e4c11a478865229840e87e4c96ea3f439101f31a5d35f75f
 RUN addgroup -g 10001 identity && adduser -u 10001 -G identity -D -H identity && \
-    mkdir -p /data/caddy /config/caddy && chown -R 10001:10001 /data /config
+    mkdir -p /data/caddy /config/caddy && chown -R 10001:10001 /data /config && \
+    setcap -r /usr/bin/caddy
 COPY --from=frontend /workspace/apps/identity-web/dist /srv/identity
 COPY --from=frontend /workspace/apps/demo-a/dist /srv/demo-a
 COPY --from=frontend /workspace/apps/demo-b/dist /srv/demo-b
