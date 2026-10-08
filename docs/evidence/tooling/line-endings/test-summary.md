@@ -1,0 +1,5 @@
+# Windows 精确弱密码基线字节修复
+
+2026-10-08，父4f58e1c。OpenSSL环境修复后Windows远端check通过，unit真实失败位于identity-core/security.rs:665的弱密码原始SHA256检查。Git默认Windows checkout将LF转CRLF；本地把准确上游字节模拟CRLF得到不同digest，源metadata与LF一致，不能降低/删除精确checksum断言。
+
+新增.gitattributes：源码统一LF，弱密码原始文本与许可证明确-text禁止任何行尾转换。已有原始字节、SHA256/来源/许可不变。真实目标Rust单元退出0，Gitfilteredcheckout两原始文件digest与metadata一致；Windows实际复测由此提交CI验证，尚未假称全绿。

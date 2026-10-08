@@ -1,0 +1,6 @@
+# Keep reviewed source bytes identical on Linux and Windows. Native tools accept LF.
+* text=auto eol=lf
+
+# Security baselines are hashed as the exact upstream bytes, without newline conversion.
+/data/weak-passwords.txt -text
+/data/weak-passwords-LICENSE.txt -text
