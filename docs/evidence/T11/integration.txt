@@ -1,11 +1,12 @@
-T11 real OIDC integration 2026-10-08T12:44:59.368Z
+T11 real OIDC integration 2026-10-08T13:33:15.066Z
 PASS T11-OIDC-02 real Basic/code/PKCE/redirect/client binding; ten code exchanges issue one token family
 PASS T11-OIDC-03 stable subject and strict scope-filtered userinfo; refresh token rejected as access token
 PASS T11-OIDC-04 public-only RS256 JWKS and discovery match implemented protocol capabilities
 PASS T11 signing failure leaves authorization code unconsumed and authority transaction rolled back
 PASS T11 current authority rejects disabled user and token lifetimes stay within grant/session bounds
 PASS T11 Cookie cannot authenticate confidential client; no browser CORS; closed PostgreSQL dependency returns503
+PASS T11 E12 mature OIDC processing rejects the wrong expected nonce specifically, then accepts the same real RS256 token response with the correct nonce.
 PASS T11-OIDC-01 mature openid-client discovery/Basic/PKCE/nonce exchange plus independent jose RS256 claims validation.
 PASS T11 independent JOSE rejects none/HS256, wrong issuer/audience/key and expiry without printing tokens.
-Completed 2026-10-08T12:45:11.975Z
+Completed 2026-10-08T13:33:27.323Z
 Exit code 0

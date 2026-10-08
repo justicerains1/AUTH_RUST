@@ -1,13 +1,22 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import * as oidc from 'openid-client';
+import * as oauth from 'oauth4webapi';
 import { createLocalJWKSet, jwtVerify, SignJWT, generateKeyPair, exportJWK } from 'jose';
 
 const issuer = new URL('http://localhost:5190');
 const secret = await readFile(process.env.T11_CLIENT_SECRET_FILE, 'utf8');
 const password = process.env.T11_BROWSER_PASSWORD;
 if (!password) throw new Error('Private interoperability password is required.');
-const transport = (input, init) => { const url = new URL(typeof input === 'string' ? input : input instanceof URL ? input.href : input.url); if (url.origin === issuer.origin) url.host = '127.0.0.1:5191'; return fetch(url, init); };
+let actualTokenResponse;
+const transport = async (input, init) => {
+  const url = new URL(typeof input === 'string' ? input : input instanceof URL ? input.href : input.url);
+  const tokenEndpoint = url.origin === issuer.origin && url.pathname === '/oauth/token';
+  if (url.origin === issuer.origin) url.host = '127.0.0.1:5191';
+  const response = await fetch(url, init);
+  if (tokenEndpoint && response.status === 200) actualTokenResponse = response.clone();
+  return response;
+};
 const config = await oidc.discovery(issuer, 't11-a', { client_secret: secret, token_endpoint_auth_method: 'client_secret_basic', id_token_signed_response_alg: 'RS256' }, oidc.ClientSecretBasic(secret), { execute: [oidc.allowInsecureRequests], [oidc.customFetch]: transport });
 const verifier = oidc.randomPKCECodeVerifier();
 const challenge = await oidc.calculatePKCECodeChallenge(verifier);
@@ -27,6 +36,26 @@ const tokens = await oidc.authorizationCodeGrant(config, callback, { expectedSta
 const claims = tokens.claims(); assert.ok(claims && claims.iss === issuer.origin && claims.aud === 't11-a' && claims.nonce === nonce && typeof claims.auth_time === 'number' && Array.isArray(claims.amr) && typeof claims.sid === 'string');
 const jwks = await (await transport(new URL('/oauth/jwks', issuer))).json(); const publicKeys = createLocalJWKSet(jwks);
 const verified = await jwtVerify(tokens.id_token, publicKeys, { issuer: issuer.origin, audience: 't11-a', algorithms: ['RS256'] }); assert.equal(verified.protectedHeader.alg, 'RS256');
+// Reprocess the same real successful exchange response in memory; never retry its consumed code.
+assert.ok(actualTokenResponse, 'The actual successful token HTTP response must be captured.');
+const actualBody = await actualTokenResponse.clone().json();
+assert.ok(actualBody.id_token === tokens.id_token && verified.payload.nonce === nonce, 'The independently verified real ID Token must retain its original nonce.');
+const wrongNonce = oidc.randomNonce(); assert.ok(wrongNonce !== nonce, 'The negative expected nonce must differ.');
+let nonceRejected = false;
+try {
+  await oauth.processAuthorizationCodeResponse(config.serverMetadata(), config.clientMetadata(), actualTokenResponse.clone(), { expectedNonce: wrongNonce, requireIdToken: true });
+} catch (error) {
+  assert.equal(error.code, oauth.JWT_CLAIM_COMPARISON, 'The failure must be a claim comparison, not a signature, time, token or transport error.');
+  assert.equal(error.cause?.claim, 'nonce', 'The rejected claim must specifically be nonce.');
+  assert.ok(error.cause?.expected === wrongNonce && error.cause?.claims?.nonce === nonce, 'The mature client must compare the incorrect expectation against the unchanged original nonce.');
+  nonceRejected = true;
+}
+assert.ok(nonceRejected, 'The mature client must reject an incorrect expected nonce.');
+const correctResponse = actualTokenResponse.clone();
+const accepted = await oauth.processAuthorizationCodeResponse(config.serverMetadata(), config.clientMetadata(), correctResponse, { expectedNonce: nonce, requireIdToken: true });
+await oauth.validateApplicationLevelSignature(config.serverMetadata(), correctResponse, { [oauth.customFetch]: transport, [oauth.allowInsecureRequests]: true });
+assert.ok(oauth.getValidatedIdTokenClaims(accepted)?.nonce === nonce && accepted.id_token === tokens.id_token, 'The same valid token response must succeed with the correct nonce and mature signature validation.');
+console.log('PASS T11 E12 mature OIDC processing rejects the wrong expected nonce specifically, then accepts the same real RS256 token response with the correct nonce.');
 for (const options of [{ issuer: 'https://wrong.example', audience: 't11-a' }, { issuer: issuer.origin, audience: 'wrong-client' }, { issuer: issuer.origin, audience: 't11-a', currentDate: new Date((Number(verified.payload.exp) + 1) * 1000) }]) await assert.rejects(jwtVerify(tokens.id_token, publicKeys, { ...options, algorithms: ['RS256'] }));
 const [header, payload] = tokens.id_token.split('.');
 const none = `${Buffer.from(JSON.stringify({ alg: 'none', kid: verified.protectedHeader.kid })).toString('base64url')}.${payload}.`;
