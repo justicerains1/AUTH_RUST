@@ -1,0 +1,17 @@
+{
+  "observedAt": "2026-10-08T10:42:07.283452+00:00",
+  "annotations": [
+    {
+      "path": ".github",
+      "blob_href": "https://github.com/justicerains1/AUTH_RUST/blob/03207abdfbdd43c29f48171f7f8d08f1aaf9ba6a/.github",
+      "start_line": 2,
+      "start_column": null,
+      "end_line": 2,
+      "end_column": null,
+      "annotation_level": "warning",
+      "title": "",
+      "message": "Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11d5960a326750d5838078e36cf38b85af677262, actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/",
+      "raw_details": ""
+    }
+  ]
+}

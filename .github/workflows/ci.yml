@@ -51,7 +51,7 @@ jobs:
           components: rustfmt, clippy
       - run: npm ci
       - run: npm run dev:secrets
-      - run: npm run dev:up
+      - run: node scripts/ci-dev-up.mjs
       - run: npm run test:integration -- --task=T01
       - run: npm run test:integration -- --task=T03
       - run: npm run test:security -- --task=T04
@@ -61,9 +61,10 @@ jobs:
       - run: npm run test:integration -- --task=T06
       - run: npm run test:e2e -- --task=T06
       - run: npm run test:integration -- --task=T07
-      - run: npm run test:e2e -- --task=T07
+      - id: t07-e2e
+        run: npm run test:e2e -- --task=T07
       - name: Publish sanitized T07 browser diagnostics
-        if: failure()
+        if: failure() && steps.t07-e2e.conclusion == 'failure'
         run: node scripts/ci-e2e-diagnostics.mjs T07
       - run: npm run test:integration -- --task=T08
       - run: npm run test:e2e -- --task=T08

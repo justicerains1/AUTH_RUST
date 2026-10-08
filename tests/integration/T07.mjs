@@ -71,6 +71,8 @@ async function main() {
         // Scrub transient diagnostics before persisting a failure report.
         const safe = `${result.stdout}${result.stderr}`.replaceAll(env.T07_BROWSER_PASSWORD, '[PASSWORD]').replace(/#token=[A-Za-z0-9_-]+/gu, '#token=[REDACTED]').replace(/\b[A-Za-z0-9_-]{43}\b/gu, '[REDACTED]').replace(/[A-Za-z0-9_.+-]+@example\.test/gu, '[EMAIL]').replace(/T07 fixture/gu, '[PASSWORD]');
         await writeFile(resolve(evidence, 'e2e-diagnostics-sanitized.txt'), safe);
+        await mkdir(resolve(root, '.local/ci'), { recursive: true, mode: 0o700 });
+        await writeFile(resolve(root, '.local/ci/T07-e2e-diagnostics.txt'), safe, { mode: 0o600 });
       }
       assert.equal(result.code, 0, 'T07 browser checks failed; private details suppressed.');
       const passedMatch = /(?:^|\n)\s*(\d+) passed\b/u.exec(result.stdout);

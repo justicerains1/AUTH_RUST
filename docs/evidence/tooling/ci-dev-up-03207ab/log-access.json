@@ -1,0 +1,32 @@
+{
+  "observedAt": "2026-10-08T10:42:52.883088+00:00",
+  "checks": [
+    {
+      "endpoint": "/actions/jobs/113260400965/logs",
+      "httpStatus": 403,
+      "message": "Must have admin rights to Repository."
+    },
+    {
+      "endpoint": "/actions/runs/37761994466/logs",
+      "httpStatus": 403,
+      "message": "Must have admin rights to Repository."
+    },
+    {
+      "endpoint": "/check-runs/113260400965",
+      "httpStatus": 200,
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 3077,
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 3,
+        "annotations_url": "https://api.github.com/repos/justicerains1/AUTH_RUST/check-runs/113260400965/annotations"
+      },
+      "name": "integration-t01",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/justicerains1/AUTH_RUST/actions/runs/37761994466/job/113260400965"
+    }
+  ]
+}
