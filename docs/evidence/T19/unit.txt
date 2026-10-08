@@ -1,0 +1,152 @@
+
+> rust-unified-identity@0.1.0 test:unit
+> node scripts/run.mjs test:unit
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+     Running unittests src/lib.rs (target/debug/deps/demo_bff-6a0c80aa34cebe0d)
+
+running 6 tests
+test oidc::tests::endpoint_trust_boundary_blocks_cross_origin_credentials_and_fragments ... ok
+test oidc::tests::introspection_requires_current_matching_identity_and_complete_active_schema ... ok
+test oidc::tests::public_keys_reject_private_material_algorithm_confusion_and_duplicate_ids ... ok
+test config::tests::production_requires_https_host_cookies_and_restricted_secret_files ... ok
+test config::tests::config_rejects_invalid_trust_names_database_and_key_material_without_secret_diagnostics ... ok
+test store::tests::namespace_and_token_boundaries_are_explicit_without_database_calls ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/demo_bff-d5d121fed7de0110)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/identity_admin_cli-9d3e32f3e99b69e4)
+
+running 1 test
+test tests::bounded_stdin_allows_full_unicode_password_and_one_crlf_only ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/identity_core-2330117816556c50)
+
+running 27 tests
+test clock::tests::expiry_is_exclusive_and_independent_of_wall_clock ... ok
+test config::tests::canonical_origins_with_optional_root_slash_are_accepted ... ok
+test config::tests::invalid_environment_rp_or_secret_connection_never_echoes_values ... ok
+test config::tests::encryption_map_rejects_duplicate_versions_and_invalid_secret_material ... ok
+test config::tests::production_origin_is_fixed_and_https ... ok
+test config::tests::secret_debug_is_redacted ... ok
+test config::tests::smtp_credentials_reject_blank_accounts_and_control_characters ... ok
+test config::tests::smtp_host_and_mailbox_are_plain_addresses ... ok
+test mfa::tests::material_is_random_minimum160bit_and_roundtrips_without_debug ... ok
+test oauth::tests::callbacks_require_exact_safe_registration_and_loopback_http_only ... ok
+test oauth::tests::pkce_matches_rfc7636_and_enforces_verifier_charset ... ok
+test mfa::tests::rfc6238_sha1_vectors_and_exact_step_boundaries ... ok
+test oauth::tests::valid_authorization_is_typed_and_secret_debug_is_redacted ... ok
+test oauth::tests::rejects_duplicate_parameters_weak_pkce_and_invalid_prompt ... ok
+test config::tests::previous_jwks_checks_unsigned_rsa_components_and_public_only_policy ... ok
+test passkeys::tests::options_enforce_fixed_rp_uv_and_resident_without_account_enumeration ... ok
+test security::tests::email_normalization_preserves_aliases_and_rejects_invalid_domains ... ok
+test security::tests::duplicate_key_versions_are_rejected_before_crypto_loading ... ok
+test security::tests::hmac_matches_rfc4231_and_separates_purpose_boundaries ... ok
+test security::tests::aead_authenticates_user_purpose_nonce_ciphertext_and_key_version ... ok
+test security::tests::random_tokens_recovery_and_comparison_have_correct_entropy_and_redaction ... ok
+test security::tests::unicode_password_limits_do_not_trim_or_force_character_classes ... ok
+test security::tests::bundled_weak_list_matches_pinned_raw_bytes_and_rejects_an_allowed_length_entry ... ok
+test jose::tests::fixed_rs256_public_jwks_and_claim_validation ... ok
+test jose::tests::old_public_key_remains_verifiable_and_private_jwks_rejected ... ok
+test jose::tests::expired_hint_is_only_accepted_for_exact_current_browser_identity ... ok
+test security::tests::argon2_real_hash_legacy_verify_dummy_reuse_and_global_queue_budget ... ok
+
+test result: ok. 27 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 15.88s
+
+     Running unittests src/lib.rs (target/debug/deps/identity_server-b724d034018f98b1)
+
+running 11 tests
+test admin::tests::bootstrap_allowlist_preserves_binding_and_rejects_other_account_authority ... ok
+test admin::tests::pagination_rejects_ambiguous_unknown_and_malformed_parameters ... ok
+test admin::tests::management_dtos_reject_mass_assignment_null_and_unknown_values ... ok
+test admin::tests::reauthentication_methods_describe_actual_factors_and_errors_keep_contract_status ... ok
+test oidc::tests::duplicate_form_credentials_or_grant_parameters_are_not_selected ... ok
+test oidc::tests::basic_form_encoding_decodes_once_and_preserves_colon_plus ... ok
+test passkeys::tests::standard_client_data_json_spelling_survives_strict_dto ... ok
+test security::tests::duplicate_members_are_rejected_before_json_dto_parsing ... ok
+test security::tests::duplicate_sensitive_cookie_or_header_is_invalid ... ok
+test security::tests::trusted_proxy_chain_stops_at_nearest_untrusted_hop ... ok
+test security::tests::untrusted_forwarding_headers_cannot_override_peer ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/identity_server-91ddb7ce0e60e0c0)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/identity_store-ceb384b6050db9e8)
+
+running 8 tests
+test migrations::tests::errors_and_debug_do_not_echo_secret_connection_values ... ok
+test migrations::tests::production_migration_requires_explicit_acknowledgement_but_is_supported ... ok
+test repository::tests::digest_requires_exactly_256_bits_and_never_formats_material ... ok
+test migrations::tests::test_database_uses_effective_driver_database_and_rejects_overrides ... ok
+test migrations::tests::test_schema_is_scoped_and_never_interprets_arbitrary_sql ... ok
+test accounts::tests::verification_payload_is_encrypted_and_uses_fixed_origin_fragment ... ok
+test repository::tests::repository_error_never_exposes_internal_diagnostics ... ok
+test sessions::tests::cursor_is_user_sort_expiry_and_signature_bound ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/identity-demo-clients.rs (target/debug/deps/identity_demo_clients-706e18fd38d4a090)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/identity-migrate.rs (target/debug/deps/identity_migrate-501307270526da3a)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/identity_worker-15c0fec90e058151)
+
+running 2 tests
+test outbox::tests::retry_schedule_is_bounded_and_exact ... ok
+test outbox::tests::verification_links_reject_different_origin_query_or_nonfragment_tokens ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/identity_worker-92e23faf7abb0747)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+ RUN  v5.0.3 /root/code/rust/auth_rust/apps/identity-web
+
+
+ Test Files  15 passed (15)
+      Tests  58 passed (58)
+   Start at  16:03:36
+   Duration  3.75s (environment 47%, tests 29%, import 15%, transform 9%, worker 1%)
+
+
+ RUN  v5.0.3 /root/code/rust/auth_rust/apps/demo-a
+
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  16:03:40
+   Duration  1.38s (tests 53%, environment 38%, import 6%, transform 3%)
+
+
+ RUN  v5.0.3 /root/code/rust/auth_rust/apps/demo-b
+
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  16:03:41
+   Duration  1.36s (tests 54%, environment 37%, import 6%, transform 3%)

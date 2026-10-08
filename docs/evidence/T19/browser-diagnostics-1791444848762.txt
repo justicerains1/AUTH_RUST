@@ -1,0 +1,34 @@
+
+Running 3 tests using 1 worker
+F··
+
+  1) tests/e2e/T19.spec.ts:14:1 › @T19 client secrets appear once and malicious names remain text ──
+
+    Error: locator.click: Error: strict mode violation: getByRole('button', { name: '轮换客户端秘密', exact: true }) resolved to 2 elements:
+        1) <button type="button" class="button button--danger ">轮换客户端秘密</button> aka getByRole('button', { name: '轮换客户端秘密' }).first()
+        2) <button type="button" class="button button--danger ">轮换客户端秘密</button> aka getByRole('button', { name: '轮换客户端秘密' }).nth(1)
+
+    Call log:
+      - waiting for getByRole('button', { name: '轮换客户端秘密', exact: true })
+
+
+      16 |   const name = '<img src=x onerror=alert(1)>'; await page.getByLabel('应用名称', { exact: true }).fill(name); await page.getByLabel('登录回调地址（每行一个）').fill('http://localhost:5190/callback'); await page.getByRole('button', { name: '创建客户端', exact: true }).click(); await confirm(page); await page.getByRole('button', { name: '创建客户端', exact: true }).click();
+      17 |   const secret = page.getByRole('dialog', { name: '保存客户端秘密' }); await expect(secret).toBeVisible(); const value = await secret.locator('.setup-secret').textContent(); if (!value) throw new Error('Generated client secret is missing.'); await secret.getByRole('button', { name: '已保存，关闭秘密', exact: true }).click(); await expect(secret).toHaveCount(0); expect(await page.locator('main').innerText()).not.toContain(value); await expect(page.getByText(name, { exact: true })).toBeVisible(); expect(await page.locator('img[onerror]').count()).toBe(0);
+    > 18 |   await page.getByRole('button', { name: '轮换客户端秘密', exact: true }).click(); await page.getByRole('dialog').getByRole('button', { name: '确认身份后继续', exact: true }).click(); await confirm(page); await page.getByRole('dialog').getByRole('button', { name: '确认轮换客户端秘密', exact: true }).click(); await expect(page.getByRole('dialog', { name: '保存客户端秘密' })).toBeVisible(); await page.getByRole('button', { name: '已保存，关闭秘密', exact: true }).click();
+         |                                                                    ^
+      19 | });
+      20 |
+      21 | test('@T19 ordinary users receive no administrator data', async ({ page }) => {
+        at /root/code/rust/auth_rust/tests/e2e/T19.spec.ts:18:68
+
+    Error Context: .local/t19-browser-results/[OPAQUE]/error-context.md
+
+  1 failed
+    tests/e2e/T19.spec.ts:14:1 › @T19 client secrets appear once and malicious names remain text ───
+  2 passed (16.5s)
+[WebServer] (node:3579021) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+(node:3579104) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:3579536) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

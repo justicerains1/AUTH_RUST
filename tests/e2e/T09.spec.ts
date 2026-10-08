@@ -14,7 +14,7 @@ async function passwordLogin(page: Page, email: string) {
 async function registration(page: Page) {
   const password = process.env.T09_BROWSER_PASSWORD; if (!password) throw new Error('Private test password required.');
   await page.goto('/me/passkeys');
-  await page.getByLabel('当前密码', { exact: true }).fill(password); await page.getByRole('button', { name: '确认当前密码', exact: true }).click();
+  await page.getByRole('button', { name: '确认当前身份', exact: true }).click(); const auth = page.getByRole('dialog', { name: '确认当前身份' }); await auth.getByLabel('当前密码', { exact: true }).fill(password); await auth.getByRole('button', { name: '确认密码', exact: true }).click();
   await page.getByLabel('Passkey名称', { exact: true }).fill('Browser authenticator fixture');
   const submitted = page.waitForRequest((request) => request.url().endsWith('/me/passkeys/registration/verify'));
   await page.getByRole('button', { name: '注册Passkey', exact: true }).click();
@@ -35,12 +35,13 @@ test('@T09 virtual CTAP2 authenticator registers and discovers a strong identity
     console.log('T09 safe assertion-option shape', JSON.stringify(Object.fromEntries(Object.entries(options.publicKey ?? {}).map(([key, value]) => [key, value === null ? 'null' : Array.isArray(value) ? 'array' : typeof value]))));
     await expect(page).toHaveURL(/\/me$/u);
     await expect(page.getByText('browser-passkey@example.test', { exact: true }).first()).toBeVisible();
-    await page.goto('/me/mfa'); await page.getByRole('button', { name: '使用Passkey确认身份', exact: true }).click(); await expect(page.getByRole('status').filter({ hasText: '近期认证已完成' })).toBeVisible();
+    await page.goto('/me/mfa'); await page.getByRole('button', { name: '确认当前身份', exact: true }).click(); await page.getByRole('dialog', { name: '确认当前身份' }).getByRole('button', { name: '使用Passkey确认身份', exact: true }).click(); await expect(page.getByRole('status').filter({ hasText: '近期认证已完成' })).toBeVisible();
     const password = process.env.T09_BROWSER_PASSWORD; if (!password) throw new Error('Private test password required.');
     await page.goto('/me/password/change');
-    await page.getByRole('button', { name: '使用Passkey确认身份', exact: true }).click();
+    await page.getByRole('button', { name: '确认当前身份', exact: true }).click(); await page.getByRole('dialog', { name: '确认当前身份' }).getByRole('button', { name: '使用Passkey确认身份', exact: true }).click();
     await page.getByLabel('新密码', { exact: true }).fill(`${password} updated`);
     await page.getByRole('button', { name: '修改密码', exact: true }).click();
+    await page.getByRole('dialog').getByRole('button', { name: '确认修改密码', exact: true }).click();
     await expect(page).toHaveURL(/\/login$/u);
     const stored = await page.evaluate(() => ({ local: Object.keys(localStorage), session: Object.keys(sessionStorage) })); expect(stored).toEqual({ local: [], session: [] });
   } finally { await cdp.send('WebAuthn.removeVirtualAuthenticator', { authenticatorId: id }); await cdp.detach(); }

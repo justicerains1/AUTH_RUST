@@ -17,7 +17,7 @@ async function clock(advance = false): Promise<number> {
 test('@T08 real TOTP enrollment and second-factor login, followed by recovery login', async ({ page }) => {
   const password = process.env.T08_BROWSER_PASSWORD; if (!password) throw new Error('Private test password required.');
   await page.goto('/login'); await page.getByLabel('邮箱地址').fill('browser-mfa-enroll@example.test'); await page.getByLabel('密码', { exact: true }).fill(password); await page.getByRole('button', { name: '登录', exact: true }).click(); await expect(page).toHaveURL(/\/me$/u);
-  await page.goto('/me/mfa'); await page.getByLabel('当前密码', { exact: true }).fill(password); await page.getByRole('button', { name: '确认当前密码', exact: true }).click();
+  await page.goto('/me/mfa'); await page.getByRole('button', { name: '确认当前身份', exact: true }).click(); const auth = page.getByRole('dialog', { name: '确认当前身份' }); await auth.getByLabel('当前密码', { exact: true }).fill(password); await auth.getByRole('button', { name: '确认密码', exact: true }).click();
   await page.getByRole('button', { name: '开始绑定TOTP', exact: true }).click();
   const secret = await page.locator('.setup-secret').textContent(); if (!secret) throw new Error('Enrollment secret missing.');
   await page.getByLabel('验证码', { exact: true }).fill(totp(secret, await clock())); await page.getByRole('button', { name: '确认启用TOTP', exact: true }).click();

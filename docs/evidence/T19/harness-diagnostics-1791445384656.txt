@@ -1,0 +1,19 @@
+
+running 1 test
+test t19_browser_harness ... FAILED
+
+failures:
+
+failures:
+    t19_browser_harness
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.03s
+
+   Compiling identity-server v0.1.0 (/root/code/rust/auth_rust/crates/identity-server)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.52s
+     Running tests/t19_admin_ui.rs (target/debug/deps/t19_admin_ui-877e41f8459de0a9)
+
+thread 't19_browser_harness' (3607420) panicked at crates/identity-server/tests/t19_admin_ui.rs:215:5:
+real pagination index must be installed in the isolated schema
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+error: test failed, to rerun pass `-p identity-server --test t19_admin_ui`

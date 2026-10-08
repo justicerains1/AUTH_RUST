@@ -1,0 +1,59 @@
+
+Running 3 tests using 1 worker
+T·F
+
+  1) tests/e2e/T19.spec.ts:14:1 › @T19 client secrets appear once and malicious names remain text ──
+
+    Test timeout of 60000ms exceeded.
+
+    Error: locator.textContent: Test timeout of 60000ms exceeded.
+    Call log:
+      - waiting for getByRole('dialog', { name: '保存客户端秘密' }).locator('code').last()
+
+
+      15 |   await adminLogin(page); await page.getByRole('button', { name: '应用客户端', exact: true }).click(); await expect(page.getByRole('heading', { name: '应用客户端', exact: true })).toBeVisible();
+      16 |   const name = '<img src=x onerror=alert(1)>'; await page.getByLabel('应用名称', { exact: true }).fill(name); await page.getByLabel('登录回调地址（每行一个）').fill('http://localhost:5190/callback'); await page.getByRole('button', { name: '创建客户端', exact: true }).click(); await confirm(page); await page.getByRole('button', { name: '创建客户端', exact: true }).click();
+    > 17 |   const secret = page.getByRole('dialog', { name: '保存客户端秘密' }); await expect(secret).toBeVisible(); const value = await secret.locator('code').last().textContent(); if (!value) throw new Error('Generated client secret is missing.'); await secret.getByRole('button', { name: '已保存，关闭秘密', exact: true }).click(); await expect(secret).toHaveCount(0); expect(await page.locator('main').innerText()).not.toContain(value); await expect(page.getByText(name, { exact: true })).toBeVisible(); expect(await page.locator('img[onerror]').count()).toBe(0);
+         |                                                                                                                                                       ^
+      18 |   await page.getByRole('button', { name: '轮换秘密', exact: true }).click(); await page.getByRole('dialog').getByRole('button', { name: '确认身份后继续', exact: true }).click(); await confirm(page); await page.getByRole('dialog').getByRole('button', { name: '确认轮换秘密', exact: true }).click(); await expect(page.getByRole('dialog', { name: '保存客户端秘密' })).toBeVisible(); await page.getByRole('button', { name: '已保存，关闭秘密', exact: true }).click();
+      19 | });
+      20 |
+        at /root/code/rust/auth_rust/tests/e2e/T19.spec.ts:17:151
+
+    Error Context: .local/t19-browser-results/[OPAQUE]/error-context.md
+
+  2) tests/e2e/T19.spec.ts:25:1 › @T19 ten-thousand-scale pages use actual cursor requests and bounded audit windows
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('table', { name: '用户列表' })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('table', { name: '用户列表' }) with timeout 5000ms
+      - waiting for getByRole('table', { name: '用户列表' })
+
+
+      24 |
+      25 | test('@T19 ten-thousand-scale pages use actual cursor requests and bounded audit windows', async ({ page }) => {
+    > 26 |   await adminLogin(page); const table = page.getByRole('table', { name: '用户列表' }); await expect(table).toBeVisible(); expect(await table.locator('tbody tr').count()).toBeLessThanOrEqual(20);
+         |                                                                                                        ^
+      27 |   const next = page.waitForResponse((response) => response.url().includes('/admin/users?') && new URL(response.url()).searchParams.has('cursor')); await page.getByRole('button', { name: '下一页', exact: true }).click(); const result = await next; expect(result.status()).toBe(200);
+      28 |   await page.getByRole('button', { name: '安全审计', exact: true }).click(); await expect(page.getByRole('heading', { name: '安全审计', exact: true })).toBeVisible(); const end = new Date(); const start = new Date(end.getTime() - 32 * 86_400_000); await page.getByLabel('开始时间（RFC3339）').fill(start.toISOString()); await page.getByLabel('结束时间（RFC3339）').fill(end.toISOString()); await page.getByRole('button', { name: '查询审计', exact: true }).click(); await expect(page.getByRole('alert').filter({ hasText: '31天' })).toBeVisible();
+      29 | });
+        at /root/code/rust/auth_rust/tests/e2e/T19.spec.ts:26:104
+
+    Error Context: .local/t19-browser-results/[OPAQUE]/error-context.md
+
+  2 failed
+    tests/e2e/T19.spec.ts:14:1 › @T19 client secrets appear once and malicious names remain text ───
+    tests/e2e/T19.spec.ts:25:1 › @T19 ten-thousand-scale pages use actual cursor requests and bounded audit windows
+  1 passed (1.2m)
+[WebServer] (node:3552192) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+(node:3552232) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:3555213) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

@@ -50,12 +50,13 @@ test('@T07 password change requires real current-password confirmation', async (
   if (!password) throw new Error('Private test password is required.');
   await login(page, 'browser-change@example.test', password);
   await page.goto('/me/password/change');
-  await page.getByLabel('当前密码', { exact: true }).fill(password);
-  await page.getByRole('button', { name: '确认当前密码', exact: true }).click();
+  await page.getByRole('button', { name: '确认当前身份', exact: true }).click();
+  const auth = page.getByRole('dialog', { name: '确认当前身份' }); await auth.getByLabel('当前密码', { exact: true }).fill(password); await auth.getByRole('button', { name: '确认密码', exact: true }).click();
   await expect(page.getByRole('status').filter({ hasText: '确认' })).toBeVisible();
   const replacement = `${password} replacement`;
   await page.getByLabel('新密码', { exact: true }).fill(replacement);
   await page.getByRole('button', { name: '修改密码', exact: true }).click();
+  await page.getByRole('dialog').getByRole('button', { name: '确认修改密码', exact: true }).click();
   await expect(page).toHaveURL(/\/login$/u);
   await login(page, 'browser-change@example.test', replacement);
 });

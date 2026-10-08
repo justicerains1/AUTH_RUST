@@ -1,7 +1,7 @@
-T12 real OIDC integration 2026-10-07T20:42:12.054Z
+T12 real OIDC integration 2026-10-08T08:12:23.713Z
 FAIL Mature OIDC interoperability failed; secret diagnostics suppressed.
 
 1 !== 0
 
-Completed 2026-10-07T20:42:39.838Z
+Completed 2026-10-08T08:12:46.924Z
 Exit code 1
