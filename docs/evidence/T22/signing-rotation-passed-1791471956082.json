@@ -1,0 +1,25 @@
+{
+  "started": "2026-10-08T15:05:50.363Z",
+  "kind": "Local real HTTP/PG/BFF signing rollout; not production distribution or elapsed 12-hour observation",
+  "results": [
+    "PASS T22 signing phase1 actual old-only JWT; phase2 HTTP publishes new public key before switching, still signs old, BFF caches both public keys",
+    "PASS T22 signing phase3 new private key with old public retained; same session and refresh families survive; prepared BFF cache verifies new JWT and old-only BFF performs actual JWKS refresh",
+    "PASS T22 premature old-public removal correctly breaks old JWT verification; authenticated BFF AEAD session still refreshes with the valid current family and validates the new JWT binding",
+    "PASS T22 old signed logout hint accepted at exact 12h+2m and rejected one second later; wrong audience/sid rejected; ordinary expired ID Token remains invalid",
+    "PASS T22 signing rollback retains both public keys, accepts new-signature JWT and actually refreshes back to old signing kid without losing authority",
+    "PASS T22 API controlled clock keeps the original 12-hour session expiry independent of the longer logout-hint signature compatibility window",
+    "PASS T22 rotated refresh family cannot extend the original exact twelve-hour session horizon and returns invalid_grant without credentials"
+  ],
+  "sourceSha256": {
+    "crates/identity-server/tests/t22_signing.rs": "d656a0166641340e6cf2390e1bb4f92383333c021ae2f4be47dac6871266cc3b",
+    "tests/integration/t22-signing.mjs": "9d2fa97c9ae5c13e87903b88127953d0cf7c2fc44c896ab99c4baa601e036a4c",
+    "crates/identity-core/src/jose.rs": "8ff8c52a1546df7d83754e2fc81935789bf127cd1928cf687fd1c679522c061b",
+    "crates/demo-bff/src/oidc.rs": "d3cde959618a14e2e0d7a049c37766d1e1b1e5b9a2a12d34b2426d99fa9d4a8a",
+    "Cargo.lock": "47ffcb0545416af76dd26346f42a3f583f60d6a4f5f84f8fd6a1f36dea6539d8"
+  },
+  "exitCode": 0,
+  "rustExitCode": 0,
+  "zeroIgnored": true,
+  "commit": "eefeb65f5754eb5f39bf04ec7e4bdb26252857be",
+  "completed": "2026-10-08T15:05:56.081Z"
+}

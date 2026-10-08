@@ -56,7 +56,7 @@ jobs:
       - run: npm run test:integration -- --task=T03
       - run: npm run test:security -- --task=T04
       - run: npm run test:integration -- --task=T05
-      - run: node node_modules/playwright/cli.js install --with-deps chromium
+      - run: node node_modules/playwright/cli.js install --with-deps chromium firefox
       - run: npm run test:e2e -- --task=T05
       - run: npm run test:integration -- --task=T06
       - run: npm run test:e2e -- --task=T06
@@ -80,5 +80,6 @@ jobs:
       - run: npm run test:e2e -- --task=T17
       - run: npm run test:e2e -- --task=T18
       - run: npm run test:e2e -- --task=T19
+      - run: npm run test:accessibility
       - if: always()
         run: npm run dev:down
