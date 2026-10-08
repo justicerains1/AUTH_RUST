@@ -68,6 +68,17 @@ test('encrypted base backups restore only the selected relocated object', async 
   const original = join(originalDirectory, name);
   const originalManifest = readFileSync(`${original}.sha256`, 'utf8');
   assert.match(originalManifest, new RegExp(`^[a-f0-9]{64}  ${name.replaceAll('.', '\\.')}\\n$`, 'u'));
+  const receiptFile = join(originalDirectory, 'last-success.json'); const receiptText = readFileSync(receiptFile, 'utf8'); const receipt = JSON.parse(receiptText);
+  assert.deepEqual(Object.keys(receipt).sort(), ['backup_name', 'ciphertext_bytes', 'ciphertext_sha256', 'completed_at', 'version']);
+  assert.equal(receipt.version, 1); assert.equal(receipt.backup_name, name); assert.equal(receipt.ciphertext_bytes, readFileSync(original).length);
+  assert.equal(receipt.ciphertext_sha256, createHash('sha256').update(readFileSync(original)).digest('hex'));
+  assert.ok(Number.isSafeInteger(receipt.completed_at) && Math.abs(receipt.completed_at - Date.now() / 1000) < 60);
+  await t.test('a real failed backup preserves the last completed receipt', () => {
+    const failed = spawnSync('docker', ['exec', '-e', 'BACKUP_DESTINATION=/fixture/source', '-e', `AGE_RECIPIENT=${recipient}`, '-e', 'AGE_BINARY=/opt/age', '-e', 'PGPASSFILE=/fixture/pgpass', '-e', 'PGHOST=/nonexistent', '-e', 'PGUSER=postgres', container, 'sh', '/ops/base-backup.sh'], { encoding: 'utf8' });
+    assert.notEqual(failed.status, 0); assert.equal(readFileSync(receiptFile, 'utf8'), receiptText);
+    assert.equal(readdirSync(originalDirectory).filter((entry) => entry.endsWith('.tar.age')).length, 1);
+    assert.equal(readdirSync(originalDirectory).some((entry) => entry.startsWith('.base-backup.')), false);
+  });
   const relocatedDirectory = join(fixture, 'relocated');
   renameSync(originalDirectory, relocatedDirectory);
   const backup = join(relocatedDirectory, name);

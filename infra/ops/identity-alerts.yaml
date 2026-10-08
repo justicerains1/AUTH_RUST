@@ -46,3 +46,50 @@ groups:
         for: 5m
         labels: { severity: warning }
         annotations: { summary: "认证限流持续高于正常预算" }
+  - name: identity-host-operations
+    rules:
+      - alert: IdentityOpsExporterUnavailable
+        expr: up{job="identity-ops"} == 0 or absent(up{job="identity-ops"})
+        for: 1m
+        labels: { severity: critical }
+        annotations: { summary: "身份主机运维指标不可达或没有抓取目标" }
+      - alert: IdentityOpsRequiredMetricMissing
+        expr: absent(identity_ops_collection_success{job="identity-ops",check="disk_data"}) or absent(identity_ops_collection_success{job="identity-ops",check="disk_backup"}) or absent(identity_ops_collection_success{job="identity-ops",check="issuer_tls"}) or absent(identity_ops_collection_success{job="identity-ops",check="base_backup"}) or absent(identity_ops_collection_timestamp_seconds{job="identity-ops",check="disk_data"}) or absent(identity_ops_collection_timestamp_seconds{job="identity-ops",check="disk_backup"}) or absent(identity_ops_collection_timestamp_seconds{job="identity-ops",check="issuer_tls"}) or absent(identity_ops_collection_timestamp_seconds{job="identity-ops",check="base_backup"}) or absent(identity_ops_disk_size_bytes{job="identity-ops",volume="data"}) or absent(identity_ops_disk_size_bytes{job="identity-ops",volume="backup"}) or absent(identity_ops_disk_available_bytes{job="identity-ops",volume="data"}) or absent(identity_ops_disk_available_bytes{job="identity-ops",volume="backup"}) or absent(identity_ops_certificate_not_after_timestamp_seconds{job="identity-ops"}) or absent(identity_ops_base_backup_completed_timestamp_seconds{job="identity-ops"})
+        for: 1m
+        labels: { severity: critical }
+        annotations: { summary: "身份主机缺少必要磁盘、证书或备份指标" }
+      - alert: IdentityOpsCheckFailed
+        expr: identity_ops_collection_success{job="identity-ops"} != 1
+        for: 1m
+        labels: { severity: critical }
+        annotations: { summary: "身份主机受控运维检查失败" }
+      - alert: IdentityOpsCollectionStale
+        expr: time() - identity_ops_collection_timestamp_seconds{job="identity-ops"} > 300 or identity_ops_collection_timestamp_seconds{job="identity-ops"} > time() + 60 or identity_ops_collection_timestamp_seconds{job="identity-ops"} <= 0
+        for: 1m
+        labels: { severity: critical }
+        annotations: { summary: "身份主机运维采集已超过5分钟或时间无效" }
+      - alert: IdentityDiskSpaceLow
+        expr: identity_ops_disk_available_bytes{job="identity-ops"} / identity_ops_disk_size_bytes{job="identity-ops"} < 0.10 or identity_ops_disk_available_bytes{job="identity-ops"} < 1073741824
+        for: 5m
+        labels: { severity: warning }
+        annotations: { summary: "身份数据或备份磁盘可用空间低于10%或1GiB" }
+      - alert: IdentityDiskSpaceCritical
+        expr: identity_ops_disk_available_bytes{job="identity-ops"} / identity_ops_disk_size_bytes{job="identity-ops"} < 0.05 or identity_ops_disk_available_bytes{job="identity-ops"} < 536870912
+        for: 1m
+        labels: { severity: critical }
+        annotations: { summary: "身份数据或备份磁盘可用空间低于5%或512MiB" }
+      - alert: IdentityCertificateExpiresSoon
+        expr: identity_ops_certificate_not_after_timestamp_seconds{job="identity-ops"} - time() < 1209600 and identity_ops_certificate_not_after_timestamp_seconds{job="identity-ops"} > 0
+        for: 5m
+        labels: { severity: warning }
+        annotations: { summary: "身份issuer证书将在14天内到期" }
+      - alert: IdentityCertificateExpiryCritical
+        expr: identity_ops_certificate_not_after_timestamp_seconds{job="identity-ops"} - time() < 259200 and identity_ops_certificate_not_after_timestamp_seconds{job="identity-ops"} > 0
+        for: 1m
+        labels: { severity: critical }
+        annotations: { summary: "身份issuer证书将在3天内到期或已经过期" }
+      - alert: IdentityBaseBackupOverdue
+        expr: time() - identity_ops_base_backup_completed_timestamp_seconds{job="identity-ops"} > 86400 or identity_ops_base_backup_completed_timestamp_seconds{job="identity-ops"} <= 0 or identity_ops_base_backup_completed_timestamp_seconds{job="identity-ops"} > time() + 60
+        for: 5m
+        labels: { severity: critical }
+        annotations: { summary: "身份完整基础备份超过24小时或完成记录无效" }

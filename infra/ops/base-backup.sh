@@ -27,4 +27,14 @@ mv "$publish_directory/$backup_name" "$BACKUP_DIRECTORY/$backup_name"
 # Publish the checksum last: a ciphertext without its manifest is not a complete backup.
 mv "$publish_directory/$backup_name.sha256" "$BACKUP_DIRECTORY/$backup_name.sha256"
 sync -f "$BACKUP_DIRECTORY"
+# A trusted completion record is published only after verification, encryption and both objects are durable.
+# Monitoring checks this record and the selected ciphertext; file mtime never means backup success.
+completed_at=$(date -u +%s)
+ciphertext_bytes=$(wc -c < "$BACKUP_DIRECTORY/$backup_name")
+ciphertext_sha256=$(cut -d ' ' -f 1 "$BACKUP_DIRECTORY/$backup_name.sha256")
+printf '{"version":1,"completed_at":%s,"backup_name":"%s","ciphertext_bytes":%s,"ciphertext_sha256":"%s"}\n' \
+    "$completed_at" "$backup_name" "$ciphertext_bytes" "$ciphertext_sha256" > "$publish_directory/last-success.json"
+sync -f "$publish_directory/last-success.json"
+mv -T "$publish_directory/last-success.json" "$BACKUP_DIRECTORY/last-success.json"
+sync -f "$BACKUP_DIRECTORY"
 printf '%s\n' "base backup complete: $backup_id"

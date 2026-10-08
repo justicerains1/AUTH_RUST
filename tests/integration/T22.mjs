@@ -19,9 +19,9 @@ for (const [name, packageName, suite] of [['metrics', 'identity-server', 't22_me
   if (result.exitCode === 0 && !/1 passed/u.test(result.diagnostic)) results.at(-1).exitCode = 1;
 }
 const opsEnvironment = { ...env, AGE_BINARY: process.env.AGE_BINARY ?? resolve(root, '.local/security-tools/age/age'), AGE_KEYGEN_BINARY: process.env.AGE_KEYGEN_BINARY ?? resolve(root, '.local/security-tools/age/age-keygen') };
-const ops = await runStage(process.execPath, ['--test', ...['base-backup', 'wal-archive', 'production-config'].map((name) => resolve(root, `tests/ops/${name}.test.mjs`))], { cwd: root, env: opsEnvironment });
+const ops = await runStage(process.execPath, ['--test', ...['base-backup', 'wal-archive', 'production-config', 'metrics', 'alerts'].map((name) => resolve(root, `tests/ops/${name}.test.mjs`))], { cwd: root, env: opsEnvironment });
 await writeFile(resolve(privateDirectory, 'backup-wal-production-config.txt'), ops.diagnostic, { mode: 0o600 });
-const opsPassed = ops.exitCode === 0 && /# tests 12\r?\n/u.test(ops.diagnostic) && /# pass 12\r?\n/u.test(ops.diagnostic) && /# skipped 0\r?\n/u.test(ops.diagnostic);
+const opsPassed = ops.exitCode === 0 && /# tests 23\r?\n/u.test(ops.diagnostic) && /# pass 23\r?\n/u.test(ops.diagnostic) && /# skipped 0\r?\n/u.test(ops.diagnostic);
 results.push({ name: 'backup-wal-production-config', exitCode: opsPassed ? 0 : ops.exitCode || 1 });
 const signing = await runStage(process.execPath, [resolve(root, 'tests/integration/t22-signing.mjs')], { cwd: root, env });
 await writeFile(resolve(privateDirectory, 'signing-rotation.txt'), signing.diagnostic, { mode: 0o600 });

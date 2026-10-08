@@ -1,0 +1,41 @@
+{
+  "measuredAt": "2026-10-08T16:09:39.068Z",
+  "source": [
+    {
+      "path": "infra/ops/base-backup.sh",
+      "sha256": "c1d53de508cef5df69b34bb199c0665daefe30ab7bf9bd8fff8b6d46d8ee3786"
+    },
+    {
+      "path": "infra/ops/collect-metrics.mjs",
+      "sha256": "45dd030f8eaeec2624ddd5f83ae7a85c45e13b8b474bb34541a5b917a478a1d1"
+    },
+    {
+      "path": "infra/ops/identity-alerts.yaml",
+      "sha256": "b34e4e4999361d8f69bc3ad0e22482f39c4af9732bb7aef00d8be3c406dfeff8"
+    },
+    {
+      "path": "infra/ops/metrics.env.example",
+      "sha256": "dbd551df09f4ae2eef0ffc4571009dc78977e4d34f00c6088d739c642f491209"
+    },
+    {
+      "path": "tests/ops/base-backup.test.mjs",
+      "sha256": "1518f5f4565407ad4182bf4a6f1097e6fd47e694667f4a1ffb21155bf48983f8"
+    },
+    {
+      "path": "tests/ops/metrics.test.mjs",
+      "sha256": "59440f0be87bdffac346f9525c406fba523267a82695661f949e392ddf745bf6"
+    },
+    {
+      "path": "tests/ops/alert-fixtures.mjs",
+      "sha256": "2c7f3172224e2270f9437262e0c3302eed0b84dea284ed197ff815afb221d10b"
+    },
+    {
+      "path": "tests/ops/alerts.test.mjs",
+      "sha256": "0e188a55340f001aec55767c38651dfce19baa330dab940eda42b6b9d96add2d"
+    },
+    {
+      "path": "docs/runbooks/host-metrics.md",
+      "sha256": "8e9ca5a99ee8bcb0e9965f5653ae1977dfcc3226d5a4694c334f2f453dfc5474"
+    }
+  ]
+}

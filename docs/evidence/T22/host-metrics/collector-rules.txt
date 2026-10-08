@@ -1,0 +1,72 @@
+TAP version 13
+# Subtest: real promtool verifies host alert thresholds, holds, missing telemetry, stale files and recovery
+ok 1 - real promtool verifies host alert thresholds, holds, missing telemetry, stale files and recovery
+  ---
+  duration_ms: 2418.190402
+  type: 'test'
+  ...
+# Subtest: backup freshness requires the completed object and ignores refreshed mtimes
+    # Subtest: future, path injection and inconsistent metadata are rejected
+    ok 1 - future, path injection and inconsistent metadata are rejected
+      ---
+      duration_ms: 11.5961
+      type: 'test'
+      ...
+    # Subtest: corruption, missing manifest and symlink cannot report a fresh backup
+    ok 2 - corruption, missing manifest and symlink cannot report a fresh backup
+      ---
+      duration_ms: 7.4587
+      type: 'test'
+      ...
+    1..2
+ok 2 - backup freshness requires the completed object and ignores refreshed mtimes
+  ---
+  duration_ms: 36.7832
+  type: 'test'
+  ...
+# Subtest: actual local TLS validates the trusted issuer and rejects untrusted or wrong-host certificates
+ok 3 - actual local TLS validates the trusted issuer and rejects untrusted or wrong-host certificates
+  ---
+  duration_ms: 68.345701
+  type: 'test'
+  ...
+# Subtest: an actually expired local certificate fails despite explicit trust and a matching hostname
+ok 4 - an actually expired local certificate fails despite explicit trust and a matching hostname
+  ---
+  duration_ms: 158.609
+  type: 'test'
+  ...
+# Subtest: collector publishes actual statfs, TLS and completed-backup values with fixed labels
+    # Subtest: wrong expected device and incomplete backup publish failures with current attempt times
+    ok 1 - wrong expected device and incomplete backup publish failures with current attempt times
+      ---
+      duration_ms: 8.5835
+      type: 'test'
+      ...
+    # Subtest: unsafe output destinations cannot replace the last metrics file
+    ok 2 - unsafe output destinations cannot replace the last metrics file
+      ---
+      duration_ms: 1.9103
+      type: 'test'
+      ...
+    1..2
+ok 5 - collector publishes actual statfs, TLS and completed-backup values with fixed labels
+  ---
+  duration_ms: 96.3977
+  type: 'test'
+  ...
+# Subtest: CLI does not print secret configuration or advertise a failed publication as success
+ok 6 - CLI does not print secret configuration or advertise a failed publication as success
+  ---
+  duration_ms: 137.3733
+  type: 'test'
+  ...
+1..6
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2560.827602

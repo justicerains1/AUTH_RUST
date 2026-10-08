@@ -1,0 +1,24 @@
+{
+  "completed": "2026-10-08T16:09:39.070Z",
+  "scope": "Local real statfs, strict trusted TLS, backup file integrity, atomic publication, isolated PostgreSQL backups and Promtool rule behavior; no production deployment or alert delivery.",
+  "results": [
+    {
+      "name": "collector-and-promtool",
+      "nodeTestCases": 10,
+      "ruleScenarios": 20,
+      "totalRules": 18,
+      "exitCode": 0
+    },
+    {
+      "name": "real-base-backup-receipt",
+      "nodeTestCases": 11,
+      "exitCode": 0
+    },
+    {
+      "name": "focused-eslint-and-diff-check",
+      "exitCode": 0
+    }
+  ],
+  "productionAlertDelivery": "not measured",
+  "productionStorage": "not configured"
+}
