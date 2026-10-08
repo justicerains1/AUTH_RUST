@@ -1,0 +1,10 @@
+{
+  "started": "2026-10-08T16:15:15.575Z",
+  "scope": "Actual isolated local release/backup/migration failure/compatible rollback; no production TLS/SMTP/HA",
+  "phases": [
+    "Owned PostgreSQL/Redis started privately; actual CLI created a verified fixture identity without granting full admin access."
+  ],
+  "exitCode": 1,
+  "failure": "Release stage failed: smoke.",
+  "completed": "2026-10-08T16:15:36.957Z"
+}

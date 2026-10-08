@@ -1,0 +1,8 @@
+{
+  "started": "2026-10-08T16:04:51.064Z",
+  "scope": "Actual isolated local release/backup/migration failure/compatible rollback; no production TLS/SMTP/HA",
+  "phases": [],
+  "exitCode": 1,
+  "failure": "Command failed: docker compose --project-name release-drill-b609e25ed369 -f /root/code/rust/auth_rust/.local/release-drill-4d52a8841c710c28/compose.yaml up -d --wait postgres redis\ntime=\"2026-10-09T00:04:51+08:00\" level=warning msg=\"The \\\"RUST_IMAGE\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-09T00:04:51+08:00\" level=warning msg=\"The \\\"EDGE_IMAGE\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-09T00:04:51+08:00\" level=warning msg=\"The \\\"RUST_IMAGE\\\" variable is not set. Defaulting to a blank string.\"\nservice \"edge\" has neither an image nor a build context specified: invalid compose project\n",
+  "completed": "2026-10-08T16:04:51.911Z"
+}

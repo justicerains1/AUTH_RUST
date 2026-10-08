@@ -1,0 +1,8 @@
+{
+  "started": "2026-10-08T16:05:55.291Z",
+  "scope": "Actual isolated local release/backup/migration failure/compatible rollback; no production TLS/SMTP/HA",
+  "phases": [],
+  "exitCode": 1,
+  "failure": "Actual owner-only bootstrap failed.\n\n1 !== 0\n",
+  "completed": "2026-10-08T16:06:02.093Z"
+}

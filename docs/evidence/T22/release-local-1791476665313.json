@@ -1,0 +1,61 @@
+{
+  "started": "2026-10-08T16:24:05.467Z",
+  "scope": "Actual isolated local release/backup/migration failure/compatible rollback; no production TLS/SMTP/HA",
+  "phases": [
+    "Owned PostgreSQL/Redis started privately; actual CLI created a verified fixture identity without granting full admin access."
+  ],
+  "exitCode": 1,
+  "failure": "Release stage failed: smoke.",
+  "failedStages": [
+    {
+      "stage": "compose-config",
+      "exitCode": 0
+    },
+    {
+      "stage": "image-present",
+      "exitCode": 0
+    },
+    {
+      "stage": "image-present",
+      "exitCode": 0
+    },
+    {
+      "stage": "check-config-api",
+      "exitCode": 0
+    },
+    {
+      "stage": "current-schema-key-facts",
+      "exitCode": 0
+    },
+    {
+      "stage": "base-backup",
+      "exitCode": 0
+    },
+    {
+      "stage": "backup-verified",
+      "exitCode": 0
+    },
+    {
+      "stage": "migrate",
+      "exitCode": 0
+    },
+    {
+      "stage": "post-migration-schema-key-facts",
+      "exitCode": 0
+    },
+    {
+      "stage": "up",
+      "exitCode": 0
+    },
+    {
+      "stage": "ready",
+      "exitCode": 0
+    },
+    {
+      "stage": "smoke",
+      "exitCode": 1
+    }
+  ],
+  "safeDiagnostic": "Isolated release facts/smoke failed: fetch failed\n",
+  "completed": "2026-10-08T16:24:25.313Z"
+}

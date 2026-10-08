@@ -26,6 +26,20 @@ API和Worker的内部指标配置`METRICS_TOKEN_FILE=/run/secrets/metrics-token`
 
 不在容器启动命令中自动迁移，独立maintenance profile只供明确操作。Compose stop/down默认保留卷；不可逆schema变更单独窗口与备份恢复方案。
 
+## 可执行编排
+
+运维准备一个绝对路径、0600、当前用户所有的JSON配置后，运行`node infra/ops/release.mjs deploy /absolute/release-config.json --allow-production`。生产只接受`repository@sha256:<64hex>`镜像，不接受浮动tag；本地专属演练必须`mode=local-review`并使用`--local-review`。脚本不会生成生产配置/秘密，也不会代替上面的发布关卡。
+
+配置字段为`mode`、`project`、`release`、`rustImage`、`edgeImage`、`composeFile`、`envFile`、`stateDirectory`、`backupDirectory`以及`backup`/`facts`/`smoke`三个受控命令。每个命令必须`{"program":"/absolute/executable","args":["literal","arguments"]}`，使用参数数组而不执行shell文本。stateDirectory必须当前用户0700，保存版本/阶段及0600诊断；秘密不要放命令参数，继承受控文件路径。`backup`要实际调用base-backup.sh及独立存储，脚本核对本次新`last-success.json`、密文大小/SHA/manifest，零退出但旧回执或损坏对象仍停止。
+
+`facts`可调用`node /absolute/infra/ops/release.mjs facts /absolute/release-config.json --allow-production`，配置另加`databaseUser`、`databaseName`和`encryptionKeysFile`。它在真实Compose PG查询SQLx迁移版本/校验/成功记录并输出摘要，查询TOTP/outbox/挑战/BFF所有密文字段的kid集合，受控key文件只取配置版本名，绝不输出key值。`facts`命令同样是显式绝对program+args；不得用预制JSON或手写true代替实际数据库查询。`smoke`应是已经审查的真实业务冒烟程序；health不代替注册/邮件/MFA/Passkey/双SSO/退出/禁用全链。
+
+编排固定：Compose配置验证→镜像存在→API/Worker/A-B配置检查→实际schema/key事实→新备份成功且验证→独立迁移成功→启动→readiness→smoke。迁移失败非零时不执行up、不变更成功current记录；启动后失败也保留failed事件，不能静默宣布完成。脚本从不自动回滚数据库、停止数据服务或删除卷；中断后查看受控事件再按恢复方案处理。
+
+回滚命令为`node infra/ops/release.mjs rollback /absolute/release-config.json --allow-production`，还须`compatibilityFile`受控文件。内容必须明确`version=1`、`from_release`/`to_release`、记录的`old_rust_image`/`old_edge_image`、审查允许的当前数据库`accepted_migration_sha256`列表、旧版可读取的`old_supported_kids`以及`schema_compatible=true`/`keys_compatible=true`及具体reason。脚本将真实当前迁移摘要/在用kid与这些范围比对；超出范围停止，布尔值本身不足以放行。旧镜像必须存在且通过配置校验，再做本次备份才切换旧应用/健康/smoke，**不执行down migration**。兼容文件须有上版实际验证依据，不能把脚本比对当未验证schema兼容的证明。
+
+`node --test tests/ops/release-order.test.mjs`只验证编排拒绝/顺序；`node tests/ops/release-local.mjs`另启动任务独有内网PG/Redis，实际验证旧/新应用发布、坏迁移中止与兼容回滚。后者无主机80/443、没有生产部署，结果见[T22本地记录](../evidence/T22/release-orchestration-summary.md)。
+
 ## 回滚和恢复要求
 
 保留前版应用/edge镜像digest，schema兼容时切换前版镜像后重新readiness与冒烟，不自动down migration。schema不兼容则按已审查恢复方案，说明维护中断。每日基础备份+持续WAL到独立加密存储，≥14天；新主机恢复DB/签名/AEAD/配置并检查账户/TOTP/Passkey/OAuth/撤销，实测RPO≤15m/RTO≤60m才可标达标。
