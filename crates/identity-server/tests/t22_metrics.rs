@@ -152,6 +152,12 @@ async fn t22_real_metrics() -> TestResult {
     assert!(body.contains("identity_argon2_memory_kib 65536"));
     assert!(body.contains("identity_http_duration_seconds_bucket"));
     assert!(body.contains("identity_http_requests_total 1"));
+    assert!(body.contains("# TYPE identity_password_queue_wait_seconds histogram"));
+    assert!(body.contains("identity_password_queue_wait_seconds_bucket{le=\"0.25\"}"));
+    assert!(body.contains("identity_password_queue_wait_seconds_bucket{le=\"+Inf\"}"));
+    assert!(body.contains("identity_password_waiting 0"));
+    assert!(body.contains("identity_password_running 0"));
+    assert!(body.contains("identity_password_slots_in_use 0"));
     assert!(!body.contains("password_hash="));
     let worker =
         identity_worker::outbox::MailWorker::new(&config, pool.clone(), Arc::new(SystemClock))?;

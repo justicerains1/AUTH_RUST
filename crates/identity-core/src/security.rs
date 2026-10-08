@@ -208,7 +208,25 @@ struct PasswordMetrics {
     queue_timeouts: AtomicU64,
     hash_nanoseconds: AtomicU64,
     verification_nanoseconds: AtomicU64,
+    waiting: AtomicU64,
+    waiting_high_watermark: AtomicU64,
+    running: AtomicU64,
+    running_high_watermark: AtomicU64,
+    slots_in_use: AtomicU64,
+    slots_high_watermark: AtomicU64,
+    queue_wait_nanoseconds: AtomicU64,
+    queue_wait_buckets: [AtomicU64; 8],
 }
+/// Cumulative wait buckets include successful acquisition, timeout and cancelled waiters.
+pub const PASSWORD_WAIT_BUCKET_NANOSECONDS: [u64; 7] = [
+    1_000_000,
+    5_000_000,
+    10_000_000,
+    25_000_000,
+    50_000_000,
+    100_000_000,
+    250_000_000,
+];
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct PasswordMetricsSnapshot {
     pub hashes: u64,
@@ -219,6 +237,76 @@ pub struct PasswordMetricsSnapshot {
     pub memory_kib: u32,
     pub iterations: u32,
     pub lanes: u32,
+    pub waiting: u64,
+    pub waiting_high_watermark: u64,
+    pub running: u64,
+    pub running_high_watermark: u64,
+    pub slots_in_use: u64,
+    pub slots_high_watermark: u64,
+    pub queue_wait_nanoseconds: u64,
+    pub queue_wait_buckets: [u64; 8],
+}
+
+struct PasswordWait {
+    metrics: Arc<PasswordMetrics>,
+    started: Instant,
+}
+impl PasswordWait {
+    fn new(metrics: Arc<PasswordMetrics>) -> Self {
+        let waiting = metrics.waiting.fetch_add(1, Ordering::Relaxed) + 1;
+        metrics
+            .waiting_high_watermark
+            .fetch_max(waiting, Ordering::Relaxed);
+        Self {
+            metrics,
+            started: Instant::now(),
+        }
+    }
+}
+impl Drop for PasswordWait {
+    fn drop(&mut self) {
+        let elapsed = elapsed_nanos(self.started);
+        self.metrics
+            .queue_wait_nanoseconds
+            .fetch_add(elapsed, Ordering::Relaxed);
+        for (bucket, upper) in self
+            .metrics
+            .queue_wait_buckets
+            .iter()
+            .zip(PASSWORD_WAIT_BUCKET_NANOSECONDS)
+        {
+            if elapsed <= upper {
+                bucket.fetch_add(1, Ordering::Relaxed);
+            }
+        }
+        self.metrics.queue_wait_buckets[7].fetch_add(1, Ordering::Relaxed);
+        self.metrics.waiting.fetch_sub(1, Ordering::Relaxed);
+    }
+}
+/// Keep the slot and its active metric inside spawn_blocking even when its caller cancels.
+struct PasswordPermit {
+    _permit: tokio::sync::OwnedSemaphorePermit,
+    metrics: Arc<PasswordMetrics>,
+}
+impl Drop for PasswordPermit {
+    fn drop(&mut self) {
+        self.metrics.slots_in_use.fetch_sub(1, Ordering::Relaxed);
+    }
+}
+struct PasswordRunning(Arc<PasswordMetrics>);
+impl PasswordRunning {
+    fn new(metrics: Arc<PasswordMetrics>) -> Self {
+        let running = metrics.running.fetch_add(1, Ordering::Relaxed) + 1;
+        metrics
+            .running_high_watermark
+            .fetch_max(running, Ordering::Relaxed);
+        Self(metrics)
+    }
+}
+impl Drop for PasswordRunning {
+    fn drop(&mut self) {
+        self.0.running.fetch_sub(1, Ordering::Relaxed);
+    }
 }
 
 #[derive(Clone)]
@@ -271,9 +359,20 @@ impl PasswordService {
         })
     }
 
-    async fn permit(&self) -> Result<tokio::sync::OwnedSemaphorePermit, SecurityError> {
+    async fn permit(&self) -> Result<PasswordPermit, SecurityError> {
+        let wait = PasswordWait::new(self.metrics.clone());
         match tokio::time::timeout(HASH_QUEUE_TIMEOUT, self.permits.clone().acquire_owned()).await {
-            Ok(Ok(permit)) => Ok(permit),
+            Ok(Ok(permit)) => {
+                drop(wait);
+                let occupied = self.metrics.slots_in_use.fetch_add(1, Ordering::Relaxed) + 1;
+                self.metrics
+                    .slots_high_watermark
+                    .fetch_max(occupied, Ordering::Relaxed);
+                Ok(PasswordPermit {
+                    _permit: permit,
+                    metrics: self.metrics.clone(),
+                })
+            }
             _ => {
                 self.metrics.queue_timeouts.fetch_add(1, Ordering::Relaxed);
                 Err(SecurityError::Busy)
@@ -296,6 +395,7 @@ impl PasswordService {
         let metrics = self.metrics.clone();
         tokio::task::spawn_blocking(move || {
             let _permit = permit;
+            let _running = PasswordRunning::new(metrics.clone());
             let start = Instant::now();
             let result = hash_sync(&input);
             metrics.hashes.fetch_add(1, Ordering::Relaxed);
@@ -322,6 +422,7 @@ impl PasswordService {
         let metrics = self.metrics.clone();
         tokio::task::spawn_blocking(move || {
             let _permit = permit;
+            let _running = PasswordRunning::new(metrics.clone());
             let start = Instant::now();
             let result = verify_sync(&input, &encoded);
             metrics.verifications.fetch_add(1, Ordering::Relaxed);
@@ -352,6 +453,16 @@ impl PasswordService {
             memory_kib: ARGON2_MEMORY_KIB,
             iterations: ARGON2_ITERATIONS,
             lanes: ARGON2_LANES,
+            waiting: self.metrics.waiting.load(Ordering::Relaxed),
+            waiting_high_watermark: self.metrics.waiting_high_watermark.load(Ordering::Relaxed),
+            running: self.metrics.running.load(Ordering::Relaxed),
+            running_high_watermark: self.metrics.running_high_watermark.load(Ordering::Relaxed),
+            slots_in_use: self.metrics.slots_in_use.load(Ordering::Relaxed),
+            slots_high_watermark: self.metrics.slots_high_watermark.load(Ordering::Relaxed),
+            queue_wait_nanoseconds: self.metrics.queue_wait_nanoseconds.load(Ordering::Relaxed),
+            queue_wait_buckets: std::array::from_fn(|index| {
+                self.metrics.queue_wait_buckets[index].load(Ordering::Relaxed)
+            }),
         }
     }
 }
@@ -887,6 +998,32 @@ mod tests {
             Err(SecurityError::Busy)
         ));
         assert!(start.elapsed() >= HASH_QUEUE_TIMEOUT);
+        let before_cancel = service.metrics();
+        assert_eq!(before_cancel.waiting, 0);
+        assert!(before_cancel.waiting_high_watermark >= 1);
+        assert!(before_cancel.queue_wait_nanoseconds >= 250_000_000);
+        let waiter = tokio::spawn({
+            let other = other.clone();
+            async move {
+                other
+                    .verify_unknown("cancelled waiting candidate phrase")
+                    .await
+            }
+        });
+        tokio::time::timeout(Duration::from_secs(2), async {
+            while service.metrics().waiting == 0 {
+                tokio::task::yield_now().await;
+            }
+        })
+        .await
+        .map_err(|_| SecurityError::HashFailed)?;
+        waiter.abort();
+        let _ = waiter.await;
+        assert_eq!(service.metrics().waiting, 0);
+        assert_eq!(
+            service.metrics().queue_timeouts,
+            before_cancel.queue_timeouts
+        );
         drop(held);
         service
             .verify_unknown("a valid candidate passphrase")
@@ -894,6 +1031,45 @@ mod tests {
         let metrics = service.metrics();
         assert!(metrics.hashes >= 1 && metrics.verifications >= 6 && metrics.queue_timeouts >= 1);
         assert!(metrics.hash_nanoseconds > 0 && metrics.verification_nanoseconds > 0);
+        assert_eq!(metrics.running, 0);
+        assert_eq!(metrics.slots_in_use, 0);
+        assert!((1..=4).contains(&metrics.running_high_watermark));
+        assert!((1..=4).contains(&metrics.slots_high_watermark));
+        assert!(
+            metrics
+                .queue_wait_buckets
+                .windows(2)
+                .all(|pair| pair[0] <= pair[1])
+        );
+        assert!(metrics.queue_wait_buckets[7] > before_cancel.queue_wait_buckets[7]);
+        // Aborting a caller must not release the slot of a still-running Argon2 task.
+        let active = tokio::spawn({
+            let service = service.clone();
+            let encoded = encoded.clone();
+            async move {
+                service
+                    .verify("cancellation candidate phrase", &encoded)
+                    .await
+            }
+        });
+        tokio::time::timeout(Duration::from_secs(2), async {
+            while service.metrics().running == 0 {
+                tokio::task::yield_now().await;
+            }
+        })
+        .await
+        .map_err(|_| SecurityError::HashFailed)?;
+        active.abort();
+        let _ = active.await;
+        tokio::time::timeout(Duration::from_secs(5), async {
+            while service.metrics().slots_in_use != 0 {
+                tokio::task::yield_now().await;
+            }
+        })
+        .await
+        .map_err(|_| SecurityError::HashFailed)?;
+        assert_eq!(service.metrics().running, 0);
+        assert_eq!(service.permits.available_permits(), 4);
         Ok(())
     }
 }

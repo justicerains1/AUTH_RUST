@@ -7,7 +7,7 @@ use axum::{
     response::{IntoResponse, Response},
     routing::get,
 };
-use identity_core::security::PasswordMetricsSnapshot;
+use identity_core::security::{PASSWORD_WAIT_BUCKET_NANOSECONDS, PasswordMetricsSnapshot};
 use identity_store::PgPool;
 use std::{
     net::SocketAddr,
@@ -118,7 +118,7 @@ async fn metrics(
         .into_response()
 }
 fn password_metrics(m: PasswordMetricsSnapshot) -> String {
-    format!(
+    let mut output = format!(
         "identity_password_hashes_total {}\nidentity_password_verifications_total {}\nidentity_password_queue_timeouts_total {}\nidentity_password_hash_seconds_sum {}\nidentity_password_verification_seconds_sum {}\nidentity_argon2_memory_kib {}\nidentity_argon2_iterations {}\nidentity_argon2_lanes {}\n",
         m.hashes,
         m.verifications,
@@ -128,7 +128,24 @@ fn password_metrics(m: PasswordMetricsSnapshot) -> String {
         m.memory_kib,
         m.iterations,
         m.lanes
-    )
+    );
+    output.push_str(&format!(
+        "identity_password_waiting {}\nidentity_password_waiting_high_watermark {}\nidentity_password_slots_in_use {}\nidentity_password_slots_high_watermark {}\nidentity_password_running {}\nidentity_password_running_high_watermark {}\n",
+        m.waiting, m.waiting_high_watermark, m.slots_in_use, m.slots_high_watermark, m.running, m.running_high_watermark
+    ));
+    output.push_str("# TYPE identity_password_queue_wait_seconds histogram\n");
+    for (index, upper) in PASSWORD_WAIT_BUCKET_NANOSECONDS.iter().enumerate() {
+        output.push_str(&format!(
+            "identity_password_queue_wait_seconds_bucket{{le=\"{}\"}} {}\n",
+            *upper as f64 / 1_000_000_000.0,
+            m.queue_wait_buckets[index]
+        ));
+    }
+    output.push_str(&format!(
+        "identity_password_queue_wait_seconds_bucket{{le=\"+Inf\"}} {}\nidentity_password_queue_wait_seconds_count {}\nidentity_password_queue_wait_seconds_sum {}\n",
+        m.queue_wait_buckets[7], m.queue_wait_buckets[7], m.queue_wait_nanoseconds as f64 / 1_000_000_000.0
+    ));
+    output
 }
 #[cfg(test)]
 mod tests {
