@@ -75,7 +75,11 @@ jobs:
       - run: npm run test:integration -- --task=T11
       - run: npm run test:integration -- --task=T12
       - run: npm run test:e2e -- --task=T12
-      - run: npm run test:integration -- --task=T13
+      - id: t13-integration
+        run: npm run test:integration -- --task=T13
+      - name: Publish sanitized T13 integration diagnostics
+        if: failure() && steps.t13-integration.conclusion == 'failure'
+        run: node scripts/ci-e2e-diagnostics.mjs T13
       - run: npm run test:integration -- --task=T14
       - run: npm run test:e2e -- --task=T17
       - run: npm run test:e2e -- --task=T18
