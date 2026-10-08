@@ -1,5 +1,5 @@
 {
-  "completed": "2026-10-08T11:55:02.778Z",
+  "completed": "2026-10-08T12:33:50.722Z",
   "results": [
     {
       "name": "metrics",
@@ -8,8 +8,12 @@
     {
       "name": "key-reencryption",
       "exitCode": 0
+    },
+    {
+      "name": "backup-wal-production-config",
+      "exitCode": 0
     }
   ],
   "exitCode": 0,
-  "scope": "Local-only metrics and actual PostgreSQL encrypted key maintenance; not production acceptance."
+  "scope": "Local metrics, PostgreSQL key maintenance, isolated encrypted backup/WAL and offline production configuration; not production acceptance."
 }

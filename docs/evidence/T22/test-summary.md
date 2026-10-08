@@ -11,3 +11,5 @@ age1.3.2来源/摘要/许可核对，WAL归档加密/幂等/拒覆盖/拒损坏/
 密钥维护CLI public仅公钥、reencrypt要求版本map+明确生产ack，按准确user/purpose/namespace AAD批量事务。真实integration1case0ignored0：TOTP/outbox/4挑战/BFFflow/session旧新重包裹，原文一致、真实TOTP仍匹配、损坏tagrollback、再次0改写；actualCLI公共导出与参数幂等执行通过。完整runnerT22必须执行metrics和keyintegration，缺环境失败不skipped。
 
 root最终check/unit/build/docs/openapi/tooling0，身份59+演示12前端测试；代码无未绑定占位首页，保留历史证据。恢复尚未账户/TOTP/Passkey/撤销全链生产验证，每日14天保留/WAL独立故障域/磁盘证书备份告警/DNS邮件送达与签名真实轮换仍是待验收，不发布。
+
+最终审计修复了基础备份迁移路径校验、生产镜像缺失 `identity-keys`、WAL 切段及独立目录映射，详见 [运维修复](../T23/ops-repair-summary.md)。`npm run test:integration -- --task=T22` 现必须执行真实指标、AEAD 密钥维护和 12 项备份/WAL/配置检查，缺工具失败；2026-10-08T12:33:50Z 三阶段均实际退出 0，根 `npm run check` 退出 0。镜像重建和最终全量回归另记录，不能用此局部结果释放生产关卡。

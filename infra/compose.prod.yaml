@@ -31,9 +31,36 @@ services:
       POSTGRES_USER: identity
       POSTGRES_DB: identity_production
       POSTGRES_PASSWORD_FILE: /run/secrets/postgres-password
+      WAL_ARCHIVE_DIRECTORY: /var/lib/identity-backup/wal
+      AGE_BINARY: /opt/identity-ops/age
+      AGE_RECIPIENT: ${AGE_RECIPIENT:?Set the reviewed age public backup recipient}
+    command:
+      - postgres
+      - -c
+      - wal_level=replica
+      - -c
+      - archive_mode=on
+      - -c
+      - archive_timeout=300s
+      - -c
+      - 'archive_command=/bin/sh /opt/identity-ops/archive-wal.sh "%p" "%f"'
     volumes:
       - postgres-data:/var/lib/postgresql/data
       - ../.local/production/secrets/postgres-password:/run/secrets/postgres-password:ro
+      - type: bind
+        source: ./ops/archive-wal.sh
+        target: /opt/identity-ops/archive-wal.sh
+        read_only: true
+        bind: { create_host_path: false }
+      - type: bind
+        source: ../.local/production/tools/age
+        target: /opt/identity-ops/age
+        read_only: true
+        bind: { create_host_path: false }
+      - type: bind
+        source: ${BACKUP_DESTINATION:?Set the absolute independent backup storage root}/wal
+        target: /var/lib/identity-backup/wal
+        bind: { create_host_path: false }
     networks: [private]
     restart: unless-stopped
     shm_size: 256m

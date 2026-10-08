@@ -10,6 +10,8 @@
 
 秘密文件绑定RO到/run/secrets；宿主文件应`chown 10001:10001`及`chmod 0600`，父目录仅运维账户可进入。Config拒绝group/other权限，不能把文件改0640来迁就容器读取。PG密码文件由Postgres入口读取，另设置其所需权限，数据库服务权限不和API私钥混用。私钥与AEAD另独立受控备份。
 
+发布runtime包含`identity-keys`维护命令；生产使用受控配置及明确`--allow-production`执行重加密。独立存储`BACKUP_DESTINATION`、公开`AGE_RECIPIENT`以及PG归档脚本/已核验age工具挂载必须准备，Compose的5分钟WAL切换与后续10分钟归档预算见[backup-recovery.md](backup-recovery.md)。基础备份每日调度、14天可恢复链保留、告警与完整恢复尚须外部系统配置实测。
+
 API和Worker的内部指标配置`METRICS_TOKEN_FILE=/run/secrets/metrics-token`，使用至少256位随机token的受限文件，和Prometheus的bearer_token_file对应。该token不作为账号或OAuth凭证，指标只有固定聚合标签；Caddy不向公网代理/metrics。未配置token时仅loopback可读，不能误以为私网采集已可用。告警规则及配置见infra/ops，生产可达接收端需实际配置演练。
 
 未配置旧JWKS时准备仅`{"keys":[]}`的public文件，不能含私钥。生产Compose绑定所有秘密文件必须预先存在，不自动生成或覆盖生产密钥。正式issuer由DNS/证书指向edge；外部TCP80只TLS证书挑战与HTTPS跳转，HTTPS443提供身份/应用。运维SSH独立受控，不把DB/Redis映射公网。

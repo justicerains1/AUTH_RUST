@@ -1,0 +1,37 @@
+import assert from 'node:assert/strict';
+import { execFileSync, spawnSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
+import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join, resolve } from 'node:path';
+import test from 'node:test';
+
+const root = resolve(import.meta.dirname, '../..');
+test('canonical independent WAL root preserves retries and rejects damaged objects', (t) => {
+  const fixture = mkdtempSync(join(tmpdir(), 'identity-wal-test-'));
+  t.after(() => rmSync(fixture, { recursive: true, force: true }));
+  const age = process.env.AGE_BINARY ?? 'age';
+  const keygen = process.env.AGE_KEYGEN_BINARY ?? 'age-keygen';
+  const identity = join(fixture, 'identity.agekey');
+  execFileSync(keygen, ['-o', identity], { stdio: ['ignore', 'ignore', 'pipe'] });
+  const recipient = execFileSync(keygen, ['-y', identity], { encoding: 'utf8' }).trim();
+  const env = { ...process.env, BACKUP_DESTINATION: join(fixture, 'independent'), WAL_ARCHIVE_DIRECTORY: '', AGE_BINARY: age, AGE_RECIPIENT: recipient, AGE_IDENTITY_FILE: identity };
+  const source = join(fixture, 'source'); writeFileSync(source, 'synthetic WAL bytes for file boundary only\n');
+  const name = '000000010000000000000001';
+  const run = (script, args) => spawnSync('sh', [join(root, 'infra/ops', script), ...args], { env, encoding: 'utf8' });
+  assert.equal(run('archive-wal.sh', [source, name]).status, 0);
+  assert.equal(run('archive-wal.sh', [source, name]).status, 0);
+  const destination = join(fixture, 'restored');
+  assert.equal(run('restore-wal.sh', [name, destination]).status, 0);
+  assert.deepEqual(readFileSync(destination), readFileSync(source));
+  const object = join(env.BACKUP_DESTINATION, 'wal', name, 'wal.age');
+  const originalHash = createHash('sha256').update(readFileSync(object)).digest('hex');
+  writeFileSync(source, 'different source\n');
+  assert.notEqual(run('archive-wal.sh', [source, name]).status, 0);
+  assert.equal(createHash('sha256').update(readFileSync(object)).digest('hex'), originalHash);
+  assert.notEqual(run('archive-wal.sh', [source, '../invalid']).status, 0);
+  writeFileSync(object, 'damaged ciphertext');
+  const failedDestination = join(fixture, 'failed');
+  assert.notEqual(run('restore-wal.sh', [name, failedDestination]).status, 0);
+  assert.equal(existsSync(failedDestination), false);
+});

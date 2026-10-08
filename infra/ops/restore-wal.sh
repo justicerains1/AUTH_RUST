@@ -5,6 +5,7 @@ if [ "$#" -ne 2 ]; then exit 2; fi
 wal_name=$1
 destination=$2
 if ! printf '%s' "$wal_name" | LC_ALL=C grep -Eq '^([A-F0-9]{24}|[A-F0-9]{8}\.history|[A-F0-9]{24}\.[A-F0-9]{8}\.backup)$'; then exit 2; fi
+WAL_ARCHIVE_DIRECTORY=${WAL_ARCHIVE_DIRECTORY:-${BACKUP_DESTINATION:+$BACKUP_DESTINATION/wal}}
 : "${WAL_ARCHIVE_DIRECTORY:?Set the encrypted archive directory}"
 : "${AGE_IDENTITY_FILE:?Set the separately controlled age identity file}"
 age_binary=${AGE_BINARY:-age}
