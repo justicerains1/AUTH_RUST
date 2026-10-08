@@ -1,0 +1,116 @@
+{
+  "started": "2026-10-08T18:19:53.254Z",
+  "target": "local isolated identity_test production build",
+  "version": "2.17.0",
+  "phases": [
+    {
+      "phase": "anonymous",
+      "spider": "complete",
+      "active": "complete",
+      "targetPath": "/api/v1/me",
+      "confirmedProtectedStatus": 401
+    },
+    {
+      "phase": "authenticated",
+      "spider": "complete",
+      "active": "complete",
+      "targetPath": "/api/v1/me",
+      "confirmedProtectedStatus": 200
+    }
+  ],
+  "alerts": [
+    {
+      "pluginId": "10109",
+      "name": "Modern Web Application",
+      "risk": "Informational",
+      "confidence": "Medium",
+      "path": "/password-reset",
+      "description": "The application appears to be a modern web application. If you need to explore it automatically then the Client Spider may well be more effective than the standard one.",
+      "solution": "This is an informational alert and so no changes are required."
+    },
+    {
+      "pluginId": "10109",
+      "name": "Modern Web Application",
+      "risk": "Informational",
+      "confidence": "Medium",
+      "path": "/",
+      "description": "The application appears to be a modern web application. If you need to explore it automatically then the Client Spider may well be more effective than the standard one.",
+      "solution": "This is an informational alert and so no changes are required."
+    },
+    {
+      "pluginId": "10109",
+      "name": "Modern Web Application",
+      "risk": "Informational",
+      "confidence": "Medium",
+      "path": "/",
+      "description": "The application appears to be a modern web application. If you need to explore it automatically then the Client Spider may well be more effective than the standard one.",
+      "solution": "This is an informational alert and so no changes are required."
+    },
+    {
+      "pluginId": "10109",
+      "name": "Modern Web Application",
+      "risk": "Informational",
+      "confidence": "Medium",
+      "path": "/api",
+      "description": "The application appears to be a modern web application. If you need to explore it automatically then the Client Spider may well be more effective than the standard one.",
+      "solution": "This is an informational alert and so no changes are required."
+    },
+    {
+      "pluginId": "10109",
+      "name": "Modern Web Application",
+      "risk": "Informational",
+      "confidence": "Medium",
+      "path": "/register",
+      "description": "The application appears to be a modern web application. If you need to explore it automatically then the Client Spider may well be more effective than the standard one.",
+      "solution": "This is an informational alert and so no changes are required."
+    },
+    {
+      "pluginId": "10109",
+      "name": "Modern Web Application",
+      "risk": "Informational",
+      "confidence": "Medium",
+      "path": "/.well-known",
+      "description": "The application appears to be a modern web application. If you need to explore it automatically then the Client Spider may well be more effective than the standard one.",
+      "solution": "This is an informational alert and so no changes are required."
+    },
+    {
+      "pluginId": "10109",
+      "name": "Modern Web Application",
+      "risk": "Informational",
+      "confidence": "Medium",
+      "path": "/oauth",
+      "description": "The application appears to be a modern web application. If you need to explore it automatically then the Client Spider may well be more effective than the standard one.",
+      "solution": "This is an informational alert and so no changes are required."
+    },
+    {
+      "pluginId": "10109",
+      "name": "Modern Web Application",
+      "risk": "Informational",
+      "confidence": "Medium",
+      "path": "/login",
+      "description": "The application appears to be a modern web application. If you need to explore it automatically then the Client Spider may well be more effective than the standard one.",
+      "solution": "This is an informational alert and so no changes are required."
+    },
+    {
+      "pluginId": "10112",
+      "name": "Session Management Response Identified",
+      "risk": "Informational",
+      "confidence": "Medium",
+      "path": "/oauth/logout",
+      "description": "The given response has been identified as containing a session management token. The 'Other Info' field contains a set of header tokens that can be used in the Header Based Session Management Method. If the request is in a context which has a Session Management Method set to \"Auto-Detect\" then this rule will change the session management to use the tokens identified.",
+      "solution": "This is an informational alert rather than a vulnerability and so there is nothing to fix."
+    },
+    {
+      "pluginId": "10109",
+      "name": "Modern Web Application",
+      "risk": "Informational",
+      "confidence": "Medium",
+      "path": "/me",
+      "description": "The application appears to be a modern web application. If you need to explore it automatically then the Client Spider may well be more effective than the standard one.",
+      "solution": "This is an informational alert and so no changes are required."
+    }
+  ],
+  "failures": [],
+  "completed": "2026-10-08T18:20:04.613Z",
+  "exitCode": 0
+}
