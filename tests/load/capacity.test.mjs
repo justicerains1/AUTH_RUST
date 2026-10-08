@@ -17,4 +17,14 @@ test('capacity staircase retains separate fixed measurement windows and rejects 
   vm.runInContext("record('password',{status:429},10,false,true)", context);
   assert.deepEqual(samples.capacity_unexpected_errors, [true]);
   assert.deepEqual(samples.capacity_rate_limited, [1]);
+  // A later stage must not give expired setup tokens a new local freshness timestamp.
+  let fetches = 0;
+  context.http = { get: () => { fetches += 1; return { status: 200, json: () => [{ access: 'current', client: 0 }] }; } };
+  now = 360_000;
+  assert.equal(vm.runInContext("current()[0].access", context), 'current');
+  assert.equal(fetches, 1);
+  now += 59_999;
+  vm.runInContext('current()', context); assert.equal(fetches, 1);
+  now += 1;
+  vm.runInContext('current()', context); assert.equal(fetches, 2);
 });

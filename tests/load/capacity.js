@@ -33,9 +33,10 @@ let updated = 0;
 function measured() { const elapsed = Date.now() - execution.scenario.startTime; return elapsed >= 60_000 && elapsed < 120_000; }
 function tags(endpoint) { return { endpoint, multiplier: execution.scenario.name.split('_').at(-1) }; }
 function source(index) { return `198.20.${Math.floor(index / 250) % 250}.${index % 250 + 1}`; }
-function current(data) {
-  if (!tokenPool) { tokenPool = data.tokens; updated = Date.now(); }
-  if (Date.now() - updated >= 60_000) {
+function current() {
+  // Later staircase scenarios start minutes after setup; its original tokens may already expire.
+  // Fetch the current pool for each newly started VU instead of treating setup's age as zero.
+  if (!tokenPool || Date.now() - updated >= 60_000) {
     const result = http.get(`${credentials.control}/pool`, { headers: { 'x-test-key': credentials.key }, responseType: 'text', tags: { name: 'capacity-control-pool' } });
     if (result.status !== 200) throw new Error('Authoritative capacity token pool unavailable.');
     tokenPool = result.json('tokens'); updated = Date.now();
@@ -56,8 +57,8 @@ export function setup() {
   if (result.status !== 200) throw new Error('Initial authoritative capacity pool unavailable.');
   return { tokens: result.json('tokens') };
 }
-export function introspection(data) {
-  const phase = measured(); const pool = current(data); const token = pool[execution.scenario.iterationInTest % pool.length]; const client = credentials.clients[token.client]; const start = Date.now();
+export function introspection() {
+  const phase = measured(); const pool = current(); const token = pool[execution.scenario.iterationInTest % pool.length]; const client = credentials.clients[token.client]; const start = Date.now();
   const result = http.post(`${credentials.base}/oauth/introspect`, { token: token.access }, { headers: { Authorization: `Basic ${encoding.b64encode(`${client.id}:${client.secret}`)}`, 'x-forwarded-for': source(execution.vu.idInTest), 'Content-Type': 'application/x-www-form-urlencoded' }, responseType: 'text', tags: { name: 'capacity POST /oauth/introspect' } });
   const body = result.status === 200 ? result.json() : null;
   record('introspection', result, Date.now() - start, result.status === 200 && body?.active === true && body.client_id === client.id, phase);
