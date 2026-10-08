@@ -1,0 +1,7 @@
+T14 real administrator integration 2026-10-08T13:30:27.885Z
+FAIL T14 real administrator API/CLI failed; secret diagnostics suppressed.
+
+101 !== 0
+
+Completed 2026-10-08T13:30:47.193Z
+Exit code 1

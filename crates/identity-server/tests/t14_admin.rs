@@ -3,6 +3,7 @@ use axum::{Json, Router, routing::get};
 use identity_core::{
     clock::SystemClock,
     config::Config,
+    oauth::pkce_s256,
     security::{Password, PasswordService},
 };
 use identity_server::accounts::{AuthAppState, accounts_router};
@@ -623,25 +624,7 @@ async fn cases(config: &Config, pool: &PgPool, base: String) -> TestResult {
             .await
             .is_err()
     );
-    let victim = seed(pool, "victim@example.test", &hash, true, "active").await?;
-    let mut victim_browser = Browser::new(base.clone(), origin).await?;
-    victim_browser
-        .login("victim@example.test", PASSWORD)
-        .await?;
-    assert_eq!(
-        admin
-            .patch(
-                &format!("/admin/users/{victim}/status"),
-                json!({"status":"disabled"})
-            )
-            .await?
-            .status(),
-        StatusCode::OK
-    );
-    assert_eq!(
-        victim_browser.get("/me").await?.status(),
-        StatusCode::UNAUTHORIZED
-    );
+    admin_disable_revokes_oauth(&admin, pool, &hash, base.clone(), origin).await?;
     sqlx::query("CREATE FUNCTION t14_fail_audit() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN RAISE EXCEPTION 'T14 audit fixture'; END $$").execute(pool).await?;
     sqlx::query("CREATE TRIGGER t14_audit_guard BEFORE INSERT ON audit_events FOR EACH ROW EXECUTE FUNCTION t14_fail_audit()").execute(pool).await?;
     let failure = admin
@@ -710,6 +693,212 @@ async fn cases(config: &Config, pool: &PgPool, base: String) -> TestResult {
         "PASS T14 last administrator factor cannot be deleted; two qualified admins concurrently remove factors with one success and one protected survivor"
     );
     Ok(())
+}
+
+/// E16 uses the same user and actual administrator operation for every credential check.
+async fn admin_disable_revokes_oauth(
+    admin: &Browser,
+    pool: &PgPool,
+    hash: &str,
+    base: String,
+    origin: String,
+) -> TestResult {
+    let created = admin
+        .post(
+            "/admin/clients",
+            json!({"name":"E16 isolated OAuth fixture","allowed_scopes":["openid","email"],"redirect_uris":["http://localhost:5190/callback"],"post_logout_redirect_uris":[]}),
+        )
+        .await?;
+    assert_eq!(created.status(), StatusCode::CREATED);
+    let client: Value = created.json().await?;
+    let client_id = client["client"]["client_id"]
+        .as_str()
+        .ok_or("E16 client id missing")?;
+    let secret = client["client_secret"]
+        .as_str()
+        .ok_or("E16 client secret missing")?;
+    let victim = seed(pool, "victim@example.test", hash, true, "active").await?;
+    let mut browser = Browser::new(base, origin).await?;
+    browser.login("victim@example.test", PASSWORD).await?;
+    assert_eq!(browser.get("/me").await?.status(), StatusCode::OK);
+    let verifier = "T14_E16_Only_Independent_PKCE_Verifier_1234567890";
+    let parameters = url::form_urlencoded::Serializer::new(String::new())
+        .extend_pairs([
+            ("client_id", client_id),
+            ("response_type", "code"),
+            ("redirect_uri", "http://localhost:5190/callback"),
+            ("scope", "openid email"),
+            ("state", "T14_E16_STATE_NON_SECRET_12345"),
+            ("nonce", "T14_E16_NONCE_NON_SECRET_54321"),
+            ("code_challenge", pkce_s256(verifier)?.as_str()),
+            ("code_challenge_method", "S256"),
+            ("prompt", "consent"),
+        ])
+        .finish();
+    let protocol = Client::builder()
+        .redirect(reqwest::redirect::Policy::none())
+        .build()?;
+    let response = protocol
+        .get(format!("{}/oauth/authorize?{parameters}", browser.base))
+        .header("cookie", &browser.cookie)
+        .send()
+        .await?;
+    assert_eq!(response.status(), StatusCode::FOUND);
+    let confirmation = response
+        .headers()
+        .get("location")
+        .ok_or("E16 consent location missing")?
+        .to_str()?
+        .strip_prefix("/oauth/consent/")
+        .ok_or("E16 consent id missing")?;
+    let decision = browser
+        .post(
+            &format!("/oauth/transactions/{confirmation}/decision"),
+            json!({"decision":"approve"}),
+        )
+        .await?;
+    assert_eq!(decision.status(), StatusCode::OK);
+    let decision: Value = decision.json().await?;
+    let callback = url::Url::parse(
+        decision["redirect_to"]
+            .as_str()
+            .ok_or("E16 callback missing")?,
+    )?;
+    let code = callback
+        .query_pairs()
+        .find(|(key, _)| key == "code")
+        .ok_or("E16 code missing")?
+        .1
+        .into_owned();
+    let exchanged = oauth_form(
+        &browser,
+        "/oauth/token",
+        client_id,
+        secret,
+        &[
+            ("grant_type", "authorization_code"),
+            ("code", &code),
+            ("code_verifier", verifier),
+            ("redirect_uri", "http://localhost:5190/callback"),
+        ],
+    )
+    .await?;
+    assert_eq!(exchanged.status(), StatusCode::OK);
+    let original: Value = exchanged.json().await?;
+    let old_refresh = original["refresh_token"]
+        .as_str()
+        .ok_or("E16 original refresh missing")?;
+    // Prove the family can genuinely refresh before disabling; use the fresh pair afterwards.
+    let refreshed = oauth_form(
+        &browser,
+        "/oauth/token",
+        client_id,
+        secret,
+        &[
+            ("grant_type", "refresh_token"),
+            ("refresh_token", old_refresh),
+        ],
+    )
+    .await?;
+    assert_eq!(refreshed.status(), StatusCode::OK);
+    let credentials: Value = refreshed.json().await?;
+    let access = credentials["access_token"]
+        .as_str()
+        .ok_or("E16 current access missing")?;
+    let refresh = credentials["refresh_token"]
+        .as_str()
+        .ok_or("E16 current refresh missing")?;
+    for token in [access, refresh] {
+        let inspected = oauth_form(
+            &browser,
+            "/oauth/introspect",
+            client_id,
+            secret,
+            &[("token", token)],
+        )
+        .await?;
+        assert_eq!(inspected.status(), StatusCode::OK);
+        let current: Value = inspected.json().await?;
+        assert_eq!(current["active"], true);
+    }
+    let prior_tokens: i64 = sqlx::query_scalar(
+        "SELECT count(*) FROM oauth_tokens t JOIN oauth_grants g ON g.id=t.grant_id WHERE g.user_id=$1",
+    )
+    .bind(victim)
+    .fetch_one(pool)
+    .await?;
+    assert_eq!(
+        admin
+            .patch(
+                &format!("/admin/users/{victim}/status"),
+                json!({"status":"disabled"}),
+            )
+            .await?
+            .status(),
+        StatusCode::OK
+    );
+    assert_eq!(browser.get("/me").await?.status(), StatusCode::UNAUTHORIZED);
+    for token in [access, refresh] {
+        let inspected = oauth_form(
+            &browser,
+            "/oauth/introspect",
+            client_id,
+            secret,
+            &[("token", token)],
+        )
+        .await?;
+        assert_eq!(inspected.status(), StatusCode::OK);
+        let inactive: Value = inspected.json().await?;
+        assert_eq!(inactive, json!({"active":false}));
+    }
+    let denied = oauth_form(
+        &browser,
+        "/oauth/token",
+        client_id,
+        secret,
+        &[("grant_type", "refresh_token"), ("refresh_token", refresh)],
+    )
+    .await?;
+    assert_eq!(denied.status(), StatusCode::BAD_REQUEST);
+    assert!(denied.headers().get("set-cookie").is_none());
+    let denied: Value = denied.json().await?;
+    assert_eq!(denied["error"], "invalid_grant");
+    assert!(
+        ["access_token", "refresh_token", "id_token"]
+            .iter()
+            .all(|field| denied.get(*field).is_none())
+    );
+    let after_tokens: i64 = sqlx::query_scalar(
+        "SELECT count(*) FROM oauth_tokens t JOIN oauth_grants g ON g.id=t.grant_id WHERE g.user_id=$1",
+    )
+    .bind(victim)
+    .fetch_one(pool)
+    .await?;
+    assert_eq!(after_tokens, prior_tokens);
+    println!(
+        "PASS T14 E16 same-user real session/code exchange/refresh and active access+refresh; administrator strong-auth API disable makes old session401, both introspection inactive, refresh invalid_grant with no new token"
+    );
+    Ok(())
+}
+
+async fn oauth_form(
+    browser: &Browser,
+    path: &str,
+    client: &str,
+    secret: &str,
+    parameters: &[(&str, &str)],
+) -> TestResult<reqwest::Response> {
+    let body = url::form_urlencoded::Serializer::new(String::new())
+        .extend_pairs(parameters.iter().copied())
+        .finish();
+    Ok(browser
+        .client
+        .post(format!("{}{path}", browser.base))
+        .basic_auth(client, Some(secret))
+        .header("content-type", "application/x-www-form-urlencoded")
+        .body(body)
+        .send()
+        .await?)
 }
 
 fn independent_code(secret: &str, seconds: i64) -> TestResult<String> {
