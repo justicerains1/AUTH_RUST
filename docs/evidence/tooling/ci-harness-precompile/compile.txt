@@ -1,0 +1,6 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.17s
+  Executable tests/t17_public.rs ([REDACTED OPAQUE])
+  Executable tests/t18_account.rs ([REDACTED OPAQUE])
+  Executable tests/t19_admin_management.rs ([REDACTED OPAQUE])
+  Executable tests/t19_admin_ui.rs ([REDACTED OPAQUE])
+  Executable tests/t23_accessibility.rs ([REDACTED OPAQUE])

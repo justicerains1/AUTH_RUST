@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { groups, runGroup } from './ci-integration-group.mjs';
+import { groups, runGroup, prepareGroup } from './ci-integration-group.mjs';
 
 test('CI partition preserves every previous integration/browser command exactly once', () => {
   const expected = [
@@ -18,4 +18,13 @@ test('each group remains sequential and stops on real failure', async () => {
 });
 test('unknown group fails without running any process', async () => {
   let called = false; await assert.rejects(runGroup('missing', async () => { called = true; }), /Unknown/u); assert.equal(called, false);
+});
+test('product preparation compiles all five harnesses without running authenticated fixtures', async () => {
+  let captured;
+  const code = await prepareGroup('product', async (program, args) => { captured = { program, args }; return { exitCode: 0, diagnostic: '' }; });
+  assert.equal(code, 0); assert.equal(captured.program, 'cargo'); assert.ok(captured.args.includes('--no-run'));
+  assert.deepEqual(captured.args.filter((_value, index) => captured.args[index - 1] === '--test'), ['t17_public', 't18_account', 't19_admin_ui', 't19_admin_management', 't23_accessibility']);
+});
+test('harness compilation failures remain nonzero instead of entering service startup', async () => {
+  assert.equal(await prepareGroup('product', async () => ({ exitCode: 17, diagnostic: 'compilation failed' })), 17);
 });

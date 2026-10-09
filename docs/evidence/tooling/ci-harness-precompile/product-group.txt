@@ -1,0 +1,4 @@
+CI product: test:e2e --task=T17
+CI product: test:e2e --task=T18
+CI product: test:e2e --task=T19
+CI product: test:accessibility

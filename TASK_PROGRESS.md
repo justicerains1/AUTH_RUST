@@ -301,3 +301,7 @@ c3885fa这一轮完整测试只有T05集成失败（19集成其他18项0、E2E/s
 ## CI并行与缓存优化推送
 
 用户确认可推送此前暂存的优化。原普通CI全部测试保持，认证/协议/产品三独立runner并行、组内故障顺序执行，Rust/镜像层缓存和同分支旧任务取消启用；成品发布仍依赖全部矩阵成功，并使用已配置RELEASE_TOKEN修复标签权限。73工具测试/actionlint/ESLint/完整protocolgroup真实0。[依据与验证](docs/evidence/tooling/ci-speed/test-summary.md)。远端耗时/首次缓存命中尚未确认，不预报提速或发布成功。
+
+## CI启动计时与文档触发修复
+
+远端product组报T17harness启动失败，新增各组测试target独立--no-run预编译，编译不再占用原60秒启动计时，未放宽限流/认证断言。本地product完整组与75工具测试/actionlint/ESLint均0。[记录](docs/evidence/tooling/ci-harness-precompile/test-summary.md)。按用户要求纯docs/Markdown push/PR不触发普通CI，代码/脚本/依赖/workflow仍完整执行；文档和代码混合提交仍触发。

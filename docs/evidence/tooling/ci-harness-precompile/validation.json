@@ -1,0 +1,27 @@
+{
+  "completed": "2026-10-09T07:12:37.672752+00:00",
+  "productPrecompile": 0,
+  "productGroup": 0,
+  "toolingTests": 75,
+  "workflowLint": 0,
+  "eslint": 0,
+  "T17StartupTimeoutUnchangedSeconds": 60,
+  "documentationOnlyPaths": [
+    "docs/**",
+    "**/*.md"
+  ],
+  "source": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "dd211d7eec4fa926cbb0f35b2cde95a8ff3c02eefc104d9291a2b6a7d9107b71"
+    },
+    {
+      "path": "scripts/ci-integration-group.mjs",
+      "sha256": "001aee733bfbde684700a2b1c14dff23ea70c53b0976704f801b795626eb6fc3"
+    },
+    {
+      "path": "scripts/ci-integration-group.test.mjs",
+      "sha256": "8084f35da0b7dcefa3a04b29642bf474bd715bbf669c0d5bab96d212c044b32b"
+    }
+  ]
+}

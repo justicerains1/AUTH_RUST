@@ -13,6 +13,21 @@ export const groups = {
   protocol: [...['T10', 'T12'].flatMap((task) => [integration(task), ...(task === 'T10' ? [e2e(task), integration('T11')] : [e2e(task)])]), integration('T13'), integration('T14')],
   product: [e2e('T17'), e2e('T18'), e2e('T19'), ['test:accessibility']],
 };
+export const harnesses = {
+  authentication: ['t04_security', 't05_accounts', 't06_sessions', 't07_passwords', 't08_mfa', 't09_passkeys'],
+  protocol: ['t10_oauth', 't11_oidc', 't12_revocation', 't13_bff', 't14_admin'],
+  product: ['t17_public', 't18_account', 't19_admin_ui', 't19_admin_management', 't23_accessibility'],
+};
+export async function prepareGroup(name, executor = runStage) {
+  if (!Object.hasOwn(harnesses, name)) throw new Error('Unknown CI integration group.');
+  if (name === 'authentication') {
+    const store = await executor('cargo', ['test', '--package', 'identity-store', '--test', 't03_database', '--locked', '--no-run'], { cwd: root });
+    process.stdout.write(sanitizeBrowserDiagnostic(store.diagnostic)); if (store.exitCode !== 0) return store.exitCode;
+  }
+  const result = await executor('cargo', ['test', '--package', 'identity-server', '--locked', '--no-run', ...harnesses[name].flatMap((target) => ['--test', target])], { cwd: root });
+  process.stdout.write(sanitizeBrowserDiagnostic(result.diagnostic));
+  return result.exitCode;
+}
 export async function runGroup(name, executor = runStage) {
   if (!Object.hasOwn(groups, name)) throw new Error('Unknown CI integration group.');
   for (const [command, task] of groups[name]) {
@@ -28,6 +43,6 @@ export async function runGroup(name, executor = runStage) {
   return 0;
 }
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
-  try { process.exitCode = await runGroup(process.argv[2]); }
+  try { process.exitCode = process.argv[3] === '--prepare' ? await prepareGroup(process.argv[2]) : await runGroup(process.argv[2]); }
   catch (error) { console.error(error.message); process.exitCode = 1; }
 }

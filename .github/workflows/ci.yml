@@ -2,7 +2,13 @@ name: CI
 
 on:
   push:
+    paths-ignore:
+      - 'docs/**'
+      - '**/*.md'
   pull_request:
+    paths-ignore:
+      - 'docs/**'
+      - '**/*.md'
 
 permissions:
   contents: read
@@ -109,6 +115,8 @@ jobs:
         env:
           CI_PREBUILT_DEV_IMAGES: '1'
       - run: node node_modules/playwright/cli.js install --with-deps chromium firefox
+      - name: Compile integration harnesses before startup timers
+        run: node scripts/ci-integration-group.mjs ${{ matrix.group }} --prepare
       - name: Run isolated integration group
         run: node scripts/ci-integration-group.mjs ${{ matrix.group }}
       - if: always()
