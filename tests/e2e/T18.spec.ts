@@ -3,6 +3,12 @@ import { createHmac } from 'node:crypto';
 async function material(query = ''): Promise<{ secret: string; recovery: string; seconds: number }> { const key = process.env.T18_CLOCK_KEY; if (!key) throw new Error('Private test key required.'); return (await fetch(`http://127.0.0.1:5197/__test/material${query}`, { headers: { 'x-test-key': key } })).json() as Promise<{ secret: string; recovery: string; seconds: number }>; }
 function totp(secret: string, seconds: number): string { let accumulator = 0, bits = 0; const bytes: number[] = []; for (const ch of secret) { accumulator = accumulator << 5 | 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567'.indexOf(ch); bits += 5; if (bits >= 8) { bits -= 8; bytes.push(accumulator >> bits & 255); accumulator &= (1 << bits) - 1; } } const counter = Buffer.alloc(8); counter.writeBigUInt64BE(BigInt(Math.floor(seconds / 30))); const hash = createHmac('sha1', Buffer.from(bytes)).update(counter).digest(); return String((hash.readUInt32BE((hash[19] ?? 0) & 15) & 0x7fffffff) % 1_000_000).padStart(6, '0'); }
 async function login(page: Page, email: string, mfa = false) { const password = process.env.T18_BROWSER_PASSWORD; if (!password) throw new Error('Private password required.'); await page.goto('/login'); await page.getByLabel('邮箱地址').fill(email); await page.getByLabel('密码', { exact: true }).fill(password); await page.getByRole('button', { name: '登录', exact: true }).click(); if (mfa) { const value = await material('?advance=1'); await page.getByLabel('验证码', { exact: true }).fill(totp(value.secret, value.seconds)); await page.getByRole('button', { name: '验证并登录', exact: true }).click(); } await expect(page).toHaveURL(/\/me$/u); }
+async function codesAbsent(page: Page, codes: readonly string[]) {
+  const leaks = await page.evaluate((codes) => { const text = `${document.body.textContent}\n${document.documentElement.outerHTML}`; const stored = JSON.stringify({ local: Object.entries(localStorage), session: Object.entries(sessionStorage) }); return { dom: codes.some((code) => text.includes(code)), persistent: codes.some((code) => stored.includes(code)) }; }, codes);
+  expect(leaks.dom, 'Cleared recovery codes must not remain in visible or hidden DOM.').toBe(false);
+  expect(leaks.persistent, 'Recovery codes must not enter browser persistent storage.').toBe(false);
+  await expect(page.getByRole('region', { name: '一次性恢复码' })).toHaveCount(0);
+}
 
 test('@T18 revoking a second device updates the list and removes its real authority', async ({ page, browser }) => {
   await login(page, 'browser-devices@example.test'); const context = await browser.newContext(); const other = await context.newPage();
@@ -15,11 +21,24 @@ test('@T18 expired strong authentication requires a real proof without automatic
   await page.getByRole('button', { name: '重新生成恢复码', exact: true }).click(); await page.getByRole('dialog').getByRole('button', { name: '确认重新生成', exact: true }).click();
   const auth = page.getByRole('dialog', { name: /确认|认证/u }); await expect(auth).toBeVisible(); const password = process.env.T18_BROWSER_PASSWORD; if (!password) throw new Error('Private password required.'); await auth.getByLabel('当前密码', { exact: true }).fill(password); await auth.getByRole('button', { name: '确认密码', exact: true }).click(); const value = await material('?advance=1'); await auth.getByLabel('验证码', { exact: true }).fill(totp(value.secret, value.seconds)); await auth.getByRole('button', { name: '完成强认证', exact: true }).click();
   const count = mutations; await page.waitForTimeout(300); expect(mutations).toBe(count);
-  await page.getByRole('button', { name: '重新生成恢复码', exact: true }).click(); await page.getByRole('dialog').getByRole('button', { name: '确认重新生成', exact: true }).click(); await expect(page.getByRole('region', { name: '一次性恢复码' })).toBeVisible();
+  await page.getByRole('button', { name: '重新生成恢复码', exact: true }).click(); const generated = page.waitForResponse((response) => response.url().endsWith('/mfa/recovery-codes/regenerate') && response.status() === 200); await page.getByRole('dialog').getByRole('button', { name: '确认重新生成', exact: true }).click(); await expect(page.getByRole('region', { name: '一次性恢复码' })).toBeVisible();
+  const generatedBody: unknown = await (await generated).json();
+  if (!generatedBody || typeof generatedBody !== 'object' || !('codes' in generatedBody) || !Array.isArray(generatedBody.codes) || generatedBody.codes.length !== 10 || generatedBody.codes.some((code) => typeof code !== 'string')) throw new Error('The actual successful response must provide ten recovery codes.');
+  const codes = generatedBody.codes as string[];
+  expect(new Set(codes).size, 'The real recovery code set must contain ten distinct values.').toBe(10);
+  const displayed = await page.getByRole('region', { name: '一次性恢复码' }).locator('ol code').allTextContents(); expect(displayed.length).toBe(10); expect(displayed.every((code, index) => code === codes[index]), 'Displayed recovery codes must equal the successful API response.').toBe(true);
   await page.context().grantPermissions(['clipboard-read', 'clipboard-write']);
-  await page.getByRole('button', { name: '复制恢复码', exact: true }).click(); await expect(page.getByRole('status').filter({ hasText: '已复制到剪贴板' })).toBeVisible(); const copied = await page.evaluate(() => navigator.clipboard.readText()); expect(copied.split('\n').length).toBe(10);
-  const download = page.waitForEvent('download'); await page.getByRole('button', { name: '下载恢复码', exact: true }).click(); expect((await download).suggestedFilename()).toBe('identity-recovery-codes.txt');
-  await page.getByRole('button', { name: '已保存，关闭恢复码', exact: true }).click(); await expect(page.getByRole('region', { name: '一次性恢复码' })).toHaveCount(0);
+  await page.getByRole('button', { name: '复制恢复码', exact: true }).click(); await expect(page.getByRole('status').filter({ hasText: '已复制到剪贴板' })).toBeVisible(); const copied = await page.evaluate(() => navigator.clipboard.readText()); expect(copied === codes.join('\n'), 'The actual clipboard must contain exactly the current ten recovery codes.').toBe(true);
+  const downloadEvent = page.waitForEvent('download'); await page.getByRole('button', { name: '下载恢复码', exact: true }).click(); const download = await downloadEvent; expect(download.suggestedFilename()).toBe('identity-recovery-codes.txt');
+  const stream = await download.createReadStream(); let body = ''; for await (const chunk of stream) body += Buffer.isBuffer(chunk) ? chunk.toString('utf8') : String(chunk);
+  const expectedBody = `统一身份中心一次性恢复码\n请保存在可信位置，每个恢复码只能使用一次。\n\n${codes.join('\n')}\n`;
+  expect(body === expectedBody, 'The downloaded plaintext must match the stated instructions and all ten current codes exactly.').toBe(true);
+  expect(body.trimEnd().split('\n').slice(3).every((code, index) => code === codes[index]), 'Every downloaded recovery code must match its current API value.').toBe(true);
+  await download.delete(); await page.evaluate(() => navigator.clipboard.writeText(''));
+  await page.getByRole('button', { name: '已保存，关闭恢复码', exact: true }).click(); await codesAbsent(page, codes);
+  await page.getByRole('navigation', { name: '账号设置' }).getByRole('link', { name: '设备会话', exact: true }).click(); await expect(page.getByRole('heading', { name: '设备会话', exact: true })).toBeVisible(); await codesAbsent(page, codes);
+  await page.getByRole('navigation', { name: '账号设置' }).getByRole('link', { name: '双因素验证', exact: true }).click(); await expect(page.getByRole('heading', { name: '双因素验证', exact: true })).toBeVisible(); await codesAbsent(page, codes);
+  await page.reload(); await expect(page.getByRole('heading', { name: '双因素验证', exact: true })).toBeVisible(); await codesAbsent(page, codes); expect(mutations).toBe(count + 1);
   await page.getByRole('button', { name: '关闭TOTP', exact: true }).click(); await page.getByRole('dialog').getByRole('button', { name: '确认关闭TOTP', exact: true }).click(); await expect(page.getByText('TOTP未启用', { exact: true })).toBeVisible();
 });
 
