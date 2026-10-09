@@ -1,0 +1,25 @@
+{
+  "completed": "2026-10-09T05:40:01.793Z",
+  "results": [
+    {
+      "width": 390,
+      "publicWithoutAuthRequests": true,
+      "deepLinkAndReload": true,
+      "footerNavigation": true,
+      "contactMailto": true,
+      "horizontalOverflow": false,
+      "axeViolations": 0
+    },
+    {
+      "width": 1440,
+      "publicWithoutAuthRequests": true,
+      "deepLinkAndReload": true,
+      "footerNavigation": true,
+      "contactMailto": true,
+      "horizontalOverflow": false,
+      "axeViolations": 0
+    }
+  ],
+  "exitCode": 0,
+  "scope": "Current running Docker dev frontend public privacy page; Chromium, two widths"
+}

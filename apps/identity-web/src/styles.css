@@ -48,6 +48,16 @@ h2 { font-size: 1.5rem; }
 .page-main { padding-top: 48px; padding-bottom: 64px; min-height: 70vh; }
 .page-main:focus { outline: none; }
 .site-footer { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; padding-top: 24px; padding-bottom: 24px; border-top: 1px solid var(--border); color: var(--muted); font-size: .875rem; }
+.site-footer nav a { display: inline-flex; align-items: center; min-height: 44px; }
+.privacy-page { max-width: 880px; margin: 0 auto; overflow-wrap: anywhere; }
+.privacy-header { margin-bottom: 32px; }
+.privacy-contents { margin-bottom: 40px; }
+.privacy-contents ol { margin: 0; padding-left: 24px; }
+.privacy-contents a { display: inline-block; padding: 10px 0; }
+.privacy-section { margin-bottom: 40px; scroll-margin-top: 24px; }
+.privacy-section ul { padding-left: 24px; }
+.privacy-section li { margin-bottom: 12px; }
+.privacy-actions { padding-top: 24px; border-top: 1px solid var(--border); }
 .eyebrow { color: var(--muted); letter-spacing: .12em; font-size: .75rem; font-weight: 700; }
 .lead { font-size: 1.25rem; max-width: 34rem; }
 .muted { color: var(--muted); }

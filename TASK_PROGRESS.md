@@ -285,3 +285,7 @@ c3885fa这一轮完整测试只有T05集成失败（19集成其他18项0、E2E/s
 ## Windows公网访问诊断
 
 用户选择只公开身份中心5173。实测Windows网卡111.10.137.17仅loopback转发，公网IP5173连接失败；Windows访问WSL172.24.66.254:5173与localhost均HTTP200，portproxy当前空。当前Windows非管理员，系统防火墙查询也拒绝访问。已提供限定单公网网卡/默认5173的管理员PowerShell转发脚本并通过语法/只读Plan实际验证，用户须执行管理员步骤，尚不宣称公网打通。仅网络转发不改变localhost认证origin，完整公网认证仍需HTTPS域名配置。
+
+## CDNGOD隐私政策页
+
+按用户要求新增公开/privacy路由和全站页脚入口，主体CDNGOD，联系support@cdngod.com。原前端60unit/TS/ESLint/build均0，实际Docker页面390/1440公开访问/刷新/目录/页脚/mailto/无横向溢出及axe0；identity-web镜像已重建healthy。[结果](docs/evidence/privacy-page/test-summary.md)。本轮生产前端变动使旧edge制品/前次完整回归不能自动代表当前页面，正式发布前须新edge构建及适当回归，生产/实体条件不放行。
