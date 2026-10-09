@@ -37,6 +37,9 @@ await writeFile(resolve(privateDirectory, 'release-order.txt'), releaseOrder.dia
 const ciDeployment = await runStage(process.execPath, ['--test', resolve(root, 'tests/ops/ci-deployment.test.mjs')], { cwd: root, env: opsEnvironment });
 await writeFile(resolve(privateDirectory, 'ci-deployment.txt'), ciDeployment.diagnostic, { mode: 0o600 });
 results.push({ name: 'ci-artifact-deployment-no-build-guards', exitCode: ciDeployment.exitCode });
+const installer = await runStage(process.execPath, ['--test', resolve(root, 'tests/ops/installer.test.mjs')], { cwd: root, env: opsEnvironment });
+await writeFile(resolve(privateDirectory, 'interactive-installer.txt'), installer.diagnostic, { mode: 0o600 });
+results.push({ name: 'single-file-interactive-installer-and-real-backup', exitCode: installer.exitCode });
 const releaseDrill = await runStage(process.execPath, [resolve(root, 'tests/ops/release-local.mjs')], { cwd: root, env: opsEnvironment });
 await writeFile(resolve(privateDirectory, 'release-local.txt'), releaseDrill.diagnostic, { mode: 0o600 });
 results.push({ name: 'release-and-compatible-rollback', exitCode: releaseOrder.exitCode || releaseDrill.exitCode });

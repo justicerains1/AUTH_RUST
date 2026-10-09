@@ -150,4 +150,4 @@ jobs:
           set -euo pipefail
           release_tag="ci-$RELEASE_REVISION"
           gh release view "$release_tag" >/dev/null 2>&1 || gh release create "$release_tag" --target "$RELEASE_REVISION" --prerelease --title "Production artifacts $RELEASE_REVISION" --notes "CI-tested linux/amd64 images and deploy-only bundle. Publication is not production deployment or acceptance."
-          gh release upload "$release_tag" .local/auth-rust-deploy-linux-amd64.tar.gz .local/auth-rust-deploy-linux-amd64.tar.gz.sha256 --clobber
+          gh release upload "$release_tag" install.sh .local/auth-rust-deploy-linux-amd64.tar.gz .local/auth-rust-deploy-linux-amd64.tar.gz.sha256 --clobber

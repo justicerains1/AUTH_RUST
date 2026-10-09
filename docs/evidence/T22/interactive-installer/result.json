@@ -1,0 +1,41 @@
+{
+  "completed": "2026-10-09T06:19:20.514000+00:00",
+  "tests": 15,
+  "failed": 0,
+  "skipped": 0,
+  "validation": [
+    "bash syntax/help/invalid-release",
+    "Node ESLint",
+    "actionlint workflow",
+    "actual isolated PostgreSQL backup, verify, age encryption and decrypt",
+    "MFA cookie/CSRF lifecycle fixture",
+    "existing release ordering/no-build guards"
+  ],
+  "scope": "Installer components and real isolated backup verified; full root OS/Docker installation, real DNS/ACME/SMTP and published CI download not yet executed",
+  "source": [
+    {
+      "path": "install.sh",
+      "sha256": "11740eef01b7bf7b4b826acdbcb138de840f797b4061404054ea3af1cd744884"
+    },
+    {
+      "path": "infra/ops/install-production.mjs",
+      "sha256": "f2e1fa9fefb0d599bd2287dbe671eaf490df02167abb044fe4aa56a18580214c"
+    },
+    {
+      "path": "infra/ops/installer-operations.mjs",
+      "sha256": "8f52ce4fe855759f966ea85a349971b55e0076df70752eb51e9089946d07c58b"
+    },
+    {
+      "path": "scripts/package-release.mjs",
+      "sha256": "5a326a32d5445b8befd655af3667643073d87a07c17b11f97aadeec3cf6eaf5e"
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "35815650a78281bb11bf41b0de0f8099e07a8ddb1cbe1cf8b11a4617d51fe66c"
+    },
+    {
+      "path": "tests/ops/installer.test.mjs",
+      "sha256": "6dce7b48891462ed08a0a1358694c817a67fdae3e38046827c2639a6d8fae522"
+    }
+  ]
+}

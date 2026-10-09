@@ -293,3 +293,7 @@ c3885fa这一轮完整测试只有T05集成失败（19集成其他18项0、E2E/s
 ## CI成品与生产无构建部署
 
 按用户要求，新增main测试通过后GHCR成品发布与固定SHA部署包（GitHub Releases/Actionsartifact），生产一键deploy只用Docker/Compose+Node拉取/校验/备份/迁移/启动/冒烟，拒build与浮动镜像。包实际生成/摘要核对，新5测试+原6顺序共11全0，actionlint/ESLint/syntax/docs0；[记录](docs/evidence/T22/ci-deployment/test-summary.md)。生产环境不承担Rust/前端构建，远端CI首次推镜像/发布包仍待实际执行，不预报成功；生产配置/独立备份/业务smoke等外部条件尚缺，未部署生产。
+
+## 单文件交互生产安装
+
+新增根install.sh：下载一个脚本后sudo交互安装Docker/Compose和固定Node运行时，读取已完成CI成品包，交互域名/SMTP/独立备份/管理员，生成受限秘密/真实初始化TOTP与BFF、备份迁移和启动每日备份，生产不编译。15本地组件/真实PG备份加密解密测试全0，bash/ESLint/actionlint/docs0。[验证范围](docs/evidence/T22/interactive-installer/test-summary.md)。完整OS安装/生产DNSACMESMTP与CI首次发布尚未执行，不把组件通过冒生产安装通过。
