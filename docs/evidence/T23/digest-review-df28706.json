@@ -1,0 +1,835 @@
+{
+  "findings": 138,
+  "allVerified": true,
+  "method": "Every exact matching JSON digest compared to frozen git source or actual non-network/read-only image sha256; no broad rule/path exclusions",
+  "results": [
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:37",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/components/AuthGuard.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:47",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/components/PasskeyLoginButton.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:48",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/components/PasskeyReauth.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:49",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/components/Password.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:50",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/components/PublicAuthLayout.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:51",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/components/ReauthenticationDialog.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:57",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/components/auth-factors.test.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:60",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/components/passkey.test.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:61",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/components/reauthentication.test.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:62",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/lib/admin-api.ts",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:63",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/lib/api.test.ts",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:64",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/lib/api.ts",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:65",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/lib/auth-feedback.ts",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:66",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/lib/auth-flow.ts",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:69",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/lib/passkeyAuth.ts",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:71",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/lib/reauthentication.ts",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:72",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/lib/webauthn.test.ts",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:73",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/lib/webauthn.ts",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:87",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/pages/PasskeysPage.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:88",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/pages/PasswordChangePage.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:89",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/pages/PasswordResetPage.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:102",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/pages/passwords.test.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:103",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/pages/public-auth.test.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:117",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-admin-cli/src/bin/identity-keys.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:118",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-admin-cli/src/key_maintenance.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:121",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-admin-cli/tests/t22_keys.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:128",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-core/src/oauth.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:130",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-core/src/passkeys.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:140",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-server/src/oauth.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:142",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-server/src/passkeys.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:143",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-server/src/passwords.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:150",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-server/tests/t07_passwords.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:152",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-server/tests/t09_passkeys.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:153",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-server/tests/t10_oauth.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:179",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-store/src/oauth.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:180",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-store/src/passkeys.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:181",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-store/src/passwords.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:185",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-store/src/tokens.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:191",
+      "kind": "Frozen source SHA256",
+      "path": "data/weak-passwords-LICENSE.txt",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:192",
+      "kind": "Frozen source SHA256",
+      "path": "data/weak-passwords.metadata.json",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:193",
+      "kind": "Frozen source SHA256",
+      "path": "data/weak-passwords.txt",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:199",
+      "kind": "Frozen source SHA256",
+      "path": "migrations/0002_preauth.sql",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:200",
+      "kind": "Frozen source SHA256",
+      "path": "migrations/0003_password_confirmation.sql",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/runtime-df28706/prepared-source.json:generic-api-key:201",
+      "kind": "Frozen source SHA256",
+      "path": "migrations/0004_passkey_last_used.sql",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:160",
+      "kind": "Actual image artifact SHA256",
+      "path": "/usr/local/bin/identity-keys",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:177",
+      "kind": "Actual image artifact SHA256",
+      "path": "/srv/identity/assets/PasskeysPage-DFspnfa9.js",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:199",
+      "kind": "Actual image artifact SHA256",
+      "path": "/srv/identity/assets/api-CiOuZ4ty.js",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:347",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/components/AuthGuard.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:357",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/components/PasskeyLoginButton.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:358",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/components/PasskeyReauth.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:359",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/components/Password.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:360",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/components/PublicAuthLayout.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:361",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/components/ReauthenticationDialog.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:367",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/components/auth-factors.test.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:370",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/components/passkey.test.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:371",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/components/reauthentication.test.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:372",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/lib/admin-api.ts",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:373",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/lib/api.test.ts",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:374",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/lib/api.ts",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:375",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/lib/auth-feedback.ts",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:376",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/lib/auth-flow.ts",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:379",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/lib/passkeyAuth.ts",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:381",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/lib/reauthentication.ts",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:382",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/lib/webauthn.test.ts",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:383",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/lib/webauthn.ts",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:397",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/pages/PasskeysPage.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:398",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/pages/PasswordChangePage.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:399",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/pages/PasswordResetPage.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:412",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/pages/passwords.test.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:413",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/pages/public-auth.test.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:427",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-admin-cli/src/bin/identity-keys.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:428",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-admin-cli/src/key_maintenance.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:431",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-admin-cli/tests/t22_keys.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:438",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-core/src/oauth.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:440",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-core/src/passkeys.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:450",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-server/src/oauth.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:452",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-server/src/passkeys.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:453",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-server/src/passwords.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:460",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-server/tests/t07_passwords.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:462",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-server/tests/t09_passkeys.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:463",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-server/tests/t10_oauth.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:489",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-store/src/oauth.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:490",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-store/src/passkeys.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:491",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-store/src/passwords.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:495",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-store/src/tokens.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:501",
+      "kind": "Frozen source SHA256",
+      "path": "data/weak-passwords-LICENSE.txt",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:502",
+      "kind": "Frozen source SHA256",
+      "path": "data/weak-passwords.metadata.json",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:503",
+      "kind": "Frozen source SHA256",
+      "path": "data/weak-passwords.txt",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:509",
+      "kind": "Frozen source SHA256",
+      "path": "migrations/0002_preauth.sql",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:510",
+      "kind": "Frozen source SHA256",
+      "path": "migrations/0003_password_confirmation.sql",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706-both.json:generic-api-key:511",
+      "kind": "Frozen source SHA256",
+      "path": "migrations/0004_passkey_last_used.sql",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:160",
+      "kind": "Actual image artifact SHA256",
+      "path": "/usr/local/bin/identity-keys",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:177",
+      "kind": "Actual image artifact SHA256",
+      "path": "/srv/identity/assets/PasskeysPage-DFspnfa9.js",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:199",
+      "kind": "Actual image artifact SHA256",
+      "path": "/srv/identity/assets/api-CiOuZ4ty.js",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:347",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/components/AuthGuard.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:357",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/components/PasskeyLoginButton.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:358",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/components/PasskeyReauth.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:359",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/components/Password.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:360",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/components/PublicAuthLayout.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:361",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/components/ReauthenticationDialog.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:367",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/components/auth-factors.test.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:370",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/components/passkey.test.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:371",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/components/reauthentication.test.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:372",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/lib/admin-api.ts",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:373",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/lib/api.test.ts",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:374",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/lib/api.ts",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:375",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/lib/auth-feedback.ts",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:376",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/lib/auth-flow.ts",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:379",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/lib/passkeyAuth.ts",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:381",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/lib/reauthentication.ts",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:382",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/lib/webauthn.test.ts",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:383",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/lib/webauthn.ts",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:397",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/pages/PasskeysPage.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:398",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/pages/PasswordChangePage.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:399",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/pages/PasswordResetPage.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:412",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/pages/passwords.test.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:413",
+      "kind": "Frozen source SHA256",
+      "path": "apps/identity-web/src/pages/public-auth.test.tsx",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:427",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-admin-cli/src/bin/identity-keys.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:428",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-admin-cli/src/key_maintenance.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:431",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-admin-cli/tests/t22_keys.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:438",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-core/src/oauth.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:440",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-core/src/passkeys.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:450",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-server/src/oauth.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:452",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-server/src/passkeys.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:453",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-server/src/passwords.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:460",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-server/tests/t07_passwords.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:462",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-server/tests/t09_passkeys.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:463",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-server/tests/t10_oauth.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:489",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-store/src/oauth.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:490",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-store/src/passkeys.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:491",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-store/src/passwords.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:495",
+      "kind": "Frozen source SHA256",
+      "path": "crates/identity-store/src/tokens.rs",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:501",
+      "kind": "Frozen source SHA256",
+      "path": "data/weak-passwords-LICENSE.txt",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:502",
+      "kind": "Frozen source SHA256",
+      "path": "data/weak-passwords.metadata.json",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:503",
+      "kind": "Frozen source SHA256",
+      "path": "data/weak-passwords.txt",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:509",
+      "kind": "Frozen source SHA256",
+      "path": "migrations/0002_preauth.sql",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:510",
+      "kind": "Frozen source SHA256",
+      "path": "migrations/0003_password_confirmation.sql",
+      "verified": true
+    },
+    {
+      "fingerprint": "759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:511",
+      "kind": "Frozen source SHA256",
+      "path": "migrations/0004_passkey_last_used.sql",
+      "verified": true
+    }
+  ]
+}
