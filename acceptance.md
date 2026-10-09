@@ -778,7 +778,7 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 
 | 案例 | 前置状态 | 操作步骤 | 预期结果 | 实际结果 | 状态 | 证据 |
 |---|---|---|---|---|---|---|
-| T20-AUDIT-01 | 全部服务 | 运行威胁矩阵与安全测试 | 关键场景全过，确认 High/Critical 为零 | ffe3b98干净起点完整11阶段全0，19集成/11E2E/6安全及双浏览器12流程均0，含当前所有新增模块；原前置/生产未放行 | 通过 | [汇总](docs/evidence/T20/cross-module-summary.md)、[真实记录](docs/evidence/T20/test-summary.md) |
+| T20-AUDIT-01 | 全部服务 | 运行威胁矩阵与安全测试 | 关键场景全过，确认 High/Critical 为零 | 本轮十二阶段全0，19集成/11E2E/6安全及双浏览器12流程均0；起点a8ea705+ab3de33入口补正，源码边界见TEST_SUMMARY；原前置/生产未放行 | 通过 | [汇总](docs/evidence/T20/cross-module-summary.md)、[真实记录](docs/evidence/T20/test-summary.md) |
 | T20-AUDIT-02 | 真实依赖 | 停止并恢复各依赖 | 无认证旁路，邮件不丢 | 本次T04/T05/T12真实PG/Redis/SMTP停机恢复均0，失败关闭/outbox重试且healthy | 通过 | [汇总](docs/evidence/T20/cross-module-summary.md)、[真实记录](docs/evidence/T20/test-summary.md) |
 | T20-AUDIT-03 | 独立客户端 | 完成协议验证和非法 token 测试 | 互操作通过，非法声明拒绝 | 成熟OIDC/JOSE已有真实互操作，新跨模块clientrotation/code/user/RP绑定四场景0，未宣称官方认证 | 通过 | [汇总](docs/evidence/T20/cross-module-summary.md)、[真实记录](docs/evidence/T20/test-summary.md) |
 
@@ -854,6 +854,8 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 
 **实现子步骤检查：**
 
+本地实现与演练已完成：38项运维测试、25条告警规则/31场景、真实本地告警接收链、五服务发布/迁移中止/回滚、完整身份恢复和密钥轮换。下列T22.04～T22.10保留未勾选，表示包含正式部署、独立存储、真实邮件/通知或生产验证的完整步骤仍未验收；不能把本地通过等同生产放行。
+
 - [x] T22.01：多阶段 Rust/frontend 镜像、非 root、read-only 可用路径、资源上限、明确健康检查和 graceful shutdown。
 - [x] T22.02：生产仅开放 80/443（80 仅跳转/证书），SSH 受控；DB/Redis 不公开。
 - [x] T22.03：秘密文件受权限控制挂载；固定 issuer/RP；配置 HSTS/no-store/CSP。
@@ -905,7 +907,7 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 
 - 代码版本：本轮完整回归起点a8ea705+ab3de33入口补正；895c16c直接干净构建七stage0；双镜像df28706重建并实测，161生产输入与当前无差，新harness不参与release编译，阶段边界见TEST_SUMMARY。
 - 环境与时间：2026-10-08 UTC，WSL2Linux/Rust1.98.0/Node22.22.1、PG17/Redis7.4/Mailpit/Chromium；生产未部署。
-- 命令退出码：首轮干净checkout7阶段overall1（unit1，其余0）；319f30c第二干净七阶段全0；首轮完整test:full整体1（unit/integration/e2e/security1，其余0），第二完整复跑整体1（仅旧T13组合集成1）；旧场次0已保留；当前ffe3b98完整11阶段0、19集成/11E2E/6安全与12双浏览器流程0，完成2026-10-08T19:40:55Z。
+- 命令退出码：首轮干净checkout7阶段overall1（unit1，其余0）；319f30c第二干净七阶段全0；首轮完整test:full整体1（unit/integration/e2e/security1，其余0），第二完整复跑整体1（仅旧T13组合集成1）；旧场次0已保留；基线ffe3b98十一阶段0；本轮十二阶段0、19集成/11E2E/6安全与12双浏览器流程0，完成2026-10-09T03:35:31Z，起点与入口补正范围见TEST_SUMMARY。
 - 失败/阻塞项：首次失败已定位修复并保留证据；实体设备/五浏览器、参考性能/容量、生产域名/SMTP/独立恢复/告警与24小时观察未验。
 - 修复与复测：[测试修复](docs/evidence/tooling/final-regression-fixtures/test-summary.md)、[运维修复](docs/evidence/T23/ops-repair-summary.md)、[Caddy权限](docs/evidence/tooling/caddy-capabilities/test-summary.md)；[最终完整结果](TEST_SUMMARY.md)、[版本/制品与部署回滚说明](docs/release-notes.md)。
 - 任务结论：待验收（独立本地检查及制品已推进，生产发布/原前置未放行）。
