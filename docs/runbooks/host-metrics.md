@@ -36,3 +36,7 @@ AGE_BINARY=/absolute/verified/age AGE_KEYGEN_BINARY=/absolute/verified/age-keyge
 ```
 
 `PROMTOOL_BINARY`可显式指向经过摘要核验的Promtool3.15.0，默认`.local/security-tools/prometheus-3.15.0.linux-amd64/promtool`。测试检查真实statfs、真实TLS（可信、错主机、不可信、过期）、文件/权限/原子输出及promtool指标格式；规则测试覆盖20个健康/阈值/for/缺失/停止/未来/恢复场景。`base-backup`测试用network-none隔离PG17并真实备份/验证/加密与失败旧记录保持，不停止共享开发依赖。
+
+WAL扩展配置为`OPS_WAL_DIRECTORY`及`OPS_WAL_DEVICE`，与实际已挂载归档根一致。collector新增固定`check="wal_archive"`、`identity_ops_wal_archive_completed_timestamp_seconds`/`identity_ops_wal_archive_duration_seconds`，不输出WAL名/路径。严格核对规范目录及祖先、预期设备号、指针与对象不可变回执完全一致、manifest仅`wal.age`、实际size/流式SHA，错误输出check0与当前attempt；不从mtime或重试推造新完成时间。
+
+Worker新增真实`pg_stat_archiver`聚合指标（job identity-worker）：enabled、archived_total、archive_failures_total、last_archived/last_failed Unix秒、stats_reset时间。NULL初始时间=0是明确缺历史状态，SQL权限/连接错误不会变成零成功。总规则现25条，原20个host场景另新增11个WAL场景：失败未恢复/disabled/missing/future/duration边界和idle旧观察仅warning。最后成功段超过900秒持续5分钟发“待调查”warning，不将空闲数据库直接判RPO；最后失败晚于成功持续1分钟critical。采集器停止仍由attempt时间检测，pg_archive_timeout300s不是空闲心跳。

@@ -1,20 +1,21 @@
 // Owner-controlled, scheduled host checks for a local Prometheus textfile collector.
 // No credentials, paths, hostnames, account IDs or backup IDs appear in metric labels or diagnostics.
 import { constants, createReadStream } from 'node:fs';
-import { lstat, open, readFile, rename, rm, stat, statfs } from 'node:fs/promises';
+import { lstat, open, readFile, realpath, rename, rm, stat, statfs } from 'node:fs/promises';
 import { createHash, randomUUID } from 'node:crypto';
 import { dirname, isAbsolute, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { connect } from 'node:tls';
 import { isIP } from 'node:net';
 
-const checks = ['disk_data', 'disk_backup', 'issuer_tls', 'base_backup'];
+const checks = ['disk_data', 'disk_backup', 'issuer_tls', 'base_backup', 'wal_archive'];
 function absolute(value) { if (typeof value !== 'string' || !isAbsolute(value) || resolve(value) !== value) throw new Error('Explicit canonical absolute paths required.'); return value; }
 function device(value) { if (typeof value !== 'string' || !/^\d+$/u.test(value)) throw new Error('Explicit expected filesystem device numbers required.'); return BigInt(value); }
 export function configuration(env) {
   const issuer = new URL(env.ISSUER); if (issuer.protocol !== 'https:' || issuer.username || issuer.password || issuer.search || issuer.hash || issuer.pathname !== '/') throw new Error('A fixed HTTPS issuer origin is required.');
-  return { dataDirectory: absolute(env.OPS_DATA_DIRECTORY), dataDevice: device(env.OPS_DATA_DEVICE), backupDirectory: absolute(env.OPS_BACKUP_DIRECTORY), backupDevice: device(env.OPS_BACKUP_DEVICE), issuer, caFile: env.OPS_TLS_CA_FILE ? absolute(env.OPS_TLS_CA_FILE) : undefined, output: absolute(env.OPS_METRICS_FILE) };
+  return { dataDirectory: absolute(env.OPS_DATA_DIRECTORY), dataDevice: device(env.OPS_DATA_DEVICE), backupDirectory: absolute(env.OPS_BACKUP_DIRECTORY), backupDevice: device(env.OPS_BACKUP_DEVICE), walDirectory: absolute(env.OPS_WAL_DIRECTORY), walDevice: device(env.OPS_WAL_DEVICE), issuer, caFile: env.OPS_TLS_CA_FILE ? absolute(env.OPS_TLS_CA_FILE) : undefined, output: absolute(env.OPS_METRICS_FILE) };
 }
+async function controlledDirectory(path, expectedDevice) { const info = await lstat(path, { bigint: true }); if (!info.isDirectory() || info.isSymbolicLink() || (info.mode & 0o022n) !== 0n || await realpath(path) !== path || expectedDevice !== undefined && info.dev !== expectedDevice) throw new Error('Controlled mounted directory required.'); }
 async function disk(directory, expectedDevice) {
   const info = await stat(directory, { bigint: true }); if (!info.isDirectory() || info.dev !== expectedDevice) throw new Error('Configured filesystem is unavailable.');
   const fs = await statfs(directory, { bigint: true }); const size = fs.blocks * fs.bsize; const available = fs.bavail * fs.bsize;
@@ -44,6 +45,18 @@ export async function verifiedBackupReceipt(directory, now) {
   } finally { await handle.close(); }
 }
 export async function backupCompletion(directory, now) { return (await verifiedBackupReceipt(directory, now)).completed_at; }
+export async function verifiedWalReceipt(directory, expectedDevice, now) {
+  await controlledDirectory(directory, expectedDevice);
+  const receipt = JSON.parse(await smallFile(join(directory, 'last-success.json'), 4096));
+  const keys = ['ciphertext_bytes', 'ciphertext_sha256', 'completed_at', 'duration_seconds', 'started_at', 'version', 'wal_name'];
+  if (JSON.stringify(Object.keys(receipt).sort()) !== JSON.stringify(keys) || receipt.version !== 1 || !/^[A-F0-9]{24}$/u.test(receipt.wal_name) || !Number.isSafeInteger(receipt.started_at) || !Number.isSafeInteger(receipt.completed_at) || receipt.started_at <= 0 || receipt.started_at > receipt.completed_at || receipt.completed_at > now + 60 || !Number.isSafeInteger(receipt.duration_seconds) || receipt.duration_seconds !== receipt.completed_at - receipt.started_at || !Number.isSafeInteger(receipt.ciphertext_bytes) || receipt.ciphertext_bytes <= 0 || !/^[a-f0-9]{64}$/u.test(receipt.ciphertext_sha256)) throw new Error('Invalid WAL completion receipt.');
+  const object = join(directory, receipt.wal_name); await controlledDirectory(object, expectedDevice);
+  if (await smallFile(join(object, 'completion.json'), 4096) !== JSON.stringify(receipt) + '\n' || await smallFile(join(object, 'ciphertext.sha256'), 2048) !== `${receipt.ciphertext_sha256}  wal.age\n`) throw new Error('WAL pointer, object receipt and manifest differ.');
+  const { handle, info } = await controlledFile(join(object, 'wal.age'), Number.MAX_SAFE_INTEGER);
+  try { if (info.size !== receipt.ciphertext_bytes) throw new Error('WAL ciphertext size differs.'); const hash = createHash('sha256'); const stream = createReadStream(join(object, 'wal.age'), { fd: handle.fd, autoClose: false }); const timer = setTimeout(() => { stream.destroy(new Error('WAL checksum deadline exceeded.')); }, 120_000); try { for await (const chunk of stream) hash.update(chunk); } finally { clearTimeout(timer); } const after = await handle.stat(); if (hash.digest('hex') !== receipt.ciphertext_sha256 || after.ino !== info.ino || after.dev !== info.dev || after.size !== info.size || after.mtimeMs !== info.mtimeMs || after.ctimeMs !== info.ctimeMs) throw new Error('WAL ciphertext changed or failed checksum.'); }
+  finally { await handle.close(); }
+  await controlledDirectory(directory, expectedDevice); return Object.freeze(receipt);
+}
 export async function certificateExpiry(issuer, caFile) {
   const ca = caFile ? await readFile(caFile) : undefined;
   const host = issuer.hostname.replace(/^\[|\]$/gu, '');
@@ -55,8 +68,8 @@ export async function certificateExpiry(issuer, caFile) {
   });
 }
 export async function collectMetrics(config) {
-  const now = Math.floor(Date.now() / 1000); const values = { disk_data: { size: 0, available: 0 }, disk_backup: { size: 0, available: 0 }, issuer_tls: 0, base_backup: 0 }; const success = Object.fromEntries(checks.map((check) => [check, 0]));
-  const tasks = [() => disk(config.dataDirectory, config.dataDevice), () => disk(config.backupDirectory, config.backupDevice), () => certificateExpiry(config.issuer, config.caFile), async () => { await disk(config.backupDirectory, config.backupDevice); return backupCompletion(config.backupDirectory, now); }];
+  const now = Math.floor(Date.now() / 1000); const values = { disk_data: { size: 0, available: 0 }, disk_backup: { size: 0, available: 0 }, issuer_tls: 0, base_backup: 0, wal_archive: { completed_at: 0, duration_seconds: 0 } }; const success = Object.fromEntries(checks.map((check) => [check, 0]));
+  const tasks = [() => disk(config.dataDirectory, config.dataDevice), () => disk(config.backupDirectory, config.backupDevice), () => certificateExpiry(config.issuer, config.caFile), async () => { await disk(config.backupDirectory, config.backupDevice); return backupCompletion(config.backupDirectory, now); }, () => verifiedWalReceipt(config.walDirectory, config.walDevice, now)];
   const results = await Promise.allSettled(tasks.map((task) => task()));
   results.forEach((result, index) => { if (result.status === 'fulfilled') { values[checks[index]] = result.value; success[checks[index]] = 1; } });
   const metric = (name, description, samples) => `# HELP ${name} ${description}\n# TYPE ${name} gauge\n${samples.map(([labels, value]) => `${name}${labels} ${value}\n`).join('')}`;
@@ -65,7 +78,9 @@ export async function collectMetrics(config) {
     + metric('identity_ops_disk_size_bytes', 'Size of the explicitly expected filesystem.', [['{volume="data"}', values.disk_data.size], ['{volume="backup"}', values.disk_backup.size]])
     + metric('identity_ops_disk_available_bytes', 'Filesystem bytes available to the collection user.', [['{volume="data"}', values.disk_data.available], ['{volume="backup"}', values.disk_backup.available]])
     + metric('identity_ops_certificate_not_after_timestamp_seconds', 'Expiration of the CA and hostname verified issuer leaf certificate.', [['', values.issuer_tls]])
-    + metric('identity_ops_base_backup_completed_timestamp_seconds', 'Last verified encrypted base backup completion, never file mtime.', [['', values.base_backup]]);
+    + metric('identity_ops_base_backup_completed_timestamp_seconds', 'Last verified encrypted base backup completion, never file mtime.', [['', values.base_backup]])
+    + metric('identity_ops_wal_archive_completed_timestamp_seconds', 'Last verified durable full WAL segment completion; idle archives need investigation, not an inferred RPO failure.', [['', values.wal_archive.completed_at]])
+    + metric('identity_ops_wal_archive_duration_seconds', 'Execution duration of the last verified WAL encryption/publication, not queue or replication lag.', [['', values.wal_archive.duration_seconds]]);
   return { text, success: checks.every((check) => success[check] === 1), checks: success };
 }
 export async function publishMetrics(output, text) {

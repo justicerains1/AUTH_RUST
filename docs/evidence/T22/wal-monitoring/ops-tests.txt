@@ -1,0 +1,242 @@
+TAP version 13
+# Subtest: real promtool verifies host alert thresholds, holds, missing telemetry, stale files and recovery
+ok 1 - real promtool verifies host alert thresholds, holds, missing telemetry, stale files and recovery
+  ---
+  duration_ms: 3492.135898
+  type: 'test'
+  ...
+# Subtest: encrypted base backups restore only the selected relocated object
+    # Subtest: configured PG archive command publishes a real encrypted WAL segment
+    ok 1 - configured PG archive command publishes a real encrypted WAL segment
+      ---
+      duration_ms: 746.2699
+      type: 'test'
+      ...
+    # Subtest: actual PostgreSQL archiver failure records counters and recovery publishes one durable receipt
+    ok 2 - actual PostgreSQL archiver failure records counters and recovery publishes one durable receipt
+      ---
+      duration_ms: 2143.997603
+      type: 'test'
+      ...
+    # Subtest: a real failed backup preserves the last completed receipt
+    ok 3 - a real failed backup preserves the last completed receipt
+      ---
+      duration_ms: 62.5374
+      type: 'test'
+      ...
+    # Subtest: different mount path succeeds with the source absent
+    ok 4 - different mount path succeeds with the source absent
+      ---
+      duration_ms: 222.3034
+      type: 'test'
+      ...
+    # Subtest: an old path containing a different object is never read
+    ok 5 - an old path containing a different object is never read
+      ---
+      duration_ms: 207.6365
+      type: 'test'
+      ...
+    # Subtest: legacy path manifests are rejected until controlled conversion
+    ok 6 - legacy path manifests are rejected until controlled conversion
+      ---
+      duration_ms: 40.4778
+      type: 'test'
+      ...
+    # Subtest: corrupt selected ciphertext fails even with a valid old object
+    ok 7 - corrupt selected ciphertext fails even with a valid old object
+      ---
+      duration_ms: 202.0044
+      type: 'test'
+      ...
+    # Subtest: missing, multi-record, wrong-name and wrong-hash manifests fail
+    ok 8 - missing, multi-record, wrong-name and wrong-hash manifests fail
+      ---
+      duration_ms: 252.219101
+      type: 'test'
+      ...
+    # Subtest: authenticated encryption still rejects a tampered ciphertext with a changed checksum
+    ok 9 - authenticated encryption still rejects a tampered ciphertext with a changed checksum
+      ---
+      duration_ms: 240.6245
+      type: 'test'
+      ...
+    # Subtest: a valid encrypted tar with an invalid PG backup never publishes a destination
+    ok 10 - a valid encrypted tar with an invalid PG backup never publishes a destination
+      ---
+      duration_ms: 58.4223
+      type: 'test'
+      ...
+    # Subtest: an existing restore destination and its sentinel remain untouched
+    ok 11 - an existing restore destination and its sentinel remain untouched
+      ---
+      duration_ms: 36.8255
+      type: 'test'
+      ...
+    1..11
+ok 2 - encrypted base backups restore only the selected relocated object
+  ---
+  duration_ms: 8711.547304
+  type: 'test'
+  ...
+# Subtest: backup freshness requires the completed object and ignores refreshed mtimes
+    # Subtest: future, path injection and inconsistent metadata are rejected
+    ok 1 - future, path injection and inconsistent metadata are rejected
+      ---
+      duration_ms: 13.2083
+      type: 'test'
+      ...
+    # Subtest: corruption, missing manifest and symlink cannot report a fresh backup
+    ok 2 - corruption, missing manifest and symlink cannot report a fresh backup
+      ---
+      duration_ms: 9.4329
+      type: 'test'
+      ...
+    1..2
+ok 3 - backup freshness requires the completed object and ignores refreshed mtimes
+  ---
+  duration_ms: 51.2542
+  type: 'test'
+  ...
+# Subtest: actual local TLS validates the trusted issuer and rejects untrusted or wrong-host certificates
+ok 4 - actual local TLS validates the trusted issuer and rejects untrusted or wrong-host certificates
+  ---
+  duration_ms: 81.231799
+  type: 'test'
+  ...
+# Subtest: an actually expired local certificate fails despite explicit trust and a matching hostname
+ok 5 - an actually expired local certificate fails despite explicit trust and a matching hostname
+  ---
+  duration_ms: 75.9251
+  type: 'test'
+  ...
+# Subtest: collector publishes actual statfs, TLS and completed-backup values with fixed labels
+    # Subtest: wrong expected device and incomplete backup publish failures with current attempt times
+    ok 1 - wrong expected device and incomplete backup publish failures with current attempt times
+      ---
+      duration_ms: 11.3431
+      type: 'test'
+      ...
+    # Subtest: unsafe output destinations cannot replace the last metrics file
+    ok 2 - unsafe output destinations cannot replace the last metrics file
+      ---
+      duration_ms: 1.6152
+      type: 'test'
+      ...
+    1..2
+ok 6 - collector publishes actual statfs, TLS and completed-backup values with fixed labels
+  ---
+  duration_ms: 129.746299
+  type: 'test'
+  ...
+# Subtest: CLI does not print secret configuration or advertise a failed publication as success
+ok 7 - CLI does not print secret configuration or advertise a failed publication as success
+  ---
+  duration_ms: 131.619599
+  type: 'test'
+  ...
+# Subtest: WAL completion verifies immutable object and rejects clock, path, device and ciphertext faults
+ok 8 - WAL completion verifies immutable object and rejects clock, path, device and ciphertext faults
+  ---
+  duration_ms: 13.9202
+  type: 'test'
+  ...
+# Subtest: production PG archive command has required tool and independent storage mounts
+ok 9 - production PG archive command has required tool and independent storage mounts
+  ---
+  duration_ms: 92.0953
+  type: 'test'
+  ...
+# Subtest: real promtool verifies WAL failure, idle observation, missing/future time and publication duration
+ok 10 - real promtool verifies WAL failure, idle observation, missing/future time and publication duration
+  ---
+  duration_ms: 270.151499
+  type: 'test'
+  ...
+# Subtest: canonical independent WAL root preserves retries and rejects damaged objects
+ok 11 - canonical independent WAL root preserves retries and rejects damaged objects
+  ---
+  duration_ms: 528.454497
+  type: 'test'
+  ...
+# Subtest: WAL receipts remain immutable across retries, pointers, legacy objects and hostile paths
+    # Subtest: same-object retry and older segment never refresh or regress pointer
+    ok 1 - same-object retry and older segment never refresh or regress pointer
+      ---
+      duration_ms: 884.288697
+      type: 'test'
+      ...
+    # Subtest: history and backup-label objects do not refresh full-segment pointer
+    ok 2 - history and backup-label objects do not refresh full-segment pointer
+      ---
+      duration_ms: 111.8277
+      type: 'test'
+      ...
+    # Subtest: legacy successful object retry is accepted without inventing a receipt
+    ok 3 - legacy successful object retry is accepted without inventing a receipt
+      ---
+      duration_ms: 331.6423
+      type: 'test'
+      ...
+    # Subtest: interrupted pointer durability fails then retry preserves the object completion time
+    ok 4 - interrupted pointer durability fails then retry preserves the object completion time
+      ---
+      duration_ms: 546.708501
+      type: 'test'
+      ...
+    # Subtest: existing WAL, legacy, history and retained pointers cannot bypass root durability failure
+    ok 5 - existing WAL, legacy, history and retained pointers cannot bypass root durability failure
+      ---
+      duration_ms: 2034.251102
+      type: 'test'
+      ...
+    # Subtest: pointer renamed before root sync failure must remain failing while durability is unavailable
+    ok 6 - pointer renamed before root sync failure must remain failing while durability is unavailable
+      ---
+      duration_ms: 590.411001
+      type: 'test'
+      ...
+    # Subtest: each retry durability sync failure is propagated instead of being swallowed by later syncs
+    ok 7 - each retry durability sync failure is propagated instead of being swallowed by later syncs
+      ---
+      duration_ms: 2279.152002
+      type: 'test'
+      ...
+    # Subtest: missing device or unmounted root never creates a fallback
+    ok 8 - missing device or unmounted root never creates a fallback
+      ---
+      duration_ms: 19.6018
+      type: 'test'
+      ...
+    # Subtest: writeable group, root ancestors and target symlinks are refused
+    ok 9 - writeable group, root ancestors and target symlinks are refused
+      ---
+      duration_ms: 31.4868
+      type: 'test'
+      ...
+    # Subtest: pathful or multiple checksums, hardlinks, wrong receipt and corrupt pointer are refused
+    ok 10 - pathful or multiple checksums, hardlinks, wrong receipt and corrupt pointer are refused
+      ---
+      duration_ms: 575.848101
+      type: 'test'
+      ...
+    1..10
+ok 12 - WAL receipts remain immutable across retries, pointers, legacy objects and hostile paths
+  ---
+  duration_ms: 7537.872203
+  type: 'test'
+  ...
+# Subtest: Worker fixed WAL metrics match actual PostgreSQL failure and recovery without revealing names
+ok 13 - Worker fixed WAL metrics match actual PostgreSQL failure and recovery without revealing names
+  ---
+  duration_ms: 6341.782302
+  type: 'test'
+  ...
+1..13
+# tests 38
+# suites 0
+# pass 38
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 8855.365803

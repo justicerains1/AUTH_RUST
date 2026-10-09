@@ -12,6 +12,6 @@ test('real promtool verifies host alert thresholds, holds, missing telemetry, st
   const promtool = process.env.PROMTOOL_BINARY ?? join(root, '.local/security-tools/prometheus-3.15.0.linux-amd64/promtool');
   assert.match(execFileSync(promtool, ['--version'], { encoding: 'utf8' }), /3\.15\.0/u);
   const rules = join(root, 'infra/ops/identity-alerts.yaml'); const input = join(fixture, 'unit-test.json'); const fixtures = alertFixtures(rules); writeFileSync(input, JSON.stringify(fixtures));
-  assert.equal(fixtures.tests.length, 20); assert.match(execFileSync(promtool, ['check', 'rules', rules], { encoding: 'utf8' }), /18 rules found/u);
+  assert.equal(fixtures.tests.length, 20); assert.match(execFileSync(promtool, ['check', 'rules', rules], { encoding: 'utf8' }), /25 rules found/u);
   assert.match(execFileSync(promtool, ['test', 'rules', input], { encoding: 'utf8', maxBuffer: 1024 * 1024 }), /SUCCESS/u);
 });

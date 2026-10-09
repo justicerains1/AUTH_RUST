@@ -1,0 +1,18 @@
+{
+  "completed": "2026-10-09T01:24:46.059Z",
+  "opsTests": 38,
+  "opsPassed": 38,
+  "skipped": 0,
+  "workerApiMetrics": 1,
+  "walWorkerPhases": [
+    "baseline",
+    "failed",
+    "recovered",
+    "permission-failure"
+  ],
+  "promtoolRules": 25,
+  "promtoolScenarios": 31,
+  "exitCode": 0,
+  "scope": "Actual isolated PostgreSQL archive_command failure/recovery and strict file/receipt tests; no production storage, RPO or alert delivery claim.",
+  "walDurableRetryTests": 11
+}

@@ -30,6 +30,7 @@ test('production PG archive command has required tool and independent storage mo
     if (target.startsWith('/opt/')) assert.equal(mount.read_only, true);
   }
   assert.equal(postgres.environment.WAL_ARCHIVE_DIRECTORY, '/var/lib/identity-backup/wal');
+  assert.equal(postgres.environment.WAL_ARCHIVE_DEVICE, 'REPLACE_WITH_VERIFIED_MOUNT_DEVICE_NUMBER');
   assert.equal(postgres.environment.AGE_BINARY, '/opt/identity-ops/age');
   assert.equal(postgres.volumes.find((volume) => volume.target === '/opt/identity-ops/archive-wal.sh').source, resolve(root, 'infra/ops/archive-wal.sh'));
   assert.equal(postgres.volumes.find((volume) => volume.target === '/opt/identity-ops/age').source, resolve(root, '.local/production/tools/age'));

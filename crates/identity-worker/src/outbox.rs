@@ -380,9 +380,47 @@ impl MailWorker {
         use sqlx::Row;
         let row = sqlx::query("SELECT count(*) FILTER (WHERE state='pending') AS pending,count(*) FILTER (WHERE state='failed') AS failed,COALESCE(EXTRACT(EPOCH FROM CURRENT_TIMESTAMP-min(created_at) FILTER (WHERE state='pending')),0)::float8 AS oldest_age FROM email_outbox")
             .fetch_one(&self.pool).await.map_err(|_| WorkerError::DatabaseUnavailable)?;
+        let archive = sqlx::query("SELECT archived_count::bigint AS archived_count,failed_count::bigint AS failed_count,EXTRACT(EPOCH FROM last_archived_time)::float8 AS last_archived,EXTRACT(EPOCH FROM last_failed_time)::float8 AS last_failed,EXTRACT(EPOCH FROM stats_reset)::float8 AS stats_reset,current_setting('archive_mode') IN ('on','always') AS enabled FROM pg_stat_archiver")
+            .fetch_one(&self.pool).await.map_err(|_| WorkerError::DatabaseUnavailable)?;
+        let archived = archive
+            .try_get::<i64, _>("archived_count")
+            .map_err(|_| WorkerError::DatabaseUnavailable)?;
+        let failed = archive
+            .try_get::<i64, _>("failed_count")
+            .map_err(|_| WorkerError::DatabaseUnavailable)?;
+        let last_archived = archive
+            .try_get::<Option<f64>, _>("last_archived")
+            .map_err(|_| WorkerError::DatabaseUnavailable)?;
+        let last_failed = archive
+            .try_get::<Option<f64>, _>("last_failed")
+            .map_err(|_| WorkerError::DatabaseUnavailable)?;
+        let reset = archive
+            .try_get::<Option<f64>, _>("stats_reset")
+            .map_err(|_| WorkerError::DatabaseUnavailable)?;
+        if archived < 0
+            || failed < 0
+            || [last_archived, last_failed, reset]
+                .into_iter()
+                .flatten()
+                .any(|value| !value.is_finite() || value <= 0.0)
+        {
+            return Err(WorkerError::DatabaseUnavailable);
+        }
+        let enabled = archive
+            .try_get::<bool, _>("enabled")
+            .map_err(|_| WorkerError::DatabaseUnavailable)?;
+        let archive_metrics = format!(
+            "# TYPE identity_postgres_wal_archive_enabled gauge\nidentity_postgres_wal_archive_enabled {}\n# TYPE identity_postgres_wal_archived_total counter\nidentity_postgres_wal_archived_total {}\n# TYPE identity_postgres_wal_archive_failures_total counter\nidentity_postgres_wal_archive_failures_total {}\n# TYPE identity_postgres_wal_last_archived_timestamp_seconds gauge\nidentity_postgres_wal_last_archived_timestamp_seconds {}\n# TYPE identity_postgres_wal_last_failed_timestamp_seconds gauge\nidentity_postgres_wal_last_failed_timestamp_seconds {}\n# TYPE identity_postgres_wal_archive_stats_reset_timestamp_seconds gauge\nidentity_postgres_wal_archive_stats_reset_timestamp_seconds {}\n",
+            u8::from(enabled),
+            archived,
+            failed,
+            last_archived.unwrap_or(0.0),
+            last_failed.unwrap_or(0.0),
+            reset.unwrap_or(0.0)
+        );
         let metrics = self.metrics();
         Ok(format!(
-            "identity_outbox_delivered_total {}\nidentity_outbox_retried_total {}\nidentity_outbox_failed_total {}\nidentity_outbox_database_failures_total {}\nidentity_outbox_pending {}\nidentity_outbox_permanent_failures {}\nidentity_outbox_oldest_age_seconds {}\n",
+            "identity_outbox_delivered_total {}\nidentity_outbox_retried_total {}\nidentity_outbox_failed_total {}\nidentity_outbox_database_failures_total {}\nidentity_outbox_pending {}\nidentity_outbox_permanent_failures {}\nidentity_outbox_oldest_age_seconds {}\n{}",
             metrics.delivered,
             metrics.retried,
             metrics.failed,
@@ -393,7 +431,8 @@ impl MailWorker {
                 .map_err(|_| WorkerError::DatabaseUnavailable)?,
             row.try_get::<f64, _>("oldest_age")
                 .map_err(|_| WorkerError::DatabaseUnavailable)?
-                .max(0.0)
+                .max(0.0),
+            archive_metrics
         ))
     }
 }

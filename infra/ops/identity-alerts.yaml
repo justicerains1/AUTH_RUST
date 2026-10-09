@@ -46,6 +46,21 @@ groups:
         for: 5m
         labels: { severity: warning }
         annotations: { summary: "认证限流持续高于正常预算" }
+      - alert: IdentityWalArchiveDisabled
+        expr: identity_postgres_wal_archive_enabled{job="identity-worker"} != 1
+        for: 1m
+        labels: { severity: critical }
+        annotations: { summary: "PostgreSQL持续WAL归档未启用" }
+      - alert: IdentityWalArchiverFailing
+        expr: identity_postgres_wal_last_failed_timestamp_seconds{job="identity-worker"} > identity_postgres_wal_last_archived_timestamp_seconds{job="identity-worker"} and identity_postgres_wal_last_failed_timestamp_seconds{job="identity-worker"} > 0
+        for: 1m
+        labels: { severity: critical }
+        annotations: { summary: "PostgreSQL最新WAL归档失败尚未被成功归档恢复" }
+      - alert: IdentityWalArchiverMetricMissing
+        expr: absent(identity_postgres_wal_archive_enabled{job="identity-worker"}) or absent(identity_postgres_wal_archived_total{job="identity-worker"}) or absent(identity_postgres_wal_archive_failures_total{job="identity-worker"}) or absent(identity_postgres_wal_last_archived_timestamp_seconds{job="identity-worker"}) or absent(identity_postgres_wal_last_failed_timestamp_seconds{job="identity-worker"})
+        for: 1m
+        labels: { severity: critical }
+        annotations: { summary: "缺少必要PostgreSQL真实WAL归档状态指标" }
   - name: identity-host-operations
     rules:
       - alert: IdentityOpsExporterUnavailable
@@ -93,3 +108,23 @@ groups:
         for: 5m
         labels: { severity: critical }
         annotations: { summary: "身份完整基础备份超过24小时或完成记录无效" }
+      - alert: IdentityWalArchiveMetricMissing
+        expr: absent(identity_ops_collection_success{job="identity-ops",check="wal_archive"}) or absent(identity_ops_collection_timestamp_seconds{job="identity-ops",check="wal_archive"}) or absent(identity_ops_wal_archive_completed_timestamp_seconds{job="identity-ops"}) or absent(identity_ops_wal_archive_duration_seconds{job="identity-ops"})
+        for: 1m
+        labels: { severity: critical }
+        annotations: { summary: "缺少持久加密WAL归档回执指标" }
+      - alert: IdentityWalArchiveObservationOld
+        expr: time() - identity_ops_wal_archive_completed_timestamp_seconds{job="identity-ops"} > 900 and identity_ops_wal_archive_completed_timestamp_seconds{job="identity-ops"} > 0
+        for: 5m
+        labels: { severity: warning }
+        annotations: { summary: "最近持久WAL归档超过15分钟，请核对是否空闲或存在归档积压，不能直接推定RPO违规" }
+      - alert: IdentityWalArchiveTimestampInvalid
+        expr: identity_ops_wal_archive_completed_timestamp_seconds{job="identity-ops"} <= 0 or identity_ops_wal_archive_completed_timestamp_seconds{job="identity-ops"} > time() + 60
+        for: 1m
+        labels: { severity: critical }
+        annotations: { summary: "持久WAL归档完成时间缺失或超前" }
+      - alert: IdentityWalArchiveSlowPublication
+        expr: identity_ops_wal_archive_duration_seconds{job="identity-ops"} > 300
+        for: 1m
+        labels: { severity: warning }
+        annotations: { summary: "单个WAL加密发布耗时超过5分钟，不等于完整归档积压或复制延迟" }

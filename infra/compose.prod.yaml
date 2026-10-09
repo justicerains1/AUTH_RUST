@@ -32,6 +32,7 @@ services:
       POSTGRES_DB: identity_production
       POSTGRES_PASSWORD_FILE: /run/secrets/postgres-password
       WAL_ARCHIVE_DIRECTORY: /var/lib/identity-backup/wal
+      WAL_ARCHIVE_DEVICE: ${WAL_ARCHIVE_DEVICE:?Set the verified mounted WAL filesystem device number}
       AGE_BINARY: /opt/identity-ops/age
       AGE_RECIPIENT: ${AGE_RECIPIENT:?Set the reviewed age public backup recipient}
     command:

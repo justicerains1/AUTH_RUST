@@ -3,7 +3,7 @@
 import assert from 'node:assert/strict';
 import { createHash, randomUUID } from 'node:crypto';
 import { execFileSync, spawnSync } from 'node:child_process';
-import { existsSync, mkdtempSync, mkdirSync, readFileSync, readdirSync, renameSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdtempSync, mkdirSync, readFileSync, readdirSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { basename, dirname, join, resolve } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
@@ -29,12 +29,15 @@ test('encrypted base backups restore only the selected relocated object', async 
   const identity = join(fixture, 'identity.agekey');
   execFileSync(ageKeygen, ['-o', identity], { stdio: ['ignore', 'ignore', 'pipe'] });
   const recipient = execFileSync(ageKeygen, ['-y', identity], { encoding: 'utf8' }).trim();
+  const ageWrapper = join(fixture, 'archive-age.sh');
+  writeFileSync(ageWrapper, '#!/bin/sh\nif [ -e /fixture/fail-archive ]; then exit 1; fi\nexec /opt/age "$@"\n', { mode: 0o755 });
   writeFileSync(join(fixture, 'pgpass'), 'localhost:*:*:postgres:fixture-only\n', { mode: 0o600 });
-  mkdirSync(join(fixture, 'archive'), { mode: 0o777 });
-  execFileSync('chmod', ['0777', join(fixture, 'archive')]);
+  mkdirSync(join(fixture, 'archive'), { mode: 0o700 });
+  execFileSync('chown', ['999:999', join(fixture, 'archive')]);
+  const walDevice = String(statSync(join(fixture, 'archive')).dev);
   docker('run', '-d', '--network', 'none', '--name', container,
     '-e', 'POSTGRES_PASSWORD=fixture-only', '-e', `AGE_RECIPIENT=${recipient}`,
-    '-e', 'AGE_BINARY=/opt/age', '-e', 'WAL_ARCHIVE_DIRECTORY=/fixture/archive',
+    '-e', 'AGE_BINARY=/fixture/archive-age.sh', '-e', 'WAL_ARCHIVE_DIRECTORY=/fixture/archive', '-e', `WAL_ARCHIVE_DEVICE=${walDevice}`,
     '-v', `${fixture}:/fixture`, '-v', `${join(root, 'infra/ops')}:/ops:ro`,
     '-v', `${resolve(age)}:/opt/age:ro`, image, 'postgres', '-c', 'wal_level=replica',
     '-c', 'archive_mode=on', '-c', 'archive_timeout=300s',
@@ -57,7 +60,33 @@ test('encrypted base backups restore only the selected relocated object', async 
       await delay(100);
     }
     assert.ok(archived, 'a genuine WAL segment must be encrypted through archive_command');
+    for (let attempt = 0; attempt < 100 && Number(docker('exec', container, 'psql', '-U', 'postgres', '-Atc', 'SELECT archived_count FROM pg_stat_archiver').trim()) === 0; attempt += 1) await delay(100);
     assert.ok(Number(docker('exec', container, 'psql', '-U', 'postgres', '-Atc', 'SELECT archived_count FROM pg_stat_archiver').trim()) > 0);
+    const completed = JSON.parse(readFileSync(join(fixture, 'archive/last-success.json'), 'utf8'));
+    assert.equal(completed.wal_name, wal);
+    const encrypted = join(fixture, 'archive', wal, 'wal.age');
+    assert.equal(completed.ciphertext_sha256, createHash('sha256').update(readFileSync(encrypted)).digest('hex'));
+    const restoredWal = join(fixture, 'verified-real-wal');
+    execFileSync(age, ['-d', '-i', identity, '-o', restoredWal, encrypted]);
+    assert.equal(readFileSync(restoredWal).length, 16 * 1024 * 1024);
+  });
+  await t.test('actual PostgreSQL archiver failure records counters and recovery publishes one durable receipt', async () => {
+    const oldReceipt = readFileSync(join(fixture, 'archive/last-success.json'), 'utf8');
+    const oldFailures = Number(docker('exec', container, 'psql', '-U', 'postgres', '-Atc', 'SELECT failed_count FROM pg_stat_archiver').trim());
+    writeFileSync(join(fixture, 'fail-archive'), 'controlled archive failure', { mode: 0o600 });
+    const wal = docker('exec', container, 'psql', '-U', 'postgres', '-Atc', 'SELECT pg_walfile_name(pg_current_wal_lsn())').trim();
+    docker('exec', container, 'psql', '-U', 'postgres', '-c', 'INSERT INTO backup_probe VALUES(2); SELECT pg_switch_wal();');
+    let failed = false; for (let attempt = 0; attempt < 100; attempt += 1) { if (Number(docker('exec', container, 'psql', '-U', 'postgres', '-Atc', 'SELECT failed_count FROM pg_stat_archiver').trim()) > oldFailures) { failed = true; break; } await delay(100); }
+    assert.ok(failed); assert.equal(readFileSync(join(fixture, 'archive/last-success.json'), 'utf8'), oldReceipt);
+    assert.equal(docker('exec', container, 'psql', '-U', 'postgres', '-Atc', 'SELECT last_failed_time IS NOT NULL FROM pg_stat_archiver').trim(), 't');
+    rmSync(join(fixture, 'fail-archive')); docker('exec', container, 'psql', '-U', 'postgres', '-Atc', 'SELECT pg_switch_wal()');
+    let recovered = false; for (let attempt = 0; attempt < 200; attempt += 1) { if (existsSync(join(fixture, 'archive', wal, 'completion.json'))) { recovered = true; break; } await delay(100); }
+    assert.ok(recovered);
+    for (let attempt = 0; attempt < 100 && Number(docker('exec', container, 'psql', '-U', 'postgres', '-Atc', "SELECT count(*) FROM pg_ls_dir('pg_wal/archive_status') AS f WHERE f LIKE '%.ready'").trim()) > 0; attempt += 1) await delay(100);
+    assert.equal(Number(docker('exec', container, 'psql', '-U', 'postgres', '-Atc', "SELECT count(*) FROM pg_ls_dir('pg_wal/archive_status') AS f WHERE f LIKE '%.ready'").trim()), 0);
+    const receipt = JSON.parse(readFileSync(join(fixture, 'archive', wal, 'completion.json'), 'utf8')); assert.equal(receipt.wal_name, wal); assert.ok(receipt.completed_at >= receipt.started_at);
+    const retry = docker('exec', '-u', '999:999', container, 'sh', '/ops/archive-wal.sh', `/var/lib/postgresql/data/pg_wal/${wal}`, wal); assert.equal(retry.trim(), '');
+    assert.equal(JSON.parse(readFileSync(join(fixture, 'archive', wal, 'completion.json'), 'utf8')).completed_at, receipt.completed_at);
   });
   docker('exec', '-e', 'BACKUP_DESTINATION=/fixture/source', '-e', `AGE_RECIPIENT=${recipient}`,
     '-e', 'AGE_BINARY=/opt/age', '-e', 'PGPASSFILE=/fixture/pgpass', '-e', 'PGHOST=/var/run/postgresql', '-e', 'PGUSER=postgres',

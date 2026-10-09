@@ -8,7 +8,15 @@
 
 生产PostgreSQL必须wal_level=replica、archive_mode=on、允许受控备份用户，archive_command调用archive-wal.sh `%p %f`。它仅接受PG WAL/历史/备份标識名，锁目录避免并发写同对象，已有对象需明文摘要匹配及密文checksum通过；错误非零交PostgreSQL重试，不能覆盖旧归档。写入后sync目录/文件，WAL目录仍需独立存储可用性监控。
 
+WAL根目录现在必须预建、规范绝对路径且所有祖先不经symlink，运行归档账号拥有、group/other不可写；显式`WAL_ARCHIVE_DEVICE`为部署核验后的`stat -c %d`设备号。脚本开始、对象发布前与指针发布前再次核对，不再`mkdir -p`创建丢失挂载后的本地后备目录。生产Compose传该固定值；容器挂载的设备号须实际核验，不自动每次从当前路径更新，否则卸载无法被发现。相同设备的bind mount与故障域仍需部署验证，设备号不是独立备份证明。
+
+成功对象目录包含`wal.age`、单行basename密文摘要、单行明文摘要及不可变`completion.json`。回执只在加密产物和清单已同步后写入，记录版本/PG段名/开始完成Unix秒/执行耗时/密文size/SHA；对象目录发布并sync后，全局`.archive.lock`保护原子`last-success.json`指针。文件必须普通、单链接、0600且非symlink，manifest只能精确`<SHA>  wal.age`，不能跟随清单里的外部路径。重试相同对象保留原完成时间，并重新同步全部已验证对象文件/目录、核验expecteddev后同步归档根，存在不能代表前次rename后的sync成功；较旧段不能回退指针，history/backup标签不刷新完整WAL新鲜度。历史无completion的完整旧对象可校验后重试成功，但不伪造新时间/回执；缺/损坏/future指针或对象拒绝，需运维核实修复并保留异常证据后重试，不静默以now覆盖。
+
+监控见[host-metrics](host-metrics.md)：collector按固定WAL路径/设备、指针与对象回执/实际密文SHA校验后只输出聚合时间/执行耗时，无WAL段名标签。Worker从真实`pg_stat_archiver`输出archive_mode enabled、归档成功/失败计数与最后时间；查询/权限/连接失败让metrics失败，不制造健康零值。PostgreSQL真实NULL初始时间明确输出0，archive_mode off明确输出0并告警。单段加密/发布耗时不是ready积压或异地复制延迟；计数reset另有时间指标，不能把重启下降当归档成功。
+
 Compose显式设置`archive_timeout=300s`，避免低流量时等待16MiB段写满才归档；有写入后目标段最长约5分钟切换，必须另将归档/独立复制延迟控制并监控在10分钟内，使最坏窗口预算不超过15分钟。归档失败会重试但本身不满足RPO，需监控`pg_stat_archiver`、最后成功归档时间和独立存储可恢复的新数据。每5分钟切段可能增加约4.5GiB/日的未压缩WAL，14天约63GiB，另计基础备份/峰值并实测容量。此配置和预算是待部署方案，尚无生产RPO证据。
+
+空闲数据库的archive_timeout不会发送心跳，因此最后成功WAL超过15分钟只发warning要求调查空闲/积压，不直接标RPO已违反；真正最后失败晚于成功持续1分钟发critical。需要运维结合写入活动、`pg_wal/archive_status/*.ready`和独立复制确认实际积压/可恢复窗口，当前文件时间不能替代这类测量。WAL回执缺失/未来、采集停止和必要指标缺失均独立critical，单段发布超过5分钟warning。正式通知接收、时间同步、idle分类/积压观察和生产RPO仍须实际验收。
 
 保留策略须保留至少14天内可恢复的基础备份及其连续WAL；窗口起点之前的必要基础备份及该备份以来WAL不能按mtime直接删除。每日调度、失败告警和删除前恢复链核对仍需运维系统实际执行。WAL锁目录在进程异常退出后可能遗留；确认没有活动归档任务且旧对象状态完整后再受控清理，不能自动绕过锁覆盖对象。
 

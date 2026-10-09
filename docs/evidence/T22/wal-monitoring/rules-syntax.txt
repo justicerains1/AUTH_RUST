@@ -1,0 +1,2 @@
+Checking infra/ops/identity-alerts.yaml
+  SUCCESS: 25 rules found

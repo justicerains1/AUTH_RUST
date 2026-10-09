@@ -1,0 +1,22 @@
+TAP version 13
+# Subtest: real promtool verifies host alert thresholds, holds, missing telemetry, stale files and recovery
+ok 1 - real promtool verifies host alert thresholds, holds, missing telemetry, stale files and recovery
+  ---
+  duration_ms: 2612.99162
+  type: 'test'
+  ...
+# Subtest: real promtool verifies WAL failure, idle observation, missing/future time and publication duration
+ok 2 - real promtool verifies WAL failure, idle observation, missing/future time and publication duration
+  ---
+  duration_ms: 190.436301
+  type: 'test'
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 2
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2727.502521

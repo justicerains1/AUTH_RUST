@@ -1,0 +1,85 @@
+{
+  "measuredAt": "2026-10-09T01:24:46.058Z",
+  "source": [
+    {
+      "path": "infra/ops/archive-wal.sh",
+      "sha256": "9ecb5cdc8e1e01c7d3b1795b2be8866a4da2b731e3dc8fd319093914ab1c735f"
+    },
+    {
+      "path": "infra/ops/collect-metrics.mjs",
+      "sha256": "1a5972ea38606e86055988eb516807759edf349366ec2d34d31704d246a6e031"
+    },
+    {
+      "path": "infra/ops/identity-alerts.yaml",
+      "sha256": "4010eb477e47cda2d4e11c8239e75d4e1496ca28bf2ac959f17b3b11a2531761"
+    },
+    {
+      "path": "infra/ops/metrics.env.example",
+      "sha256": "69e613e084b0a197f409eec4ec897232e038682d35d9683ffa5f46a760f26a06"
+    },
+    {
+      "path": "infra/production.env.example",
+      "sha256": "33a3b75ac9e9b0abaa802f2638a03bd6481dabc1627560186f7c85bedba615ab"
+    },
+    {
+      "path": "infra/compose.prod.yaml",
+      "sha256": "a9bb2fa894f7522a3b3fe3c7627b4a6d0226aa3578b44572ee275af47a518e18"
+    },
+    {
+      "path": "crates/identity-worker/src/outbox.rs",
+      "sha256": "bba90de523542eecff24a33966d3a3549f3d8d9c6fff305edfa69077d52afefb"
+    },
+    {
+      "path": "crates/identity-server/tests/t22_metrics.rs",
+      "sha256": "ccf10b1a129267ab6bf1c846f5cb180c230ed56fd3658e84fd7c2f2fca7b8a05"
+    },
+    {
+      "path": "crates/identity-server/tests/t22_wal_metrics.rs",
+      "sha256": "c54b503996256a9bac72ce092792f8c6a60d81bb12f5a512c7ffa7f96e7a3c63"
+    },
+    {
+      "path": "tests/ops/base-backup.test.mjs",
+      "sha256": "b33f984a0133412444393e43467deb443bc4373dbe4b331f142a9dec7d163293"
+    },
+    {
+      "path": "tests/ops/wal-archive.test.mjs",
+      "sha256": "f86ba0995f941a7883058c34abac2914c542f9f1eb683a8b5ee5456192b76ee2"
+    },
+    {
+      "path": "tests/ops/wal-receipt.test.mjs",
+      "sha256": "62afb6b5c00c41420affdb98c3274e598ca621b2779a41a27ec647cd6665abdc"
+    },
+    {
+      "path": "tests/ops/wal-worker.test.mjs",
+      "sha256": "b5dd6e31b0c7171388e34ff0fe371cde396120b9bb52336482d276c58a1e1d94"
+    },
+    {
+      "path": "tests/ops/metrics.test.mjs",
+      "sha256": "0d8ae68817084bb7c1262d29fe6a434f84d638e37bd9b07aedc66078bc72c590"
+    },
+    {
+      "path": "tests/ops/production-config.test.mjs",
+      "sha256": "ef1c64836e1bdc3229e3dc01bafd8ee003c37ebea1f7fb86ea6f601621313959"
+    },
+    {
+      "path": "tests/ops/alert-fixtures.mjs",
+      "sha256": "1cc43fef2e8c8b90c69ef154541b9f8584c01bf0476edbc526c26b886da04559"
+    },
+    {
+      "path": "tests/ops/alerts.test.mjs",
+      "sha256": "bc2f5e65d87f553ec1cd35f9499515f9c5695008d998b2eadbcb7a46ee411b7e"
+    },
+    {
+      "path": "tests/ops/wal-alert-fixtures.mjs",
+      "sha256": "2be23d2691983feab437b53e76708f34a28fee8208cc0dc20d6f50a1d2a1488b"
+    },
+    {
+      "path": "tests/ops/wal-alerts.test.mjs",
+      "sha256": "eba7b2a7de5aa7c95e61d96ef7b604afbe06fd88fb84f49c4eba83eb31da957b"
+    },
+    {
+      "path": "tests/integration/T22.mjs",
+      "sha256": "595d57defb90f7e5130a15e609964440cdd8868680751b4bba47b721857cf0ec"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { execFileSync, spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import test from 'node:test';
@@ -16,6 +16,7 @@ test('canonical independent WAL root preserves retries and rejects damaged objec
   execFileSync(keygen, ['-o', identity], { stdio: ['ignore', 'ignore', 'pipe'] });
   const recipient = execFileSync(keygen, ['-y', identity], { encoding: 'utf8' }).trim();
   const env = { ...process.env, BACKUP_DESTINATION: join(fixture, 'independent'), WAL_ARCHIVE_DIRECTORY: '', AGE_BINARY: age, AGE_RECIPIENT: recipient, AGE_IDENTITY_FILE: identity };
+  mkdirSync(join(env.BACKUP_DESTINATION, 'wal'), { recursive: true, mode: 0o700 }); env.WAL_ARCHIVE_DEVICE = String(statSync(join(env.BACKUP_DESTINATION, 'wal')).dev);
   const source = join(fixture, 'source'); writeFileSync(source, 'synthetic WAL bytes for file boundary only\n');
   const name = '000000010000000000000001';
   const run = (script, args) => spawnSync('sh', [join(root, 'infra/ops', script), ...args], { env, encoding: 'utf8' });

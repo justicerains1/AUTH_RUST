@@ -169,6 +169,14 @@ async fn t22_real_metrics() -> TestResult {
         identity_worker::outbox::MailWorker::new(&config, pool.clone(), Arc::new(SystemClock))?;
     let body = worker.operational_metrics().await?;
     assert!(body.contains("identity_outbox_pending 0"));
+    assert!(body.contains("identity_postgres_wal_archive_enabled "));
+    assert!(body.contains("identity_postgres_wal_archived_total "));
+    assert!(body.contains("identity_postgres_wal_archive_failures_total "));
+    assert!(!body.contains("last_archived_wal"));
+    assert!(!body.contains("last_failed_wal"));
+    // A closed real connection pool must fail the scrape, never fabricate healthy zeroes.
+    pool.close().await;
+    assert!(worker.operational_metrics().await.is_err());
     server.abort();
     cleanup(admin, pool, schema).await?;
     println!(

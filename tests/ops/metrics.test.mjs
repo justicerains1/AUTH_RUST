@@ -6,13 +6,17 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { createServer } from 'node:tls';
 import test from 'node:test';
-import { backupCompletion, certificateExpiry, collectMetrics, configuration, publishMetrics, verifiedBackupReceipt } from '../../infra/ops/collect-metrics.mjs';
+import { backupCompletion, certificateExpiry, collectMetrics, configuration, publishMetrics, verifiedBackupReceipt, verifiedWalReceipt } from '../../infra/ops/collect-metrics.mjs';
 
 const root = resolve(import.meta.dirname, '../..');
 async function fixture(t) { const directory = await mkdtemp(join(tmpdir(), 'identity-ops-metrics-')); t.after(() => rm(directory, { recursive: true, force: true })); return directory; }
 async function completed(directory, completedAt = Math.floor(Date.now() / 1000)) {
   const name = '20261008T150000Z-123.tar.age'; const object = Buffer.from('age-encryption.org/v1\nsynthetic file boundary payload\n'); const digest = createHash('sha256').update(object).digest('hex'); const receipt = { version: 1, completed_at: completedAt, backup_name: name, ciphertext_bytes: object.length, ciphertext_sha256: digest };
   await writeFile(join(directory, name), object, { mode: 0o600 }); await writeFile(join(directory, `${name}.sha256`), `${digest}  ${name}\n`, { mode: 0o600 }); await writeFile(join(directory, 'last-success.json'), JSON.stringify(receipt), { mode: 0o600 }); return { name, object, receipt };
+}
+async function completedWal(directory, now = Math.floor(Date.now() / 1000)) {
+  const name = '000000010000000000000001'; const path = join(directory, name); await (await import('node:fs/promises')).mkdir(path, { mode: 0o700 }); const bytes = Buffer.from('age-encryption.org/v1\nsynthetic encrypted WAL boundary\n'); const hash = createHash('sha256').update(bytes).digest('hex'); const receipt = { version: 1, wal_name: name, started_at: now - 2, completed_at: now, duration_seconds: 2, ciphertext_bytes: bytes.length, ciphertext_sha256: hash };
+  await writeFile(join(path, 'wal.age'), bytes, { mode: 0o600 }); await writeFile(join(path, 'ciphertext.sha256'), `${hash}  wal.age\n`, { mode: 0o600 }); await writeFile(join(path, 'completion.json'), JSON.stringify(receipt) + '\n', { mode: 0o600 }); await writeFile(join(directory, 'last-success.json'), JSON.stringify(receipt) + '\n', { mode: 0o600 }); return { receipt, path, bytes };
 }
 async function tlsFixture(directory, t, expired = false) {
   const key = join(directory, 'server.key'); const cert = join(directory, 'server.pem');
@@ -60,10 +64,11 @@ test('an actually expired local certificate fails despite explicit trust and a m
 
 test('collector publishes actual statfs, TLS and completed-backup values with fixed labels', async (t) => {
   const directory = await fixture(t); await completed(directory); const tls = await tlsFixture(directory, t); const expectedDevice = (await stat(directory, { bigint: true })).dev;
-  const config = { dataDirectory: directory, dataDevice: expectedDevice, backupDirectory: directory, backupDevice: expectedDevice, ...tls, output: join(directory, 'identity-ops.prom') };
-  const result = await collectMetrics(config); assert.equal(result.success, true); assert.deepEqual(result.checks, { disk_data: 1, disk_backup: 1, issuer_tls: 1, base_backup: 1 });
+  const wal = join(directory, 'wal'); await (await import('node:fs/promises')).mkdir(wal, { mode: 0o700 }); await completedWal(wal);
+  const config = { dataDirectory: directory, dataDevice: expectedDevice, backupDirectory: directory, backupDevice: expectedDevice, walDirectory: wal, walDevice: expectedDevice, ...tls, output: join(directory, 'identity-ops.prom') };
+  const result = await collectMetrics(config); assert.equal(result.success, true); assert.deepEqual(result.checks, { disk_data: 1, disk_backup: 1, issuer_tls: 1, base_backup: 1, wal_archive: 1 });
   assert.equal(result.text.includes(directory), false); assert.equal(result.text.includes('localhost'), false); assert.equal(result.text.includes('20261008'), false); assert.equal(/\b(?:NaN|Inf)\b/u.test(result.text), false);
-  assert.equal(result.text.match(/^identity_ops_collection_success\{/gmu)?.length, 4); assert.match(result.text, /identity_ops_disk_size_bytes\{volume="data"\} [1-9]\d*/u);
+  assert.equal(result.text.match(/^identity_ops_collection_success\{/gmu)?.length, 5); assert.match(result.text, /identity_ops_disk_size_bytes\{volume="data"\} [1-9]\d*/u);
   await publishMetrics(config.output, result.text); assert.equal(await readFile(config.output, 'utf8'), result.text); assert.equal((await stat(config.output)).mode & 0o777, 0o640); assert.equal((await readdir(directory)).some((name) => name.includes('.tmp-')), false);
   const promtool = process.env.PROMTOOL_BINARY ?? join(root, '.local/security-tools/prometheus-3.15.0.linux-amd64/promtool');
   execFileSync(promtool, ['check', 'metrics'], { input: result.text, encoding: 'utf8' });
@@ -78,4 +83,10 @@ test('CLI does not print secret configuration or advertise a failed publication 
   const result = await new Promise((done) => { const child = spawn(process.execPath, [join(root, 'infra/ops/collect-metrics.mjs')], { env: { ...process.env, ISSUER: `https://${secret}:password@example.test`, OPS_METRICS_FILE: join(directory, 'identity.prom') }, stdio: ['ignore', 'pipe', 'pipe'] }); let output = ''; child.stdout.on('data', (chunk) => { output += chunk; }); child.stderr.on('data', (chunk) => { output += chunk; }); child.on('close', (code) => done({ code, output })); });
   assert.equal(result.code, 1); assert.equal(result.output.includes(secret), false); assert.equal((await readdir(directory)).length, 0);
   assert.throws(() => configuration({ ISSUER: 'http://example.test' }));
+});
+
+test('WAL completion verifies immutable object and rejects clock, path, device and ciphertext faults', async (t) => {
+  const directory = await fixture(t); const now = Math.floor(Date.now() / 1000); const value = await completedWal(directory, now); const dev = (await stat(directory, { bigint: true })).dev; assert.equal((await verifiedWalReceipt(directory, dev, now)).completed_at, now);
+  for (const change of [{ completed_at: now + 120 }, { wal_name: '../outside' }, { duration_seconds: 3 }, { ciphertext_bytes: value.bytes.length + 1 }]) { await writeFile(join(directory, 'last-success.json'), JSON.stringify({ ...value.receipt, ...change }) + '\n'); await assert.rejects(verifiedWalReceipt(directory, dev, now)); }
+  await writeFile(join(directory, 'last-success.json'), JSON.stringify(value.receipt) + '\n'); await assert.rejects(verifiedWalReceipt(directory, dev + 1n, now)); await writeFile(join(value.path, 'wal.age'), Buffer.from('damaged')); await assert.rejects(verifiedWalReceipt(directory, dev, now));
 });

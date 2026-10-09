@@ -1,0 +1,77 @@
+TAP version 13
+# Subtest: WAL receipts remain immutable across retries, pointers, legacy objects and hostile paths
+    # Subtest: same-object retry and older segment never refresh or regress pointer
+    ok 1 - same-object retry and older segment never refresh or regress pointer
+      ---
+      duration_ms: 722.126968
+      type: 'test'
+      ...
+    # Subtest: history and backup-label objects do not refresh full-segment pointer
+    ok 2 - history and backup-label objects do not refresh full-segment pointer
+      ---
+      duration_ms: 101.837196
+      type: 'test'
+      ...
+    # Subtest: legacy successful object retry is accepted without inventing a receipt
+    ok 3 - legacy successful object retry is accepted without inventing a receipt
+      ---
+      duration_ms: 301.688187
+      type: 'test'
+      ...
+    # Subtest: interrupted pointer durability fails then retry preserves the object completion time
+    ok 4 - interrupted pointer durability fails then retry preserves the object completion time
+      ---
+      duration_ms: 480.799179
+      type: 'test'
+      ...
+    # Subtest: existing WAL, legacy, history and retained pointers cannot bypass root durability failure
+    ok 5 - existing WAL, legacy, history and retained pointers cannot bypass root durability failure
+      ---
+      duration_ms: 1739.155724
+      type: 'test'
+      ...
+    # Subtest: pointer renamed before root sync failure must remain failing while durability is unavailable
+    ok 6 - pointer renamed before root sync failure must remain failing while durability is unavailable
+      ---
+      duration_ms: 581.951174
+      type: 'test'
+      ...
+    # Subtest: each retry durability sync failure is propagated instead of being swallowed by later syncs
+    ok 7 - each retry durability sync failure is propagated instead of being swallowed by later syncs
+      ---
+      duration_ms: 1024.751755
+      type: 'test'
+      ...
+    # Subtest: missing device or unmounted root never creates a fallback
+    ok 8 - missing device or unmounted root never creates a fallback
+      ---
+      duration_ms: 17.877899
+      type: 'test'
+      ...
+    # Subtest: writeable group, root ancestors and target symlinks are refused
+    ok 9 - writeable group, root ancestors and target symlinks are refused
+      ---
+      duration_ms: 28.814199
+      type: 'test'
+      ...
+    # Subtest: pathful or multiple checksums, hardlinks, wrong receipt and corrupt pointer are refused
+    ok 10 - pathful or multiple checksums, hardlinks, wrong receipt and corrupt pointer are refused
+      ---
+      duration_ms: 566.552275
+      type: 'test'
+      ...
+    1..10
+ok 1 - WAL receipts remain immutable across retries, pointers, legacy objects and hostile paths
+  ---
+  duration_ms: 5662.477952
+  type: 'test'
+  ...
+1..1
+# tests 11
+# suites 0
+# pass 11
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 5778.661948
