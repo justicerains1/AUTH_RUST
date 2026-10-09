@@ -1,0 +1,22 @@
+{
+  "report": "sql-operational-2026-10-09T00-29-44-890Z.json",
+  "reportSha256": "4afcaf720a35e04dd4f819aabd8b724cc9850e728d6b3c84d68c05cf8468fed4",
+  "testExitCode": 0,
+  "exitCode": 0,
+  "sourceStableDuringRun": true,
+  "sourceCurrentMatches": {
+    "crates/identity-server/tests/t21_operational_queries.rs": true,
+    "tests/load/query-evidence.rs": true,
+    "tests/load/operational-query-evidence.mjs": true,
+    "crates/identity-store/src/admin.rs": true,
+    "crates/identity-store/src/repository.rs": true,
+    "crates/identity-worker/src/outbox.rs": true,
+    "Cargo.lock": true
+  },
+  "redaction": {
+    "uuidLiteralCount": 0,
+    "emailLiteralCount": 0,
+    "expressionFieldsPresent": false,
+    "credentialFieldsPresent": false
+  }
+}

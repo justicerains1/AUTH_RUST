@@ -1,0 +1,17 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+     Running tests/t21_operational_queries.rs ([REDACTED OPAQUE])
+
+running 1 test
+Unknown EXPLAIN field name (value suppressed): Presorted Key
+Operational SQL rejected: unknown plan field rejected
+Error: "operational query probe failed; sanitized evidence retained"
+test t21_operational_queries ... FAILED
+
+failures:
+
+failures:
+    t21_operational_queries
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 4 filtered out; finished in 9.81s
+
+error: test failed, to rerun pass `-p identity-server --test t21_operational_queries`

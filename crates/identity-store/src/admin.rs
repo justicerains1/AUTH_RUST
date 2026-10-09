@@ -11,7 +11,11 @@ use identity_core::{
 };
 use serde::{Deserialize, Serialize};
 use sqlx::{PgPool, Postgres, Row, Transaction, postgres::PgRow};
-use std::{collections::BTreeSet, fmt, sync::Arc};
+use std::{
+    collections::{BTreeMap, BTreeSet},
+    fmt,
+    sync::Arc,
+};
 use time::{Duration, OffsetDateTime, format_description::well_known::Rfc3339};
 use uuid::Uuid;
 use zeroize::Zeroizing;
@@ -679,7 +683,7 @@ impl AdminStore {
             "admin/clients",
             self.clock.now(),
         )?;
-        let rows=sqlx::query("SELECT id,created_at FROM oauth_clients WHERE ($1::timestamptz IS NULL OR (created_at,id)<($1,$2::uuid)) ORDER BY created_at DESC,id DESC LIMIT $3").bind(position.as_ref().map(|p|p.created_at)).bind(position.as_ref().map(|p|p.id)).bind(i64::from(limit)+1).fetch_all(&mut *tx).await?;
+        let rows=sqlx::query("SELECT id,client_id,name,enabled,allowed_scopes,created_at FROM oauth_clients WHERE ($1::timestamptz IS NULL OR (created_at,id)<($1,$2::uuid)) ORDER BY created_at DESC,id DESC LIMIT $3").bind(position.as_ref().map(|p|p.created_at)).bind(position.as_ref().map(|p|p.id)).bind(i64::from(limit)+1).fetch_all(&mut *tx).await?;
         let next = page_cursor(
             &rows,
             limit,
@@ -688,10 +692,40 @@ impl AdminStore {
             "admin/clients",
             self.clock.now(),
         )?;
-        let mut items = Vec::new();
-        for row in rows.iter().take(limit as usize) {
-            items.push(client_view(&mut tx, row.try_get("id")?).await?);
+        let ids = rows
+            .iter()
+            .take(limit as usize)
+            .map(|row| row.try_get::<Uuid, _>("id"))
+            .collect::<Result<Vec<_>, _>>()?;
+        let uris = sqlx::query("SELECT client_id,kind,uri FROM oauth_redirect_uris WHERE client_id=ANY($1) ORDER BY client_id,kind,uri")
+            .bind(&ids).fetch_all(&mut *tx).await?;
+        let mut callbacks: BTreeMap<Uuid, (Vec<String>, Vec<String>)> = BTreeMap::new();
+        for uri in uris {
+            let entry = callbacks.entry(uri.try_get("client_id")?).or_default();
+            if uri.try_get::<String, _>("kind")? == "login" {
+                entry.0.push(uri.try_get("uri")?);
+            } else {
+                entry.1.push(uri.try_get("uri")?);
+            }
         }
+        let items = rows
+            .iter()
+            .take(limit as usize)
+            .map(|row| {
+                let id = row.try_get("id")?;
+                let (redirects, logout) = callbacks.remove(&id).unwrap_or_default();
+                Ok(ClientView {
+                    id,
+                    client_id: row.try_get("client_id")?,
+                    name: row.try_get("name")?,
+                    enabled: row.try_get("enabled")?,
+                    allowed_scopes: row.try_get("allowed_scopes")?,
+                    created_at: timestamp(row.try_get("created_at")?)?,
+                    redirect_uris: redirects,
+                    post_logout_redirect_uris: logout,
+                })
+            })
+            .collect::<Result<Vec<_>, AdminError>>()?;
         Ok(AdminPage {
             items,
             next_cursor: next,

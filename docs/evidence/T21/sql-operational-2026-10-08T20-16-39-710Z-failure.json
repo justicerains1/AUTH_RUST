@@ -1,0 +1,1500 @@
+{
+  "started": "2026-10-08T20:16:39.710Z",
+  "scope": "Real local admin/TOTP/100k pagination and SMTP Worker query probe, not capacity or production acceptance",
+  "failures": [
+    "Real operational SQL probe failed; preserved sanitized details."
+  ],
+  "testExitCode": 101,
+  "evidence": {
+    "stage": "admin-pagination-complete",
+    "seed_users": 100000,
+    "administrator_pages": [
+      {
+        "endpoint": "admin_users",
+        "page_size": 1,
+        "sql_count": 7,
+        "observation": {
+          "scope": "actual SQLx completion events inside fixed endpoint spans; no bind values",
+          "endpoints": {
+            "admin_users": {
+              "requests": 1,
+              "sql_per_request_min": 7,
+              "sql_per_request_max": 7,
+              "query_completions": [
+                {
+                  "shape_id": "153e9941fc9aa1788b15fc2b41136807ea86dcebd5a9b986f6ef0353a4be5105",
+                  "source": "crates/identity-store/src/admin.rs",
+                  "parameterized_sql": "SELECT s.id,s.user_id,s.strong_at FROM sessions s JOIN users u ON u.id=s.user_id JOIN admin_memberships a ON a.user_id=u.id WHERE s.token_hash=$1 AND s.revoked_at IS NULL AND s.expires_at>$2 AND s.credential_version=u.credential_version AND u.verified AND u.status='active' AND a.enabled",
+                  "timing": {
+                    "count": 2,
+                    "total_nanoseconds": 928199,
+                    "max_nanoseconds": 516199,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2
+                    ]
+                  },
+                  "rows_returned": 2,
+                  "rows_affected": 2
+                },
+                {
+                  "shape_id": "48db75021c2cc587b13deb863bcbf388e080432f17d93ceabf40a48c48f1c3a8",
+                  "source": "crates/identity-store/src/sessions.rs",
+                  "parameterized_sql": "SELECT u.id,u.email,u.display_name,u.verified,u.status,u.created_at,s.id AS session_id,s.amr,s.auth_time,s.strong_at,s.expires_at,s.created_at AS session_created_at,s.user_agent,EXISTS(SELECT 1 FROM totp_factors f WHERE f.user_id=u.id AND f.confirmed) AS totp_enabled,(SELECT count(*) FROM webauthn_credentials k WHERE k.user_id=u.id) AS passkey_count,(SELECT count(*) FROM recovery_codes r WHERE r.user_id=u.id AND r.consumed_at IS NULL) AS recovery_codes_remaining,EXISTS(SELECT 1 FROM admin_memberships a WHERE a.user_id=u.id AND a.enabled) AS is_admin FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.token_hash=$1 AND s.revoked_at IS NULL AND s.expires_at>$2 AND s.credential_version=u.credential_version AND u.verified AND u.status='active'",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 950600,
+                    "max_nanoseconds": 950600,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 1,
+                  "rows_affected": 1
+                },
+                {
+                  "shape_id": "7859b4165a95c44d40d92775d672d6340863f1aeb95f89163ff9307de3102d7f",
+                  "source": "crates/identity-store/src/admin.rs",
+                  "parameterized_sql": "SELECT id,email,display_name,verified,status,created_at FROM users WHERE ($1::timestamptz IS NULL OR (created_at,id)<($1,$2::uuid)) AND ($4::text IS NULL OR email=$4) AND ($5::text IS NULL OR status=$5) ORDER BY created_at DESC,id DESC LIMIT $3",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 699100,
+                    "max_nanoseconds": 699100,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 2,
+                  "rows_affected": 2
+                },
+                {
+                  "shape_id": "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f",
+                  "source": "SQLx transaction lifecycle",
+                  "parameterized_sql": "COMMIT",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 179400,
+                    "max_nanoseconds": 179400,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 0,
+                  "rows_affected": 0
+                },
+                {
+                  "shape_id": "e33b7f545a0fa8d727872c874a6fff074d41096671443f2e1415eeb18a196fb7",
+                  "source": "crates/identity-store/src/mfa.rs",
+                  "parameterized_sql": "SELECT EXISTS(SELECT 1 FROM totp_factors WHERE user_id=$1 AND confirmed) OR EXISTS(SELECT 1 FROM webauthn_credentials WHERE user_id=$1)",
+                  "timing": {
+                    "count": 2,
+                    "total_nanoseconds": 426400,
+                    "max_nanoseconds": 218300,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2
+                    ]
+                  },
+                  "rows_returned": 2,
+                  "rows_affected": 2
+                }
+              ],
+              "statuses": {
+                "200": 1
+              },
+              "request_duration": {
+                "count": 1,
+                "total_nanoseconds": 6011400,
+                "max_nanoseconds": 6011400,
+                "bucket_le_nanoseconds": [
+                  100000,
+                  500000,
+                  1000000,
+                  5000000,
+                  25000000,
+                  100000000,
+                  250000000
+                ],
+                "cumulative_buckets": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  1,
+                  1,
+                  1
+                ]
+              },
+              "pool_acquisition": {
+                "count": 3,
+                "total_nanoseconds": 666100,
+                "max_nanoseconds": 275500,
+                "bucket_le_nanoseconds": [
+                  100000,
+                  500000,
+                  1000000,
+                  5000000,
+                  25000000,
+                  100000000,
+                  250000000
+                ],
+                "cumulative_buckets": [
+                  0,
+                  3,
+                  3,
+                  3,
+                  3,
+                  3,
+                  3,
+                  3
+                ]
+              },
+              "unknown_statement_count": 0
+            }
+          }
+        }
+      },
+      {
+        "endpoint": "admin_users",
+        "page_size": 20,
+        "sql_count": 7,
+        "observation": {
+          "scope": "actual SQLx completion events inside fixed endpoint spans; no bind values",
+          "endpoints": {
+            "admin_users": {
+              "requests": 1,
+              "sql_per_request_min": 7,
+              "sql_per_request_max": 7,
+              "query_completions": [
+                {
+                  "shape_id": "153e9941fc9aa1788b15fc2b41136807ea86dcebd5a9b986f6ef0353a4be5105",
+                  "source": "crates/identity-store/src/admin.rs",
+                  "parameterized_sql": "SELECT s.id,s.user_id,s.strong_at FROM sessions s JOIN users u ON u.id=s.user_id JOIN admin_memberships a ON a.user_id=u.id WHERE s.token_hash=$1 AND s.revoked_at IS NULL AND s.expires_at>$2 AND s.credential_version=u.credential_version AND u.verified AND u.status='active' AND a.enabled",
+                  "timing": {
+                    "count": 2,
+                    "total_nanoseconds": 491300,
+                    "max_nanoseconds": 252800,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2
+                    ]
+                  },
+                  "rows_returned": 2,
+                  "rows_affected": 2
+                },
+                {
+                  "shape_id": "48db75021c2cc587b13deb863bcbf388e080432f17d93ceabf40a48c48f1c3a8",
+                  "source": "crates/identity-store/src/sessions.rs",
+                  "parameterized_sql": "SELECT u.id,u.email,u.display_name,u.verified,u.status,u.created_at,s.id AS session_id,s.amr,s.auth_time,s.strong_at,s.expires_at,s.created_at AS session_created_at,s.user_agent,EXISTS(SELECT 1 FROM totp_factors f WHERE f.user_id=u.id AND f.confirmed) AS totp_enabled,(SELECT count(*) FROM webauthn_credentials k WHERE k.user_id=u.id) AS passkey_count,(SELECT count(*) FROM recovery_codes r WHERE r.user_id=u.id AND r.consumed_at IS NULL) AS recovery_codes_remaining,EXISTS(SELECT 1 FROM admin_memberships a WHERE a.user_id=u.id AND a.enabled) AS is_admin FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.token_hash=$1 AND s.revoked_at IS NULL AND s.expires_at>$2 AND s.credential_version=u.credential_version AND u.verified AND u.status='active'",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 904500,
+                    "max_nanoseconds": 904500,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 1,
+                  "rows_affected": 1
+                },
+                {
+                  "shape_id": "7859b4165a95c44d40d92775d672d6340863f1aeb95f89163ff9307de3102d7f",
+                  "source": "crates/identity-store/src/admin.rs",
+                  "parameterized_sql": "SELECT id,email,display_name,verified,status,created_at FROM users WHERE ($1::timestamptz IS NULL OR (created_at,id)<($1,$2::uuid)) AND ($4::text IS NULL OR email=$4) AND ($5::text IS NULL OR status=$5) ORDER BY created_at DESC,id DESC LIMIT $3",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 622200,
+                    "max_nanoseconds": 622200,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 21,
+                  "rows_affected": 21
+                },
+                {
+                  "shape_id": "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f",
+                  "source": "SQLx transaction lifecycle",
+                  "parameterized_sql": "COMMIT",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 191100,
+                    "max_nanoseconds": 191100,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 0,
+                  "rows_affected": 0
+                },
+                {
+                  "shape_id": "e33b7f545a0fa8d727872c874a6fff074d41096671443f2e1415eeb18a196fb7",
+                  "source": "crates/identity-store/src/mfa.rs",
+                  "parameterized_sql": "SELECT EXISTS(SELECT 1 FROM totp_factors WHERE user_id=$1 AND confirmed) OR EXISTS(SELECT 1 FROM webauthn_credentials WHERE user_id=$1)",
+                  "timing": {
+                    "count": 2,
+                    "total_nanoseconds": 404100,
+                    "max_nanoseconds": 202300,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2
+                    ]
+                  },
+                  "rows_returned": 2,
+                  "rows_affected": 2
+                }
+              ],
+              "statuses": {
+                "200": 1
+              },
+              "request_duration": {
+                "count": 1,
+                "total_nanoseconds": 4982100,
+                "max_nanoseconds": 4982100,
+                "bucket_le_nanoseconds": [
+                  100000,
+                  500000,
+                  1000000,
+                  5000000,
+                  25000000,
+                  100000000,
+                  250000000
+                ],
+                "cumulative_buckets": [
+                  0,
+                  0,
+                  0,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1
+                ]
+              },
+              "pool_acquisition": {
+                "count": 3,
+                "total_nanoseconds": 554200,
+                "max_nanoseconds": 197100,
+                "bucket_le_nanoseconds": [
+                  100000,
+                  500000,
+                  1000000,
+                  5000000,
+                  25000000,
+                  100000000,
+                  250000000
+                ],
+                "cumulative_buckets": [
+                  0,
+                  3,
+                  3,
+                  3,
+                  3,
+                  3,
+                  3,
+                  3
+                ]
+              },
+              "unknown_statement_count": 0
+            }
+          }
+        }
+      },
+      {
+        "endpoint": "admin_clients",
+        "page_size": 1,
+        "sql_count": 9,
+        "observation": {
+          "scope": "actual SQLx completion events inside fixed endpoint spans; no bind values",
+          "endpoints": {
+            "admin_clients": {
+              "requests": 1,
+              "sql_per_request_min": 9,
+              "sql_per_request_max": 9,
+              "query_completions": [
+                {
+                  "shape_id": "153e9941fc9aa1788b15fc2b41136807ea86dcebd5a9b986f6ef0353a4be5105",
+                  "source": "crates/identity-store/src/admin.rs",
+                  "parameterized_sql": "SELECT s.id,s.user_id,s.strong_at FROM sessions s JOIN users u ON u.id=s.user_id JOIN admin_memberships a ON a.user_id=u.id WHERE s.token_hash=$1 AND s.revoked_at IS NULL AND s.expires_at>$2 AND s.credential_version=u.credential_version AND u.verified AND u.status='active' AND a.enabled",
+                  "timing": {
+                    "count": 2,
+                    "total_nanoseconds": 403600,
+                    "max_nanoseconds": 204900,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2
+                    ]
+                  },
+                  "rows_returned": 2,
+                  "rows_affected": 2
+                },
+                {
+                  "shape_id": "480db103b5293d7afd0c3d96962e4d49cc54de43821cd14c041e176cae7e5397",
+                  "source": "crates/identity-store/src/admin.rs",
+                  "parameterized_sql": "SELECT id,created_at FROM oauth_clients WHERE ($1::timestamptz IS NULL OR (created_at,id)<($1,$2::uuid)) ORDER BY created_at DESC,id DESC LIMIT $3",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 547900,
+                    "max_nanoseconds": 547900,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 2,
+                  "rows_affected": 2
+                },
+                {
+                  "shape_id": "48db75021c2cc587b13deb863bcbf388e080432f17d93ceabf40a48c48f1c3a8",
+                  "source": "crates/identity-store/src/sessions.rs",
+                  "parameterized_sql": "SELECT u.id,u.email,u.display_name,u.verified,u.status,u.created_at,s.id AS session_id,s.amr,s.auth_time,s.strong_at,s.expires_at,s.created_at AS session_created_at,s.user_agent,EXISTS(SELECT 1 FROM totp_factors f WHERE f.user_id=u.id AND f.confirmed) AS totp_enabled,(SELECT count(*) FROM webauthn_credentials k WHERE k.user_id=u.id) AS passkey_count,(SELECT count(*) FROM recovery_codes r WHERE r.user_id=u.id AND r.consumed_at IS NULL) AS recovery_codes_remaining,EXISTS(SELECT 1 FROM admin_memberships a WHERE a.user_id=u.id AND a.enabled) AS is_admin FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.token_hash=$1 AND s.revoked_at IS NULL AND s.expires_at>$2 AND s.credential_version=u.credential_version AND u.verified AND u.status='active'",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 245700,
+                    "max_nanoseconds": 245700,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 1,
+                  "rows_affected": 1
+                },
+                {
+                  "shape_id": "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f",
+                  "source": "SQLx transaction lifecycle",
+                  "parameterized_sql": "COMMIT",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 179400,
+                    "max_nanoseconds": 179400,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 0,
+                  "rows_affected": 0
+                },
+                {
+                  "shape_id": "b35e9ee72c008043223f0f1e47f3376a9330db86747820b7d9529aa23a0cd351",
+                  "source": "crates/identity-store/src/admin.rs",
+                  "parameterized_sql": "SELECT kind,uri FROM oauth_redirect_uris WHERE client_id=$1 ORDER BY kind,uri",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 376200,
+                    "max_nanoseconds": 376200,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 1,
+                  "rows_affected": 1
+                },
+                {
+                  "shape_id": "d025025b6bcc310e1a49f3ee1449dea38e689770b4f579992c85c8bf7a23e8a3",
+                  "source": "crates/identity-store/src/admin.rs",
+                  "parameterized_sql": "SELECT id,client_id,name,enabled,allowed_scopes,created_at FROM oauth_clients WHERE id=$1",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 317900,
+                    "max_nanoseconds": 317900,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 1,
+                  "rows_affected": 1
+                },
+                {
+                  "shape_id": "e33b7f545a0fa8d727872c874a6fff074d41096671443f2e1415eeb18a196fb7",
+                  "source": "crates/identity-store/src/mfa.rs",
+                  "parameterized_sql": "SELECT EXISTS(SELECT 1 FROM totp_factors WHERE user_id=$1 AND confirmed) OR EXISTS(SELECT 1 FROM webauthn_credentials WHERE user_id=$1)",
+                  "timing": {
+                    "count": 2,
+                    "total_nanoseconds": 414500,
+                    "max_nanoseconds": 217400,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2
+                    ]
+                  },
+                  "rows_returned": 2,
+                  "rows_affected": 2
+                }
+              ],
+              "statuses": {
+                "200": 1
+              },
+              "request_duration": {
+                "count": 1,
+                "total_nanoseconds": 4817000,
+                "max_nanoseconds": 4817000,
+                "bucket_le_nanoseconds": [
+                  100000,
+                  500000,
+                  1000000,
+                  5000000,
+                  25000000,
+                  100000000,
+                  250000000
+                ],
+                "cumulative_buckets": [
+                  0,
+                  0,
+                  0,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1
+                ]
+              },
+              "pool_acquisition": {
+                "count": 3,
+                "total_nanoseconds": 627800,
+                "max_nanoseconds": 254600,
+                "bucket_le_nanoseconds": [
+                  100000,
+                  500000,
+                  1000000,
+                  5000000,
+                  25000000,
+                  100000000,
+                  250000000
+                ],
+                "cumulative_buckets": [
+                  0,
+                  3,
+                  3,
+                  3,
+                  3,
+                  3,
+                  3,
+                  3
+                ]
+              },
+              "unknown_statement_count": 0
+            }
+          }
+        }
+      },
+      {
+        "endpoint": "admin_clients",
+        "page_size": 20,
+        "sql_count": 47,
+        "observation": {
+          "scope": "actual SQLx completion events inside fixed endpoint spans; no bind values",
+          "endpoints": {
+            "admin_clients": {
+              "requests": 1,
+              "sql_per_request_min": 47,
+              "sql_per_request_max": 47,
+              "query_completions": [
+                {
+                  "shape_id": "153e9941fc9aa1788b15fc2b41136807ea86dcebd5a9b986f6ef0353a4be5105",
+                  "source": "crates/identity-store/src/admin.rs",
+                  "parameterized_sql": "SELECT s.id,s.user_id,s.strong_at FROM sessions s JOIN users u ON u.id=s.user_id JOIN admin_memberships a ON a.user_id=u.id WHERE s.token_hash=$1 AND s.revoked_at IS NULL AND s.expires_at>$2 AND s.credential_version=u.credential_version AND u.verified AND u.status='active' AND a.enabled",
+                  "timing": {
+                    "count": 2,
+                    "total_nanoseconds": 415000,
+                    "max_nanoseconds": 214100,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2
+                    ]
+                  },
+                  "rows_returned": 2,
+                  "rows_affected": 2
+                },
+                {
+                  "shape_id": "480db103b5293d7afd0c3d96962e4d49cc54de43821cd14c041e176cae7e5397",
+                  "source": "crates/identity-store/src/admin.rs",
+                  "parameterized_sql": "SELECT id,created_at FROM oauth_clients WHERE ($1::timestamptz IS NULL OR (created_at,id)<($1,$2::uuid)) ORDER BY created_at DESC,id DESC LIMIT $3",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 592800,
+                    "max_nanoseconds": 592800,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 21,
+                  "rows_affected": 21
+                },
+                {
+                  "shape_id": "48db75021c2cc587b13deb863bcbf388e080432f17d93ceabf40a48c48f1c3a8",
+                  "source": "crates/identity-store/src/sessions.rs",
+                  "parameterized_sql": "SELECT u.id,u.email,u.display_name,u.verified,u.status,u.created_at,s.id AS session_id,s.amr,s.auth_time,s.strong_at,s.expires_at,s.created_at AS session_created_at,s.user_agent,EXISTS(SELECT 1 FROM totp_factors f WHERE f.user_id=u.id AND f.confirmed) AS totp_enabled,(SELECT count(*) FROM webauthn_credentials k WHERE k.user_id=u.id) AS passkey_count,(SELECT count(*) FROM recovery_codes r WHERE r.user_id=u.id AND r.consumed_at IS NULL) AS recovery_codes_remaining,EXISTS(SELECT 1 FROM admin_memberships a WHERE a.user_id=u.id AND a.enabled) AS is_admin FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.token_hash=$1 AND s.revoked_at IS NULL AND s.expires_at>$2 AND s.credential_version=u.credential_version AND u.verified AND u.status='active'",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 428900,
+                    "max_nanoseconds": 428900,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 1,
+                  "rows_affected": 1
+                },
+                {
+                  "shape_id": "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f",
+                  "source": "SQLx transaction lifecycle",
+                  "parameterized_sql": "COMMIT",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 163500,
+                    "max_nanoseconds": 163500,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 0,
+                  "rows_affected": 0
+                },
+                {
+                  "shape_id": "b35e9ee72c008043223f0f1e47f3376a9330db86747820b7d9529aa23a0cd351",
+                  "source": "crates/identity-store/src/admin.rs",
+                  "parameterized_sql": "SELECT kind,uri FROM oauth_redirect_uris WHERE client_id=$1 ORDER BY kind,uri",
+                  "timing": {
+                    "count": 20,
+                    "total_nanoseconds": 4582299,
+                    "max_nanoseconds": 528400,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      19,
+                      20,
+                      20,
+                      20,
+                      20,
+                      20,
+                      20
+                    ]
+                  },
+                  "rows_returned": 20,
+                  "rows_affected": 20
+                },
+                {
+                  "shape_id": "d025025b6bcc310e1a49f3ee1449dea38e689770b4f579992c85c8bf7a23e8a3",
+                  "source": "crates/identity-store/src/admin.rs",
+                  "parameterized_sql": "SELECT id,client_id,name,enabled,allowed_scopes,created_at FROM oauth_clients WHERE id=$1",
+                  "timing": {
+                    "count": 20,
+                    "total_nanoseconds": 4506300,
+                    "max_nanoseconds": 448200,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      20,
+                      20,
+                      20,
+                      20,
+                      20,
+                      20,
+                      20
+                    ]
+                  },
+                  "rows_returned": 20,
+                  "rows_affected": 20
+                },
+                {
+                  "shape_id": "e33b7f545a0fa8d727872c874a6fff074d41096671443f2e1415eeb18a196fb7",
+                  "source": "crates/identity-store/src/mfa.rs",
+                  "parameterized_sql": "SELECT EXISTS(SELECT 1 FROM totp_factors WHERE user_id=$1 AND confirmed) OR EXISTS(SELECT 1 FROM webauthn_credentials WHERE user_id=$1)",
+                  "timing": {
+                    "count": 2,
+                    "total_nanoseconds": 381900,
+                    "max_nanoseconds": 194100,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2
+                    ]
+                  },
+                  "rows_returned": 2,
+                  "rows_affected": 2
+                }
+              ],
+              "statuses": {
+                "200": 1
+              },
+              "request_duration": {
+                "count": 1,
+                "total_nanoseconds": 15795700,
+                "max_nanoseconds": 15795700,
+                "bucket_le_nanoseconds": [
+                  100000,
+                  500000,
+                  1000000,
+                  5000000,
+                  25000000,
+                  100000000,
+                  250000000
+                ],
+                "cumulative_buckets": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  1,
+                  1,
+                  1
+                ]
+              },
+              "pool_acquisition": {
+                "count": 3,
+                "total_nanoseconds": 544800,
+                "max_nanoseconds": 190800,
+                "bucket_le_nanoseconds": [
+                  100000,
+                  500000,
+                  1000000,
+                  5000000,
+                  25000000,
+                  100000000,
+                  250000000
+                ],
+                "cumulative_buckets": [
+                  0,
+                  3,
+                  3,
+                  3,
+                  3,
+                  3,
+                  3,
+                  3
+                ]
+              },
+              "unknown_statement_count": 0
+            }
+          }
+        }
+      },
+      {
+        "endpoint": "admin_audit",
+        "page_size": 1,
+        "sql_count": 7,
+        "observation": {
+          "scope": "actual SQLx completion events inside fixed endpoint spans; no bind values",
+          "endpoints": {
+            "admin_audit": {
+              "requests": 1,
+              "sql_per_request_min": 7,
+              "sql_per_request_max": 7,
+              "query_completions": [
+                {
+                  "shape_id": "153e9941fc9aa1788b15fc2b41136807ea86dcebd5a9b986f6ef0353a4be5105",
+                  "source": "crates/identity-store/src/admin.rs",
+                  "parameterized_sql": "SELECT s.id,s.user_id,s.strong_at FROM sessions s JOIN users u ON u.id=s.user_id JOIN admin_memberships a ON a.user_id=u.id WHERE s.token_hash=$1 AND s.revoked_at IS NULL AND s.expires_at>$2 AND s.credential_version=u.credential_version AND u.verified AND u.status='active' AND a.enabled",
+                  "timing": {
+                    "count": 2,
+                    "total_nanoseconds": 429700,
+                    "max_nanoseconds": 227300,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2
+                    ]
+                  },
+                  "rows_returned": 2,
+                  "rows_affected": 2
+                },
+                {
+                  "shape_id": "48db75021c2cc587b13deb863bcbf388e080432f17d93ceabf40a48c48f1c3a8",
+                  "source": "crates/identity-store/src/sessions.rs",
+                  "parameterized_sql": "SELECT u.id,u.email,u.display_name,u.verified,u.status,u.created_at,s.id AS session_id,s.amr,s.auth_time,s.strong_at,s.expires_at,s.created_at AS session_created_at,s.user_agent,EXISTS(SELECT 1 FROM totp_factors f WHERE f.user_id=u.id AND f.confirmed) AS totp_enabled,(SELECT count(*) FROM webauthn_credentials k WHERE k.user_id=u.id) AS passkey_count,(SELECT count(*) FROM recovery_codes r WHERE r.user_id=u.id AND r.consumed_at IS NULL) AS recovery_codes_remaining,EXISTS(SELECT 1 FROM admin_memberships a WHERE a.user_id=u.id AND a.enabled) AS is_admin FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.token_hash=$1 AND s.revoked_at IS NULL AND s.expires_at>$2 AND s.credential_version=u.credential_version AND u.verified AND u.status='active'",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 269100,
+                    "max_nanoseconds": 269100,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 1,
+                  "rows_affected": 1
+                },
+                {
+                  "shape_id": "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f",
+                  "source": "SQLx transaction lifecycle",
+                  "parameterized_sql": "COMMIT",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 169700,
+                    "max_nanoseconds": 169700,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 0,
+                  "rows_affected": 0
+                },
+                {
+                  "shape_id": "e33b7f545a0fa8d727872c874a6fff074d41096671443f2e1415eeb18a196fb7",
+                  "source": "crates/identity-store/src/mfa.rs",
+                  "parameterized_sql": "SELECT EXISTS(SELECT 1 FROM totp_factors WHERE user_id=$1 AND confirmed) OR EXISTS(SELECT 1 FROM webauthn_credentials WHERE user_id=$1)",
+                  "timing": {
+                    "count": 2,
+                    "total_nanoseconds": 390700,
+                    "max_nanoseconds": 200000,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2
+                    ]
+                  },
+                  "rows_returned": 2,
+                  "rows_affected": 2
+                },
+                {
+                  "shape_id": "fe35c55ef08c1143992af3d1d335ebc56bef872c1746188b8a3a2703e9b57fb5",
+                  "source": "crates/identity-store/src/admin.rs",
+                  "parameterized_sql": "SELECT id,event,actor_id,target_type,target_id,result,request_id,source,occurred_at,occurred_at AS created_at FROM audit_events WHERE ($1::timestamptz IS NULL OR (occurred_at,id)<($1,$2::uuid)) AND ($4::timestamptz IS NULL OR occurred_at >= $4) AND ($5::timestamptz IS NULL OR occurred_at < $5) ORDER BY occurred_at DESC,id DESC LIMIT $3",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 665300,
+                    "max_nanoseconds": 665300,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 2,
+                  "rows_affected": 2
+                }
+              ],
+              "statuses": {
+                "200": 1
+              },
+              "request_duration": {
+                "count": 1,
+                "total_nanoseconds": 4109400,
+                "max_nanoseconds": 4109400,
+                "bucket_le_nanoseconds": [
+                  100000,
+                  500000,
+                  1000000,
+                  5000000,
+                  25000000,
+                  100000000,
+                  250000000
+                ],
+                "cumulative_buckets": [
+                  0,
+                  0,
+                  0,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1
+                ]
+              },
+              "pool_acquisition": {
+                "count": 3,
+                "total_nanoseconds": 542000,
+                "max_nanoseconds": 197100,
+                "bucket_le_nanoseconds": [
+                  100000,
+                  500000,
+                  1000000,
+                  5000000,
+                  25000000,
+                  100000000,
+                  250000000
+                ],
+                "cumulative_buckets": [
+                  0,
+                  3,
+                  3,
+                  3,
+                  3,
+                  3,
+                  3,
+                  3
+                ]
+              },
+              "unknown_statement_count": 0
+            }
+          }
+        }
+      },
+      {
+        "endpoint": "admin_audit",
+        "page_size": 20,
+        "sql_count": 7,
+        "observation": {
+          "scope": "actual SQLx completion events inside fixed endpoint spans; no bind values",
+          "endpoints": {
+            "admin_audit": {
+              "requests": 1,
+              "sql_per_request_min": 7,
+              "sql_per_request_max": 7,
+              "query_completions": [
+                {
+                  "shape_id": "153e9941fc9aa1788b15fc2b41136807ea86dcebd5a9b986f6ef0353a4be5105",
+                  "source": "crates/identity-store/src/admin.rs",
+                  "parameterized_sql": "SELECT s.id,s.user_id,s.strong_at FROM sessions s JOIN users u ON u.id=s.user_id JOIN admin_memberships a ON a.user_id=u.id WHERE s.token_hash=$1 AND s.revoked_at IS NULL AND s.expires_at>$2 AND s.credential_version=u.credential_version AND u.verified AND u.status='active' AND a.enabled",
+                  "timing": {
+                    "count": 2,
+                    "total_nanoseconds": 467700,
+                    "max_nanoseconds": 275200,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2
+                    ]
+                  },
+                  "rows_returned": 2,
+                  "rows_affected": 2
+                },
+                {
+                  "shape_id": "48db75021c2cc587b13deb863bcbf388e080432f17d93ceabf40a48c48f1c3a8",
+                  "source": "crates/identity-store/src/sessions.rs",
+                  "parameterized_sql": "SELECT u.id,u.email,u.display_name,u.verified,u.status,u.created_at,s.id AS session_id,s.amr,s.auth_time,s.strong_at,s.expires_at,s.created_at AS session_created_at,s.user_agent,EXISTS(SELECT 1 FROM totp_factors f WHERE f.user_id=u.id AND f.confirmed) AS totp_enabled,(SELECT count(*) FROM webauthn_credentials k WHERE k.user_id=u.id) AS passkey_count,(SELECT count(*) FROM recovery_codes r WHERE r.user_id=u.id AND r.consumed_at IS NULL) AS recovery_codes_remaining,EXISTS(SELECT 1 FROM admin_memberships a WHERE a.user_id=u.id AND a.enabled) AS is_admin FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.token_hash=$1 AND s.revoked_at IS NULL AND s.expires_at>$2 AND s.credential_version=u.credential_version AND u.verified AND u.status='active'",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 424300,
+                    "max_nanoseconds": 424300,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 1,
+                  "rows_affected": 1
+                },
+                {
+                  "shape_id": "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f",
+                  "source": "SQLx transaction lifecycle",
+                  "parameterized_sql": "COMMIT",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 176800,
+                    "max_nanoseconds": 176800,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 0,
+                  "rows_affected": 0
+                },
+                {
+                  "shape_id": "e33b7f545a0fa8d727872c874a6fff074d41096671443f2e1415eeb18a196fb7",
+                  "source": "crates/identity-store/src/mfa.rs",
+                  "parameterized_sql": "SELECT EXISTS(SELECT 1 FROM totp_factors WHERE user_id=$1 AND confirmed) OR EXISTS(SELECT 1 FROM webauthn_credentials WHERE user_id=$1)",
+                  "timing": {
+                    "count": 2,
+                    "total_nanoseconds": 403700,
+                    "max_nanoseconds": 204700,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2
+                    ]
+                  },
+                  "rows_returned": 2,
+                  "rows_affected": 2
+                },
+                {
+                  "shape_id": "fe35c55ef08c1143992af3d1d335ebc56bef872c1746188b8a3a2703e9b57fb5",
+                  "source": "crates/identity-store/src/admin.rs",
+                  "parameterized_sql": "SELECT id,event,actor_id,target_type,target_id,result,request_id,source,occurred_at,occurred_at AS created_at FROM audit_events WHERE ($1::timestamptz IS NULL OR (occurred_at,id)<($1,$2::uuid)) AND ($4::timestamptz IS NULL OR occurred_at >= $4) AND ($5::timestamptz IS NULL OR occurred_at < $5) ORDER BY occurred_at DESC,id DESC LIMIT $3",
+                  "timing": {
+                    "count": 1,
+                    "total_nanoseconds": 672100,
+                    "max_nanoseconds": 672100,
+                    "bucket_le_nanoseconds": [
+                      100000,
+                      500000,
+                      1000000,
+                      5000000,
+                      25000000,
+                      100000000,
+                      250000000
+                    ],
+                    "cumulative_buckets": [
+                      0,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "rows_returned": 21,
+                  "rows_affected": 21
+                }
+              ],
+              "statuses": {
+                "200": 1
+              },
+              "request_duration": {
+                "count": 1,
+                "total_nanoseconds": 4500600,
+                "max_nanoseconds": 4500600,
+                "bucket_le_nanoseconds": [
+                  100000,
+                  500000,
+                  1000000,
+                  5000000,
+                  25000000,
+                  100000000,
+                  250000000
+                ],
+                "cumulative_buckets": [
+                  0,
+                  0,
+                  0,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1
+                ]
+              },
+              "pool_acquisition": {
+                "count": 3,
+                "total_nanoseconds": 527600,
+                "max_nanoseconds": 197800,
+                "bucket_le_nanoseconds": [
+                  100000,
+                  500000,
+                  1000000,
+                  5000000,
+                  25000000,
+                  100000000,
+                  250000000
+                ],
+                "cumulative_buckets": [
+                  0,
+                  3,
+                  3,
+                  3,
+                  3,
+                  3,
+                  3,
+                  3
+                ]
+              },
+              "unknown_statement_count": 0
+            }
+          }
+        }
+      }
+    ],
+    "detected_query_growth": [
+      {
+        "endpoint": "admin_clients",
+        "page_one_sql": 9,
+        "page_twenty_sql": 47
+      }
+    ]
+  },
+  "sourceSha256": {
+    "crates/identity-server/tests/t21_operational_queries.rs": "cedd5fb94c6ac92680796e345472f819d7304ff400ffae125e6c1b88134e5cbb",
+    "tests/load/query-evidence.rs": "1bc4795a0df22c47c171fda8a14f53f463cc5f766fcf8965c95f067fe657ef66",
+    "tests/load/operational-query-evidence.mjs": "8fd8c9b171d143fbf805b2c8d2077bb14085723c761460da77f5d09820a98d5c",
+    "crates/identity-store/src/admin.rs": "252e42d244e550efbbeaac494dfe1660dd6d3dbf93a78a11d0a6c79056cdccee",
+    "crates/identity-store/src/repository.rs": "1574a56b657357aa3b0c4cc1a612da632b025bfd78b6a1e2ed05d84b85e1c41b",
+    "crates/identity-worker/src/outbox.rs": "8fd1fba15a9096dcba501c9ac1ab3dd596b0cf35285084e71d47909c5de5b96f",
+    "Cargo.lock": "47ffcb0545416af76dd26346f42a3f583f60d6a4f5f84f8fd6a1f36dea6539d8"
+  },
+  "completed": "2026-10-08T20:16:50.987Z",
+  "exitCode": 1
+}

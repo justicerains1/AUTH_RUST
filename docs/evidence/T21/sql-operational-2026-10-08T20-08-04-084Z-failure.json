@@ -1,0 +1,20 @@
+{
+  "started": "2026-10-08T20:08:04.085Z",
+  "scope": "Real local admin/TOTP/100k pagination and SMTP Worker query probe, not capacity or production acceptance",
+  "failures": [
+    "No complete real operational query evidence was produced.",
+    "Real operational SQL probe failed; preserved sanitized details."
+  ],
+  "testExitCode": 101,
+  "sourceSha256": {
+    "crates/identity-server/tests/t21_operational_queries.rs": "db9375d1f56b46729c47204d884ff9b96d1b14d5a6f1bc2c4188f5380d7e0ad1",
+    "tests/load/query-evidence.rs": "6db022a9695fc0bb929db9701c148f48a1ab9f3731d7adbc140750e61a283fea",
+    "tests/load/operational-query-evidence.mjs": "8fd8c9b171d143fbf805b2c8d2077bb14085723c761460da77f5d09820a98d5c",
+    "crates/identity-store/src/admin.rs": "252e42d244e550efbbeaac494dfe1660dd6d3dbf93a78a11d0a6c79056cdccee",
+    "crates/identity-store/src/repository.rs": "1574a56b657357aa3b0c4cc1a612da632b025bfd78b6a1e2ed05d84b85e1c41b",
+    "crates/identity-worker/src/outbox.rs": "8fd1fba15a9096dcba501c9ac1ab3dd596b0cf35285084e71d47909c5de5b96f",
+    "Cargo.lock": "47ffcb0545416af76dd26346f42a3f583f60d6a4f5f84f8fd6a1f36dea6539d8"
+  },
+  "completed": "2026-10-08T20:08:15.585Z",
+  "exitCode": 1
+}

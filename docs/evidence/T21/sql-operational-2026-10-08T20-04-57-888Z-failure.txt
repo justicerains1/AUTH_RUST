@@ -1,0 +1,18 @@
+   Compiling identity-server v0.1.0 (/[REDACTED OPAQUE])
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.80s
+     Running tests/t21_operational_queries.rs ([REDACTED OPAQUE])
+
+running 1 test
+Operational fixed endpoint HTTP status=429
+Operational SQL rejected: operation request rejected
+Error: "operational query probe failed; sanitized evidence retained"
+test t21_operational_queries ... FAILED
+
+failures:
+
+failures:
+    t21_operational_queries
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 4 filtered out; finished in 9.96s
+
+error: test failed, to rerun pass `-p identity-server --test t21_operational_queries`

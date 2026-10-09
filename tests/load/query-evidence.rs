@@ -54,6 +54,10 @@ const SOURCES: &[(&str, &str)] = &[
         "tokens",
         include_str!("../../crates/identity-store/src/tokens.rs"),
     ),
+    (
+        "worker_outbox",
+        include_str!("../../crates/identity-worker/src/outbox.rs"),
+    ),
 ];
 pub fn normalize(value: &str) -> String {
     value
@@ -112,12 +116,38 @@ pub fn source_sql(module: &str, function: &str, starts: &str) -> Result<String, 
         .ok_or("unknown repository source")?
         .1;
     let position = source
-        .find(&format!("fn {function}("))
+        .rfind(&format!("fn {function}("))
         .ok_or("repository function missing")?;
     let rest = &source[position..];
-    let end = rest[3..]
-        .find("\n    pub ")
-        .map_or(rest.len(), |index| index + 3);
+    let brace = rest.find('{').ok_or("repository function body missing")?;
+    let mut depth = 0_u32;
+    let mut in_string = false;
+    let mut escaped = false;
+    let mut end = None;
+    for (index, ch) in rest[brace..].char_indices() {
+        if in_string {
+            if escaped {
+                escaped = false;
+            } else if ch == '\\' {
+                escaped = true;
+            } else if ch == '"' {
+                in_string = false;
+            }
+            continue;
+        }
+        if ch == '"' {
+            in_string = true;
+        } else if ch == '{' {
+            depth += 1;
+        } else if ch == '}' {
+            depth -= 1;
+            if depth == 0 {
+                end = Some(brace + index + 1);
+                break;
+            }
+        }
+    }
+    let end = end.ok_or("repository function body incomplete")?;
     let matches = literals(&rest[..end])
         .into_iter()
         .filter(|sql| sql.starts_with(starts))
@@ -246,7 +276,14 @@ impl Observer {
             for sql in literals(source) {
                 catalog.insert(
                     fingerprint(&sql),
-                    (format!("crates/identity-store/src/{module}.rs"), sql),
+                    (
+                        if *module == "worker_outbox" {
+                            "crates/identity-worker/src/outbox.rs".into()
+                        } else {
+                            format!("crates/identity-store/src/{module}.rs")
+                        },
+                        sql,
+                    ),
                 );
             }
         }
@@ -422,11 +459,14 @@ pub fn safe_plan(value: &Value) -> Result<Value, &'static str> {
         "One-Time Filter",
         "Output",
         "Sort Key",
+        "Presorted Key",
         "Group Key",
         "Cache Key",
         "Conflict Resolution",
         "Conflict Arbiter Indexes",
         "Subplan Name",
+        "Full-sort Groups",
+        "Pre-sorted Groups",
     ];
     const NUM: &[&str] = &[
         "Startup Cost",
@@ -494,10 +534,29 @@ pub fn safe_plan(value: &Value) -> Result<Value, &'static str> {
                 if matches!(key.as_str(), "Plan" | "Plans" | "Planning") {
                     result.insert(key.clone(), safe_plan(value)?);
                 } else if key == "Triggers" {
-                    if value.as_array().is_none_or(|v| !v.is_empty()) {
-                        return Err("plan trigger data rejected");
+                    let triggers = value.as_array().ok_or("plan trigger data rejected")?;
+                    let mut safe = Vec::new();
+                    for trigger in triggers {
+                        let object = trigger.as_object().ok_or("plan trigger data rejected")?;
+                        if object.keys().any(|key| {
+                            !matches!(
+                                key.as_str(),
+                                "Trigger Name" | "Constraint Name" | "Relation" | "Time" | "Calls"
+                            )
+                        }) {
+                            return Err("unknown plan trigger field rejected");
+                        }
+                        let time = object
+                            .get("Time")
+                            .filter(|value| value.is_number())
+                            .ok_or("trigger time missing")?;
+                        let calls = object
+                            .get("Calls")
+                            .filter(|value| value.is_number())
+                            .ok_or("trigger count missing")?;
+                        safe.push(json!({"Time":time,"Calls":calls}));
                     }
-                    result.insert(key.clone(), json!([]));
+                    result.insert(key.clone(), json!(safe));
                 } else if NUM.contains(&key.as_str()) {
                     if !value.is_number() {
                         return Err("plan number rejected");
@@ -567,6 +626,11 @@ fn plan_redaction_removes_parameter_values_and_rejects_unknown_fields() {
             && !text.contains("Index Cond")
     );
     assert!(safe_plan(&json!({"New Field":"secret"})).is_err());
+    let trigger=safe_plan(&json!({"Triggers":[{"Trigger Name":"user_secret_id","Constraint Name":"constraint_secret","Relation":"secret_relation","Time":0.1,"Calls":1}]})).unwrap_or_default();
+    assert_eq!(trigger, json!({"Triggers":[{"Time":0.1,"Calls":1}]}));
+    assert!(
+        safe_plan(&json!({"Triggers":[{"Time":0.1,"Calls":1,"Unexpected":"secret"}]})).is_err()
+    );
 }
 
 #[test]
