@@ -272,4 +272,4 @@ c3885fa这一轮完整测试只有T05集成失败（19集成其他18项0、E2E/s
 
 ## 当前Docker部署验收
 
-用户授权由助手测试当前部署。Windows入口四项HTTP200与Docker10服务healthy；直接在5173/5174/5175实际UI/API验证注册/邮件/密码、MFA恢复码、虚拟Passkey、SSO撤销、后台用户/客户端/成员及布局，通过项与历次恢复运行证据见[当前部署验收](docs/evidence/local-deployment/acceptance/test-summary.md)。真实密码重置HTTP200后TOTP/Passkey保留，旧密码拒绝本部署未重测。管理员已通过UI绑定TOTP，设置密钥及未消费恢复码仅保存在本机受限凭据文件。原人工设备/Windows完整浏览器/Safari/生产条件仍未放行；没有开始生产部署。
+用户授权由助手测试当前部署。Windows入口四项HTTP200与Docker10服务healthy；直接在5173/5174/5175实际UI/API验证注册/邮件/密码、MFA恢复码、虚拟Passkey、SSO撤销、后台用户/客户端/成员及布局，通过项与历次恢复运行证据见[当前部署验收](docs/evidence/local-deployment/acceptance/test-summary.md)。真实密码重置HTTP200后TOTP/Passkey保留，原密码登录当前部署HTTP401已重测。管理员已通过UI绑定TOTP，设置密钥及未消费恢复码仅保存在本机受限凭据文件。原人工设备/Windows完整浏览器/Safari/生产条件仍未放行；没有开始生产部署。

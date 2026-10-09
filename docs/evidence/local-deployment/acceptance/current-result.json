@@ -35,7 +35,8 @@
     "realMailLinkHttp": 200,
     "confirmedTotpAfterReset": 1,
     "webauthnCredentialsAfterReset": 1,
-    "oldPasswordRejectionRetested": false
+    "oldPasswordRejectionRetested": true,
+    "oldPasswordHttp": 401
   },
   "administrator": {
     "realTotpEnrollment": true,
@@ -48,8 +49,7 @@
     "Real physical Passkey and Windows Hello were not exercised; CDP virtual CTAP2 only.",
     "Windows PowerShell verified four HTTP entrypoints; actual UI automation used Linux Chromium.",
     "Safari, Windows browser full flow, screen reader, production DNS/SMTP/independent backup/RPO/RTO remain unaccepted.",
-    "Repeated reset requests reached original 3/hour/account mail budget; accepted response correctly did not send extra mail. No Redis keys cleared or limits weakened.",
-    "Old-password rejection after the successful reset was not repeated in this live deployment; prior isolated T07/full regression evidence remains separate."
+    "Repeated reset requests reached original 3/hour/account mail budget; accepted response correctly did not send extra mail. No Redis keys cleared or limits weakened."
   ],
   "servicesHealthy": 10,
   "localTestedScope": "passed",
