@@ -1,0 +1,128 @@
+{
+  "started": "2026-10-09T02:36:51.852Z",
+  "scope": "Five real services with local CA TLS/test SMTP; local-review only, not production DNS/SMTP/HA",
+  "phases": [
+    {
+      "version": 1,
+      "action": "deploy",
+      "release": "old",
+      "project": "release-stack-9e462d29084b",
+      "mode": "local-review",
+      "started": 1791513421,
+      "stages": [
+        {
+          "stage": "compose-config",
+          "exitCode": 0
+        },
+        {
+          "stage": "image-present",
+          "exitCode": 0
+        },
+        {
+          "stage": "image-present",
+          "exitCode": 0
+        },
+        {
+          "stage": "check-config-api",
+          "exitCode": 0
+        },
+        {
+          "stage": "check-config-worker",
+          "exitCode": 0
+        },
+        {
+          "stage": "check-config-demo-a-bff",
+          "exitCode": 0
+        },
+        {
+          "stage": "check-config-demo-b-bff",
+          "exitCode": 0
+        },
+        {
+          "stage": "current-schema-key-facts",
+          "exitCode": 0
+        },
+        {
+          "stage": "base-backup",
+          "exitCode": 0
+        },
+        {
+          "stage": "backup-verified",
+          "exitCode": 0
+        },
+        {
+          "stage": "migrate",
+          "exitCode": 0
+        },
+        {
+          "stage": "post-migration-schema-key-facts",
+          "exitCode": 0
+        },
+        {
+          "stage": "up",
+          "exitCode": 0
+        },
+        {
+          "stage": "ready",
+          "exitCode": 0
+        },
+        {
+          "stage": "smoke",
+          "exitCode": 0
+        }
+      ],
+      "status": "complete",
+      "images": {
+        "rustImage": "auth-rust-runtime:t23-2c9c712",
+        "edgeImage": "auth-rust-edge:t23-df28706"
+      },
+      "facts": {
+        "version": 1,
+        "migration_sha256": "66b31145a6027bba6a5d2d33c33444206a25e36ba511f962a3f72080e08b4f14",
+        "used_kids": [
+          "stack"
+        ],
+        "configured_kids": [
+          "stack"
+        ]
+      },
+      "backup": {
+        "name": "20261009T023704Z-186.tar.age",
+        "sha256": "e150f946ba5210cfe9d95830995b1db87d2b717aee1c3a36ca967ab6ef761c4c",
+        "completedAt": 1791513430
+      },
+      "completed": 1791513480
+    }
+  ],
+  "exitCode": 1,
+  "sourceBefore": {
+    "infra/ops/release.mjs": "b840b59e1a5c4e2146de5fcbb625fd37cb67a05df3936237d01f8fa2ff3eff13",
+    "infra/Caddyfile.prod": "a8846cdf4725f643ef4eff19a1be1ee52e1789f33539eaa86bd689387168f05a",
+    "infra/ops/base-backup.sh": "c1d53de508cef5df69b34bb199c0665daefe30ab7bf9bd8fff8b6d46d8ee3786",
+    "Cargo.lock": "47ffcb0545416af76dd26346f42a3f583f60d6a4f5f84f8fd6a1f36dea6539d8",
+    "package-lock.json": "4a016eb1d048cb0a7e06e41bff5909a8e1863584696585c1977b8be24abf1bca",
+    "tests/ops/release-stack.mjs": "849ecca5d5a43ae5e83b7c09e4909bfab9867c7e60a4674a5d67153f62227c8a",
+    "tests/ops/release-stack-helper.mjs": "55fe25fff19cc3b332f286641265e4001db4c633e96a9fad89ee25061e486d4b",
+    "tests/ops/release-stack-bootstrap.mjs": "20c24bba1ea9f01bc22bbd6a4a4c5e87bc92cf559fec6404f7ba91b59243c834",
+    "tests/ops/release-stack-smoke.mjs": "2dc1bc47367807cab5798639b0fcc62d44be1b1267e8a9bda47c6f0170844569"
+  },
+  "sourceCommit": "8e0934d6d5d09063590ce3d03d4f7f6913d28f49",
+  "images": {
+    "auth-rust-runtime:t23-2c9c712": {
+      "id": "sha256:6080ddcd99ea92b53c750e11c206c7781a6cd4261d3c5cd515b8af75f4d07f9c",
+      "revision": "2c9c712c4fb83ebbb5d7e59fd97fcf9ef3b8777c"
+    },
+    "auth-rust-runtime:t23-df28706": {
+      "id": "sha256:49d77f0d7944407b3eb5321a820b441f5bc54e19514ff2494f79e2e92a328ef4",
+      "revision": "df28706a70118404ba60d3ca994863d271067f84"
+    },
+    "auth-rust-edge:t23-df28706": {
+      "id": "sha256:73e1c6aded1bd777b7d5a9aa99ef5d2c17163ccd6799528110a23569f249314b",
+      "revision": "df28706a70118404ba60d3ca994863d271067f84"
+    }
+  },
+  "initialTlsStatus": 200,
+  "failure": "Release stage failed: ready.",
+  "safeDiagnostic": "demo-b-bff-1  | identity provider discovery unavailable\ndemo-a-bff-1  | identity provider discovery unavailable\nedge-1        | {\"level\":\"info\",\"ts\":1791513416.200072,\"msg\":\"maxprocs: Leaving GOMAXPROCS=16: CPU quota undefined\"}\nedge-1        | {\"level\":\"info\",\"ts\":1791513416.2000976,\"msg\":\"GOMEMLIMIT is updated\",\"GOMEMLIMIT\":14705565696,\"previous\":9223372036854775807}\nedge-1        | {\"level\":\"info\",\"ts\":1791513416.2001011,\"msg\":\"using config from file\",\"file\":\"/etc/caddy/Caddyfile\"}\nedge-1        | {\"level\":\"info\",\"ts\":1791513416.2001026,\"msg\":\"adapted config to JSON\",\"adapter\":\"caddyfile\"}\nedge-1        | {\"level\":\"warn\",\"ts\":1791513416.2001038,\"msg\":\"Caddyfile input is not formatted; run 'caddy fmt --overwrite' to fix inconsistencies\",\"adapter\":\"caddyfile\",\"file\":\"/etc/caddy/Caddyfile\",\"line\":9}\nedge-1        | {\"level\":\"warn\",\"ts\":1791513416.2001076,\"logger\":\"admin\",\"msg\":\"admin endpoint disabled\"}\nedge-1        | {\"level\":\"info\",\"ts\":1791513416.200397,\"logger\":\"tls.cache.maintenance\",\"msg\":\"started background certificate maintenance\",\"cache\":\"0x2aeee96bef80\"}\nedge-1        | {\"level\":\"info\",\"ts\":1791513416.200617,\"logger\":\"http.auto_https\",\"msg\":\"skipping automatic certificate management because one or more matching certificates are already loaded\",\"domain\":\"app-b.release.test\",\"server_name\":\"srv0\"}\nedge-1        | {\"level\":\"info\",\"ts\":1791513416.200636,\"logger\":\"http.auto_https\",\"msg\":\"skipping automatic certificate management because one or more matching certificates are already loaded\",\"domain\":\"identity.release.test\",\"server_name\":\"srv0\"}\nedge-1        | {\"level\":\"info\",\"ts\":1791513416.2006392,\"logger\":\"http.auto_https\",\"msg\":\"skipping automatic certificate management because one or more matching certificates are already loaded\",\"domain\":\"app-a.release.test\",\"server_name\":\"srv0\"}\nedge-1        | {\"level\":\"info\",\"ts\":1791513416.2006404,\"logger\":\"http.auto_https\",\"msg\":\"automatic HTTP->HTTPS redirects are disabled\",\"server_name\":\"srv0\"}\nedge-1        | {\"level\":\"info\",\"ts\":1791513416.203598,\"logger\":\"http\",\"msg\":\"enabling HTTP/3 listener\",\"addr\":\":37357\"}\napi-1         | {\"timestamp\":\"2026-10-09T02:38:11.477315Z\",\"level\":\"INFO\",\"fields\":{\"message\":\"identity-server started\"}}\nedge-1        | {\"level\":\"info\",\"ts\":1791513416.2037737,\"logger\":\"http.log\",\"msg\":\"server running\",\"name\":\"srv0\",\"protocols\":[\"h1\",\"h2\",\"h3\"]}\nedge-1        | {\"level\":\"info\",\"ts\":1791513416.2038603,\"msg\":\"autosaved config (load with --resume flag)\",\"file\":\"/config/caddy/autosave.json\"}\nedge-1        | {\"level\":\"info\",\"ts\":1791513416.2038777,\"msg\":\"serving initial configuration\"}\nedge-1        | {\"level\":\"info\",\"ts\":1791513416.2040324,\"logger\":\"tls\",\"msg\":\"cleaning storage unit\",\"storage\":\"FileStorage:/data/caddy\"}\nedge-1        | {\"level\":\"info\",\"ts\":1791513416.2041194,\"logger\":\"tls\",\"msg\":\"finished cleaning storage units\"}\nedge-1        | {\"level\":\"error\",\"ts\":1791513491.3071804,\"logger\":\"http.log.error\",\"msg\":\"dial tcp 172.20.0.8:8080: connect: connection refused\",\"request\":{\"remote_ip\":\"172.20.0.5\",\"remote_port\":\"55480\",\"client_ip\":\"172.20.0.5\",\"proto\":\"HTTP/1.1\",\"method\":\"GET\",\"host\":\"identity.release.test:37357\",\"uri\":\"/.well-known/openid-configuration\",\"headers\":{\"Accept\":[\"*/*\"]},\"tls\":{\"resumed\":false,\"version\":772,\"cipher_suite\":4865,\"proto\":\"http/1.1\",\"server_name\":\"identity.release.test\",\"ech\":false}},\"duration\":0.0006944,\"status\":502,\"err_id\":\"hmudcmhm7\",\"err_trace\":\"reverseproxy.statusError (reverseproxy.go:1695)\"}\nedge-1        | {\"level\":\"error\",\"ts\":1791513491.3930693,\"logger\":\"http.log.error\",\"msg\":\"dial tcp 172.20.0.8:8080: connect: connection refused\",\"request\":{\"remote_ip\":\"172.20.0.9\",\"remote_port\":\"32992\",\"client_ip\":\"172.20.0.9\",\"proto\":\"HTTP/1.1\",\"method\":\"GET\",\"host\":\"identity.release.test:37357\",\"uri\":\"/.well-known/openid-configuration\",\"headers\":{\"Accept\":[\"*/*\"]},\"tls\":{\"resumed\":false,\"version\":772,\"cipher_suite\":4865,\"proto\":\"http/1.1\",\"server_name\":\"identity.release.test\",\"ech\":false}},\"duration\":0.0007588,\"status\":502,\"err_id\":\"ytkhqgxsx\",\"err_trace\":\"reverseproxy.statusError (reverseproxy.go:1695)\"}\n",
+  "completed": "2026-10-09T02:38:18.963Z"
+}

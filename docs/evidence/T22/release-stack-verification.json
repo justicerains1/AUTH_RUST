@@ -1,0 +1,28 @@
+{
+  "checkedAt": "2026-10-09T02:59:19.546036+00:00",
+  "report": "release-stack-1791513932161.json",
+  "reportSha256": "64e72ec767993a441fae692e033494b1220276ec32f1163f38be1d14ce00c235",
+  "exitCode": 0,
+  "sourceBeforeAfterMatch": true,
+  "sourceMatchesAtAudit": {
+    "infra/ops/release.mjs": true,
+    "infra/Caddyfile.prod": true,
+    "infra/ops/base-backup.sh": true,
+    "Cargo.lock": true,
+    "package-lock.json": true,
+    "tests/ops/release-stack.mjs": true,
+    "tests/ops/release-stack-helper.mjs": true,
+    "tests/ops/release-stack-bootstrap.mjs": true,
+    "tests/ops/release-stack-smoke.mjs": true
+  },
+  "steps": {
+    "deploys": 2,
+    "rollback": 1,
+    "badMigrationFiveContainersUnchanged": true
+  },
+  "cleanup": {
+    "ownedContainersRemaining": [],
+    "ownedCaNicknamesRemaining": []
+  },
+  "scope": "Read-only post-run integrity/cleanup review; five-service local testmode strict TLS/SMTP smoke, not production."
+}

@@ -1,0 +1,46 @@
+{
+  "started": "2026-10-09T02:34:14.621Z",
+  "scope": "Five real services with local CA TLS/test SMTP; local-review only, not production DNS/SMTP/HA",
+  "phases": [],
+  "exitCode": 1,
+  "sourceBefore": {
+    "infra/ops/release.mjs": "b840b59e1a5c4e2146de5fcbb625fd37cb67a05df3936237d01f8fa2ff3eff13",
+    "infra/Caddyfile.prod": "a8846cdf4725f643ef4eff19a1be1ee52e1789f33539eaa86bd689387168f05a",
+    "infra/ops/base-backup.sh": "c1d53de508cef5df69b34bb199c0665daefe30ab7bf9bd8fff8b6d46d8ee3786",
+    "Cargo.lock": "47ffcb0545416af76dd26346f42a3f583f60d6a4f5f84f8fd6a1f36dea6539d8",
+    "package-lock.json": "4a016eb1d048cb0a7e06e41bff5909a8e1863584696585c1977b8be24abf1bca",
+    "tests/ops/release-stack.mjs": "1fcfeb9cfc55cb7c09a6e742e5a846ee36077e3bd6e03c21fc34227759c02383",
+    "tests/ops/release-stack-helper.mjs": "55fe25fff19cc3b332f286641265e4001db4c633e96a9fad89ee25061e486d4b",
+    "tests/ops/release-stack-bootstrap.mjs": "20c24bba1ea9f01bc22bbd6a4a4c5e87bc92cf559fec6404f7ba91b59243c834",
+    "tests/ops/release-stack-smoke.mjs": "2dc1bc47367807cab5798639b0fcc62d44be1b1267e8a9bda47c6f0170844569"
+  },
+  "sourceCommit": "8e0934d6d5d09063590ce3d03d4f7f6913d28f49",
+  "images": {
+    "auth-rust-runtime:t23-2c9c712": {
+      "id": "sha256:6080ddcd99ea92b53c750e11c206c7781a6cd4261d3c5cd515b8af75f4d07f9c",
+      "revision": "2c9c712c4fb83ebbb5d7e59fd97fcf9ef3b8777c"
+    },
+    "auth-rust-runtime:t23-df28706": {
+      "id": "sha256:49d77f0d7944407b3eb5321a820b441f5bc54e19514ff2494f79e2e92a328ef4",
+      "revision": "df28706a70118404ba60d3ca994863d271067f84"
+    },
+    "auth-rust-edge:t23-df28706": {
+      "id": "sha256:73e1c6aded1bd777b7d5a9aa99ef5d2c17163ccd6799528110a23569f249314b",
+      "revision": "df28706a70118404ba60d3ca994863d271067f84"
+    }
+  },
+  "initialTlsError": "connect ECONNREFUSED 127.0.0.1:37809",
+  "ownedPorts": ":0",
+  "renderedEdge": [
+    {
+      "mode": "ingress",
+      "host_ip": "127.0.0.1",
+      "target": 37809,
+      "published": "37809",
+      "protocol": "tcp"
+    }
+  ],
+  "failure": "Actual local edge/API TLS readiness failed.",
+  "safeDiagnostic": "api-1  | {\"timestamp\":\"2026-10-09T02:34:19.808082Z\",\"level\":\"INFO\",\"fields\":{\"message\":\"identity-server started\"}}\nedge-1  | {\"level\":\"info\",\"ts\":1791513259.7284675,\"msg\":\"maxprocs: Leaving GOMAXPROCS=16: CPU quota undefined\"}\nedge-1  | {\"level\":\"info\",\"ts\":1791513259.7284925,\"msg\":\"GOMEMLIMIT is updated\",\"GOMEMLIMIT\":14705565696,\"previous\":9223372036854775807}\nedge-1  | {\"level\":\"info\",\"ts\":1791513259.7284975,\"msg\":\"using config from file\",\"file\":\"/etc/caddy/Caddyfile\"}\nedge-1  | {\"level\":\"info\",\"ts\":1791513259.7284994,\"msg\":\"adapted config to JSON\",\"adapter\":\"caddyfile\"}\nedge-1  | {\"level\":\"warn\",\"ts\":1791513259.7285004,\"msg\":\"Caddyfile input is not formatted; run 'caddy fmt --overwrite' to fix inconsistencies\",\"adapter\":\"caddyfile\",\"file\":\"/etc/caddy/Caddyfile\",\"line\":9}\nedge-1  | {\"level\":\"warn\",\"ts\":1791513259.7285042,\"logger\":\"admin\",\"msg\":\"admin endpoint disabled\"}\nedge-1  | {\"level\":\"info\",\"ts\":1791513259.728778,\"logger\":\"tls.cache.maintenance\",\"msg\":\"started background certificate maintenance\",\"cache\":\"0x15230184c900\"}\nedge-1  | {\"level\":\"info\",\"ts\":1791513259.7289808,\"logger\":\"http.auto_https\",\"msg\":\"skipping automatic certificate management because one or more matching certificates are already loaded\",\"domain\":\"app-a.release.test\",\"server_name\":\"srv0\"}\nedge-1  | {\"level\":\"info\",\"ts\":1791513259.7290008,\"logger\":\"http.auto_https\",\"msg\":\"skipping automatic certificate management because one or more matching certificates are already loaded\",\"domain\":\"app-b.release.test\",\"server_name\":\"srv0\"}\nedge-1  | {\"level\":\"info\",\"ts\":1791513259.7290041,\"logger\":\"http.auto_https\",\"msg\":\"skipping automatic certificate management because one or more matching certificates are already loaded\",\"domain\":\"identity.release.test\",\"server_name\":\"srv0\"}\nedge-1  | {\"level\":\"info\",\"ts\":1791513259.7290053,\"logger\":\"http.auto_https\",\"msg\":\"automatic HTTP->HTTPS redirects are disabled\",\"server_name\":\"srv0\"}\nedge-1  | {\"level\":\"info\",\"ts\":1791513259.7317011,\"logger\":\"http\",\"msg\":\"enabling HTTP/3 listener\",\"addr\":\":37809\"}\nedge-1  | {\"level\":\"info\",\"ts\":1791513259.7318833,\"logger\":\"http.log\",\"msg\":\"server running\",\"name\":\"srv0\",\"protocols\":[\"h1\",\"h2\",\"h3\"]}\nedge-1  | {\"level\":\"info\",\"ts\":1791513259.7319663,\"msg\":\"autosaved config (load with --resume flag)\",\"file\":\"/config/caddy/autosave.json\"}\nedge-1  | {\"level\":\"info\",\"ts\":1791513259.731982,\"msg\":\"serving initial configuration\"}\nedge-1  | {\"level\":\"info\",\"ts\":1791513259.73215,\"logger\":\"tls\",\"msg\":\"cleaning storage unit\",\"storage\":\"FileStorage:/data/caddy\"}\nedge-1  | {\"level\":\"info\",\"ts\":1791513259.732262,\"logger\":\"tls\",\"msg\":\"finished cleaning storage units\"}\n",
+  "completed": "2026-10-09T02:34:36.271Z"
+}

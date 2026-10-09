@@ -37,6 +37,9 @@ await writeFile(resolve(privateDirectory, 'release-order.txt'), releaseOrder.dia
 const releaseDrill = await runStage(process.execPath, [resolve(root, 'tests/ops/release-local.mjs')], { cwd: root, env: opsEnvironment });
 await writeFile(resolve(privateDirectory, 'release-local.txt'), releaseDrill.diagnostic, { mode: 0o600 });
 results.push({ name: 'release-and-compatible-rollback', exitCode: releaseOrder.exitCode || releaseDrill.exitCode });
+const releaseStack = await runStage(process.execPath, [resolve(root, 'tests/ops/release-stack.mjs')], { cwd: root, env: opsEnvironment });
+await writeFile(resolve(privateDirectory, 'five-service-release-stack.txt'), releaseStack.diagnostic, { mode: 0o600 });
+results.push({ name: 'five-service-local-tls-release-migration-stop-and-rollback', exitCode: releaseStack.exitCode });
 const retention = await runStage(process.execPath, ['--test', resolve(root, 'tests/ops/backup-retention.test.mjs')], { cwd: root, env: opsEnvironment });
 await writeFile(resolve(privateDirectory, 'backup-retention.txt'), retention.diagnostic, { mode: 0o600 });
 const catalog = await runStage(process.execPath, [resolve(root, 'tests/ops/backup-catalog.mjs')], { cwd: root, env: opsEnvironment });

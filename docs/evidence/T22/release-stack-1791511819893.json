@@ -1,0 +1,22 @@
+{
+  "started": "2026-10-09T02:10:08.406Z",
+  "scope": "Five real services with local CA TLS/test SMTP; local-review only, not production DNS/SMTP/HA",
+  "phases": [],
+  "exitCode": 1,
+  "images": {
+    "auth-rust-runtime:t23-2c9c712": {
+      "id": "sha256:6080ddcd99ea92b53c750e11c206c7781a6cd4261d3c5cd515b8af75f4d07f9c",
+      "revision": "2c9c712c4fb83ebbb5d7e59fd97fcf9ef3b8777c"
+    },
+    "auth-rust-runtime:t23-df28706": {
+      "id": "sha256:49d77f0d7944407b3eb5321a820b441f5bc54e19514ff2494f79e2e92a328ef4",
+      "revision": "df28706a70118404ba60d3ca994863d271067f84"
+    },
+    "auth-rust-edge:t23-df28706": {
+      "id": "sha256:73e1c6aded1bd777b7d5a9aa99ef5d2c17163ccd6799528110a23569f249314b",
+      "revision": "df28706a70118404ba60d3ca994863d271067f84"
+    }
+  },
+  "failure": "connect ECONNREFUSED 127.0.0.1:42583",
+  "completed": "2026-10-09T02:10:19.893Z"
+}
