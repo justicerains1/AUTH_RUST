@@ -1,0 +1,11 @@
+{
+  "project": "auth-rust-production",
+  "envFile": "/srv/auth-rust/infra/production.env",
+  "stateDirectory": "/srv/auth-rust/.local/production/release-state",
+  "backupDirectory": "/mnt/independent-backup/identity/base",
+  "backup": { "program": "/usr/local/sbin/identity-base-backup", "args": [] },
+  "smoke": { "program": "/usr/local/sbin/identity-business-smoke", "args": [] },
+  "databaseUser": "identity",
+  "databaseName": "identity_production",
+  "encryptionKeysFile": "/srv/auth-rust/.local/production/secrets/encryption-keys.json"
+}

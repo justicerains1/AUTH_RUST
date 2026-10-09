@@ -34,6 +34,9 @@ await writeFile(resolve(privateDirectory, 'full-identity-recovery.txt'), recover
 results.push({ name: 'full-identity-recovery', exitCode: recovery.exitCode });
 const releaseOrder = await runStage(process.execPath, ['--test', resolve(root, 'tests/ops/release-order.test.mjs')], { cwd: root, env: opsEnvironment });
 await writeFile(resolve(privateDirectory, 'release-order.txt'), releaseOrder.diagnostic, { mode: 0o600 });
+const ciDeployment = await runStage(process.execPath, ['--test', resolve(root, 'tests/ops/ci-deployment.test.mjs')], { cwd: root, env: opsEnvironment });
+await writeFile(resolve(privateDirectory, 'ci-deployment.txt'), ciDeployment.diagnostic, { mode: 0o600 });
+results.push({ name: 'ci-artifact-deployment-no-build-guards', exitCode: ciDeployment.exitCode });
 const releaseDrill = await runStage(process.execPath, [resolve(root, 'tests/ops/release-local.mjs')], { cwd: root, env: opsEnvironment });
 await writeFile(resolve(privateDirectory, 'release-local.txt'), releaseDrill.diagnostic, { mode: 0o600 });
 results.push({ name: 'release-and-compatible-rollback', exitCode: releaseOrder.exitCode || releaseDrill.exitCode });

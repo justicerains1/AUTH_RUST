@@ -87,3 +87,67 @@ jobs:
       - run: npm run test:accessibility
       - if: always()
         run: npm run dev:down
+
+  publish-production-artifacts:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [check-and-build, integration-t01]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    permissions:
+      contents: write
+      packages: write
+    concurrency:
+      group: release-${{ github.sha }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22.22.1
+      - name: Build and push immutable production images
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_REVISION: ${{ github.sha }}
+          RELEASE_REPOSITORY: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          release_repository="${RELEASE_REPOSITORY,,}"
+          printf '%s' "$GH_TOKEN" | docker login ghcr.io -u "${GITHUB_ACTOR}" --password-stdin
+          docker buildx create --use --name release-builder
+          mkdir -p .local/release-metadata
+          docker buildx build --platform linux/amd64 --push --metadata-file .local/release-metadata/runtime.json --label "org.opencontainers.image.revision=$RELEASE_REVISION" --label "org.opencontainers.image.source=https://github.com/$RELEASE_REPOSITORY" -t "ghcr.io/$release_repository/runtime:sha-$RELEASE_REVISION" -f infra/Dockerfile.prod .
+          docker buildx build --platform linux/amd64 --push --metadata-file .local/release-metadata/edge.json --label "org.opencontainers.image.revision=$RELEASE_REVISION" --label "org.opencontainers.image.source=https://github.com/$RELEASE_REPOSITORY" -t "ghcr.io/$release_repository/edge:sha-$RELEASE_REVISION" -f infra/Dockerfile.edge.prod .
+          printf 'RELEASE_RUNTIME_IMAGE=ghcr.io/%s/runtime@%s\n' "$release_repository" "$(jq -r '."containerimage.digest"' .local/release-metadata/runtime.json)" >> "$GITHUB_ENV"
+          printf 'RELEASE_EDGE_IMAGE=ghcr.io/%s/edge@%s\n' "$release_repository" "$(jq -r '."containerimage.digest"' .local/release-metadata/edge.json)" >> "$GITHUB_ENV"
+      - name: Package deploy-only files and verified age tool
+        env:
+          RELEASE_REVISION: ${{ github.sha }}
+          RELEASE_REPOSITORY: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .local/security-tools
+          curl --fail --location --retry 3 https://github.com/FiloSottile/age/releases/download/v1.3.2/age-v1.3.2-linux-amd64.tar.gz -o .local/security-tools/age.tar.gz
+          printf '%s  %s\n' cbe24006683f8eb669266162894b9a522a1af52f2665fbc63a4bb032ed26ac10 .local/security-tools/age.tar.gz | sha256sum --check
+          tar -xzf .local/security-tools/age.tar.gz -C .local/security-tools age/age
+          node scripts/package-release.mjs "$PWD/.local/auth-rust-deploy-linux-amd64"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: production-deployment-${{ github.sha }}
+          path: |
+            .local/auth-rust-deploy-linux-amd64.tar.gz
+            .local/auth-rust-deploy-linux-amd64.tar.gz.sha256
+          retention-days: 30
+          if-no-files-found: error
+          include-hidden-files: true
+      - name: Publish versioned deployment download
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_REVISION: ${{ github.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          release_tag="ci-$RELEASE_REVISION"
+          gh release view "$release_tag" >/dev/null 2>&1 || gh release create "$release_tag" --target "$RELEASE_REVISION" --prerelease --title "Production artifacts $RELEASE_REVISION" --notes "CI-tested linux/amd64 images and deploy-only bundle. Publication is not production deployment or acceptance."
+          gh release upload "$release_tag" .local/auth-rust-deploy-linux-amd64.tar.gz .local/auth-rust-deploy-linux-amd64.tar.gz.sha256 --clobber

@@ -1,0 +1,39 @@
+{
+  "completed": "2026-10-09T05:59:42.665709+00:00",
+  "localTests": 11,
+  "failed": 0,
+  "skipped": 0,
+  "workflowValidation": "actionlint1.7.12 official archive SHA verified; exit0 (shellcheck not installed, Node ESLint/shell syntax separately run)",
+  "actionlintArchiveSha256": "8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8",
+  "scope": "Real CI deploy-only bundle generation and local no-build/failure guards; release ordering simulated, actual GHCR/Actions publishing and production host deployment not yet executed",
+  "source": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "0398bf05bf564cc1fbd928776b8dd04e6d462c58a7c38efb3baa8e753e4c92fc"
+    },
+    {
+      "path": "scripts/package-release.mjs",
+      "sha256": "6eecf369f11a70ee6dfd82e302e59ee961c96308465af91e3124b220cd4c2e19"
+    },
+    {
+      "path": "infra/ops/deploy-production.mjs",
+      "sha256": "0ba94c7a49ce96d87ee960000ca73fe6df989865b1b8314ebad22e50ed27d773"
+    },
+    {
+      "path": "infra/ops/deploy-production.sh",
+      "sha256": "8774e53d90bb30dced9f6239032bdfe3667978c36b099a32fbfacb983736ca11"
+    },
+    {
+      "path": "infra/ops/release-config.example.json",
+      "sha256": "b35b43e98208d552e8472ee6ad6a92c435c0a10d146837c0b1a2268a1604d4b3"
+    },
+    {
+      "path": "docs/runbooks/production-ci-deployment.md",
+      "sha256": "0eb4660729b5f2809b9c484b0f420d6f8a833d0907467d7e827dfd5f19d0ec65"
+    },
+    {
+      "path": "tests/ops/ci-deployment.test.mjs",
+      "sha256": "b71619fb80ae3902d5066772d677f411acd9495c35b6f556ba291b8196ce58c9"
+    }
+  ]
+}

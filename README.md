@@ -1,5 +1,7 @@
 # Rust 统一身份中心
 
+生产部署使用[CI成品与一键部署](docs/runbooks/production-ci-deployment.md)：GitHub CI构建Rust/前端镜像并发布GHCR digest与部署包，生产主机只下载、校验、拉取和启动，不编译源码。
+
 实现依据为 [plan.md](plan.md) 和 [acceptance.md](acceptance.md)。邮箱/密码/MFA/Passkey、OAuth/OIDC、双 BFF、账号与管理后台，以及本地生产制品和运维工具已实现并逐模块推送。实体设备、规定性能环境、正式生产部署/邮件/独立恢复等仍待验收；最终自动回归实际结果见 [TEST_SUMMARY.md](TEST_SUMMARY.md)，任务状态和外部条件见 [TASK_PROGRESS.md](TASK_PROGRESS.md)。当前尚不具备生产发布条件。
 
 ## 环境

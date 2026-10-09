@@ -289,3 +289,7 @@ c3885fa这一轮完整测试只有T05集成失败（19集成其他18项0、E2E/s
 ## CDNGOD隐私政策页
 
 按用户要求新增公开/privacy路由和全站页脚入口，主体CDNGOD，联系support@cdngod.com。原前端60unit/TS/ESLint/build均0，实际Docker页面390/1440公开访问/刷新/目录/页脚/mailto/无横向溢出及axe0；identity-web镜像已重建healthy。[结果](docs/evidence/privacy-page/test-summary.md)。本轮生产前端变动使旧edge制品/前次完整回归不能自动代表当前页面，正式发布前须新edge构建及适当回归，生产/实体条件不放行。
+
+## CI成品与生产无构建部署
+
+按用户要求，新增main测试通过后GHCR成品发布与固定SHA部署包（GitHub Releases/Actionsartifact），生产一键deploy只用Docker/Compose+Node拉取/校验/备份/迁移/启动/冒烟，拒build与浮动镜像。包实际生成/摘要核对，新5测试+原6顺序共11全0，actionlint/ESLint/syntax/docs0；[记录](docs/evidence/T22/ci-deployment/test-summary.md)。生产环境不承担Rust/前端构建，远端CI首次推镜像/发布包仍待实际执行，不预报成功；生产配置/独立备份/业务smoke等外部条件尚缺，未部署生产。

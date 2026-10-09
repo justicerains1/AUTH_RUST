@@ -4,6 +4,8 @@
 
 ## 制品与配置
 
+当前成品发布与一键入口见[CI成品部署](production-ci-deployment.md)。构建只在CI/开发构建机执行，生产下载固定版本部署包并拉取不可变镜像；不要在生产运行本节Dockerfile构建或npm/Cargo构建命令。
+
 `infra/Dockerfile.prod`构建locked Rust release，runtime Debian12.15+OpenSSL3.0.22/CA/curl，应用UID10001；`infra/Dockerfile.edge.prod`构建三React应用并由Caddy2.11.7服务，UID10001监听容器8080/8443。`infra/compose.prod.yaml`仅edge发布主机80/443，PG/Redis无公开端口。应用read_only/cap_drop/资源与PID限制，tmpfs只/tmp；Caddy证书状态仅/data,/config持久卷。
 
 将镜像推送/验证后填写`infra/production.env.example`对应的不可变发布digest，不使用浮动latest。实际机密配置不入Git；放`.local/production/identity.env`、`demo-a.env`、`demo-b.env`及`secrets/`。identity.env明确APP_ENV=production、固定HTTPS ISSUER、匹配RP_ID、PG/Redis URL、current签名kid/key文件、AEAD版本文件/activekid、SMTP required及用户名/秘密文件、TRUSTED_PROXY_CIDRS；不打开seed/debug。BFF的PUBLIC_ORIGIN/clientID/secret/namespace/Cookie各不相同，Cookie以__Host-开头，生产不设置BFF_ISSUER_CONNECT_HOST。
