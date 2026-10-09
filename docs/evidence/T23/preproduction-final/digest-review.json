@@ -1,0 +1,252 @@
+{
+  "count": 49,
+  "allVerified": true,
+  "method": "Every matching JSON SHA256 equals prior independently verified source/image or actual test executable digest; only exact commit/file/rule/line fingerprints excluded",
+  "results": [
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T21/sql-probe-2026-10-09T04-57-34-585Z.json:generic-api-key:4617",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T21/sql-probe-2026-10-09T04-57-34-585Z.json:generic-api-key:4622",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:160",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:177",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:199",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:347",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:357",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:358",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:359",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:360",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:361",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:367",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:370",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:371",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:372",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:373",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:374",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:375",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:376",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:379",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:381",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:382",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:383",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:397",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:398",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:399",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:412",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:413",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:427",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:428",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:431",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:438",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:440",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:450",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:452",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:453",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:460",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:462",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:463",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:489",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:490",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:491",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:495",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:501",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:502",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:503",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:509",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:510",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    },
+    {
+      "fingerprint": "6e8e12d3715b6e17a6994f75015473d5ee1d73e3:docs/evidence/T23/preproduction-final-artifacts-20261009.json:generic-api-key:511",
+      "valueType": "previously verified public source/image/executed-harness SHA256",
+      "verified": true
+    }
+  ]
+}
