@@ -15,6 +15,7 @@
   "packageManager": "npm@9.2.0",
   "scripts": {
     "test:full": "node scripts/full-test.mjs",
+    "test:interactions": "node tests/performance/product-interactions.mjs",
     "check": "node scripts/run.mjs check",
     "test:unit": "node scripts/run.mjs test:unit",
     "test:integration": "node scripts/run.mjs test:integration",

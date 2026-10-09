@@ -110,6 +110,73 @@ async fn start(
     });
     Ok((format!("http://{addr}"), handle))
 }
+async fn performance_sessions(
+    pool: &PgPool,
+    service: &PasswordService,
+    password: &str,
+    hash: &str,
+) -> TestResult<BTreeMap<String, Vec<serde_json::Value>>> {
+    use identity_core::security::{Token, token_digest};
+    use identity_store::{
+        repository::Digest,
+        sessions::{LoginCommitInput, LoginOutcome, SessionService},
+    };
+    let store = SessionService::new(pool.clone(), Arc::new(SystemClock));
+    let mut material = BTreeMap::new();
+    for mode in ["local", "laboratory"] {
+        let user = Uuid::new_v4();
+        sqlx::query("INSERT INTO users(id,email,password_hash,verified) VALUES($1,$2,$3,true)")
+            .bind(user)
+            .bind(format!("performance-account-{mode}@example.test"))
+            .bind(hash)
+            .execute(pool)
+            .await?;
+        let mut devices = Vec::new();
+        for index in 0..26 {
+            if !service.verify(password, hash).await?.valid {
+                return Err("actual performance fixture password verification failed".into());
+            }
+            let preauth = Token::generate()?;
+            sqlx::query("INSERT INTO preauthentication_contexts(id,token_hash,csrf_hash,created_at,expires_at) VALUES($1,$2,$3,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP+INTERVAL '10 minutes')")
+                .bind(Uuid::new_v4()).bind(token_digest(preauth.expose()).as_slice()).bind(token_digest(Token::generate()?.expose()).as_slice()).execute(pool).await?;
+            let token = Token::generate()?;
+            let name = if index < 21 {
+                format!("Performance pagination {}", index + 1)
+            } else {
+                format!("Performance revocation {}", index - 20)
+            };
+            let result = store
+                .complete_password_login(&LoginCommitInput {
+                    user_id: user,
+                    expected_credential_version: 1,
+                    preauth_hash: Some(Digest::from_bytes(token_digest(preauth.expose()))),
+                    old_session_hash: None,
+                    session_id: Uuid::new_v4(),
+                    session_token_hash: Digest::from_bytes(token_digest(token.expose())),
+                    session_csrf_hash: Digest::from_bytes(token_digest(
+                        Token::generate()?.expose(),
+                    )),
+                    new_preauth_hash: Digest::from_bytes(token_digest(Token::generate()?.expose())),
+                    new_preauth_csrf_hash: Digest::from_bytes(token_digest(
+                        Token::generate()?.expose(),
+                    )),
+                    user_agent: name.clone(),
+                    upgraded_password_hash: None,
+                    request_id: Uuid::new_v4(),
+                    source_hash: Digest::from_bytes(token_digest("performance-test-source")),
+                })
+                .await?;
+            if !matches!(result, LoginOutcome::Authenticated { .. }) {
+                return Err("actual performance fixture session commit failed".into());
+            }
+            if index >= 21 {
+                devices.push(json!({"name":name,"token":token.expose()}));
+            }
+        }
+        material.insert(mode.to_owned(), devices);
+    }
+    Ok(material)
+}
 #[tokio::test]
 async fn t23_product_accessibility_harness() -> TestResult {
     if std::env::var("T23_ACCESSIBILITY_BROWSER_HARNESS").as_deref() != Ok("1") {
@@ -121,6 +188,11 @@ async fn t23_product_accessibility_harness() -> TestResult {
     let password = std::env::var("T23_ACCESSIBILITY_BROWSER_PASSWORD")
         .map_err(|_| "private test password required")?;
     let hash = service.hash(&Password::new(&password)?).await?;
+    let performance = if std::env::var("T21_PRODUCT_INTERACTION_FIXTURE").as_deref() == Ok("1") {
+        performance_sessions(&pool, &service, &password, hash.as_str()).await?
+    } else {
+        BTreeMap::new()
+    };
     let plain = Uuid::new_v4();
     sqlx::query("INSERT INTO users(id,email,password_hash,verified) VALUES($1,'access-account-chromium@example.test',$2,true)").bind(plain).bind(hash.as_str()).execute(&pool).await?;
     let firefox_user = Uuid::new_v4();
@@ -173,10 +245,16 @@ async fn t23_product_accessibility_harness() -> TestResult {
         std::env::var("T23_ACCESSIBILITY_CLOCK_KEY").map_err(|_| "private test key required")?;
     let controlpool = pool.clone();
     let app = Router::new().route("/__test/material", get(move |request: axum::extract::Request| {
-        let key=private_key.clone(); let admins=browser_admins.clone(); let pool=controlpool.clone();
+        let key=private_key.clone(); let admins=browser_admins.clone(); let performance=performance.clone(); let pool=controlpool.clone();
         async move {
             if request.headers().get("x-test-key").and_then(|value|value.to_str().ok()) != Some(key.as_str()) {
                 return (StatusCode::FORBIDDEN, Json(json!({"error":"forbidden"})));
+            }
+            if let Some(mode) = match request.uri().query() { Some("performance=local") => Some("local"), Some("performance=laboratory") => Some("laboratory"), _ => None } {
+                return match performance.get(mode) {
+                    Some(devices) => (StatusCode::OK, Json(json!({"devices":devices}))),
+                    None => (StatusCode::FORBIDDEN, Json(json!({"error":"explicit performance fixture required"}))),
+                };
             }
             let browser = match request.uri().query() {
                 Some("browser=chromium") => "chromium",

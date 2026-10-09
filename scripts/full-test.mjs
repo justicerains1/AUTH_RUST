@@ -6,7 +6,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { cpus, totalmem, platform, release } from 'node:os';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const ROOT_COMMANDS = ['verify:docs', 'verify:openapi', 'test:tooling', 'check', 'test:unit', 'test:integration', 'test:e2e', 'test:security', 'test:accessibility', 'build'];
+const ROOT_COMMANDS = ['verify:docs', 'verify:openapi', 'test:tooling', 'check', 'test:unit', 'test:integration', 'test:e2e', 'test:security', 'test:accessibility', 'build', 'test:interactions'];
 
 function npmCli() {
   const candidates = [process.env.npm_execpath, resolve(dirname(process.execPath), 'node_modules/npm/bin/npm-cli.js'), '/usr/share/nodejs/npm/bin/npm-cli.js'];

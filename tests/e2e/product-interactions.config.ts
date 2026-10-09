@@ -1,0 +1,2 @@
+import { defineConfig } from '@playwright/test';
+export default defineConfig({ testDir: '.', testMatch: 'product-interactions.spec.ts', workers: 1, fullyParallel: false, timeout: 300_000, reporter: [['dot']], outputDir: '../../.local/product-interactions-results', use: { browserName: 'chromium', baseURL: 'http://localhost:5320', viewport: { width: 390, height: 844 }, serviceWorkers: 'block', trace: 'off', screenshot: 'off', video: 'off' } });

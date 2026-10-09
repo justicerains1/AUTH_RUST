@@ -1,0 +1,34 @@
+
+Running 1 test using 1 worker
+(node:2108130) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+F
+
+  1) tests/e2e/product-interactions.spec.ts:44:1 › real account and administrator interaction latency
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 7
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "feedbackMs": 212.29999999701977,
+    +     "mode": "laboratory",
+    +     "scenario": "sessions-next-page",
+    +   },
+    + ]
+
+      71 |   }
+      72 |   const summaries = []; for (const mode of ['local', 'laboratory']) for (const scenario of [...new Set(samples.map((sample) => sample.scenario))]) { const selected = samples.filter((sample) => sample.mode === mode && sample.scenario === scenario); expect(selected).toHaveLength(5); const latency = mode === 'local' ? Math.max(...selected.map((sample) => sample.feedbackMs)) : percentile(selected.map((sample) => sample.feedbackMs)); summaries.push({ mode, scenario, samples: 5, feedbackStatistic: mode === 'local' ? 'maximum' : 'nearest-rank p75', feedbackMs: latency, thresholdMs: mode === 'local' ? 100 : 200, met: latency <= (mode === 'local' ? 100 : 200), completionP75Ms: percentile(selected.map((sample) => sample.completionMs)), [OPAQUE]: selected.filter((sample) => sample.eventTiming.durationMs !== null).length, eventTimingP75Ms: selected.every((sample) => sample.eventTiming.durationMs !== null) ? percentile(selected.map((sample) => sample.eventTiming.durationMs ?? 0)) : null }); }
+    > 73 |   const file = process.env.[OPAQUE]; if (!file) throw new Error('Private result path required.'); await writeFile(file, JSON.stringify({ settings, browser: version, [OPAQUE]: createHash('sha256').update(await readFile(chromium.executablePath())).digest('hex'), methodology: { feedback: 'Trusted click timestamp to earliest visible feedback plus two rAF callbacks; paint proxy, not exact pixel paint or INP.', completion: 'Same browser timestamp to actual result state plus two rAF; async network duration separate and has no 200ms business completion budget.', eventTiming: '16ms observer threshold; 8ms quantized event group max; missing entries are censored, not zero.', cache: 'new context per mode, browser cache disabled, production assets gzip; route navigation resets scenario state', data: '26 real canonical repository sessions per mode plus actual browser login; five revocations, independent mode users; complete standard administrator MFA recovery set.' }, samples, summaries }, null, 2) + '\n'); expect(summaries.filter((summary) => !summary.met).map((summary) => ({ mode: summary.mode, scenario: summary.scenario, feedbackMs: summary.feedbackMs }))).toEqual([]);
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ^
+      74 | });
+      75 |
+        at /root/code/rust/auth_rust/tests/e2e/product-interactions.spec.ts:73:1199
+
+    Error Context: .local/[OPAQUE]/[OPAQUE]/error-context.md
+
+  1 failed
+    tests/e2e/product-interactions.spec.ts:44:1 › real account and administrator interaction latency
