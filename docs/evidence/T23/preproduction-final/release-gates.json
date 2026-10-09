@@ -1,0 +1,21 @@
+{
+  "observed": "2026-10-09T04:49:59.050832+00:00",
+  "scope": "Local preproduction verification; production inputs must be verified separately",
+  "requiredProductionConfigPresent": {
+    ".local/production/identity.env": false,
+    ".local/production/demo-a.env": false,
+    ".local/production/demo-b.env": false
+  },
+  "productionDeploymentPerformed": false,
+  "pending": [
+    "Real domain/DNS and target host deployment access",
+    "Production SMTP SPF/DKIM/DMARC and delivery",
+    "Independent encrypted backup storage, fourteen-day recoverable history and measured RPO/RTO",
+    "Production monitoring scheduling and external alert receipt",
+    "Physical Passkey/Windows Hello and Safari/mobile manual matrix",
+    "Screen reader/manual accessibility",
+    "Production post-deploy smoke and twenty-four-hour/high-traffic observation"
+  ],
+  "localPreReleaseTest": "passed",
+  "productionRelease": "not approved; prerequisites and real environment acceptance missing"
+}

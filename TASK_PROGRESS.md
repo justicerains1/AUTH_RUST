@@ -273,3 +273,7 @@ c3885fa这一轮完整测试只有T05集成失败（19集成其他18项0、E2E/s
 ## 当前Docker部署验收
 
 用户授权由助手测试当前部署。Windows入口四项HTTP200与Docker10服务healthy；直接在5173/5174/5175实际UI/API验证注册/邮件/密码、MFA恢复码、虚拟Passkey、SSO撤销、后台用户/客户端/成员及布局，通过项与历次恢复运行证据见[当前部署验收](docs/evidence/local-deployment/acceptance/test-summary.md)。真实密码重置HTTP200后TOTP/Passkey保留，原密码登录当前部署HTTP401已重测。管理员已通过UI绑定TOTP，设置密钥及未消费恢复码仅保存在本机受限凭据文件。原人工设备/Windows完整浏览器/Safari/生产条件仍未放行；没有开始生产部署。
+
+## 最后一轮生产发布前本地测试
+
+用户要求最后上线前检查；本轮固定干净a2d7f99提交，05:16:49Z十二阶段全部0、源码SHA前后零变。19integration/11E2E/6security/双浏览器可访问性/60交互均通过，新镜像36检查54SHA与Windows入口通过，Docker十服务测试后healthy。详情见[发布前报告](docs/evidence/T23/preproduction-final/test-summary.md)。生产配置/主机域名SMTP/独立备份及真实设备未准备，生产release未放行，没有执行部署。

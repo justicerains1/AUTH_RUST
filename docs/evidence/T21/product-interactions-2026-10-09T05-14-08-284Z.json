@@ -1,0 +1,1751 @@
+{
+  "started": "2026-10-09T05:14:08.285Z",
+  "scope": "Local real account/admin interaction experiment, not production RUM INP or full T21 acceptance.",
+  "exitCode": 0,
+  "source": [
+    {
+      "path": "apps/identity-web/src/App.test.tsx",
+      "sha256": "5754076ccb3943446d00bf7ae024db8c26afd8f7ae65b588838eddf65b8bfd90"
+    },
+    {
+      "path": "apps/identity-web/src/App.tsx",
+      "sha256": "8619759a18d296f57964ebecdf163d5e1a747239e13db7289888b5605b8f2f7e"
+    },
+    {
+      "path": "apps/identity-web/src/components/AccountAction.tsx",
+      "sha256": "3f5483f804f9a6175c7c64032cb190e8a2648ab33376f26bc80a64207c7c6ca2"
+    },
+    {
+      "path": "apps/identity-web/src/components/AccountLayout.tsx",
+      "sha256": "6c320052b6e167acb13867e8aa39577b7a30babea2ee509da25b28bc53173f02"
+    },
+    {
+      "path": "apps/identity-web/src/components/AuthGuard.tsx",
+      "sha256": "6126d9caf669e3d639dcf6144cce5d5f33a08e68cd94c184d16247ae85a6f88b"
+    },
+    {
+      "path": "apps/identity-web/src/components/AuthTransactionNotice.tsx",
+      "sha256": "033f18cbf3475c9c75f2bb078cd38ffcfcbb0ef02f27ef64c20e286203bd1553"
+    },
+    {
+      "path": "apps/identity-web/src/components/Button.tsx",
+      "sha256": "fa74ec5f09d3bd2977eec5c079d6e6a6894f1f192b8172f22f054a32a0556a48"
+    },
+    {
+      "path": "apps/identity-web/src/components/ConfirmDialog.tsx",
+      "sha256": "1ede95030a56d3c8b6ab3b525266397959fe904c78e1668725effafb30e2e98b"
+    },
+    {
+      "path": "apps/identity-web/src/components/CursorPagination.tsx",
+      "sha256": "2d09741413f9c2fb99a87096456ab8d1f5ef0fed6c3f9b38afb77a40596b2fee"
+    },
+    {
+      "path": "apps/identity-web/src/components/Empty.tsx",
+      "sha256": "1fdd3a53ba3415a1aaf20af070784b85bb946d6623df1fb7de09239a5b225d5e"
+    },
+    {
+      "path": "apps/identity-web/src/components/FactorChallenge.tsx",
+      "sha256": "1c01a2b78974220a6f5facddae7b386e2c7a36f28bcae4097bbe9bd07ff14a22"
+    },
+    {
+      "path": "apps/identity-web/src/components/FieldError.tsx",
+      "sha256": "b63d07d7a07280be3cb21d580ccaf86176d37fab13068124825261d7d31073a5"
+    },
+    {
+      "path": "apps/identity-web/src/components/Input.tsx",
+      "sha256": "1273a7db394859174be7ec7bd29834a0f913327242d90b7550d955a2992fb798"
+    },
+    {
+      "path": "apps/identity-web/src/components/Layout.tsx",
+      "sha256": "25b58ffceee7af208ac71e2a7c265b1126f99bdba12ae30ad997bb9cddf4bade"
+    },
+    {
+      "path": "apps/identity-web/src/components/PasskeyLoginButton.tsx",
+      "sha256": "4fc86d6bcc6fb158b0ef10088fe90e636c6391eaa13e74bbbe3248eeb59e2c37"
+    },
+    {
+      "path": "apps/identity-web/src/components/PasskeyReauth.tsx",
+      "sha256": "7c6500799f658babf929c1a0eb7c541dfb7e76815f37982172e2dbda9589a76d"
+    },
+    {
+      "path": "apps/identity-web/src/components/Password.tsx",
+      "sha256": "3a5945279207c1ebda5cfa4c716adb554853db4f018be46115dfd3ee6c8b276f"
+    },
+    {
+      "path": "apps/identity-web/src/components/PublicAuthLayout.tsx",
+      "sha256": "e8cd9722128ceab5eaad59bee91229dc0282eb8d86dd757126c3f1e68e942c31"
+    },
+    {
+      "path": "apps/identity-web/src/components/ReauthenticationDialog.tsx",
+      "sha256": "1ed0bedc285274943b30f28050673aa06586c55fa0badb8b58156bc0ff3588a3"
+    },
+    {
+      "path": "apps/identity-web/src/components/RecoveryCodes.tsx",
+      "sha256": "4f1501b83df823b66c08ec2fe5f8937f1f0a993a23ada47bd31a681dc52f4e3c"
+    },
+    {
+      "path": "apps/identity-web/src/components/RequestFeedback.tsx",
+      "sha256": "fdaa9a973bd6846b03277c7e9656072360c7f81dd577d21125e6761a904007b2"
+    },
+    {
+      "path": "apps/identity-web/src/components/Status.tsx",
+      "sha256": "64bd758fb8e08a9103aabfd4d787fb8b38d7856ec4b282cab36fa9ce20edad8b"
+    },
+    {
+      "path": "apps/identity-web/src/components/Table.tsx",
+      "sha256": "8654aee84242c30679bf1ccd551dca4ca8fb724e4018190b2ed928d0e1eed619"
+    },
+    {
+      "path": "apps/identity-web/src/components/TotpQrCode.tsx",
+      "sha256": "60f563fc47106dd1adc9396fc68e8a17375a9102b940f96771ed7366c792fb75"
+    },
+    {
+      "path": "apps/identity-web/src/components/auth-factors.test.tsx",
+      "sha256": "51b6814e69ddfa77238a018f3cc517dbf5d550f402585f1914c4f42e68dee2ad"
+    },
+    {
+      "path": "apps/identity-web/src/components/components.test.tsx",
+      "sha256": "34b1d101b88f223768f2827d31cf0f63c68c4d597359ea361d0befba48b31bb3"
+    },
+    {
+      "path": "apps/identity-web/src/components/mfa.test.tsx",
+      "sha256": "8c00a8c1ececc79be29f3bed48a96353429d78c0a4bc5145f6018cf88462bb4d"
+    },
+    {
+      "path": "apps/identity-web/src/components/passkey.test.tsx",
+      "sha256": "f980c20f640f1cf47777113b3f880d846de1545712181f351a09405750a28820"
+    },
+    {
+      "path": "apps/identity-web/src/components/reauthentication.test.tsx",
+      "sha256": "0e05c7a698c6ee7e0bed67e970f9588372eed3137090c8ad7329d7b8d80555c7"
+    },
+    {
+      "path": "apps/identity-web/src/lib/admin-api.ts",
+      "sha256": "cd6b85f6c7c457bd24790c4d80a5baf4a6e6d9511f6a599f0e90906b5dccd4b3"
+    },
+    {
+      "path": "apps/identity-web/src/lib/api.test.ts",
+      "sha256": "ffe03e877ecd8a5e8b454f88afdf7bf742e626b8d9a18d1f8d1be4896b2cad2f"
+    },
+    {
+      "path": "apps/identity-web/src/lib/api.ts",
+      "sha256": "d2e52229608975e910443bf55ef4d9795878575fb51aadc905878fa994a78f08"
+    },
+    {
+      "path": "apps/identity-web/src/lib/auth-feedback.ts",
+      "sha256": "e19ec5885d8f7121608badcb75d4627df859c66d9c6827418f745d5afbdb6584"
+    },
+    {
+      "path": "apps/identity-web/src/lib/auth-flow.ts",
+      "sha256": "1a7ec8f5a81d0da82a25f7013ca8b7872a0bf3b9104493096c325b5eeaba6db2"
+    },
+    {
+      "path": "apps/identity-web/src/lib/i18n.ts",
+      "sha256": "b5f73e84df2aa3c70dcaaccdc20e6531c6c7a17f3018aa042256b853d0523e73"
+    },
+    {
+      "path": "apps/identity-web/src/lib/mail-action.ts",
+      "sha256": "09b0bcae677f37b8eb56b688905ae2e7e972beac04cd2dd79ca2f2f7ea3eb9f5"
+    },
+    {
+      "path": "apps/identity-web/src/lib/passkeyAuth.ts",
+      "sha256": "5b7be56e7886b208a27c454b6a314e531df42f705b3c6375d38307c919f1b96b"
+    },
+    {
+      "path": "apps/identity-web/src/lib/query.ts",
+      "sha256": "e2835f48e3c7b5f40a6ee0207a430d56c82e39abd78537b7bf4eb3a9893ce873"
+    },
+    {
+      "path": "apps/identity-web/src/lib/reauthentication.ts",
+      "sha256": "2cb2803ca7ddb041328a85abcc3ff0d2d3b62175354f38deb60b822f68671d90"
+    },
+    {
+      "path": "apps/identity-web/src/lib/webauthn.test.ts",
+      "sha256": "c78c43b2156114fa93e75c26eb76e8c8701fc202112192a8efe38a226d87343f"
+    },
+    {
+      "path": "apps/identity-web/src/lib/webauthn.ts",
+      "sha256": "d73830f674b5a931ea9e7942abe5b26519095540c19946691e95268bd82693c9"
+    },
+    {
+      "path": "apps/identity-web/src/main.tsx",
+      "sha256": "a776412f9856bfa64f9c0761d7b95de3b4b81c728d6bec686acc3fbc9f353a19"
+    },
+    {
+      "path": "apps/identity-web/src/pages/AccountPage.tsx",
+      "sha256": "e8d237c67737cdad84b021396a7d17c3d71fed8a092f1ca4f2218e9124c93d8a"
+    },
+    {
+      "path": "apps/identity-web/src/pages/AdminPage.tsx",
+      "sha256": "645ea7f4a5e39fede65d416d0d18df3f78b4acf6f4c2b0e250f0b5d84b558c0f"
+    },
+    {
+      "path": "apps/identity-web/src/pages/ComponentsPage.tsx",
+      "sha256": "4879477c3a3dc6e77ece335fb3d7ea06facee8740d8f04cd9ca5c6429e912652"
+    },
+    {
+      "path": "apps/identity-web/src/pages/ConsentPage.tsx",
+      "sha256": "62c871eba500fc5579dc383f14e4ba1c3d6e1193af9b66093d60be97c86b3e82"
+    },
+    {
+      "path": "apps/identity-web/src/pages/EmailVerificationPage.tsx",
+      "sha256": "5e2f025dec85a630828965dbc4cbd35357a60ca16649911c7f30e22b8ecaaa3a"
+    },
+    {
+      "path": "apps/identity-web/src/pages/GrantsPage.tsx",
+      "sha256": "c04873a23ae79c43d383b8bcfd517255a501f3e3b8239271f3c55d1c678f80a9"
+    },
+    {
+      "path": "apps/identity-web/src/pages/HomePage.tsx",
+      "sha256": "e1dd4017307edb607cf3da1875202fea86278163c4873ce0b379a7bac582ecdc"
+    },
+    {
+      "path": "apps/identity-web/src/pages/LoginPage.tsx",
+      "sha256": "bbbea68b8ba8c53066f5c3bc5deba7b75ef6dd4b6046569310056a4df8560ba7"
+    },
+    {
+      "path": "apps/identity-web/src/pages/LogoutPage.tsx",
+      "sha256": "a2e1bcb04fa9a24734507db62c40d510d61278b234c8ca18cfe0d387db8c03c6"
+    },
+    {
+      "path": "apps/identity-web/src/pages/MfaPage.tsx",
+      "sha256": "817b4cc8d87e296fed588430f1577cae1c5087f8eec82c6b847911b5e062ea71"
+    },
+    {
+      "path": "apps/identity-web/src/pages/NotFoundPage.tsx",
+      "sha256": "a9f4b2ab285c6d647055529d4e8e917a831b32ada4d3e873ff3e473aa2d80f83"
+    },
+    {
+      "path": "apps/identity-web/src/pages/PageTitle.tsx",
+      "sha256": "0c1fe9ebc4b956e5e15731fab5a2dbae43d6080fbf73d6ac159f442704c5a462"
+    },
+    {
+      "path": "apps/identity-web/src/pages/PasskeysPage.tsx",
+      "sha256": "d0345c7f72a7dea30e2636e9de9a11b5d999880a62c3357c26f891d1706a06ef"
+    },
+    {
+      "path": "apps/identity-web/src/pages/PasswordChangePage.tsx",
+      "sha256": "9aea9412b4e093cefacbe60ef6ec1939f6538534af8a7366d16b23cb7eb6f458"
+    },
+    {
+      "path": "apps/identity-web/src/pages/PasswordResetPage.tsx",
+      "sha256": "6b0863ff11e8b90cb0c309996d100e93e9453e0495981554ae233b23d69eb2b3"
+    },
+    {
+      "path": "apps/identity-web/src/pages/RegisterPage.tsx",
+      "sha256": "00a8fc9eccd2cea13ecb9fcd236cf4c0e13322a8bff9df2cf14c743ecd12cbfd"
+    },
+    {
+      "path": "apps/identity-web/src/pages/SessionsPage.tsx",
+      "sha256": "d57216547cd8b3e447c71c4011007f9f1399a963a36fc46516d25a989abc95b9"
+    },
+    {
+      "path": "apps/identity-web/src/pages/account-security.test.tsx",
+      "sha256": "8cfd612031bc007c9502ee27caa78a67935c3bd0a4efe025e730608f016277fb"
+    },
+    {
+      "path": "apps/identity-web/src/pages/admin/AdminConsole.tsx",
+      "sha256": "861ac0ab793bb29c60170e93346a1448c6dd9be7f2acffc65cca97dc2988e4dd"
+    },
+    {
+      "path": "apps/identity-web/src/pages/admin/AdminShared.tsx",
+      "sha256": "d32352cb4c5abb0d1b1f8f3ab95ad532fcd7bbdbae1ff58d49608395ce58b651"
+    },
+    {
+      "path": "apps/identity-web/src/pages/admin/AuditPage.tsx",
+      "sha256": "f7a790361ceccf0771a4ed26a39290a5eb4c3112451e15db2c79f8d71249fc51"
+    },
+    {
+      "path": "apps/identity-web/src/pages/admin/ClientsPage.tsx",
+      "sha256": "515a97c1584d0840d4375f31b4ba8281afa9129379e929cfa43d2846de2f8767"
+    },
+    {
+      "path": "apps/identity-web/src/pages/admin/MembersPage.tsx",
+      "sha256": "a98e7d2db6673f408e7b03ff271cc5e914f327f5e7efa43fcb71eef274ce20d6"
+    },
+    {
+      "path": "apps/identity-web/src/pages/admin/UsersPage.tsx",
+      "sha256": "e45f4a28a474bed1b83c0362410bf7b229a64f50de3012347c221d618fceffed"
+    },
+    {
+      "path": "apps/identity-web/src/pages/admin/admin.test.tsx",
+      "sha256": "2b3559d4f955e100466bfa31b122b0d49049c0ccaa2d6e8b101ac2fe18dbb66e"
+    },
+    {
+      "path": "apps/identity-web/src/pages/consent.test.tsx",
+      "sha256": "03f66520c0ea20f0933224ab0d50928753e5f9c0ccd8ba738092e892f933d753"
+    },
+    {
+      "path": "apps/identity-web/src/pages/logout-grants.test.tsx",
+      "sha256": "f92762aeb42671d9e43b7f34b9d62202e9ff1e9fbe813989e079dfcfa338b963"
+    },
+    {
+      "path": "apps/identity-web/src/pages/passwords.test.tsx",
+      "sha256": "421b5da87e239f835f0fc26802fe5a00c59fd292b2ba612ec5f67ab21d400690"
+    },
+    {
+      "path": "apps/identity-web/src/pages/public-auth.test.tsx",
+      "sha256": "a7d6f8bc60606a7e50bc0ec5c49428a482c7d573db0022d1fffa675a398d7e6a"
+    },
+    {
+      "path": "apps/identity-web/src/pages/sessions.test.tsx",
+      "sha256": "642b5e8fd1171a8402f0c758afbe1198819f64585e8cdd3743af4081f31787ec"
+    },
+    {
+      "path": "apps/identity-web/src/styles.css",
+      "sha256": "0773c0848055355c9904bb9f1e59285b6a0d58d7e2183d26e6a1538f6f87d015"
+    },
+    {
+      "path": "crates/identity-server/tests/t23_accessibility.rs",
+      "sha256": "2c99f3c4ea3a8a4a9ba5fa7c25c43af0650c9b5c0f341821a09495e9a96fc281"
+    },
+    {
+      "path": "tests/e2e/product-interactions.spec.ts",
+      "sha256": "d1e4a949057c43aac83dafb70ab8dfd94490950e7caf262414adbcf53f12fbc0"
+    },
+    {
+      "path": "tests/e2e/product-interactions.config.ts",
+      "sha256": "ea9e01645c01b01811e0d38a1d440d1684421570017b14ef10170a624b8b42d4"
+    },
+    {
+      "path": "tests/performance/product-interactions.mjs",
+      "sha256": "cb0f351c537fa68959b890ed475a41e6a6bf1cf3f5845057750828a25a74d9ec"
+    }
+  ],
+  "build": [
+    {
+      "path": "/assets/AccountLayout-Dvmujh_P.js",
+      "bytes": 2409,
+      "gzipBytes": 1142,
+      "sha256": "4e50724c91fd4e48b8b5d0650a0c9dd2a03506ace5d22cbbebd31d8e5ad9e846"
+    },
+    {
+      "path": "/assets/AccountPage-CWIX6eR0.js",
+      "bytes": 5130,
+      "gzipBytes": 1922,
+      "sha256": "a318450169692afad19ecfced0220ffcf5b7ca34b055adc62bc19ecc607dd3f4"
+    },
+    {
+      "path": "/assets/AdminPage-CbWo1RGg.js",
+      "bytes": 1846,
+      "gzipBytes": 930,
+      "sha256": "c5e08cce9212b8df678a3fb372c6e4d735b20a1dcf5953ae475c13bbe1650bc6"
+    },
+    {
+      "path": "/assets/AdminShared-E1D48CQe.js",
+      "bytes": 6097,
+      "gzipBytes": 2662,
+      "sha256": "1650c08333a0b464a710fd81f5dd381ce9d679e75531f1ec89cba941bef4d873"
+    },
+    {
+      "path": "/assets/AuditPage-Bc8eJdtt.js",
+      "bytes": 2478,
+      "gzipBytes": 1362,
+      "sha256": "556cc7520ec221eb8578e3bf28077c08be714ae1e60d33a4a347dc7fe584bc4f"
+    },
+    {
+      "path": "/assets/AuthTransactionNotice-MND5UK7g.js",
+      "bytes": 2016,
+      "gzipBytes": 1122,
+      "sha256": "8975ec99c1d48dc5501015d841e8943a447adb206eaeeec52ad05886ee54b3b2"
+    },
+    {
+      "path": "/assets/ClientsPage-DDQmLP0X.js",
+      "bytes": 6699,
+      "gzipBytes": 2890,
+      "sha256": "91a190d839c369516c644b4d2618ddb4aad8a6fda6416d56125828506b475207"
+    },
+    {
+      "path": "/assets/ConsentPage-C1RbtvDG.js",
+      "bytes": 3516,
+      "gzipBytes": 1779,
+      "sha256": "5994b8bfec675f5a35eb99ba4bc31e8708b07cf8ec5f74168a2795fb44650145"
+    },
+    {
+      "path": "/assets/CursorPagination-DYit5_4u.js",
+      "bytes": 475,
+      "gzipBytes": 349,
+      "sha256": "a73def4949f14c81012d323f30ccfdad80446f273af07fabac2d281e69c46298"
+    },
+    {
+      "path": "/assets/EmailVerificationPage-Cte3TlUD.js",
+      "bytes": 3569,
+      "gzipBytes": 1756,
+      "sha256": "027536cb4f9fa1be94532f5ff35652c1d8803b760e80c56ea0b35f9fdaa959f3"
+    },
+    {
+      "path": "/assets/GrantsPage-DrW4yD95.js",
+      "bytes": 2246,
+      "gzipBytes": 1337,
+      "sha256": "3bd7b4c712daf9ff284a9cc89149366179584244cc7db8c7ad75d5475dc928fe"
+    },
+    {
+      "path": "/assets/HomePage-B3zUkt0m.js",
+      "bytes": 2953,
+      "gzipBytes": 1156,
+      "sha256": "a307179e8f89359ac3e5334d78031434e0acf8a8571579d0b06d61477bc4a3e9"
+    },
+    {
+      "path": "/assets/Input-DNCttkuw.js",
+      "bytes": 31571,
+      "gzipBytes": 11474,
+      "sha256": "3d37f919d583551237caa062cebc1004c37d173d6e96d5edb4983ce6c0c855df"
+    },
+    {
+      "path": "/assets/LoginPage-u2Srn4GM.js",
+      "bytes": 5707,
+      "gzipBytes": 2711,
+      "sha256": "3a758d93e7b3d5ba9f5bc4019ac1bc346083ffcd3b7a40a485c2c9ad63e2e530"
+    },
+    {
+      "path": "/assets/LogoutPage-09JkcNzz.js",
+      "bytes": 1776,
+      "gzipBytes": 1105,
+      "sha256": "0ac59f4bfddc7707274236dbd1350414fe92fce4c7af1539ba7a68b871700e0b"
+    },
+    {
+      "path": "/assets/MembersPage-BWy2IHLg.js",
+      "bytes": 2159,
+      "gzipBytes": 1199,
+      "sha256": "2d6239c87283144e8d89c1eb33a9ad57d6e74b6ac5c86672c616c9593bcff1bb"
+    },
+    {
+      "path": "/assets/MfaPage-BIrmpde_.js",
+      "bytes": 7542,
+      "gzipBytes": 3236,
+      "sha256": "220cc7f6b6fff0c6b4a9c56faa22ffb9c72b63559055655f994e0144a8d5d0fc"
+    },
+    {
+      "path": "/assets/NotFoundPage-Cq2KmfRz.js",
+      "bytes": 438,
+      "gzipBytes": 331,
+      "sha256": "cebab1e440b06200e8566521b83b2d75610a733907b6bfcd5de4b7f50d19459b"
+    },
+    {
+      "path": "/assets/PageTitle-BMck9NzV.js",
+      "bytes": 219,
+      "gzipBytes": 202,
+      "sha256": "954d3750e646e02de5db7231210a541fd0cb89703ce8a00c71936949cc11dce6"
+    },
+    {
+      "path": "/assets/PasskeysPage-DFspnfa9.js",
+      "bytes": 5937,
+      "gzipBytes": 2641,
+      "sha256": "56aa52058c9bed5b2016555c94ea648387f6d81b4271d167b46f4fb0f7b57dce"
+    },
+    {
+      "path": "/assets/PasswordChangePage-CR1bt4fD.js",
+      "bytes": 2747,
+      "gzipBytes": 1518,
+      "sha256": "5be6bcbaa6176466521c2a3711b4723ebf352944d07b538f8f81197301744903"
+    },
+    {
+      "path": "/assets/PasswordResetPage-D4ZjynDN.js",
+      "bytes": 4242,
+      "gzipBytes": 2104,
+      "sha256": "189ac1fd6c82a684b78ed864991ae89de8caef70865d5e6358f0bd1eb698caab"
+    },
+    {
+      "path": "/assets/RegisterPage-Dg4l5XDB.js",
+      "bytes": 3011,
+      "gzipBytes": 1629,
+      "sha256": "80dabc8cbb38b47b8b0e29e99d647d30997562c2aaeeab37986d5d4556cc1906"
+    },
+    {
+      "path": "/assets/SessionsPage-D7RhQAIV.js",
+      "bytes": 2948,
+      "gzipBytes": 1494,
+      "sha256": "086ea5d462f218118fb42345d9ea710410e87246371b5e284cd061a118aa40e5"
+    },
+    {
+      "path": "/assets/Status-B8XR2J4p.js",
+      "bytes": 964,
+      "gzipBytes": 562,
+      "sha256": "34c21bb59b411c0085e96262494c2314e100d7a36547359f3dd041fff8ea1c2f"
+    },
+    {
+      "path": "/assets/Table-LBwUYp5-.js",
+      "bytes": 967,
+      "gzipBytes": 565,
+      "sha256": "7f02fdb8bac064b146e3bde6ddc8164437fd31b63196504b2ab382bee43951d9"
+    },
+    {
+      "path": "/assets/TotpQrCode-D54RhmOR.js",
+      "bytes": 943,
+      "gzipBytes": 657,
+      "sha256": "ed677bf1692ae40e836bc7ae349d8685af426bbf0d067c5b39d426f6d9f215a8"
+    },
+    {
+      "path": "/assets/UsersPage-BBmMbbJu.js",
+      "bytes": 3598,
+      "gzipBytes": 1699,
+      "sha256": "95d1917666a7503ac76b74a48c4754c8efb86b9424ff3020e04a3324d0ac9b08"
+    },
+    {
+      "path": "/assets/api-CiOuZ4ty.js",
+      "bytes": 94276,
+      "gzipBytes": 27001,
+      "sha256": "da3e65f86ca0b2ef7d00f671ab0bed787916d529e923de2869504116732cc3d1"
+    },
+    {
+      "path": "/assets/dist-fhZSiuUL.js",
+      "bytes": 7440,
+      "gzipBytes": 2844,
+      "sha256": "9ea7619feb4cd214cec7d2d39c0705f750346647a018d95922a0b81720aa91ea"
+    },
+    {
+      "path": "/assets/index-DBJ_JVkW.css",
+      "bytes": 14625,
+      "gzipBytes": 3626,
+      "sha256": "a13f5b80e872661156d1e7bffb5b54d40a13f93c2e0069cb2b05145026517ed9"
+    },
+    {
+      "path": "/assets/index-dJ92mABk.js",
+      "bytes": 337916,
+      "gzipBytes": 106159,
+      "sha256": "efef17df18d4d8bb0cdf7c2bd7390b48635f05aafedc20625b851d82b2c17893"
+    },
+    {
+      "path": "/assets/jsx-runtime-Dk72oS4N.js",
+      "bytes": 8774,
+      "gzipBytes": 3345,
+      "sha256": "c5f4f8da0038e4082afc00542f93aa1bb64bc5777801d67197507865915a89b6"
+    },
+    {
+      "path": "/assets/mail-action-CjTmAZmi.js",
+      "bytes": 900,
+      "gzipBytes": 500,
+      "sha256": "5831571606a1a35f29e38fe60ac138b777a84e49b9155484e3ce1e2f4091b9a8"
+    },
+    {
+      "path": "/assets/qrcode-DtWdxa9d.js",
+      "bytes": 20628,
+      "gzipBytes": 7193,
+      "sha256": "4d4f1742456b3e0406bba78d1d1c891386c40676bc217ef3d5e3f29bc2989034"
+    },
+    {
+      "path": "/index.html",
+      "bytes": 790,
+      "gzipBytes": 385,
+      "sha256": "f58da15d26111eaea1d95c8b31dba8c00d729e2ee6f940c4b949caa31008fe56"
+    }
+  ],
+  "environment": {
+    "os": "linux 6.18.40.1-microsoft-standard-WSL2 x64",
+    "node": "v22.22.1",
+    "cpuModel": "AMD Ryzen 7 7700X 8-Core Processor",
+    "logicalCpus": 16,
+    "memoryGiB": 15.217361450195312,
+    "git": "a2d7f99dfc4ec0a73e27e568dfc05464c741449b",
+    "productionRUM": false
+  },
+  "measurement": {
+    "settings": {
+      "chrome": "HeadlessChrome/153.0.8010.12",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "samples": 5,
+      "cpuSlowdown": 4,
+      "downloadBytesPerSecond": 200000,
+      "uploadBytesPerSecond": 93750,
+      "latencyMs": 150
+    },
+    "browser": {
+      "protocolVersion": "1.3",
+      "product": "HeadlessChrome/153.0.8010.12",
+      "revision": "@971a7443b0c9b0a9b2860529b33331b76077ec62",
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+      "jsVersion": "15.3.76.4"
+    },
+    "browserExecutableSha256": "8c599d43aec53f2460a31ae2f4af6bd863f8258b34ff519564bc5d4726bfaa1e",
+    "methodology": {
+      "feedback": "Trusted click timestamp to earliest visible feedback plus two rAF callbacks; paint proxy, not exact pixel paint or INP.",
+      "completion": "Same browser timestamp to actual result state plus two rAF; async network duration separate and has no 200ms business completion budget.",
+      "eventTiming": "16ms observer threshold; 8ms quantized event group max; missing entries are censored, not zero.",
+      "cache": "new context per mode, browser cache disabled, production assets gzip; route navigation resets scenario state",
+      "data": "26 real canonical repository sessions per mode plus actual browser login; five revocations, independent mode users; complete standard administrator MFA recovery set."
+    },
+    "samples": [
+      {
+        "mode": "local",
+        "scenario": "account-dialog-open",
+        "sample": 1,
+        "feedbackMs": 44.19999998807907,
+        "completionMs": 44.19999998807907,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            9595
+          ]
+        },
+        "backendVerified": true
+      },
+      {
+        "mode": "local",
+        "scenario": "account-dialog-cancel",
+        "sample": 1,
+        "feedbackMs": 46.5,
+        "completionMs": 46.5,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            9602
+          ]
+        },
+        "backendVerified": true
+      },
+      {
+        "mode": "local",
+        "scenario": "account-dialog-open",
+        "sample": 2,
+        "feedbackMs": 46.80000001192093,
+        "completionMs": 46.80000001192093,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            9609
+          ]
+        },
+        "backendVerified": true
+      },
+      {
+        "mode": "local",
+        "scenario": "account-dialog-cancel",
+        "sample": 2,
+        "feedbackMs": 46.599999994039536,
+        "completionMs": 46.599999994039536,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            9616
+          ]
+        },
+        "backendVerified": true
+      },
+      {
+        "mode": "local",
+        "scenario": "account-dialog-open",
+        "sample": 3,
+        "feedbackMs": 47.60000002384186,
+        "completionMs": 47.60000002384186,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            9623
+          ]
+        },
+        "backendVerified": true
+      },
+      {
+        "mode": "local",
+        "scenario": "account-dialog-cancel",
+        "sample": 3,
+        "feedbackMs": 47.80000001192093,
+        "completionMs": 47.80000001192093,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            9630
+          ]
+        },
+        "backendVerified": true
+      },
+      {
+        "mode": "local",
+        "scenario": "account-dialog-open",
+        "sample": 4,
+        "feedbackMs": 47.19999998807907,
+        "completionMs": 47.19999998807907,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            9637
+          ]
+        },
+        "backendVerified": true
+      },
+      {
+        "mode": "local",
+        "scenario": "account-dialog-cancel",
+        "sample": 4,
+        "feedbackMs": 47.69999998807907,
+        "completionMs": 47.69999998807907,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            9644
+          ]
+        },
+        "backendVerified": true
+      },
+      {
+        "mode": "local",
+        "scenario": "account-dialog-open",
+        "sample": 5,
+        "feedbackMs": 47.5,
+        "completionMs": 47.5,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            9651
+          ]
+        },
+        "backendVerified": true
+      },
+      {
+        "mode": "local",
+        "scenario": "account-dialog-cancel",
+        "sample": 5,
+        "feedbackMs": 47.599999994039536,
+        "completionMs": 47.599999994039536,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            9658
+          ]
+        },
+        "backendVerified": true
+      },
+      {
+        "mode": "local",
+        "scenario": "sessions-next-page",
+        "sample": 1,
+        "feedbackMs": 47.599999994039536,
+        "completionMs": 63.900000005960464,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            2804
+          ]
+        },
+        "backendVerified": true,
+        "status": 200,
+        "apiDurationMs": 6.300000011920929,
+        "pageIdsChanged": true
+      },
+      {
+        "mode": "local",
+        "scenario": "sessions-next-page",
+        "sample": 2,
+        "feedbackMs": 46.79999998211861,
+        "completionMs": 63.099999994039536,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            9905
+          ]
+        },
+        "backendVerified": true,
+        "status": 200,
+        "apiDurationMs": 5.699999988079071,
+        "pageIdsChanged": true
+      },
+      {
+        "mode": "local",
+        "scenario": "sessions-next-page",
+        "sample": 3,
+        "feedbackMs": 47.400000005960464,
+        "completionMs": 63.80000001192093,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            4056
+          ]
+        },
+        "backendVerified": true,
+        "status": 200,
+        "apiDurationMs": 5.9000000059604645,
+        "pageIdsChanged": true
+      },
+      {
+        "mode": "local",
+        "scenario": "sessions-next-page",
+        "sample": 4,
+        "feedbackMs": 47.599999994039536,
+        "completionMs": 63.89999997615814,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            4452
+          ]
+        },
+        "backendVerified": true,
+        "status": 200,
+        "apiDurationMs": 5.5999999940395355,
+        "pageIdsChanged": true
+      },
+      {
+        "mode": "local",
+        "scenario": "sessions-next-page",
+        "sample": 5,
+        "feedbackMs": 46.70000001788139,
+        "completionMs": 96.59999999403954,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            6946
+          ]
+        },
+        "backendVerified": true,
+        "status": 200,
+        "apiDurationMs": 42.89999997615814,
+        "pageIdsChanged": true
+      },
+      {
+        "mode": "local",
+        "scenario": "session-revocation-confirm",
+        "sample": 1,
+        "feedbackMs": 47.30000001192093,
+        "completionMs": 80.40000000596046,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            851
+          ]
+        },
+        "backendVerified": true,
+        "status": 204,
+        "apiDurationMs": 15.099999994039536
+      },
+      {
+        "mode": "local",
+        "scenario": "session-revocation-confirm",
+        "sample": 2,
+        "feedbackMs": 46.89999997615814,
+        "completionMs": 80,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            8399
+          ]
+        },
+        "backendVerified": true,
+        "status": 204,
+        "apiDurationMs": 17
+      },
+      {
+        "mode": "local",
+        "scenario": "session-revocation-confirm",
+        "sample": 3,
+        "feedbackMs": 48,
+        "completionMs": 81.09999999403954,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            140
+          ]
+        },
+        "backendVerified": true,
+        "status": 204,
+        "apiDurationMs": 13.100000023841858
+      },
+      {
+        "mode": "local",
+        "scenario": "session-revocation-confirm",
+        "sample": 4,
+        "feedbackMs": 47.80000001192093,
+        "completionMs": 80.90000000596046,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            6538
+          ]
+        },
+        "backendVerified": true,
+        "status": 204,
+        "apiDurationMs": 10.700000017881393
+      },
+      {
+        "mode": "local",
+        "scenario": "session-revocation-confirm",
+        "sample": 5,
+        "feedbackMs": 48.30000001192093,
+        "completionMs": 81.30000001192093,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            153
+          ]
+        },
+        "backendVerified": true,
+        "status": 204,
+        "apiDurationMs": 10.800000011920929
+      },
+      {
+        "mode": "local",
+        "scenario": "admin-client-navigation",
+        "sample": 1,
+        "feedbackMs": 46.900000005960464,
+        "completionMs": 347,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            454
+          ]
+        },
+        "backendVerified": true,
+        "status": 200,
+        "apiDurationMs": 9.099999994039536
+      },
+      {
+        "mode": "local",
+        "scenario": "admin-client-local-validation",
+        "sample": 1,
+        "feedbackMs": 47.5,
+        "completionMs": 47.5,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            461
+          ]
+        },
+        "backendVerified": true
+      },
+      {
+        "mode": "local",
+        "scenario": "admin-client-navigation",
+        "sample": 2,
+        "feedbackMs": 47.599999994039536,
+        "completionMs": 64.30000001192093,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            475
+          ]
+        },
+        "backendVerified": true,
+        "status": 200,
+        "apiDurationMs": 10
+      },
+      {
+        "mode": "local",
+        "scenario": "admin-client-local-validation",
+        "sample": 2,
+        "feedbackMs": 47.29999998211861,
+        "completionMs": 47.29999998211861,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            482
+          ]
+        },
+        "backendVerified": true
+      },
+      {
+        "mode": "local",
+        "scenario": "admin-client-navigation",
+        "sample": 3,
+        "feedbackMs": 47.599999994039536,
+        "completionMs": 64.30000001192093,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            496
+          ]
+        },
+        "backendVerified": true,
+        "status": 200,
+        "apiDurationMs": 8
+      },
+      {
+        "mode": "local",
+        "scenario": "admin-client-local-validation",
+        "sample": 3,
+        "feedbackMs": 47.19999998807907,
+        "completionMs": 47.19999998807907,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            503
+          ]
+        },
+        "backendVerified": true
+      },
+      {
+        "mode": "local",
+        "scenario": "admin-client-navigation",
+        "sample": 4,
+        "feedbackMs": 47.5,
+        "completionMs": 64.19999998807907,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            517
+          ]
+        },
+        "backendVerified": true,
+        "status": 200,
+        "apiDurationMs": 9.099999994039536
+      },
+      {
+        "mode": "local",
+        "scenario": "admin-client-local-validation",
+        "sample": 4,
+        "feedbackMs": 47.599999994039536,
+        "completionMs": 47.599999994039536,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            524
+          ]
+        },
+        "backendVerified": true
+      },
+      {
+        "mode": "local",
+        "scenario": "admin-client-navigation",
+        "sample": 5,
+        "feedbackMs": 47.69999998807907,
+        "completionMs": 64.2999999821186,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            538
+          ]
+        },
+        "backendVerified": true,
+        "status": 200,
+        "apiDurationMs": 8.099999994039536
+      },
+      {
+        "mode": "local",
+        "scenario": "admin-client-local-validation",
+        "sample": 5,
+        "feedbackMs": 48,
+        "completionMs": 48,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            545
+          ]
+        },
+        "backendVerified": true
+      },
+      {
+        "mode": "laboratory",
+        "scenario": "account-dialog-open",
+        "sample": 1,
+        "feedbackMs": 44.599999994039536,
+        "completionMs": 44.70000001788139,
+        "eventTiming": {
+          "durationMs": 40,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            5144
+          ]
+        },
+        "backendVerified": true
+      },
+      {
+        "mode": "laboratory",
+        "scenario": "account-dialog-cancel",
+        "sample": 1,
+        "feedbackMs": 45.400000005960464,
+        "completionMs": 45.400000005960464,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            5151
+          ]
+        },
+        "backendVerified": true
+      },
+      {
+        "mode": "laboratory",
+        "scenario": "account-dialog-open",
+        "sample": 2,
+        "feedbackMs": 44.70000001788139,
+        "completionMs": 44.70000001788139,
+        "eventTiming": {
+          "durationMs": 24,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            5158
+          ]
+        },
+        "backendVerified": true
+      },
+      {
+        "mode": "laboratory",
+        "scenario": "account-dialog-cancel",
+        "sample": 2,
+        "feedbackMs": 46,
+        "completionMs": 46,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            5165
+          ]
+        },
+        "backendVerified": true
+      },
+      {
+        "mode": "laboratory",
+        "scenario": "account-dialog-open",
+        "sample": 3,
+        "feedbackMs": 45.30000001192093,
+        "completionMs": 45.30000001192093,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            5172
+          ]
+        },
+        "backendVerified": true
+      },
+      {
+        "mode": "laboratory",
+        "scenario": "account-dialog-cancel",
+        "sample": 3,
+        "feedbackMs": 47.19999998807907,
+        "completionMs": 47.19999998807907,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            5179
+          ]
+        },
+        "backendVerified": true
+      },
+      {
+        "mode": "laboratory",
+        "scenario": "account-dialog-open",
+        "sample": 4,
+        "feedbackMs": 44.80000001192093,
+        "completionMs": 44.80000001192093,
+        "eventTiming": {
+          "durationMs": 24,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            5186
+          ]
+        },
+        "backendVerified": true
+      },
+      {
+        "mode": "laboratory",
+        "scenario": "account-dialog-cancel",
+        "sample": 4,
+        "feedbackMs": 46,
+        "completionMs": 46,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            5193
+          ]
+        },
+        "backendVerified": true
+      },
+      {
+        "mode": "laboratory",
+        "scenario": "account-dialog-open",
+        "sample": 5,
+        "feedbackMs": 47,
+        "completionMs": 47,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            5200
+          ]
+        },
+        "backendVerified": true
+      },
+      {
+        "mode": "laboratory",
+        "scenario": "account-dialog-cancel",
+        "sample": 5,
+        "feedbackMs": 46.900000005960464,
+        "completionMs": 46.900000005960464,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            5207
+          ]
+        },
+        "backendVerified": true
+      },
+      {
+        "mode": "laboratory",
+        "scenario": "sessions-next-page",
+        "sample": 1,
+        "feedbackMs": 45.10000002384186,
+        "completionMs": 228.60000002384186,
+        "eventTiming": {
+          "durationMs": 24,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            3431
+          ]
+        },
+        "backendVerified": true,
+        "status": 200,
+        "apiDurationMs": 165.2000000178814,
+        "pageIdsChanged": true
+      },
+      {
+        "mode": "laboratory",
+        "scenario": "sessions-next-page",
+        "sample": 2,
+        "feedbackMs": 45.5,
+        "completionMs": 229,
+        "eventTiming": {
+          "durationMs": 24,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            2596
+          ]
+        },
+        "backendVerified": true,
+        "status": 200,
+        "apiDurationMs": 165.40000000596046,
+        "pageIdsChanged": true
+      },
+      {
+        "mode": "laboratory",
+        "scenario": "sessions-next-page",
+        "sample": 3,
+        "feedbackMs": 44.30000001192093,
+        "completionMs": 226.7000000178814,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            2733
+          ]
+        },
+        "backendVerified": true,
+        "status": 200,
+        "apiDurationMs": 167.39999997615814,
+        "pageIdsChanged": true
+      },
+      {
+        "mode": "laboratory",
+        "scenario": "sessions-next-page",
+        "sample": 4,
+        "feedbackMs": 42.89999997615814,
+        "completionMs": 226.39999997615814,
+        "eventTiming": {
+          "durationMs": 24,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            2967
+          ]
+        },
+        "backendVerified": true,
+        "status": 200,
+        "apiDurationMs": 167,
+        "pageIdsChanged": true
+      },
+      {
+        "mode": "laboratory",
+        "scenario": "sessions-next-page",
+        "sample": 5,
+        "feedbackMs": 43.29999998211861,
+        "completionMs": 226.90000000596046,
+        "eventTiming": {
+          "durationMs": 24,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            8012
+          ]
+        },
+        "backendVerified": true,
+        "status": 200,
+        "apiDurationMs": 166.40000000596046,
+        "pageIdsChanged": true
+      },
+      {
+        "mode": "laboratory",
+        "scenario": "session-revocation-confirm",
+        "sample": 1,
+        "feedbackMs": 46.099999994039536,
+        "completionMs": 562.4000000059605,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            9583
+          ]
+        },
+        "backendVerified": true,
+        "status": 204,
+        "apiDurationMs": 160.19999998807907
+      },
+      {
+        "mode": "laboratory",
+        "scenario": "session-revocation-confirm",
+        "sample": 2,
+        "feedbackMs": 45.39999997615814,
+        "completionMs": 562.1999999880791,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            3044
+          ]
+        },
+        "backendVerified": true,
+        "status": 204,
+        "apiDurationMs": 160.19999998807907
+      },
+      {
+        "mode": "laboratory",
+        "scenario": "session-revocation-confirm",
+        "sample": 3,
+        "feedbackMs": 44.60000002384186,
+        "completionMs": 561.5,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            2629
+          ]
+        },
+        "backendVerified": true,
+        "status": 204,
+        "apiDurationMs": 161.09999999403954
+      },
+      {
+        "mode": "laboratory",
+        "scenario": "session-revocation-confirm",
+        "sample": 4,
+        "feedbackMs": 46,
+        "completionMs": 562.0999999940395,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            379
+          ]
+        },
+        "backendVerified": true,
+        "status": 204,
+        "apiDurationMs": 159.39999997615814
+      },
+      {
+        "mode": "laboratory",
+        "scenario": "session-revocation-confirm",
+        "sample": 5,
+        "feedbackMs": 45.400000005960464,
+        "completionMs": 561.8000000119209,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            4952
+          ]
+        },
+        "backendVerified": true,
+        "status": 204,
+        "apiDurationMs": 160.09999999403954
+      },
+      {
+        "mode": "laboratory",
+        "scenario": "admin-client-navigation",
+        "sample": 1,
+        "feedbackMs": 46,
+        "completionMs": 529,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            5993
+          ]
+        },
+        "backendVerified": true,
+        "status": 200,
+        "apiDurationMs": 159
+      },
+      {
+        "mode": "laboratory",
+        "scenario": "admin-client-local-validation",
+        "sample": 1,
+        "feedbackMs": 43.400000005960464,
+        "completionMs": 43.400000005960464,
+        "eventTiming": {
+          "durationMs": 24,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            6000
+          ]
+        },
+        "backendVerified": true
+      },
+      {
+        "mode": "laboratory",
+        "scenario": "admin-client-navigation",
+        "sample": 2,
+        "feedbackMs": 47.29999998211861,
+        "completionMs": 213.5,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            6014
+          ]
+        },
+        "backendVerified": true,
+        "status": 200,
+        "apiDurationMs": 156.09999999403954
+      },
+      {
+        "mode": "laboratory",
+        "scenario": "admin-client-local-validation",
+        "sample": 2,
+        "feedbackMs": 46.70000001788139,
+        "completionMs": 46.70000001788139,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            6021
+          ]
+        },
+        "backendVerified": true
+      },
+      {
+        "mode": "laboratory",
+        "scenario": "admin-client-navigation",
+        "sample": 3,
+        "feedbackMs": 46.400000005960464,
+        "completionMs": 213,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            6035
+          ]
+        },
+        "backendVerified": true,
+        "status": 200,
+        "apiDurationMs": 153.09999999403954
+      },
+      {
+        "mode": "laboratory",
+        "scenario": "admin-client-local-validation",
+        "sample": 3,
+        "feedbackMs": 44.80000001192093,
+        "completionMs": 44.80000001192093,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            6042
+          ]
+        },
+        "backendVerified": true
+      },
+      {
+        "mode": "laboratory",
+        "scenario": "admin-client-navigation",
+        "sample": 4,
+        "feedbackMs": 45.900000005960464,
+        "completionMs": 212.5,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            6056
+          ]
+        },
+        "backendVerified": true,
+        "status": 200,
+        "apiDurationMs": 153.5
+      },
+      {
+        "mode": "laboratory",
+        "scenario": "admin-client-local-validation",
+        "sample": 4,
+        "feedbackMs": 44.099999994039536,
+        "completionMs": 44.099999994039536,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            6063
+          ]
+        },
+        "backendVerified": true
+      },
+      {
+        "mode": "laboratory",
+        "scenario": "admin-client-navigation",
+        "sample": 5,
+        "feedbackMs": 45.400000005960464,
+        "completionMs": 211.80000001192093,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            6077
+          ]
+        },
+        "backendVerified": true,
+        "status": 200,
+        "apiDurationMs": 159.2000000178814
+      },
+      {
+        "mode": "laboratory",
+        "scenario": "admin-client-local-validation",
+        "sample": 5,
+        "feedbackMs": 46.900000005960464,
+        "completionMs": 46.900000005960464,
+        "eventTiming": {
+          "durationMs": 16,
+          "censoredBelow16Ms": false,
+          "eventCount": 3,
+          "interactionIds": [
+            6084
+          ]
+        },
+        "backendVerified": true
+      }
+    ],
+    "summaries": [
+      {
+        "mode": "local",
+        "scenario": "account-dialog-open",
+        "samples": 5,
+        "feedbackStatistic": "maximum",
+        "feedbackMs": 47.60000002384186,
+        "thresholdMs": 100,
+        "met": true,
+        "completionP75Ms": 47.5,
+        "eventTimingValidSamples": 5,
+        "eventTimingP75Ms": 16
+      },
+      {
+        "mode": "local",
+        "scenario": "account-dialog-cancel",
+        "samples": 5,
+        "feedbackStatistic": "maximum",
+        "feedbackMs": 47.80000001192093,
+        "thresholdMs": 100,
+        "met": true,
+        "completionP75Ms": 47.69999998807907,
+        "eventTimingValidSamples": 5,
+        "eventTimingP75Ms": 16
+      },
+      {
+        "mode": "local",
+        "scenario": "sessions-next-page",
+        "samples": 5,
+        "feedbackStatistic": "maximum",
+        "feedbackMs": 47.599999994039536,
+        "thresholdMs": 100,
+        "met": true,
+        "completionP75Ms": 63.900000005960464,
+        "eventTimingValidSamples": 5,
+        "eventTimingP75Ms": 16
+      },
+      {
+        "mode": "local",
+        "scenario": "session-revocation-confirm",
+        "samples": 5,
+        "feedbackStatistic": "maximum",
+        "feedbackMs": 48.30000001192093,
+        "thresholdMs": 100,
+        "met": true,
+        "completionP75Ms": 81.09999999403954,
+        "eventTimingValidSamples": 5,
+        "eventTimingP75Ms": 16
+      },
+      {
+        "mode": "local",
+        "scenario": "admin-client-navigation",
+        "samples": 5,
+        "feedbackStatistic": "maximum",
+        "feedbackMs": 47.69999998807907,
+        "thresholdMs": 100,
+        "met": true,
+        "completionP75Ms": 64.30000001192093,
+        "eventTimingValidSamples": 5,
+        "eventTimingP75Ms": 16
+      },
+      {
+        "mode": "local",
+        "scenario": "admin-client-local-validation",
+        "samples": 5,
+        "feedbackStatistic": "maximum",
+        "feedbackMs": 48,
+        "thresholdMs": 100,
+        "met": true,
+        "completionP75Ms": 47.599999994039536,
+        "eventTimingValidSamples": 5,
+        "eventTimingP75Ms": 16
+      },
+      {
+        "mode": "laboratory",
+        "scenario": "account-dialog-open",
+        "samples": 5,
+        "feedbackStatistic": "nearest-rank p75",
+        "feedbackMs": 45.30000001192093,
+        "thresholdMs": 200,
+        "met": true,
+        "completionP75Ms": 45.30000001192093,
+        "eventTimingValidSamples": 5,
+        "eventTimingP75Ms": 24
+      },
+      {
+        "mode": "laboratory",
+        "scenario": "account-dialog-cancel",
+        "samples": 5,
+        "feedbackStatistic": "nearest-rank p75",
+        "feedbackMs": 46.900000005960464,
+        "thresholdMs": 200,
+        "met": true,
+        "completionP75Ms": 46.900000005960464,
+        "eventTimingValidSamples": 5,
+        "eventTimingP75Ms": 16
+      },
+      {
+        "mode": "laboratory",
+        "scenario": "sessions-next-page",
+        "samples": 5,
+        "feedbackStatistic": "nearest-rank p75",
+        "feedbackMs": 45.10000002384186,
+        "thresholdMs": 200,
+        "met": true,
+        "completionP75Ms": 228.60000002384186,
+        "eventTimingValidSamples": 5,
+        "eventTimingP75Ms": 24
+      },
+      {
+        "mode": "laboratory",
+        "scenario": "session-revocation-confirm",
+        "samples": 5,
+        "feedbackStatistic": "nearest-rank p75",
+        "feedbackMs": 46,
+        "thresholdMs": 200,
+        "met": true,
+        "completionP75Ms": 562.1999999880791,
+        "eventTimingValidSamples": 5,
+        "eventTimingP75Ms": 16
+      },
+      {
+        "mode": "laboratory",
+        "scenario": "admin-client-navigation",
+        "samples": 5,
+        "feedbackStatistic": "nearest-rank p75",
+        "feedbackMs": 46.400000005960464,
+        "thresholdMs": 200,
+        "met": true,
+        "completionP75Ms": 213.5,
+        "eventTimingValidSamples": 5,
+        "eventTimingP75Ms": 16
+      },
+      {
+        "mode": "laboratory",
+        "scenario": "admin-client-local-validation",
+        "samples": 5,
+        "feedbackStatistic": "nearest-rank p75",
+        "feedbackMs": 46.70000001788139,
+        "thresholdMs": 200,
+        "met": true,
+        "completionP75Ms": 46.70000001788139,
+        "eventTimingValidSamples": 5,
+        "eventTimingP75Ms": 16
+      }
+    ]
+  },
+  "backendExecutableSha256": "875af8a5e5c6fdc733e89f9e731d0e3358ef601c921de1d9729bbf30eee9fffb",
+  "completed": "2026-10-09T05:16:49.162Z"
+}

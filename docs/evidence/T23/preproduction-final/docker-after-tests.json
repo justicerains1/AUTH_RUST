@@ -1,0 +1,45 @@
+{
+  "services": [
+    {
+      "name": "api",
+      "health": "healthy"
+    },
+    {
+      "name": "demo-a",
+      "health": "healthy"
+    },
+    {
+      "name": "demo-a-bff",
+      "health": "healthy"
+    },
+    {
+      "name": "demo-b",
+      "health": "healthy"
+    },
+    {
+      "name": "demo-b-bff",
+      "health": "healthy"
+    },
+    {
+      "name": "identity-web",
+      "health": "healthy"
+    },
+    {
+      "name": "mailpit",
+      "health": "healthy"
+    },
+    {
+      "name": "postgres",
+      "health": "healthy"
+    },
+    {
+      "name": "redis",
+      "health": "healthy"
+    },
+    {
+      "name": "worker",
+      "health": "healthy"
+    }
+  ],
+  "allHealthy": true
+}

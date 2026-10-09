@@ -1,5 +1,5 @@
 # T01 real service acceptance
-Started: 2026-10-09T03:07:28.721Z
+Started: 2026-10-09T04:49:28.462Z
 PASS service postgres: running/healthy
 PASS service redis: running/healthy
 PASS service mailpit: running/healthy
@@ -56,5 +56,5 @@ PASS redis stopped: live=200 / ready=503
 PASS redis restored: live=200 / ready=200
 PASS postgres stopped: live=200 / ready=503
 PASS postgres restored: live=200 / ready=200
-Completed: 2026-10-09T03:08:02.821Z
+Completed: 2026-10-09T04:50:02.324Z
 Exit code: 0

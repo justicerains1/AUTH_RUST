@@ -1,0 +1,640 @@
+{
+  "commit": "df28706a70118404ba60d3ca994863d271067f84",
+  "started": "2026-10-09T04:48:30.710Z",
+  "scope": "Local image and static TLS artifact verification under production runtime restrictions; no production deployment, SMTP, ACME, database readiness or full authentication smoke.",
+  "checks": [
+    {
+      "name": "runtime-image-inspect",
+      "exitCode": 0
+    },
+    {
+      "name": "edge-image-inspect",
+      "exitCode": 0
+    },
+    {
+      "name": "generate-private-signing-fixture",
+      "exitCode": 0
+    },
+    {
+      "name": "runtime-uid-tools-readonly-restrictions",
+      "exitCode": 0
+    },
+    {
+      "name": "runtime-container-inspect",
+      "exitCode": 0
+    },
+    {
+      "name": "remove-runtime-container",
+      "exitCode": 0
+    },
+    {
+      "name": "identity-server-production-config",
+      "exitCode": 0
+    },
+    {
+      "name": "identity-worker-production-config",
+      "exitCode": 0
+    },
+    {
+      "name": "identity-admin-cli-production-config",
+      "exitCode": 0
+    },
+    {
+      "name": "demo-bff-a-production-config",
+      "exitCode": 0
+    },
+    {
+      "name": "demo-bff-b-production-config",
+      "exitCode": 0
+    },
+    {
+      "name": "identity-migrate-help",
+      "exitCode": 0
+    },
+    {
+      "name": "identity-keys-public",
+      "exitCode": 0
+    },
+    {
+      "name": "world-readable-metrics-secret-rejected",
+      "exitCode": 1,
+      "expectedFailure": true
+    },
+    {
+      "name": "runtime-artifact-sha256",
+      "exitCode": 0
+    },
+    {
+      "name": "edge-uid-caddy-capabilities-readonly",
+      "exitCode": 0
+    },
+    {
+      "name": "original-production-caddy-config",
+      "exitCode": 0
+    },
+    {
+      "name": "edge-static-artifact-sha256",
+      "exitCode": 0
+    },
+    {
+      "name": "original-caddy-start",
+      "exitCode": 0
+    },
+    {
+      "name": "original-caddy-http-redirect",
+      "exitCode": 0,
+      "status": 301,
+      "location": "https://identity.example.test/login"
+    },
+    {
+      "name": "remove-original-caddy",
+      "exitCode": 0
+    },
+    {
+      "name": "generate-local-test-tls",
+      "exitCode": 0
+    },
+    {
+      "name": "adapt-production-routes",
+      "exitCode": 0
+    },
+    {
+      "name": "create-owned-static-network",
+      "exitCode": 0
+    },
+    {
+      "name": "static-tls-caddy-start",
+      "exitCode": 0
+    },
+    {
+      "name": "static-container-restrictions",
+      "exitCode": 0
+    },
+    {
+      "name": "static-identity-headers",
+      "exitCode": 0
+    },
+    {
+      "name": "static-identity-javascript",
+      "exitCode": 0
+    },
+    {
+      "name": "static-identity-immutable-headers",
+      "exitCode": 0
+    },
+    {
+      "name": "static-demo-a-headers",
+      "exitCode": 0
+    },
+    {
+      "name": "static-demo-a-javascript",
+      "exitCode": 0
+    },
+    {
+      "name": "static-demo-a-immutable-headers",
+      "exitCode": 0
+    },
+    {
+      "name": "static-demo-b-headers",
+      "exitCode": 0
+    },
+    {
+      "name": "static-demo-b-javascript",
+      "exitCode": 0
+    },
+    {
+      "name": "static-demo-b-immutable-headers",
+      "exitCode": 0
+    },
+    {
+      "name": "remove-static-caddy",
+      "exitCode": 0
+    }
+  ],
+  "artifacts": {
+    "/usr/local/bin/identity-server": "bd07091b05812b5cc828ee97819b24557b47e3fbea53ee46bef1447889802d94",
+    "/usr/local/bin/identity-worker": "d173908f5fb32349910102748c5bab54fd6f6d6534786f094819fe5be5bf6c05",
+    "/usr/local/bin/demo-bff": "3c590aee8f5a352fdf9edca249796e801fee0913a77c24ca79a7360065c17a7c",
+    "/usr/local/bin/identity-admin-cli": "acabff1a49321f8526ffdc9fe423c75cb2d5916b215f68540c73802ca618b8e0",
+    "/usr/local/bin/identity-migrate": "4835cd1d14929d684a44f652cebbd548bb48bc0ca36e18a4e9d54f0356e9a674",
+    "/usr/local/bin/identity-keys": "19f7d42be75f3c5ddb39f2e1528cdf5aa9695c252f74fefe8e5f93279446ecfc",
+    "/usr/bin/caddy": "678ade3bfc088749c81a681adc603333ee0bb023b6a6cfe3c0f58bef8ff854e9",
+    "/etc/caddy/Caddyfile": "a8846cdf4725f643ef4eff19a1be1ee52e1789f33539eaa86bd689387168f05a",
+    "/srv/demo-b/index.html": "5fa64df9e7a4058d81b448947aab0db1a75adccf4bf796aca4a6c40a2aee0349",
+    "/srv/demo-b/assets/NotFoundPage-OCc4L1fY.js": "01aea575f0cd94cd402549d529c6b1203cda70382d0b4aaab4c07eb02dc1078e",
+    "/srv/demo-b/assets/InitializationPage-qwECkMGw.js": "ac1d519ad50f7ecb0392351e664faadf8c1dff8edf7256a022e73ee6927d879b",
+    "/srv/demo-b/assets/index-CJkDuFYv.css": "c755053272f9fc6962d3e32980f22e3867bde8361fc3d4ee5a01937bab21bb6f",
+    "/srv/demo-b/assets/index-Dpg-SaKC.js": "c0c73cb24d0dc6e96a3d5714cb2f618c78c4b95b876a90119a7ec7f26d0968e7",
+    "/srv/demo-a/index.html": "f8001d3e8ab7b75a93ad428963988cea23293a9518f1a839099a4b731af5f967",
+    "/srv/demo-a/assets/index-BNh23Gpl.js": "5f8e4e4ccfde68677374829795530287b70811f218fc9bc936532f7407b655ea",
+    "/srv/demo-a/assets/index-CJkDuFYv.css": "c755053272f9fc6962d3e32980f22e3867bde8361fc3d4ee5a01937bab21bb6f",
+    "/srv/demo-a/assets/NotFoundPage-CwSXcjfE.js": "6ba6dc9f2778593b30c2be684294d4e56365a3ef50e84cd3dad7be774d3619cb",
+    "/srv/demo-a/assets/InitializationPage-B0_bjW0r.js": "4b6d0126a82449348bdd3ebd6f26a865912dcf0e3d655cee3fb9ff7a3bb4da5c",
+    "/srv/identity/index.html": "f58da15d26111eaea1d95c8b31dba8c00d729e2ee6f940c4b949caa31008fe56",
+    "/srv/identity/assets/AdminShared-E1D48CQe.js": "1650c08333a0b464a710fd81f5dd381ce9d679e75531f1ec89cba941bef4d873",
+    "/srv/identity/assets/jsx-runtime-Dk72oS4N.js": "c5f4f8da0038e4082afc00542f93aa1bb64bc5777801d67197507865915a89b6",
+    "/srv/identity/assets/MembersPage-BWy2IHLg.js": "2d6239c87283144e8d89c1eb33a9ad57d6e74b6ac5c86672c616c9593bcff1bb",
+    "/srv/identity/assets/PasskeysPage-DFspnfa9.js": "56aa52058c9bed5b2016555c94ea648387f6d81b4271d167b46f4fb0f7b57dce",
+    "/srv/identity/assets/UsersPage-BBmMbbJu.js": "95d1917666a7503ac76b74a48c4754c8efb86b9424ff3020e04a3324d0ac9b08",
+    "/srv/identity/assets/AccountLayout-Dvmujh_P.js": "4e50724c91fd4e48b8b5d0650a0c9dd2a03506ace5d22cbbebd31d8e5ad9e846",
+    "/srv/identity/assets/SessionsPage-D7RhQAIV.js": "086ea5d462f218118fb42345d9ea710410e87246371b5e284cd061a118aa40e5",
+    "/srv/identity/assets/dist-fhZSiuUL.js": "9ea7619feb4cd214cec7d2d39c0705f750346647a018d95922a0b81720aa91ea",
+    "/srv/identity/assets/qrcode-DtWdxa9d.js": "4d4f1742456b3e0406bba78d1d1c891386c40676bc217ef3d5e3f29bc2989034",
+    "/srv/identity/assets/Table-LBwUYp5-.js": "7f02fdb8bac064b146e3bde6ddc8164437fd31b63196504b2ab382bee43951d9",
+    "/srv/identity/assets/PasswordResetPage-D4ZjynDN.js": "189ac1fd6c82a684b78ed864991ae89de8caef70865d5e6358f0bd1eb698caab",
+    "/srv/identity/assets/PasswordChangePage-CR1bt4fD.js": "5be6bcbaa6176466521c2a3711b4723ebf352944d07b538f8f81197301744903",
+    "/srv/identity/assets/HomePage-B3zUkt0m.js": "a307179e8f89359ac3e5334d78031434e0acf8a8571579d0b06d61477bc4a3e9",
+    "/srv/identity/assets/NotFoundPage-Cq2KmfRz.js": "cebab1e440b06200e8566521b83b2d75610a733907b6bfcd5de4b7f50d19459b",
+    "/srv/identity/assets/PageTitle-BMck9NzV.js": "954d3750e646e02de5db7231210a541fd0cb89703ce8a00c71936949cc11dce6",
+    "/srv/identity/assets/LogoutPage-09JkcNzz.js": "0ac59f4bfddc7707274236dbd1350414fe92fce4c7af1539ba7a68b871700e0b",
+    "/srv/identity/assets/EmailVerificationPage-Cte3TlUD.js": "027536cb4f9fa1be94532f5ff35652c1d8803b760e80c56ea0b35f9fdaa959f3",
+    "/srv/identity/assets/AuditPage-Bc8eJdtt.js": "556cc7520ec221eb8578e3bf28077c08be714ae1e60d33a4a347dc7fe584bc4f",
+    "/srv/identity/assets/Input-DNCttkuw.js": "3d37f919d583551237caa062cebc1004c37d173d6e96d5edb4983ce6c0c855df",
+    "/srv/identity/assets/Status-B8XR2J4p.js": "34c21bb59b411c0085e96262494c2314e100d7a36547359f3dd041fff8ea1c2f",
+    "/srv/identity/assets/GrantsPage-DrW4yD95.js": "3bd7b4c712daf9ff284a9cc89149366179584244cc7db8c7ad75d5475dc928fe",
+    "/srv/identity/assets/RegisterPage-Dg4l5XDB.js": "80dabc8cbb38b47b8b0e29e99d647d30997562c2aaeeab37986d5d4556cc1906",
+    "/srv/identity/assets/LoginPage-u2Srn4GM.js": "3a758d93e7b3d5ba9f5bc4019ac1bc346083ffcd3b7a40a485c2c9ad63e2e530",
+    "/srv/identity/assets/AccountPage-CWIX6eR0.js": "a318450169692afad19ecfced0220ffcf5b7ca34b055adc62bc19ecc607dd3f4",
+    "/srv/identity/assets/ClientsPage-DDQmLP0X.js": "91a190d839c369516c644b4d2618ddb4aad8a6fda6416d56125828506b475207",
+    "/srv/identity/assets/api-CiOuZ4ty.js": "da3e65f86ca0b2ef7d00f671ab0bed787916d529e923de2869504116732cc3d1",
+    "/srv/identity/assets/AuthTransactionNotice-MND5UK7g.js": "8975ec99c1d48dc5501015d841e8943a447adb206eaeeec52ad05886ee54b3b2",
+    "/srv/identity/assets/TotpQrCode-D54RhmOR.js": "ed677bf1692ae40e836bc7ae349d8685af426bbf0d067c5b39d426f6d9f215a8",
+    "/srv/identity/assets/ConsentPage-C1RbtvDG.js": "5994b8bfec675f5a35eb99ba4bc31e8708b07cf8ec5f74168a2795fb44650145",
+    "/srv/identity/assets/mail-action-CjTmAZmi.js": "5831571606a1a35f29e38fe60ac138b777a84e49b9155484e3ce1e2f4091b9a8",
+    "/srv/identity/assets/index-dJ92mABk.js": "efef17df18d4d8bb0cdf7c2bd7390b48635f05aafedc20625b851d82b2c17893",
+    "/srv/identity/assets/CursorPagination-DYit5_4u.js": "a73def4949f14c81012d323f30ccfdad80446f273af07fabac2d281e69c46298",
+    "/srv/identity/assets/MfaPage-BIrmpde_.js": "220cc7f6b6fff0c6b4a9c56faa22ffb9c72b63559055655f994e0144a8d5d0fc",
+    "/srv/identity/assets/AdminPage-CbWo1RGg.js": "c5e08cce9212b8df678a3fb372c6e4d735b20a1dcf5953ae475c13bbe1650bc6",
+    "/srv/identity/assets/index-DBJ_JVkW.css": "a13f5b80e872661156d1e7bffb5b54d40a13f93c2e0069cb2b05145026517ed9"
+  },
+  "images": {
+    "runtime": {
+      "tag": "auth-rust-runtime:t23-df28706",
+      "id": "sha256:49d77f0d7944407b3eb5321a820b441f5bc54e19514ff2494f79e2e92a328ef4",
+      "repoDigests": [
+        "auth-rust-runtime@sha256:49d77f0d7944407b3eb5321a820b441f5bc54e19514ff2494f79e2e92a328ef4"
+      ],
+      "architecture": "amd64",
+      "os": "linux",
+      "user": "10001:10001",
+      "revision": "df28706a70118404ba60d3ca994863d271067f84",
+      "sourceEquivalentToFinal": false,
+      "rootFsLayers": [
+        "sha256:e58989146fcec76699871403b9897b5c014af1ccd85f5a9300a215e7975525d7",
+        "sha256:c8fea35074e09251bd839d03d55caefad40c088a34e034e1ad5f80a38cff211b",
+        "sha256:23e6b1d64efd99b719bd80f24db7b6be01f9790ff3de161186ea883a0ce83fb2",
+        "sha256:8656cbdb9f6f229134a697f377bebf3c109b571d496dd3cd1dd9748215f18bf4"
+      ]
+    },
+    "edge": {
+      "tag": "auth-rust-edge:t23-df28706",
+      "id": "sha256:73e1c6aded1bd777b7d5a9aa99ef5d2c17163ccd6799528110a23569f249314b",
+      "repoDigests": [
+        "auth-rust-edge@sha256:73e1c6aded1bd777b7d5a9aa99ef5d2c17163ccd6799528110a23569f249314b"
+      ],
+      "architecture": "amd64",
+      "os": "linux",
+      "user": "10001:10001",
+      "revision": "df28706a70118404ba60d3ca994863d271067f84",
+      "sourceEquivalentToFinal": false,
+      "rootFsLayers": [
+        "sha256:e63b02c2b5c761df2cb95e657d744f27d95da4e051235a13c80b88cd68eab188",
+        "sha256:970e6999c70edbe487d4c23fee90e2fc7821e762db787c410f7d3de14f570834",
+        "sha256:4bf68391865cc6b8cdd864103d9646e74230cdfd8c7b493ba10ab905433403f5",
+        "sha256:f65067307924adc02a360e9bdd9acbdcbf5270a4f9ec2f007f436fc58f5e6874",
+        "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+        "sha256:0cc43e5fad8466053560dcff56134324df49636d4f4238709892dd88d0c19c25",
+        "sha256:41fc8c4de57396721b94392111ec86eed7a1ae8e822bd174c547ea5e0616bd8c",
+        "sha256:294f9ae4a5ef1ee1d617ad3aedd3ebc68e1f9ad4b334d424763b828b5bbf1389",
+        "sha256:616d8fc84379169199418779e1ce028121f74150224beab7c6e74ed23e65bfc5",
+        "sha256:7adec6c409aee21b8627ce27cd5ddc90120255ede4319340e08bf5469020e91d"
+      ]
+    }
+  },
+  "exitCode": 0,
+  "runtimePackages": [
+    "ca-certificates\t20250419~deb12u1",
+    "curl\t7.88.1-10+deb12u15",
+    "libssl3:amd64\t3.0.22-1~deb12u1"
+  ],
+  "runtimeContainerRestrictions": {
+    "user": "10001:10001",
+    "readonly": true,
+    "capDrop": [
+      "ALL"
+    ],
+    "securityOpt": [
+      "no-new-privileges"
+    ],
+    "network": "none"
+  },
+  "staticTlsMethod": {
+    "productionRoutesPreserved": true,
+    "onlyLocalCertificateAndAutomaticIssuanceOverridden": true,
+    "adaptedConfigSha256": "679a04fcc86dd521a78551c22f4a89feacec17ee462548dbcd44b5c078d8e118"
+  },
+  "staticContainerRestrictions": {
+    "user": "10001:10001",
+    "readonly": true,
+    "capDrop": [
+      "ALL"
+    ],
+    "securityOpt": [
+      "no-new-privileges"
+    ]
+  },
+  "staticResponses": [
+    {
+      "site": "identity",
+      "htmlSha256": "f58da15d26111eaea1d95c8b31dba8c00d729e2ee6f940c4b949caa31008fe56",
+      "assetPath": "/assets/index-dJ92mABk.js",
+      "assetSha256": "efef17df18d4d8bb0cdf7c2bd7390b48635f05aafedc20625b851d82b2c17893",
+      "tlsVerified": true,
+      "securityHeadersVerified": true
+    },
+    {
+      "site": "demo-a",
+      "htmlSha256": "f8001d3e8ab7b75a93ad428963988cea23293a9518f1a839099a4b731af5f967",
+      "assetPath": "/assets/index-BNh23Gpl.js",
+      "assetSha256": "5f8e4e4ccfde68677374829795530287b70811f218fc9bc936532f7407b655ea",
+      "tlsVerified": true,
+      "securityHeadersVerified": true
+    },
+    {
+      "site": "demo-b",
+      "htmlSha256": "5fa64df9e7a4058d81b448947aab0db1a75adccf4bf796aca4a6c40a2aee0349",
+      "assetPath": "/assets/index-Dpg-SaKC.js",
+      "assetSha256": "c0c73cb24d0dc6e96a3d5714cb2f618c78c4b95b876a90119a7ec7f26d0968e7",
+      "tlsVerified": true,
+      "securityHeadersVerified": true
+    }
+  ],
+  "artifactCount": 54,
+  "runtimeBinaryCount": 6,
+  "completed": "2026-10-09T04:48:42.512Z",
+  "sourceFiles": {
+    ".dockerignore": "fc9fc7b0503d6e95a8eefb2d7fdac370188393bba53dfcc58d40457eef7bc9a5",
+    "Cargo.lock": "47ffcb0545416af76dd26346f42a3f583f60d6a4f5f84f8fd6a1f36dea6539d8",
+    "Cargo.toml": "51edef9765a82c15b19b8d59459478286dd73fda99721b26bef14a959848a06b",
+    "apps/demo-a/index.html": "47d9f1692d60642320d1075b329539ae4dabbaf929e258acf831b4ee367b0e6a",
+    "apps/demo-a/package.json": "b255b53717d2773ca22c53932b902c907898b21f497e6033c19d5ac1e40b97b3",
+    "apps/demo-a/src/App.test.tsx": "1e199020ba877e265c6bb319f08a33090df16c1aafac29d68a6d8c7cc57326e0",
+    "apps/demo-a/src/App.tsx": "691a2392610f28631c49d3e237eaada7dd1092954ce49d3f8123d894a6995d8d",
+    "apps/demo-a/src/main.tsx": "82f934215c93eec1cd12c146643af3d173838eef7c2bd71660a58cbef832df62",
+    "apps/demo-a/src/pages/InitializationPage.tsx": "9eeab7a70044f1dfb5bb31fed86402633a9dac6f301003bc023c6f5e768504df",
+    "apps/demo-a/src/pages/NotFoundPage.tsx": "0d722796cd671140beb1a5631f9f10036e3009bfeef42e3b5c39c2d18f2476e2",
+    "apps/demo-a/src/styles.css": "473aec40e4f1a417ea7f33669f304fa93a3f9150e31e410f13eecd5793ee160a",
+    "apps/demo-a/tsconfig.json": "aa704f945bc6086da61ad380d7cc86c9d255c8655dcec91c53bb4e148956dc7b",
+    "apps/demo-a/vite.config.ts": "0678d574374c9b03368ed6c7ffee4811c1b3518eacc2f94a5d45ba44e3775a43",
+    "apps/demo-a/vitest.config.ts": "eb896407199b702e341a6341670370fc66615a904603bb9b24d3f133cc93e6fb",
+    "apps/demo-b/index.html": "c2180f68f49aeec92662e011b6a701cb60c8b3ae9978a7c67881afe2f38a8568",
+    "apps/demo-b/package.json": "5bf5e10f9cafffe3c73968b0738fb44c78b04763d2d391762c86892181c2c3bc",
+    "apps/demo-b/src/App.test.tsx": "d6e59d3a214e3a905634e42782d2af6c6e4dbbb94471b0aa60a6056443356de7",
+    "apps/demo-b/src/App.tsx": "691a2392610f28631c49d3e237eaada7dd1092954ce49d3f8123d894a6995d8d",
+    "apps/demo-b/src/main.tsx": "82f934215c93eec1cd12c146643af3d173838eef7c2bd71660a58cbef832df62",
+    "apps/demo-b/src/pages/InitializationPage.tsx": "01c03152dea9b838bdb424abbe62d88baede6c7d6fe5228915db30089d3e2bb4",
+    "apps/demo-b/src/pages/NotFoundPage.tsx": "0d722796cd671140beb1a5631f9f10036e3009bfeef42e3b5c39c2d18f2476e2",
+    "apps/demo-b/src/styles.css": "473aec40e4f1a417ea7f33669f304fa93a3f9150e31e410f13eecd5793ee160a",
+    "apps/demo-b/tsconfig.json": "aa704f945bc6086da61ad380d7cc86c9d255c8655dcec91c53bb4e148956dc7b",
+    "apps/demo-b/vite.config.ts": "bc3006874813153929a2fa4cf9f15675542b16de541dc1bdb41904fa752c7cac",
+    "apps/demo-b/vitest.config.ts": "eb896407199b702e341a6341670370fc66615a904603bb9b24d3f133cc93e6fb",
+    "apps/identity-web/index.html": "866e78d86b9ad3c2dfa6463f496631ae7f522fa4b1e1d7a2afc5d93ca48db1e9",
+    "apps/identity-web/package.json": "24bdbf49409a34e9274d0a8cefb436ed77174f539456e8591afbca4090566161",
+    "apps/identity-web/src/App.test.tsx": "5754076ccb3943446d00bf7ae024db8c26afd8f7ae65b588838eddf65b8bfd90",
+    "apps/identity-web/src/App.tsx": "8619759a18d296f57964ebecdf163d5e1a747239e13db7289888b5605b8f2f7e",
+    "apps/identity-web/src/components/AccountAction.tsx": "3f5483f804f9a6175c7c64032cb190e8a2648ab33376f26bc80a64207c7c6ca2",
+    "apps/identity-web/src/components/AccountLayout.tsx": "6c320052b6e167acb13867e8aa39577b7a30babea2ee509da25b28bc53173f02",
+    "apps/identity-web/src/components/AuthGuard.tsx": "6126d9caf669e3d639dcf6144cce5d5f33a08e68cd94c184d16247ae85a6f88b",
+    "apps/identity-web/src/components/AuthTransactionNotice.tsx": "033f18cbf3475c9c75f2bb078cd38ffcfcbb0ef02f27ef64c20e286203bd1553",
+    "apps/identity-web/src/components/Button.tsx": "fa74ec5f09d3bd2977eec5c079d6e6a6894f1f192b8172f22f054a32a0556a48",
+    "apps/identity-web/src/components/ConfirmDialog.tsx": "1ede95030a56d3c8b6ab3b525266397959fe904c78e1668725effafb30e2e98b",
+    "apps/identity-web/src/components/CursorPagination.tsx": "2d09741413f9c2fb99a87096456ab8d1f5ef0fed6c3f9b38afb77a40596b2fee",
+    "apps/identity-web/src/components/Empty.tsx": "1fdd3a53ba3415a1aaf20af070784b85bb946d6623df1fb7de09239a5b225d5e",
+    "apps/identity-web/src/components/FactorChallenge.tsx": "1c01a2b78974220a6f5facddae7b386e2c7a36f28bcae4097bbe9bd07ff14a22",
+    "apps/identity-web/src/components/FieldError.tsx": "b63d07d7a07280be3cb21d580ccaf86176d37fab13068124825261d7d31073a5",
+    "apps/identity-web/src/components/Input.tsx": "1273a7db394859174be7ec7bd29834a0f913327242d90b7550d955a2992fb798",
+    "apps/identity-web/src/components/Layout.tsx": "25b58ffceee7af208ac71e2a7c265b1126f99bdba12ae30ad997bb9cddf4bade",
+    "apps/identity-web/src/components/PasskeyLoginButton.tsx": "4fc86d6bcc6fb158b0ef10088fe90e636c6391eaa13e74bbbe3248eeb59e2c37",
+    "apps/identity-web/src/components/PasskeyReauth.tsx": "7c6500799f658babf929c1a0eb7c541dfb7e76815f37982172e2dbda9589a76d",
+    "apps/identity-web/src/components/Password.tsx": "3a5945279207c1ebda5cfa4c716adb554853db4f018be46115dfd3ee6c8b276f",
+    "apps/identity-web/src/components/PublicAuthLayout.tsx": "e8cd9722128ceab5eaad59bee91229dc0282eb8d86dd757126c3f1e68e942c31",
+    "apps/identity-web/src/components/ReauthenticationDialog.tsx": "1ed0bedc285274943b30f28050673aa06586c55fa0badb8b58156bc0ff3588a3",
+    "apps/identity-web/src/components/RecoveryCodes.tsx": "4f1501b83df823b66c08ec2fe5f8937f1f0a993a23ada47bd31a681dc52f4e3c",
+    "apps/identity-web/src/components/RequestFeedback.tsx": "fdaa9a973bd6846b03277c7e9656072360c7f81dd577d21125e6761a904007b2",
+    "apps/identity-web/src/components/Status.tsx": "64bd758fb8e08a9103aabfd4d787fb8b38d7856ec4b282cab36fa9ce20edad8b",
+    "apps/identity-web/src/components/Table.tsx": "8654aee84242c30679bf1ccd551dca4ca8fb724e4018190b2ed928d0e1eed619",
+    "apps/identity-web/src/components/TotpQrCode.tsx": "60f563fc47106dd1adc9396fc68e8a17375a9102b940f96771ed7366c792fb75",
+    "apps/identity-web/src/components/auth-factors.test.tsx": "51b6814e69ddfa77238a018f3cc517dbf5d550f402585f1914c4f42e68dee2ad",
+    "apps/identity-web/src/components/components.test.tsx": "34b1d101b88f223768f2827d31cf0f63c68c4d597359ea361d0befba48b31bb3",
+    "apps/identity-web/src/components/mfa.test.tsx": "8c00a8c1ececc79be29f3bed48a96353429d78c0a4bc5145f6018cf88462bb4d",
+    "apps/identity-web/src/components/passkey.test.tsx": "f980c20f640f1cf47777113b3f880d846de1545712181f351a09405750a28820",
+    "apps/identity-web/src/components/reauthentication.test.tsx": "0e05c7a698c6ee7e0bed67e970f9588372eed3137090c8ad7329d7b8d80555c7",
+    "apps/identity-web/src/lib/admin-api.ts": "cd6b85f6c7c457bd24790c4d80a5baf4a6e6d9511f6a599f0e90906b5dccd4b3",
+    "apps/identity-web/src/lib/api.test.ts": "ffe03e877ecd8a5e8b454f88afdf7bf742e626b8d9a18d1f8d1be4896b2cad2f",
+    "apps/identity-web/src/lib/api.ts": "d2e52229608975e910443bf55ef4d9795878575fb51aadc905878fa994a78f08",
+    "apps/identity-web/src/lib/auth-feedback.ts": "e19ec5885d8f7121608badcb75d4627df859c66d9c6827418f745d5afbdb6584",
+    "apps/identity-web/src/lib/auth-flow.ts": "1a7ec8f5a81d0da82a25f7013ca8b7872a0bf3b9104493096c325b5eeaba6db2",
+    "apps/identity-web/src/lib/i18n.ts": "b5f73e84df2aa3c70dcaaccdc20e6531c6c7a17f3018aa042256b853d0523e73",
+    "apps/identity-web/src/lib/mail-action.ts": "09b0bcae677f37b8eb56b688905ae2e7e972beac04cd2dd79ca2f2f7ea3eb9f5",
+    "apps/identity-web/src/lib/passkeyAuth.ts": "5b7be56e7886b208a27c454b6a314e531df42f705b3c6375d38307c919f1b96b",
+    "apps/identity-web/src/lib/query.ts": "e2835f48e3c7b5f40a6ee0207a430d56c82e39abd78537b7bf4eb3a9893ce873",
+    "apps/identity-web/src/lib/reauthentication.ts": "2cb2803ca7ddb041328a85abcc3ff0d2d3b62175354f38deb60b822f68671d90",
+    "apps/identity-web/src/lib/webauthn.test.ts": "c78c43b2156114fa93e75c26eb76e8c8701fc202112192a8efe38a226d87343f",
+    "apps/identity-web/src/lib/webauthn.ts": "d73830f674b5a931ea9e7942abe5b26519095540c19946691e95268bd82693c9",
+    "apps/identity-web/src/main.tsx": "a776412f9856bfa64f9c0761d7b95de3b4b81c728d6bec686acc3fbc9f353a19",
+    "apps/identity-web/src/pages/AccountPage.tsx": "e8d237c67737cdad84b021396a7d17c3d71fed8a092f1ca4f2218e9124c93d8a",
+    "apps/identity-web/src/pages/AdminPage.tsx": "645ea7f4a5e39fede65d416d0d18df3f78b4acf6f4c2b0e250f0b5d84b558c0f",
+    "apps/identity-web/src/pages/ComponentsPage.tsx": "4879477c3a3dc6e77ece335fb3d7ea06facee8740d8f04cd9ca5c6429e912652",
+    "apps/identity-web/src/pages/ConsentPage.tsx": "62c871eba500fc5579dc383f14e4ba1c3d6e1193af9b66093d60be97c86b3e82",
+    "apps/identity-web/src/pages/EmailVerificationPage.tsx": "5e2f025dec85a630828965dbc4cbd35357a60ca16649911c7f30e22b8ecaaa3a",
+    "apps/identity-web/src/pages/GrantsPage.tsx": "c04873a23ae79c43d383b8bcfd517255a501f3e3b8239271f3c55d1c678f80a9",
+    "apps/identity-web/src/pages/HomePage.tsx": "e1dd4017307edb607cf3da1875202fea86278163c4873ce0b379a7bac582ecdc",
+    "apps/identity-web/src/pages/LoginPage.tsx": "bbbea68b8ba8c53066f5c3bc5deba7b75ef6dd4b6046569310056a4df8560ba7",
+    "apps/identity-web/src/pages/LogoutPage.tsx": "a2e1bcb04fa9a24734507db62c40d510d61278b234c8ca18cfe0d387db8c03c6",
+    "apps/identity-web/src/pages/MfaPage.tsx": "817b4cc8d87e296fed588430f1577cae1c5087f8eec82c6b847911b5e062ea71",
+    "apps/identity-web/src/pages/NotFoundPage.tsx": "a9f4b2ab285c6d647055529d4e8e917a831b32ada4d3e873ff3e473aa2d80f83",
+    "apps/identity-web/src/pages/PageTitle.tsx": "0c1fe9ebc4b956e5e15731fab5a2dbae43d6080fbf73d6ac159f442704c5a462",
+    "apps/identity-web/src/pages/PasskeysPage.tsx": "d0345c7f72a7dea30e2636e9de9a11b5d999880a62c3357c26f891d1706a06ef",
+    "apps/identity-web/src/pages/PasswordChangePage.tsx": "9aea9412b4e093cefacbe60ef6ec1939f6538534af8a7366d16b23cb7eb6f458",
+    "apps/identity-web/src/pages/PasswordResetPage.tsx": "6b0863ff11e8b90cb0c309996d100e93e9453e0495981554ae233b23d69eb2b3",
+    "apps/identity-web/src/pages/RegisterPage.tsx": "00a8fc9eccd2cea13ecb9fcd236cf4c0e13322a8bff9df2cf14c743ecd12cbfd",
+    "apps/identity-web/src/pages/SessionsPage.tsx": "d57216547cd8b3e447c71c4011007f9f1399a963a36fc46516d25a989abc95b9",
+    "apps/identity-web/src/pages/account-security.test.tsx": "8cfd612031bc007c9502ee27caa78a67935c3bd0a4efe025e730608f016277fb",
+    "apps/identity-web/src/pages/admin/AdminConsole.tsx": "861ac0ab793bb29c60170e93346a1448c6dd9be7f2acffc65cca97dc2988e4dd",
+    "apps/identity-web/src/pages/admin/AdminShared.tsx": "d32352cb4c5abb0d1b1f8f3ab95ad532fcd7bbdbae1ff58d49608395ce58b651",
+    "apps/identity-web/src/pages/admin/AuditPage.tsx": "f7a790361ceccf0771a4ed26a39290a5eb4c3112451e15db2c79f8d71249fc51",
+    "apps/identity-web/src/pages/admin/ClientsPage.tsx": "515a97c1584d0840d4375f31b4ba8281afa9129379e929cfa43d2846de2f8767",
+    "apps/identity-web/src/pages/admin/MembersPage.tsx": "a98e7d2db6673f408e7b03ff271cc5e914f327f5e7efa43fcb71eef274ce20d6",
+    "apps/identity-web/src/pages/admin/UsersPage.tsx": "e45f4a28a474bed1b83c0362410bf7b229a64f50de3012347c221d618fceffed",
+    "apps/identity-web/src/pages/admin/admin.test.tsx": "2b3559d4f955e100466bfa31b122b0d49049c0ccaa2d6e8b101ac2fe18dbb66e",
+    "apps/identity-web/src/pages/consent.test.tsx": "03f66520c0ea20f0933224ab0d50928753e5f9c0ccd8ba738092e892f933d753",
+    "apps/identity-web/src/pages/logout-grants.test.tsx": "f92762aeb42671d9e43b7f34b9d62202e9ff1e9fbe813989e079dfcfa338b963",
+    "apps/identity-web/src/pages/passwords.test.tsx": "421b5da87e239f835f0fc26802fe5a00c59fd292b2ba612ec5f67ab21d400690",
+    "apps/identity-web/src/pages/public-auth.test.tsx": "a7d6f8bc60606a7e50bc0ec5c49428a482c7d573db0022d1fffa675a398d7e6a",
+    "apps/identity-web/src/pages/sessions.test.tsx": "642b5e8fd1171a8402f0c758afbe1198819f64585e8cdd3743af4081f31787ec",
+    "apps/identity-web/src/styles.css": "0773c0848055355c9904bb9f1e59285b6a0d58d7e2183d26e6a1538f6f87d015",
+    "apps/identity-web/tsconfig.json": "aa704f945bc6086da61ad380d7cc86c9d255c8655dcec91c53bb4e148956dc7b",
+    "apps/identity-web/vite.config.ts": "78022d7c2f23d59b1bb1b3aa1bb0279cb1aa68748e06c6d29bb9d6b0112e6bc1",
+    "apps/identity-web/vitest.config.ts": "eb896407199b702e341a6341670370fc66615a904603bb9b24d3f133cc93e6fb",
+    "crates/demo-bff/Cargo.toml": "680506781e88f158b9c06dca0947230ba623d55f61c2ca70db6bfb0c58bbe136",
+    "crates/demo-bff/src/config.rs": "5ed83b3c8c6aba3868582df04e6b1a4ba139de44f4841dc7a5e727b7cef49f9c",
+    "crates/demo-bff/src/http.rs": "ba9e3bc458a52d9deb5429c6863ee3cdaaf614f77237c99e53ea7af943672e09",
+    "crates/demo-bff/src/lib.rs": "b165f4c304545515bfc328a8fd9207fa9bdd65918c419158d59b764b46021b79",
+    "crates/demo-bff/src/main.rs": "1377d7ca8f29ad6cfac7e6d0f6071e8f13273a73d39990af65059d90d89a7116",
+    "crates/demo-bff/src/oidc.rs": "d3cde959618a14e2e0d7a049c37766d1e1b1e5b9a2a12d34b2426d99fa9d4a8a",
+    "crates/demo-bff/src/store.rs": "751f660a466ab3de708b6a950e22e43d62955bdbdf8e8001b145207ed9590a3c",
+    "crates/identity-admin-cli/Cargo.toml": "8964fd0a1a79218290e2cd754f38850e91941e2e8ff27e61b76f8f5c8c2dd2e1",
+    "crates/identity-admin-cli/src/bin/identity-keys.rs": "8ed364e7dcd7d435804c9d5c1c55914494a98447ead917f6bc41b050861e1c94",
+    "crates/identity-admin-cli/src/key_maintenance.rs": "881bc1fe46f5b0c2ac9a76aec91a93cb907c99a715515573d922cb224afe8863",
+    "crates/identity-admin-cli/src/lib.rs": "cee3fbf25404cd0839339b32aa06e3082dc5fc081540f6dcb1133ea9d19fa043",
+    "crates/identity-admin-cli/src/main.rs": "531429dde375827b65e70aac9bedff290ba829a75c6e304fb4a1c473a17ce4e3",
+    "crates/identity-admin-cli/tests/t22_keys.rs": "66a9e8c5537dc814dc9a7a88554c7c1637dc4c4c1c1cf0a88ab7b90e65aff393",
+    "crates/identity-core/Cargo.toml": "0677bc7b29a26712f22c0273c11de4f93cf93e949453c34f0bc22eb4d35fe827",
+    "crates/identity-core/src/clock.rs": "6edab89b08e8220f75162771efdd0f0041e9c18cd7cf1d0f9ae6e1045acc0e43",
+    "crates/identity-core/src/config.rs": "6e849393cd4b6b8182808e7d4376fb5d01705cbbbd27e90c204d70ff7f136c53",
+    "crates/identity-core/src/jose.rs": "8ff8c52a1546df7d83754e2fc81935789bf127cd1928cf687fd1c679522c061b",
+    "crates/identity-core/src/lib.rs": "2d144b852585f3dc7662050951838d720ea3072c10bb78b7c71a8bc57cd38a83",
+    "crates/identity-core/src/mfa.rs": "6daea6abab9c1412799ba4de895f06dcafe16745a032ad5f651d8baafda9a389",
+    "crates/identity-core/src/oauth.rs": "0db5da13add52d6b5330a774ebefda803714b44e63e1a67213656db4b3dd6735",
+    "crates/identity-core/src/observability.rs": "df244dd1c6e6d0598563bb547299a1feb40e870b949776d0cb4eef2db55032dd",
+    "crates/identity-core/src/passkeys.rs": "dc2b73915fab2e89b8394de87b49da4f1d47ee4a70cf1e99a2f98baeefb61489",
+    "crates/identity-core/src/security.rs": "4ed1f027796de35eead54aa94842a2b987e4a9d5476dd17a44bea3941428733e",
+    "crates/identity-server/Cargo.toml": "966c60a8fd769073e18a3e7fcd10854cab5bb9759a8baf89e0505ae11c3ae532",
+    "crates/identity-server/src/accounts.rs": "c4ed816975a55902f7928500e9ccbdabdf5b4fc32f79704788948ae302cf8483",
+    "crates/identity-server/src/admin.rs": "e32ef30ae223dd27e27326056dd1520beaa2c0dd7dfa21d2c96a2d03378e7f63",
+    "crates/identity-server/src/grants.rs": "721331b840d32e82b38d24d966070a16482124ca7ca12589786f54318276c4b4",
+    "crates/identity-server/src/lib.rs": "6448b17f16d7dfbfe6db384da1e147a58912dff67ae71ff2ca1fb3cac1e06f48",
+    "crates/identity-server/src/main.rs": "2027c80bb1cf1b3eb285d51c78efdfccc089d5d66446fd715d3b8032c706f78b",
+    "crates/identity-server/src/metrics.rs": "8a05ed8860f1d5b113f68be2f12937015f69bdd15b13b13a76fef42a9c248414",
+    "crates/identity-server/src/mfa.rs": "be46f607815065c5c1d81dbdd28a2be7880effd6aa41db1a48722b695a1229e5",
+    "crates/identity-server/src/oauth.rs": "63c11300277189d31821fe0d9ec6b4d448f758be0c31a55a677bb0180bb4cd27",
+    "crates/identity-server/src/oidc.rs": "fb691b9056b63c3df6983497b7e83628d3a45e0cc25ded66cc3641ada95da302",
+    "crates/identity-server/src/passkeys.rs": "97c7ddba058dfde6b6d8f02aa06b78c69e71c81f0e5427a2f156f94873e162da",
+    "crates/identity-server/src/passwords.rs": "5428bb258602073b29d21429b7897d0cad59524f554a6a9c01aea74bf3755947",
+    "crates/identity-server/src/rp_logout.rs": "1931f4b7a0430a31d18f887aad16974e124008f85b708f3c67f56448d3a4ceaa",
+    "crates/identity-server/src/security.rs": "9046bcabd26314d9145d6c79384f3857e1a92c4a5ec8d206273c874f7a17c02c",
+    "crates/identity-server/src/sessions.rs": "4711c06b58f940b9c44d2938b9559ccb807008a8ef2274c91f539f9555ab58f2",
+    "crates/identity-server/tests/t04_security.rs": "df74d6da74f889c49d8bee3d3b64a60e23934fc3bcd8c2811912aa6a1ae36d34",
+    "crates/identity-server/tests/t05_accounts.rs": "c59c3594234f23f5112cbfd31259e81756898a70137f7ab709574a77327ddc25",
+    "crates/identity-server/tests/t06_sessions.rs": "f30269fe2c299fa1fab848297f2de1793b339b5259c3d091f029e9c31427908b",
+    "crates/identity-server/tests/t07_passwords.rs": "a788c2fbca1a225dc7fe201f9dbd9ab77400a0e2fb617ef574aaff0b9942357a",
+    "crates/identity-server/tests/t08_mfa.rs": "bf4dfdb3a4c1312acf88643d553a83ac646b1a0b899030b789e17de483906b07",
+    "crates/identity-server/tests/t09_passkeys.rs": "e144621c73de886cc754f3031f7235217c1052d9c3d0a7554b259158144e5ceb",
+    "crates/identity-server/tests/t10_oauth.rs": "6de01f9bd9ac58ae61fe41fa6a1366b7acac76c65dd0a5b6b60cf37bef06350f",
+    "crates/identity-server/tests/t11_oidc.rs": "1ddc49410089e66fe1231af393cb789cb16722f577609106895831df17b6f69c",
+    "crates/identity-server/tests/t12_revocation.rs": "f3011530566b439c5c9c8d8ff727f2665a15a10d966de16e29ba0d3db452660e",
+    "crates/identity-server/tests/t13_bff.rs": "4d518eed4bcc80082f8e74f210b3e74c88d912a97de4da5e4ef640260de89949",
+    "crates/identity-server/tests/t14_admin.rs": "203fbd388dbf5624b134f84c9e521a2a16e3b0db989cc00369232d05e9ddd48b",
+    "crates/identity-server/tests/t17_public.rs": "1078b95a49286d76ebd5d197da84bb48d1a53f7b3ef6e361115e49dddf40687c",
+    "crates/identity-server/tests/t18_account.rs": "b27f8570396b5d0300c392dc4179ade96e997308e4c3606afb0385b2f682d522",
+    "crates/identity-server/tests/t19_admin_ui.rs": "cb22f12a16691dc45c25004b576246ff78348ae9118e53e60970ca6f4c1065a1",
+    "crates/identity-server/tests/t20_security.rs": "f94eede8a3230a29aca4b20eef9f6c5ebe5a25d68b17815b2ce591df4f672861",
+    "crates/identity-server/tests/t20_zap.rs": "4305496ed39712347b14523a805eca1b9598b019d0b86cb94d921b5087958f54",
+    "crates/identity-server/tests/t21_load.rs": "19c33eb7c8c3f37c8dcf2be0a32d09500cb1cf5ca28c6e7bb89f458c600aa4ac",
+    "crates/identity-server/tests/t21_operational_queries.rs": "ef944b00916a8ba6f948fb2ddac51b6efcbbec55ad035b3e047b0627f6fe5164",
+    "crates/identity-server/tests/t22_identity_restore.rs": "00c6706a46265ee9c07295a377d835758de70df66caff997f7b39533d23dd43f",
+    "crates/identity-server/tests/t22_metrics.rs": "ccf10b1a129267ab6bf1c846f5cb180c230ed56fd3658e84fd7c2f2fca7b8a05",
+    "crates/identity-server/tests/t22_signing.rs": "d656a0166641340e6cf2390e1bb4f92383333c021ae2f4be47dac6871266cc3b",
+    "crates/identity-server/tests/t22_wal_metrics.rs": "c54b503996256a9bac72ce092792f8c6a60d81bb12f5a512c7ffa7f96e7a3c63",
+    "crates/identity-server/tests/t23_accessibility.rs": "2c99f3c4ea3a8a4a9ba5fa7c25c43af0650c9b5c0f341821a09495e9a96fc281",
+    "crates/identity-store/Cargo.toml": "0d6d8bc3c1e2cc40704b89713b8dc180ca86a7723c7a055b7140c883da21704c",
+    "crates/identity-store/build.rs": "be4e33193258a1707de9558379f48f2dec0257d04e93d059dc2178c6e0411449",
+    "crates/identity-store/src/accounts.rs": "723ae6afac944929873a27c11ec36bdfbac9c9850ec1917fc7918adaf7debf93",
+    "crates/identity-store/src/admin.rs": "f1e870a0673d687ccc11d3093c3a95f8a51ea998dc4017f542ab0fffb829d0eb",
+    "crates/identity-store/src/bin/identity-demo-clients.rs": "2e5713e2dc18f2aacf07ced6b01f0700966846e871b686c75abcebc0ecfa37e4",
+    "crates/identity-store/src/bin/identity-migrate.rs": "6c32db0d678490faae4c5b10cb0c05d5343f002599cba915f1334b4587efa7b5",
+    "crates/identity-store/src/lib.rs": "f9f5460cd04d21aa46cfe69a3f2f5bb3ce92ad0d3152b84d8f59a4f65136b45d",
+    "crates/identity-store/src/mfa.rs": "c685d1949e9b0fa19a2d26e9f8b89544ae104dcd439f57baba94f389dcb13506",
+    "crates/identity-store/src/migrations.rs": "9246923aecd86968fcd951c48af6321b9d9a3494ff56e6e9cd9ba3452a8057c8",
+    "crates/identity-store/src/oauth.rs": "1b107dc9f0a6f4bd2c8e7865daa89c3940d4f118c5cb962a57776cbb0f45e424",
+    "crates/identity-store/src/passkeys.rs": "3b3e4da57fdc2144b989905c0d2b2e159360cbc08c989db61d0168472e346736",
+    "crates/identity-store/src/passwords.rs": "9b953931cf8ffa24c1dada35b9fcbe557293f0de6a82f7a87542a40e20cf2608",
+    "crates/identity-store/src/repository.rs": "1574a56b657357aa3b0c4cc1a612da632b025bfd78b6a1e2ed05d84b85e1c41b",
+    "crates/identity-store/src/security.rs": "1ebfbb6d91687426afc09f12953dfcc0916b43956631a8ad1ca774483aab5b3c",
+    "crates/identity-store/src/sessions.rs": "dc5183bbf9cfe91882e2d67c98278a7abcddf1f8b180f9af213f5dd5cfd736c2",
+    "crates/identity-store/src/tokens.rs": "4555cefef951c2d74566a218e1cf3b0e65cfca4e221dab2a38482c0b8f95e52c",
+    "crates/identity-store/tests/t03_database.rs": "5b0ffdd61ef8c45586f5a6f97ab061a0b38f8eea2058ef32575126b5a289e448",
+    "crates/identity-worker/Cargo.toml": "dd6223e6cceca3d6bfd6b8447e49df0a833a3e136f5fed2f6763bf9bfcfcd427",
+    "crates/identity-worker/src/lib.rs": "fa34887da9e666a2f9bb17fe7cd06dd98c806bdef5ab1e8dc258f3fb9486217d",
+    "crates/identity-worker/src/main.rs": "88362e923c7bbf05498487102bf391b13b8ab0927c2c037d97a8748d73aa43a4",
+    "crates/identity-worker/src/outbox.rs": "bba90de523542eecff24a33966d3a3549f3d8d9c6fff305edfa69077d52afefb",
+    "data/weak-passwords-LICENSE.txt": "3dbdc93d5f8829de0941744841730a09c106d0732e5ae0e98ca1d77be7ded66c",
+    "data/weak-passwords.metadata.json": "305cda72aa71290ee0a03c75f5c0d7a8354166632a88d792e5aae6244dab5549",
+    "data/weak-passwords.txt": "68782d6a4a19a4768d5f15dd66bd534e7a33055cc755411e33f16d18c50fdcce",
+    "infra/Caddyfile.prod": "a8846cdf4725f643ef4eff19a1be1ee52e1789f33539eaa86bd689387168f05a",
+    "infra/Dockerfile.edge.prod": "6b41aac3c1de833ed2a3298ed8ece074cdcab0952453a89fc956e68f8dc1f57c",
+    "infra/Dockerfile.prod": "5837f767ff4470883345805f8de9113194be142203fe593e55f631175fdd0709",
+    "migrations/.gitkeep": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "migrations/0001_identity.sql": "7dca52fb1a18b61c228d9d30bc82ecb98d5ae02dadff2c0d76bd7385fd5609a5",
+    "migrations/0002_preauth.sql": "b963c93fa1b9b3863f8e8087aee0fbc4afc604b3cc7ec8a5ac7fc66e2acc3fff",
+    "migrations/0003_password_confirmation.sql": "48caa140d313a2838f5b2b06c78bcafaa5d4ac9ec0dba96feaca6f9798c6ec41",
+    "migrations/0004_passkey_last_used.sql": "c13ee1d90e4940cf1c90cc9155c76d40d53599b9ad22e94ac574f6ec32392584",
+    "migrations/0005_authorization_prompt_reauthentication.sql": "29f313572ccb259f2eb8d6f9ccbceceec84a844b2665786e6e276345ad75751b",
+    "migrations/0006_token_scope_logout_confirmations.sql": "ec46bfa0ff55a10e83c8be0e3608baca42fc6d65207eeb9d7d05b0e1129954e6",
+    "migrations/0007_bff_sessions.sql": "6cb936ab04e2a41be407fa2e7f86d3d86ba4566e3756775c2a1d6d011be05798",
+    "migrations/0008_admin_pagination_indexes.sql": "e1f1b02bc786869f37408f5e90ec255b1e4e3e828f888a26df78a4bbaf35f195",
+    "package-lock.json": "4a016eb1d048cb0a7e06e41bff5909a8e1863584696585c1977b8be24abf1bca",
+    "package.json": "a2524e7fc2c249ef0f7d9265abec3f41ce58d3417c3a58092580d2b279b8178f",
+    "rust-toolchain.toml": "e879701472a698533f43f54989bbf5f3101eb0503472159d32633f3bb8a13fdf"
+  },
+  "archiveSha256": "15c538bedc986926bb33bda237ea4a06c3ad9584599dbd3b136e98b700098f68",
+  "builds": [
+    {
+      "name": "runtime",
+      "tag": "auth-rust-runtime:t23-df28706",
+      "sourceCommit": "df28706a70118404ba60d3ca994863d271067f84",
+      "exitCode": 0,
+      "metadata": {
+        "buildx.build.provenance": {
+          "builder": {
+            "id": ""
+          },
+          "buildType": "https://mobyproject.org/buildkit@v1",
+          "materials": [
+            {
+              "uri": "pkg:docker/docker.m.daocloud.io/library/debian@bookworm-20261005-slim?digest=sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587&platform=linux%2Famd64",
+              "digest": {
+                "sha256": "7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587"
+              }
+            },
+            {
+              "uri": "pkg:docker/docker.m.daocloud.io/library/rust@1.98.0-bookworm?digest=sha256:82150a52ec202c1b14d7817e14516c392bb7f5cfebd88f1ed531cb37ebd39922&platform=linux%2Famd64",
+              "digest": {
+                "sha256": "82150a52ec202c1b14d7817e14516c392bb7f5cfebd88f1ed531cb37ebd39922"
+              }
+            }
+          ],
+          "invocation": {
+            "configSource": {
+              "entryPoint": "Dockerfile.prod"
+            },
+            "parameters": {
+              "frontend": "dockerfile.v0",
+              "args": {
+                "label:org.opencontainers.image.revision": "df28706a70118404ba60d3ca994863d271067f84"
+              },
+              "locals": [
+                {
+                  "name": "context"
+                },
+                {
+                  "name": "dockerfile"
+                }
+              ]
+            },
+            "environment": {
+              "platform": "linux/amd64"
+            }
+          }
+        },
+        "buildx.build.ref": "default/default/bodrw5qtmmcj7gybfwgu1bev5",
+        "containerimage.descriptor": {
+          "mediaType": "application/vnd.oci.image.index.v1+json",
+          "digest": "sha256:49d77f0d7944407b3eb5321a820b441f5bc54e19514ff2494f79e2e92a328ef4",
+          "size": 856
+        },
+        "containerimage.digest": "sha256:49d77f0d7944407b3eb5321a820b441f5bc54e19514ff2494f79e2e92a328ef4",
+        "image.name": "docker.io/library/auth-rust-runtime:t23-df28706"
+      }
+    },
+    {
+      "name": "edge",
+      "tag": "auth-rust-edge:t23-df28706",
+      "sourceCommit": "df28706a70118404ba60d3ca994863d271067f84",
+      "exitCode": 0,
+      "metadata": {
+        "buildx.build.provenance": {
+          "builder": {
+            "id": ""
+          },
+          "buildType": "https://mobyproject.org/buildkit@v1",
+          "materials": [
+            {
+              "uri": "pkg:docker/docker.m.daocloud.io/library/caddy@2.11.7-alpine?digest=sha256:d8542f48d34a9cf4e4c11a478865229840e87e4c96ea3f439101f31a5d35f75f&platform=linux%2Famd64",
+              "digest": {
+                "sha256": "d8542f48d34a9cf4e4c11a478865229840e87e4c96ea3f439101f31a5d35f75f"
+              }
+            },
+            {
+              "uri": "pkg:docker/docker.m.daocloud.io/library/node@22.22.1-bookworm-slim?digest=sha256:4f77a690f2f8946ab16fe1e791a3ac0667ae1c3575c3e4d0d4589e9ed5bfaf3d&platform=linux%2Famd64",
+              "digest": {
+                "sha256": "4f77a690f2f8946ab16fe1e791a3ac0667ae1c3575c3e4d0d4589e9ed5bfaf3d"
+              }
+            }
+          ],
+          "invocation": {
+            "configSource": {
+              "entryPoint": "Dockerfile.edge.prod"
+            },
+            "parameters": {
+              "frontend": "dockerfile.v0",
+              "args": {
+                "label:org.opencontainers.image.revision": "df28706a70118404ba60d3ca994863d271067f84"
+              },
+              "locals": [
+                {
+                  "name": "context"
+                },
+                {
+                  "name": "dockerfile"
+                }
+              ]
+            },
+            "environment": {
+              "platform": "linux/amd64"
+            }
+          }
+        },
+        "buildx.build.ref": "default/default/3ydspsrxd74exoix14dv4gnra",
+        "containerimage.descriptor": {
+          "mediaType": "application/vnd.oci.image.index.v1+json",
+          "digest": "sha256:73e1c6aded1bd777b7d5a9aa99ef5d2c17163ccd6799528110a23569f249314b",
+          "size": 856
+        },
+        "containerimage.digest": "sha256:73e1c6aded1bd777b7d5a9aa99ef5d2c17163ccd6799528110a23569f249314b",
+        "image.name": "docker.io/library/auth-rust-edge:t23-df28706"
+      }
+    }
+  ],
+  "validationScriptSha256": "2e4614b808b3bdd8f4b180c03b3c9a6ec2c55a8a78a0635426311a9fd27210a0"
+}

@@ -1,0 +1,317 @@
+{
+  "started": "2026-10-09T05:01:07.000Z",
+  "scope": "Five real services with local CA TLS/test SMTP; local-review only, not production DNS/SMTP/HA",
+  "phases": [
+    {
+      "version": 1,
+      "action": "deploy",
+      "release": "old",
+      "project": "release-stack-30149196ebf3",
+      "mode": "local-review",
+      "started": 1791522077,
+      "stages": [
+        {
+          "stage": "compose-config",
+          "exitCode": 0
+        },
+        {
+          "stage": "image-present",
+          "exitCode": 0
+        },
+        {
+          "stage": "image-present",
+          "exitCode": 0
+        },
+        {
+          "stage": "check-config-api",
+          "exitCode": 0
+        },
+        {
+          "stage": "check-config-worker",
+          "exitCode": 0
+        },
+        {
+          "stage": "check-config-demo-a-bff",
+          "exitCode": 0
+        },
+        {
+          "stage": "check-config-demo-b-bff",
+          "exitCode": 0
+        },
+        {
+          "stage": "current-schema-key-facts",
+          "exitCode": 0
+        },
+        {
+          "stage": "base-backup",
+          "exitCode": 0
+        },
+        {
+          "stage": "backup-verified",
+          "exitCode": 0
+        },
+        {
+          "stage": "migrate",
+          "exitCode": 0
+        },
+        {
+          "stage": "post-migration-schema-key-facts",
+          "exitCode": 0
+        },
+        {
+          "stage": "up",
+          "exitCode": 0
+        },
+        {
+          "stage": "ready",
+          "exitCode": 0
+        },
+        {
+          "stage": "smoke",
+          "exitCode": 0
+        }
+      ],
+      "status": "complete",
+      "images": {
+        "rustImage": "auth-rust-runtime:t23-2c9c712",
+        "edgeImage": "auth-rust-edge:t23-df28706"
+      },
+      "facts": {
+        "version": 1,
+        "migration_sha256": "66b31145a6027bba6a5d2d33c33444206a25e36ba511f962a3f72080e08b4f14",
+        "used_kids": [
+          "stack"
+        ],
+        "configured_kids": [
+          "stack"
+        ]
+      },
+      "backup": {
+        "name": "20261009T050120Z-192.tar.age",
+        "sha256": "f99e2af5245c4fe64ef10dd7c4261850b232065ead8ab47b346c8717c6373be5",
+        "completedAt": 1791522086
+      },
+      "completed": 1791522150
+    },
+    {
+      "version": 1,
+      "action": "deploy",
+      "release": "new",
+      "project": "release-stack-30149196ebf3",
+      "mode": "local-review",
+      "started": 1791522150,
+      "stages": [
+        {
+          "stage": "compose-config",
+          "exitCode": 0
+        },
+        {
+          "stage": "image-present",
+          "exitCode": 0
+        },
+        {
+          "stage": "image-present",
+          "exitCode": 0
+        },
+        {
+          "stage": "check-config-api",
+          "exitCode": 0
+        },
+        {
+          "stage": "check-config-worker",
+          "exitCode": 0
+        },
+        {
+          "stage": "check-config-demo-a-bff",
+          "exitCode": 0
+        },
+        {
+          "stage": "check-config-demo-b-bff",
+          "exitCode": 0
+        },
+        {
+          "stage": "current-schema-key-facts",
+          "exitCode": 0
+        },
+        {
+          "stage": "base-backup",
+          "exitCode": 0
+        },
+        {
+          "stage": "backup-verified",
+          "exitCode": 0
+        },
+        {
+          "stage": "migrate",
+          "exitCode": 0
+        },
+        {
+          "stage": "post-migration-schema-key-facts",
+          "exitCode": 0
+        },
+        {
+          "stage": "up",
+          "exitCode": 0
+        },
+        {
+          "stage": "ready",
+          "exitCode": 0
+        },
+        {
+          "stage": "smoke",
+          "exitCode": 0
+        }
+      ],
+      "status": "complete",
+      "images": {
+        "rustImage": "auth-rust-runtime:t23-df28706",
+        "edgeImage": "auth-rust-edge:t23-df28706"
+      },
+      "facts": {
+        "version": 1,
+        "migration_sha256": "66b31145a6027bba6a5d2d33c33444206a25e36ba511f962a3f72080e08b4f14",
+        "used_kids": [
+          "stack"
+        ],
+        "configured_kids": [
+          "stack"
+        ]
+      },
+      "backup": {
+        "name": "20261009T050233Z-770.tar.age",
+        "sha256": "5b5f294ff0740d6539df204d4a5676619f09fd22c2fc5e06d3f025565c6c3a68",
+        "completedAt": 1791522158
+      },
+      "completed": 1791522210
+    },
+    {
+      "badMigrationStoppedAllFive": true,
+      "containersUnchanged": true
+    },
+    {
+      "version": 1,
+      "action": "rollback",
+      "release": "new",
+      "project": "release-stack-30149196ebf3",
+      "mode": "local-review",
+      "started": 1791522221,
+      "stages": [
+        {
+          "stage": "compose-config",
+          "exitCode": 0
+        },
+        {
+          "stage": "image-present",
+          "exitCode": 0
+        },
+        {
+          "stage": "image-present",
+          "exitCode": 0
+        },
+        {
+          "stage": "check-config-api",
+          "exitCode": 0
+        },
+        {
+          "stage": "check-config-worker",
+          "exitCode": 0
+        },
+        {
+          "stage": "check-config-demo-a-bff",
+          "exitCode": 0
+        },
+        {
+          "stage": "check-config-demo-b-bff",
+          "exitCode": 0
+        },
+        {
+          "stage": "current-schema-key-facts",
+          "exitCode": 0
+        },
+        {
+          "stage": "base-backup",
+          "exitCode": 0
+        },
+        {
+          "stage": "backup-verified",
+          "exitCode": 0
+        },
+        {
+          "stage": "up",
+          "exitCode": 0
+        },
+        {
+          "stage": "ready",
+          "exitCode": 0
+        },
+        {
+          "stage": "smoke",
+          "exitCode": 0
+        }
+      ],
+      "status": "complete",
+      "compatibilitySha256": "dd9b324b0754d933d7a7a81b480d794c7b77315ab9cb0a08b46cda9a5ecc0cba",
+      "images": {
+        "rustImage": "auth-rust-runtime:t23-2c9c712",
+        "edgeImage": "auth-rust-edge:t23-df28706"
+      },
+      "facts": {
+        "version": 1,
+        "migration_sha256": "66b31145a6027bba6a5d2d33c33444206a25e36ba511f962a3f72080e08b4f14",
+        "used_kids": [
+          "stack"
+        ],
+        "configured_kids": [
+          "stack"
+        ]
+      },
+      "backup": {
+        "name": "20261009T050344Z-1468.tar.age",
+        "sha256": "91d4a78c76e11ac7665067a5180ce964b2ae4762c26e95ac2d278f6e4dd01dbc",
+        "completedAt": 1791522229
+      },
+      "completed": 1791522270
+    }
+  ],
+  "exitCode": 0,
+  "sourceBefore": {
+    "infra/ops/release.mjs": "b840b59e1a5c4e2146de5fcbb625fd37cb67a05df3936237d01f8fa2ff3eff13",
+    "infra/Caddyfile.prod": "a8846cdf4725f643ef4eff19a1be1ee52e1789f33539eaa86bd689387168f05a",
+    "infra/ops/base-backup.sh": "c1d53de508cef5df69b34bb199c0665daefe30ab7bf9bd8fff8b6d46d8ee3786",
+    "Cargo.lock": "47ffcb0545416af76dd26346f42a3f583f60d6a4f5f84f8fd6a1f36dea6539d8",
+    "package-lock.json": "4a016eb1d048cb0a7e06e41bff5909a8e1863584696585c1977b8be24abf1bca",
+    "tests/ops/release-stack.mjs": "ec54d9e6108d7e69b97158feaabe3b84458e66cccfcd15aa7bff7e78fa558084",
+    "tests/ops/release-stack-helper.mjs": "55fe25fff19cc3b332f286641265e4001db4c633e96a9fad89ee25061e486d4b",
+    "tests/ops/release-stack-bootstrap.mjs": "20c24bba1ea9f01bc22bbd6a4a4c5e87bc92cf559fec6404f7ba91b59243c834",
+    "tests/ops/release-stack-smoke.mjs": "2dc1bc47367807cab5798639b0fcc62d44be1b1267e8a9bda47c6f0170844569"
+  },
+  "sourceCommit": "a2d7f99dfc4ec0a73e27e568dfc05464c741449b",
+  "images": {
+    "auth-rust-runtime:t23-2c9c712": {
+      "id": "sha256:6080ddcd99ea92b53c750e11c206c7781a6cd4261d3c5cd515b8af75f4d07f9c",
+      "revision": "2c9c712c4fb83ebbb5d7e59fd97fcf9ef3b8777c"
+    },
+    "auth-rust-runtime:t23-df28706": {
+      "id": "sha256:49d77f0d7944407b3eb5321a820b441f5bc54e19514ff2494f79e2e92a328ef4",
+      "revision": "df28706a70118404ba60d3ca994863d271067f84"
+    },
+    "auth-rust-edge:t23-df28706": {
+      "id": "sha256:73e1c6aded1bd777b7d5a9aa99ef5d2c17163ccd6799528110a23569f249314b",
+      "revision": "df28706a70118404ba60d3ca994863d271067f84"
+    }
+  },
+  "initialTlsStatus": 200,
+  "sourceSha256": {
+    "infra/ops/release.mjs": "b840b59e1a5c4e2146de5fcbb625fd37cb67a05df3936237d01f8fa2ff3eff13",
+    "infra/Caddyfile.prod": "a8846cdf4725f643ef4eff19a1be1ee52e1789f33539eaa86bd689387168f05a",
+    "infra/ops/base-backup.sh": "c1d53de508cef5df69b34bb199c0665daefe30ab7bf9bd8fff8b6d46d8ee3786",
+    "Cargo.lock": "47ffcb0545416af76dd26346f42a3f583f60d6a4f5f84f8fd6a1f36dea6539d8",
+    "package-lock.json": "4a016eb1d048cb0a7e06e41bff5909a8e1863584696585c1977b8be24abf1bca",
+    "tests/ops/release-stack.mjs": "ec54d9e6108d7e69b97158feaabe3b84458e66cccfcd15aa7bff7e78fa558084",
+    "tests/ops/release-stack-helper.mjs": "55fe25fff19cc3b332f286641265e4001db4c633e96a9fad89ee25061e486d4b",
+    "tests/ops/release-stack-bootstrap.mjs": "20c24bba1ea9f01bc22bbd6a4a4c5e87bc92cf559fec6404f7ba91b59243c834",
+    "tests/ops/release-stack-smoke.mjs": "2dc1bc47367807cab5798639b0fcc62d44be1b1267e8a9bda47c6f0170844569"
+  },
+  "sourceStableDuringRun": true,
+  "completed": "2026-10-09T05:04:32.252Z"
+}
