@@ -1,0 +1,85 @@
+{
+  "started": "2026-10-09T02:18:13.064Z",
+  "scope": "Real admin UI users, clients, memberships and pending actions; no production deployment or hardware claims.",
+  "exitCode": 0,
+  "source": [
+    {
+      "path": "crates/identity-server/tests/t19_admin_management.rs",
+      "sha256": "69604551524d88aef2faf163ae1d65b9593c354f4e05d5d0d0e2bafc1a35329d"
+    },
+    {
+      "path": "tests/integration/admin-management.mjs",
+      "sha256": "3e87d5f0f0994be3ac6a351daa8274ba5f8cd9f8c9f4394744f24e2d20ef17bd"
+    },
+    {
+      "path": "tests/integration/T19.mjs",
+      "sha256": "5f2b38c86c39a20f0ee99a490338bfd4450342038c55504dd4c0b3b72d4c9995"
+    },
+    {
+      "path": "tests/e2e/admin-management.config.ts",
+      "sha256": "91421fc1ea2872dfff1b61309ff4253b56781412faf9fdd39593867cfdecb151"
+    },
+    {
+      "path": "tests/e2e/admin-management.spec.ts",
+      "sha256": "ba229f3654ed37c57aa1f81077246d3420ca657f56d3d81f26691c4b19a757c2"
+    },
+    {
+      "path": "apps/identity-web/src/pages/admin/AdminShared.tsx",
+      "sha256": "d32352cb4c5abb0d1b1f8f3ab95ad532fcd7bbdbae1ff58d49608395ce58b651"
+    },
+    {
+      "path": "apps/identity-web/src/pages/admin/UsersPage.tsx",
+      "sha256": "e45f4a28a474bed1b83c0362410bf7b229a64f50de3012347c221d618fceffed"
+    },
+    {
+      "path": "apps/identity-web/src/pages/admin/ClientsPage.tsx",
+      "sha256": "515a97c1584d0840d4375f31b4ba8281afa9129379e929cfa43d2846de2f8767"
+    },
+    {
+      "path": "apps/identity-web/src/pages/admin/MembersPage.tsx",
+      "sha256": "a98e7d2db6673f408e7b03ff271cc5e914f327f5e7efa43fcb71eef274ce20d6"
+    }
+  ],
+  "backendExecutableSha256": "3b272a07bac869fe8e3bce5d7d21bbcb86faf8dc73c2b8464d860b0169dd07ff",
+  "cases": 4,
+  "result": [
+    {
+      "name": "users",
+      "data": {
+        "actualDisableRejectsOldSession": true,
+        "actualEnableAllowsFreshLogin": true,
+        "actualRevokeRemovesSession": true
+      }
+    },
+    {
+      "name": "clients",
+      "data": {
+        "editedExactCallbacks": true,
+        "disabledEnabledPersisted": true
+      }
+    },
+    {
+      "name": "members",
+      "data": {
+        "actualGrantAllowsAdminApi": true,
+        "actualRemoveRejectsAdminApi": true,
+        "lastAdminRejectedAndStillManageable": true,
+        "lastAdminStatus": 409,
+        "lastAdminCode": "ADMIN_LAST_MEMBER"
+      }
+    },
+    {
+      "name": "pending",
+      "data": {
+        "realDatabaseLockObserved": true,
+        "disabledSubmitAndCancel": true,
+        "repeatedPointerAndEnterIgnored": true,
+        "escapeBlockedWhilePending": true,
+        "actualMutationRequests": 1,
+        "committedAuditEvents": 1
+      }
+    }
+  ],
+  "sourceVerifiedBeforeAndAfter": true,
+  "completed": "2026-10-09T02:19:08.674Z"
+}

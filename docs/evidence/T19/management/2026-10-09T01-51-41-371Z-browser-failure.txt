@@ -1,0 +1,31 @@
+[WebServer] (node:3173241) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 4 tests using 1 worker
+(node:3173305) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+··F(node:3175385) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+·
+
+  1) tests/e2e/admin-management.spec.ts:27:1 › member grant remove and last-administrator guard preserve access
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 403
+    Received: 200
+
+      27 | test('member grant remove and last-administrator guard preserve access', async ({ page, browser }) => {
+      28 |   const memberContext = await browser.newContext(); try { const data = await admin(page, 'members'); const candidate = await memberContext.newPage(); const recovery = data.memberRecoveries?.[0]; if (!recovery) throw new Error('Actual candidate recovery required.'); await login(candidate, 'management-member@example.test', recovery); expect((await candidate.request.get('/api/v1/admin/members?limit=20')).status()).toBe(403); await page.getByRole('button', { name: '管理员', exact: true }).click(); await page.getByLabel('已有用户ID').fill(data.memberId); await confirmAction(page, page.getByRole('button', { name: '授予管理员', exact: true }), 'members', '确认授予管理员'); const row = page.getByRole('row').filter({ hasText: 'management-member@example.test' }); await expect(row).toBeVisible(); expect((await candidate.request.get('/api/v1/admin/members?limit=20')).status()).toBe(200);
+    > 29 |     await confirmAction(page, row.getByRole('button', { name: '移除管理员', exact: true }), 'members', '确认移除管理员'); await expect(row).toHaveCount(0); expect((await candidate.request.get('/api/v1/admin/members?limit=20')).status()).toBe(403);
+         |                                                                                                                                                                                                                                  ^
+      30 |     expect((await control('setup-last-admin?scenario=members', 'POST')).status).toBe(200); await page.reload(); await page.getByRole('button', { name: '管理员', exact: true }).click(); const actor = page.getByRole('row').filter({ hasText: '[OPAQUE]@example.test' }); await confirmAction(page, actor.getByRole('button', { name: '移除管理员', exact: true }), 'members', '确认移除管理员'); const error = page.getByRole('alert').filter({ hasText: '需要先保留另一位合格管理员' }); await expect(error).toBeVisible(); await page.getByRole('dialog').getByRole('button', { name: '取消', exact: true }).click(); expect((await page.request.get('/api/v1/admin/members?limit=20')).status()).toBe(200); await outcome('members', { [OPAQUE]: true, [OPAQUE]: true, [OPAQUE]: true });
+      31 |   } finally { await control('restore-admins?scenario=members', 'POST'); await memberContext.close(); }
+      32 | });
+        at /root/code/rust/auth_rust/tests/e2e/admin-management.spec.ts:29:226
+
+    Error Context: .local/[OPAQUE]/[OPAQUE]/error-context.md
+
+  1 failed
+    tests/e2e/admin-management.spec.ts:27:1 › member grant remove and last-administrator guard preserve access
+  3 passed (47.5s)

@@ -55,6 +55,9 @@ async function main() {
     if(result.code!==0){await mkdir(evidence,{recursive:true});await writeFile(resolve(evidence,`browser-diagnostics-${Date.now()}.txt`),`${result.stdout}${result.stderr}`.replaceAll(env.T19_BROWSER_PASSWORD,'[PASSWORD]').replaceAll(env.T19_CLOCK_KEY,'[CLOCK_KEY]').replace(/\b[A-Z2-7]{32,128}\b/gu,'[TOTP_SECRET]').replace(/\b[A-Za-z0-9_-]{22,}\b/gu,'[OPAQUE]').replace(/\b\d{6}\b/gu,'[OTP]'));}
     assert.equal(result.code,0,'T19 real public-flow/accessibility tests failed.');assert.match(result.stdout,/3 passed/u);lines.push('Playwright:3 passed/0 failed; actual public flows and accessibility.');
   }finally{harness.child.stdin?.end('stop\n');const result=await harness.completion;assert.equal(result.code,0,'T19 isolated schema cleanup failed.');}
+  const management = await command(process.execPath, [resolve(root, 'tests/integration/admin-management.mjs')], env);
+  assert.equal(management.code, 0, 'T19 real users/clients/members/pending management failed.');
+  lines.push('Administrative management:4 passed/0 failed; actual strong proofs, mutations and database-lock pending protection.');
   console.log('T19 real public flows and accessibility passed without secret output.');
 }
 let passed = false;

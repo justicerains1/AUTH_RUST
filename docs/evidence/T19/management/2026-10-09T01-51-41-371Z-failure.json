@@ -1,0 +1,7 @@
+{
+  "started": "2026-10-09T01:51:41.371Z",
+  "scope": "Real admin UI users, clients, memberships and pending actions; no production deployment or hardware claims.",
+  "exitCode": 1,
+  "failure": "Actual administrative UI verification failed; sanitized diagnostics retained, no credentials or private API bodies are printed.",
+  "completed": "2026-10-09T01:52:33.218Z"
+}
