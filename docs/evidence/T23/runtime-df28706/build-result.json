@@ -1,0 +1,122 @@
+{
+  "commit": "df28706a70118404ba60d3ca994863d271067f84",
+  "exitCode": 0,
+  "builds": [
+    {
+      "name": "runtime",
+      "tag": "auth-rust-runtime:t23-df28706",
+      "sourceCommit": "df28706a70118404ba60d3ca994863d271067f84",
+      "exitCode": 0,
+      "metadata": {
+        "buildx.build.provenance": {
+          "builder": {
+            "id": ""
+          },
+          "buildType": "https://mobyproject.org/buildkit@v1",
+          "materials": [
+            {
+              "uri": "pkg:docker/docker.m.daocloud.io/library/debian@bookworm-20261005-slim?digest=sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587&platform=linux%2Famd64",
+              "digest": {
+                "sha256": "7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587"
+              }
+            },
+            {
+              "uri": "pkg:docker/docker.m.daocloud.io/library/rust@1.98.0-bookworm?digest=sha256:82150a52ec202c1b14d7817e14516c392bb7f5cfebd88f1ed531cb37ebd39922&platform=linux%2Famd64",
+              "digest": {
+                "sha256": "82150a52ec202c1b14d7817e14516c392bb7f5cfebd88f1ed531cb37ebd39922"
+              }
+            }
+          ],
+          "invocation": {
+            "configSource": {
+              "entryPoint": "Dockerfile.prod"
+            },
+            "parameters": {
+              "frontend": "dockerfile.v0",
+              "args": {
+                "label:org.opencontainers.image.revision": "df28706a70118404ba60d3ca994863d271067f84"
+              },
+              "locals": [
+                {
+                  "name": "context"
+                },
+                {
+                  "name": "dockerfile"
+                }
+              ]
+            },
+            "environment": {
+              "platform": "linux/amd64"
+            }
+          }
+        },
+        "buildx.build.ref": "default/default/bodrw5qtmmcj7gybfwgu1bev5",
+        "containerimage.descriptor": {
+          "mediaType": "application/vnd.oci.image.index.v1+json",
+          "digest": "sha256:49d77f0d7944407b3eb5321a820b441f5bc54e19514ff2494f79e2e92a328ef4",
+          "size": 856
+        },
+        "containerimage.digest": "sha256:49d77f0d7944407b3eb5321a820b441f5bc54e19514ff2494f79e2e92a328ef4",
+        "image.name": "docker.io/library/auth-rust-runtime:t23-df28706"
+      }
+    },
+    {
+      "name": "edge",
+      "tag": "auth-rust-edge:t23-df28706",
+      "sourceCommit": "df28706a70118404ba60d3ca994863d271067f84",
+      "exitCode": 0,
+      "metadata": {
+        "buildx.build.provenance": {
+          "builder": {
+            "id": ""
+          },
+          "buildType": "https://mobyproject.org/buildkit@v1",
+          "materials": [
+            {
+              "uri": "pkg:docker/docker.m.daocloud.io/library/caddy@2.11.7-alpine?digest=sha256:d8542f48d34a9cf4e4c11a478865229840e87e4c96ea3f439101f31a5d35f75f&platform=linux%2Famd64",
+              "digest": {
+                "sha256": "d8542f48d34a9cf4e4c11a478865229840e87e4c96ea3f439101f31a5d35f75f"
+              }
+            },
+            {
+              "uri": "pkg:docker/docker.m.daocloud.io/library/node@22.22.1-bookworm-slim?digest=sha256:4f77a690f2f8946ab16fe1e791a3ac0667ae1c3575c3e4d0d4589e9ed5bfaf3d&platform=linux%2Famd64",
+              "digest": {
+                "sha256": "4f77a690f2f8946ab16fe1e791a3ac0667ae1c3575c3e4d0d4589e9ed5bfaf3d"
+              }
+            }
+          ],
+          "invocation": {
+            "configSource": {
+              "entryPoint": "Dockerfile.edge.prod"
+            },
+            "parameters": {
+              "frontend": "dockerfile.v0",
+              "args": {
+                "label:org.opencontainers.image.revision": "df28706a70118404ba60d3ca994863d271067f84"
+              },
+              "locals": [
+                {
+                  "name": "context"
+                },
+                {
+                  "name": "dockerfile"
+                }
+              ]
+            },
+            "environment": {
+              "platform": "linux/amd64"
+            }
+          }
+        },
+        "buildx.build.ref": "default/default/3ydspsrxd74exoix14dv4gnra",
+        "containerimage.descriptor": {
+          "mediaType": "application/vnd.oci.image.index.v1+json",
+          "digest": "sha256:73e1c6aded1bd777b7d5a9aa99ef5d2c17163ccd6799528110a23569f249314b",
+          "size": 856
+        },
+        "containerimage.digest": "sha256:73e1c6aded1bd777b7d5a9aa99ef5d2c17163ccd6799528110a23569f249314b",
+        "image.name": "docker.io/library/auth-rust-edge:t23-df28706"
+      }
+    }
+  ]
+}

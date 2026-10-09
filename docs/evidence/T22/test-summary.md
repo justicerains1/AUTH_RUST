@@ -16,3 +16,9 @@ root最终check/unit/build/docs/openapi/tooling0，身份59+演示12前端测试
 
 
 2026-10-09本地补充已实现并实测：真实签名预发布/切签/缓存刷新/回滚/期限[演练](signing-rotation-summary.md)、完整密码/TOTP/虚拟Passkey及live/revokedOAuth[恢复](identity-restore-summary.md)、18总规则/20场景及真实磁盘TLS备份采集[告警](host-metrics/test-summary.md)、实际备份→迁移中止→启动/兼容回滚[发布](release-orchestration-summary.md)。T22入口现在六组必跑，告警/恢复不只存在脚本；正式SMTP、独立主机/存储/14天调度/可达通知/实际生产RPO与RTO仍待外部验收。最终当前全量报告和镜像另行更新。
+
+## 本轮WAL与监控链补验
+
+[WAL监测](wal-monitoring/test-summary.md)已实现预建expecteddevice受控归档根、durable completion回执/原子指针、重试不刷新且任一步sync失败不返回成功、真实pg_stat_archiver失败/恢复/权限拒绝指标；38运维项、25规则/31场景通过。
+
+[本地监控链](monitoring-chain/test-summary.md)实际collector→node_exporter→Prometheus→Alertmanager→回环receiver，原for:1m后firing及恢复resolved已送达；新增受控collector systemd service/timer与私网Prometheus接入配置。生产调度/接收方、独立故障域/十四天历史/RPO-RTO仍待真实环境。T22入口现含完整链必跑，最终整个T22/全量结果后更新；五服务发布/回滚新演练正在实现，不能沿用只API范围冒整套通过。

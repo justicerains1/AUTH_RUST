@@ -1,0 +1,616 @@
+{
+  "baseline": "138815caa0978b8e6c906b99c53048932d8368cf",
+  "current": "81fb9ac4c1e45ae2e42f55a2dbcc68fdcf1cff79",
+  "items": [
+    {
+      "path": "apps/demo-a/index.html",
+      "baseline_sha256": "47d9f1692d60642320d1075b329539ae4dabbaf929e258acf831b4ee367b0e6a",
+      "current_sha256": "47d9f1692d60642320d1075b329539ae4dabbaf929e258acf831b4ee367b0e6a",
+      "equal": true
+    },
+    {
+      "path": "apps/demo-a/package.json",
+      "baseline_sha256": "b255b53717d2773ca22c53932b902c907898b21f497e6033c19d5ac1e40b97b3",
+      "current_sha256": "b255b53717d2773ca22c53932b902c907898b21f497e6033c19d5ac1e40b97b3",
+      "equal": true
+    },
+    {
+      "path": "apps/demo-a/src/App.test.tsx",
+      "baseline_sha256": "1e199020ba877e265c6bb319f08a33090df16c1aafac29d68a6d8c7cc57326e0",
+      "current_sha256": "1e199020ba877e265c6bb319f08a33090df16c1aafac29d68a6d8c7cc57326e0",
+      "equal": true
+    },
+    {
+      "path": "apps/demo-a/src/App.tsx",
+      "baseline_sha256": "691a2392610f28631c49d3e237eaada7dd1092954ce49d3f8123d894a6995d8d",
+      "current_sha256": "691a2392610f28631c49d3e237eaada7dd1092954ce49d3f8123d894a6995d8d",
+      "equal": true
+    },
+    {
+      "path": "apps/demo-a/src/main.tsx",
+      "baseline_sha256": "82f934215c93eec1cd12c146643af3d173838eef7c2bd71660a58cbef832df62",
+      "current_sha256": "82f934215c93eec1cd12c146643af3d173838eef7c2bd71660a58cbef832df62",
+      "equal": true
+    },
+    {
+      "path": "apps/demo-a/src/pages/InitializationPage.tsx",
+      "baseline_sha256": "9eeab7a70044f1dfb5bb31fed86402633a9dac6f301003bc023c6f5e768504df",
+      "current_sha256": "9eeab7a70044f1dfb5bb31fed86402633a9dac6f301003bc023c6f5e768504df",
+      "equal": true
+    },
+    {
+      "path": "apps/demo-a/src/pages/NotFoundPage.tsx",
+      "baseline_sha256": "0d722796cd671140beb1a5631f9f10036e3009bfeef42e3b5c39c2d18f2476e2",
+      "current_sha256": "0d722796cd671140beb1a5631f9f10036e3009bfeef42e3b5c39c2d18f2476e2",
+      "equal": true
+    },
+    {
+      "path": "apps/demo-a/src/styles.css",
+      "baseline_sha256": "473aec40e4f1a417ea7f33669f304fa93a3f9150e31e410f13eecd5793ee160a",
+      "current_sha256": "473aec40e4f1a417ea7f33669f304fa93a3f9150e31e410f13eecd5793ee160a",
+      "equal": true
+    },
+    {
+      "path": "apps/demo-a/tsconfig.json",
+      "baseline_sha256": "aa704f945bc6086da61ad380d7cc86c9d255c8655dcec91c53bb4e148956dc7b",
+      "current_sha256": "aa704f945bc6086da61ad380d7cc86c9d255c8655dcec91c53bb4e148956dc7b",
+      "equal": true
+    },
+    {
+      "path": "apps/demo-a/vite.config.ts",
+      "baseline_sha256": "0678d574374c9b03368ed6c7ffee4811c1b3518eacc2f94a5d45ba44e3775a43",
+      "current_sha256": "0678d574374c9b03368ed6c7ffee4811c1b3518eacc2f94a5d45ba44e3775a43",
+      "equal": true
+    },
+    {
+      "path": "apps/demo-b/index.html",
+      "baseline_sha256": "c2180f68f49aeec92662e011b6a701cb60c8b3ae9978a7c67881afe2f38a8568",
+      "current_sha256": "c2180f68f49aeec92662e011b6a701cb60c8b3ae9978a7c67881afe2f38a8568",
+      "equal": true
+    },
+    {
+      "path": "apps/demo-b/package.json",
+      "baseline_sha256": "5bf5e10f9cafffe3c73968b0738fb44c78b04763d2d391762c86892181c2c3bc",
+      "current_sha256": "5bf5e10f9cafffe3c73968b0738fb44c78b04763d2d391762c86892181c2c3bc",
+      "equal": true
+    },
+    {
+      "path": "apps/demo-b/src/App.test.tsx",
+      "baseline_sha256": "d6e59d3a214e3a905634e42782d2af6c6e4dbbb94471b0aa60a6056443356de7",
+      "current_sha256": "d6e59d3a214e3a905634e42782d2af6c6e4dbbb94471b0aa60a6056443356de7",
+      "equal": true
+    },
+    {
+      "path": "apps/demo-b/src/App.tsx",
+      "baseline_sha256": "691a2392610f28631c49d3e237eaada7dd1092954ce49d3f8123d894a6995d8d",
+      "current_sha256": "691a2392610f28631c49d3e237eaada7dd1092954ce49d3f8123d894a6995d8d",
+      "equal": true
+    },
+    {
+      "path": "apps/demo-b/src/main.tsx",
+      "baseline_sha256": "82f934215c93eec1cd12c146643af3d173838eef7c2bd71660a58cbef832df62",
+      "current_sha256": "82f934215c93eec1cd12c146643af3d173838eef7c2bd71660a58cbef832df62",
+      "equal": true
+    },
+    {
+      "path": "apps/demo-b/src/pages/InitializationPage.tsx",
+      "baseline_sha256": "01c03152dea9b838bdb424abbe62d88baede6c7d6fe5228915db30089d3e2bb4",
+      "current_sha256": "01c03152dea9b838bdb424abbe62d88baede6c7d6fe5228915db30089d3e2bb4",
+      "equal": true
+    },
+    {
+      "path": "apps/demo-b/src/pages/NotFoundPage.tsx",
+      "baseline_sha256": "0d722796cd671140beb1a5631f9f10036e3009bfeef42e3b5c39c2d18f2476e2",
+      "current_sha256": "0d722796cd671140beb1a5631f9f10036e3009bfeef42e3b5c39c2d18f2476e2",
+      "equal": true
+    },
+    {
+      "path": "apps/demo-b/src/styles.css",
+      "baseline_sha256": "473aec40e4f1a417ea7f33669f304fa93a3f9150e31e410f13eecd5793ee160a",
+      "current_sha256": "473aec40e4f1a417ea7f33669f304fa93a3f9150e31e410f13eecd5793ee160a",
+      "equal": true
+    },
+    {
+      "path": "apps/demo-b/tsconfig.json",
+      "baseline_sha256": "aa704f945bc6086da61ad380d7cc86c9d255c8655dcec91c53bb4e148956dc7b",
+      "current_sha256": "aa704f945bc6086da61ad380d7cc86c9d255c8655dcec91c53bb4e148956dc7b",
+      "equal": true
+    },
+    {
+      "path": "apps/demo-b/vite.config.ts",
+      "baseline_sha256": "bc3006874813153929a2fa4cf9f15675542b16de541dc1bdb41904fa752c7cac",
+      "current_sha256": "bc3006874813153929a2fa4cf9f15675542b16de541dc1bdb41904fa752c7cac",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/index.html",
+      "baseline_sha256": "866e78d86b9ad3c2dfa6463f496631ae7f522fa4b1e1d7a2afc5d93ca48db1e9",
+      "current_sha256": "866e78d86b9ad3c2dfa6463f496631ae7f522fa4b1e1d7a2afc5d93ca48db1e9",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/package.json",
+      "baseline_sha256": "24bdbf49409a34e9274d0a8cefb436ed77174f539456e8591afbca4090566161",
+      "current_sha256": "24bdbf49409a34e9274d0a8cefb436ed77174f539456e8591afbca4090566161",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/App.test.tsx",
+      "baseline_sha256": "5754076ccb3943446d00bf7ae024db8c26afd8f7ae65b588838eddf65b8bfd90",
+      "current_sha256": "5754076ccb3943446d00bf7ae024db8c26afd8f7ae65b588838eddf65b8bfd90",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/App.tsx",
+      "baseline_sha256": "8619759a18d296f57964ebecdf163d5e1a747239e13db7289888b5605b8f2f7e",
+      "current_sha256": "8619759a18d296f57964ebecdf163d5e1a747239e13db7289888b5605b8f2f7e",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/components/AccountAction.tsx",
+      "baseline_sha256": "3f5483f804f9a6175c7c64032cb190e8a2648ab33376f26bc80a64207c7c6ca2",
+      "current_sha256": "3f5483f804f9a6175c7c64032cb190e8a2648ab33376f26bc80a64207c7c6ca2",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/components/AccountLayout.tsx",
+      "baseline_sha256": "6c320052b6e167acb13867e8aa39577b7a30babea2ee509da25b28bc53173f02",
+      "current_sha256": "6c320052b6e167acb13867e8aa39577b7a30babea2ee509da25b28bc53173f02",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/components/AuthGuard.tsx",
+      "baseline_sha256": "6126d9caf669e3d639dcf6144cce5d5f33a08e68cd94c184d16247ae85a6f88b",
+      "current_sha256": "6126d9caf669e3d639dcf6144cce5d5f33a08e68cd94c184d16247ae85a6f88b",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/components/AuthTransactionNotice.tsx",
+      "baseline_sha256": "033f18cbf3475c9c75f2bb078cd38ffcfcbb0ef02f27ef64c20e286203bd1553",
+      "current_sha256": "033f18cbf3475c9c75f2bb078cd38ffcfcbb0ef02f27ef64c20e286203bd1553",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/components/Button.tsx",
+      "baseline_sha256": "fa74ec5f09d3bd2977eec5c079d6e6a6894f1f192b8172f22f054a32a0556a48",
+      "current_sha256": "fa74ec5f09d3bd2977eec5c079d6e6a6894f1f192b8172f22f054a32a0556a48",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/components/ConfirmDialog.tsx",
+      "baseline_sha256": "1ede95030a56d3c8b6ab3b525266397959fe904c78e1668725effafb30e2e98b",
+      "current_sha256": "1ede95030a56d3c8b6ab3b525266397959fe904c78e1668725effafb30e2e98b",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/components/CursorPagination.tsx",
+      "baseline_sha256": "2d09741413f9c2fb99a87096456ab8d1f5ef0fed6c3f9b38afb77a40596b2fee",
+      "current_sha256": "2d09741413f9c2fb99a87096456ab8d1f5ef0fed6c3f9b38afb77a40596b2fee",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/components/Empty.tsx",
+      "baseline_sha256": "1fdd3a53ba3415a1aaf20af070784b85bb946d6623df1fb7de09239a5b225d5e",
+      "current_sha256": "1fdd3a53ba3415a1aaf20af070784b85bb946d6623df1fb7de09239a5b225d5e",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/components/FactorChallenge.tsx",
+      "baseline_sha256": "1c01a2b78974220a6f5facddae7b386e2c7a36f28bcae4097bbe9bd07ff14a22",
+      "current_sha256": "1c01a2b78974220a6f5facddae7b386e2c7a36f28bcae4097bbe9bd07ff14a22",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/components/FieldError.tsx",
+      "baseline_sha256": "b63d07d7a07280be3cb21d580ccaf86176d37fab13068124825261d7d31073a5",
+      "current_sha256": "b63d07d7a07280be3cb21d580ccaf86176d37fab13068124825261d7d31073a5",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/components/Input.tsx",
+      "baseline_sha256": "1273a7db394859174be7ec7bd29834a0f913327242d90b7550d955a2992fb798",
+      "current_sha256": "1273a7db394859174be7ec7bd29834a0f913327242d90b7550d955a2992fb798",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/components/Layout.tsx",
+      "baseline_sha256": "25b58ffceee7af208ac71e2a7c265b1126f99bdba12ae30ad997bb9cddf4bade",
+      "current_sha256": "25b58ffceee7af208ac71e2a7c265b1126f99bdba12ae30ad997bb9cddf4bade",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/components/PasskeyLoginButton.tsx",
+      "baseline_sha256": "4fc86d6bcc6fb158b0ef10088fe90e636c6391eaa13e74bbbe3248eeb59e2c37",
+      "current_sha256": "4fc86d6bcc6fb158b0ef10088fe90e636c6391eaa13e74bbbe3248eeb59e2c37",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/components/PasskeyReauth.tsx",
+      "baseline_sha256": "7c6500799f658babf929c1a0eb7c541dfb7e76815f37982172e2dbda9589a76d",
+      "current_sha256": "7c6500799f658babf929c1a0eb7c541dfb7e76815f37982172e2dbda9589a76d",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/components/Password.tsx",
+      "baseline_sha256": "3a5945279207c1ebda5cfa4c716adb554853db4f018be46115dfd3ee6c8b276f",
+      "current_sha256": "3a5945279207c1ebda5cfa4c716adb554853db4f018be46115dfd3ee6c8b276f",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/components/PublicAuthLayout.tsx",
+      "baseline_sha256": "e8cd9722128ceab5eaad59bee91229dc0282eb8d86dd757126c3f1e68e942c31",
+      "current_sha256": "e8cd9722128ceab5eaad59bee91229dc0282eb8d86dd757126c3f1e68e942c31",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/components/ReauthenticationDialog.tsx",
+      "baseline_sha256": "1ed0bedc285274943b30f28050673aa06586c55fa0badb8b58156bc0ff3588a3",
+      "current_sha256": "1ed0bedc285274943b30f28050673aa06586c55fa0badb8b58156bc0ff3588a3",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/components/RecoveryCodes.tsx",
+      "baseline_sha256": "4f1501b83df823b66c08ec2fe5f8937f1f0a993a23ada47bd31a681dc52f4e3c",
+      "current_sha256": "4f1501b83df823b66c08ec2fe5f8937f1f0a993a23ada47bd31a681dc52f4e3c",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/components/RequestFeedback.tsx",
+      "baseline_sha256": "fdaa9a973bd6846b03277c7e9656072360c7f81dd577d21125e6761a904007b2",
+      "current_sha256": "fdaa9a973bd6846b03277c7e9656072360c7f81dd577d21125e6761a904007b2",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/components/Status.tsx",
+      "baseline_sha256": "64bd758fb8e08a9103aabfd4d787fb8b38d7856ec4b282cab36fa9ce20edad8b",
+      "current_sha256": "64bd758fb8e08a9103aabfd4d787fb8b38d7856ec4b282cab36fa9ce20edad8b",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/components/Table.tsx",
+      "baseline_sha256": "8654aee84242c30679bf1ccd551dca4ca8fb724e4018190b2ed928d0e1eed619",
+      "current_sha256": "8654aee84242c30679bf1ccd551dca4ca8fb724e4018190b2ed928d0e1eed619",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/components/TotpQrCode.tsx",
+      "baseline_sha256": "60f563fc47106dd1adc9396fc68e8a17375a9102b940f96771ed7366c792fb75",
+      "current_sha256": "60f563fc47106dd1adc9396fc68e8a17375a9102b940f96771ed7366c792fb75",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/components/auth-factors.test.tsx",
+      "baseline_sha256": "51b6814e69ddfa77238a018f3cc517dbf5d550f402585f1914c4f42e68dee2ad",
+      "current_sha256": "51b6814e69ddfa77238a018f3cc517dbf5d550f402585f1914c4f42e68dee2ad",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/components/components.test.tsx",
+      "baseline_sha256": "34b1d101b88f223768f2827d31cf0f63c68c4d597359ea361d0befba48b31bb3",
+      "current_sha256": "34b1d101b88f223768f2827d31cf0f63c68c4d597359ea361d0befba48b31bb3",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/components/mfa.test.tsx",
+      "baseline_sha256": "8c00a8c1ececc79be29f3bed48a96353429d78c0a4bc5145f6018cf88462bb4d",
+      "current_sha256": "8c00a8c1ececc79be29f3bed48a96353429d78c0a4bc5145f6018cf88462bb4d",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/components/passkey.test.tsx",
+      "baseline_sha256": "f980c20f640f1cf47777113b3f880d846de1545712181f351a09405750a28820",
+      "current_sha256": "f980c20f640f1cf47777113b3f880d846de1545712181f351a09405750a28820",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/components/reauthentication.test.tsx",
+      "baseline_sha256": "0e05c7a698c6ee7e0bed67e970f9588372eed3137090c8ad7329d7b8d80555c7",
+      "current_sha256": "0e05c7a698c6ee7e0bed67e970f9588372eed3137090c8ad7329d7b8d80555c7",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/lib/admin-api.ts",
+      "baseline_sha256": "cd6b85f6c7c457bd24790c4d80a5baf4a6e6d9511f6a599f0e90906b5dccd4b3",
+      "current_sha256": "cd6b85f6c7c457bd24790c4d80a5baf4a6e6d9511f6a599f0e90906b5dccd4b3",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/lib/api.test.ts",
+      "baseline_sha256": "ffe03e877ecd8a5e8b454f88afdf7bf742e626b8d9a18d1f8d1be4896b2cad2f",
+      "current_sha256": "ffe03e877ecd8a5e8b454f88afdf7bf742e626b8d9a18d1f8d1be4896b2cad2f",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/lib/api.ts",
+      "baseline_sha256": "d2e52229608975e910443bf55ef4d9795878575fb51aadc905878fa994a78f08",
+      "current_sha256": "d2e52229608975e910443bf55ef4d9795878575fb51aadc905878fa994a78f08",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/lib/auth-feedback.ts",
+      "baseline_sha256": "e19ec5885d8f7121608badcb75d4627df859c66d9c6827418f745d5afbdb6584",
+      "current_sha256": "e19ec5885d8f7121608badcb75d4627df859c66d9c6827418f745d5afbdb6584",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/lib/auth-flow.ts",
+      "baseline_sha256": "1a7ec8f5a81d0da82a25f7013ca8b7872a0bf3b9104493096c325b5eeaba6db2",
+      "current_sha256": "1a7ec8f5a81d0da82a25f7013ca8b7872a0bf3b9104493096c325b5eeaba6db2",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/lib/i18n.ts",
+      "baseline_sha256": "b5f73e84df2aa3c70dcaaccdc20e6531c6c7a17f3018aa042256b853d0523e73",
+      "current_sha256": "b5f73e84df2aa3c70dcaaccdc20e6531c6c7a17f3018aa042256b853d0523e73",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/lib/mail-action.ts",
+      "baseline_sha256": "09b0bcae677f37b8eb56b688905ae2e7e972beac04cd2dd79ca2f2f7ea3eb9f5",
+      "current_sha256": "09b0bcae677f37b8eb56b688905ae2e7e972beac04cd2dd79ca2f2f7ea3eb9f5",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/lib/passkeyAuth.ts",
+      "baseline_sha256": "5b7be56e7886b208a27c454b6a314e531df42f705b3c6375d38307c919f1b96b",
+      "current_sha256": "5b7be56e7886b208a27c454b6a314e531df42f705b3c6375d38307c919f1b96b",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/lib/query.ts",
+      "baseline_sha256": "e2835f48e3c7b5f40a6ee0207a430d56c82e39abd78537b7bf4eb3a9893ce873",
+      "current_sha256": "e2835f48e3c7b5f40a6ee0207a430d56c82e39abd78537b7bf4eb3a9893ce873",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/lib/reauthentication.ts",
+      "baseline_sha256": "2cb2803ca7ddb041328a85abcc3ff0d2d3b62175354f38deb60b822f68671d90",
+      "current_sha256": "2cb2803ca7ddb041328a85abcc3ff0d2d3b62175354f38deb60b822f68671d90",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/lib/webauthn.test.ts",
+      "baseline_sha256": "c78c43b2156114fa93e75c26eb76e8c8701fc202112192a8efe38a226d87343f",
+      "current_sha256": "c78c43b2156114fa93e75c26eb76e8c8701fc202112192a8efe38a226d87343f",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/lib/webauthn.ts",
+      "baseline_sha256": "d73830f674b5a931ea9e7942abe5b26519095540c19946691e95268bd82693c9",
+      "current_sha256": "d73830f674b5a931ea9e7942abe5b26519095540c19946691e95268bd82693c9",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/main.tsx",
+      "baseline_sha256": "a776412f9856bfa64f9c0761d7b95de3b4b81c728d6bec686acc3fbc9f353a19",
+      "current_sha256": "a776412f9856bfa64f9c0761d7b95de3b4b81c728d6bec686acc3fbc9f353a19",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/pages/AccountPage.tsx",
+      "baseline_sha256": "e8d237c67737cdad84b021396a7d17c3d71fed8a092f1ca4f2218e9124c93d8a",
+      "current_sha256": "e8d237c67737cdad84b021396a7d17c3d71fed8a092f1ca4f2218e9124c93d8a",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/pages/AdminPage.tsx",
+      "baseline_sha256": "645ea7f4a5e39fede65d416d0d18df3f78b4acf6f4c2b0e250f0b5d84b558c0f",
+      "current_sha256": "645ea7f4a5e39fede65d416d0d18df3f78b4acf6f4c2b0e250f0b5d84b558c0f",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/pages/ComponentsPage.tsx",
+      "baseline_sha256": "4879477c3a3dc6e77ece335fb3d7ea06facee8740d8f04cd9ca5c6429e912652",
+      "current_sha256": "4879477c3a3dc6e77ece335fb3d7ea06facee8740d8f04cd9ca5c6429e912652",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/pages/ConsentPage.tsx",
+      "baseline_sha256": "62c871eba500fc5579dc383f14e4ba1c3d6e1193af9b66093d60be97c86b3e82",
+      "current_sha256": "62c871eba500fc5579dc383f14e4ba1c3d6e1193af9b66093d60be97c86b3e82",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/pages/EmailVerificationPage.tsx",
+      "baseline_sha256": "5e2f025dec85a630828965dbc4cbd35357a60ca16649911c7f30e22b8ecaaa3a",
+      "current_sha256": "5e2f025dec85a630828965dbc4cbd35357a60ca16649911c7f30e22b8ecaaa3a",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/pages/GrantsPage.tsx",
+      "baseline_sha256": "c04873a23ae79c43d383b8bcfd517255a501f3e3b8239271f3c55d1c678f80a9",
+      "current_sha256": "c04873a23ae79c43d383b8bcfd517255a501f3e3b8239271f3c55d1c678f80a9",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/pages/HomePage.tsx",
+      "baseline_sha256": "e1dd4017307edb607cf3da1875202fea86278163c4873ce0b379a7bac582ecdc",
+      "current_sha256": "e1dd4017307edb607cf3da1875202fea86278163c4873ce0b379a7bac582ecdc",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/pages/LoginPage.tsx",
+      "baseline_sha256": "bbbea68b8ba8c53066f5c3bc5deba7b75ef6dd4b6046569310056a4df8560ba7",
+      "current_sha256": "bbbea68b8ba8c53066f5c3bc5deba7b75ef6dd4b6046569310056a4df8560ba7",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/pages/LogoutPage.tsx",
+      "baseline_sha256": "a2e1bcb04fa9a24734507db62c40d510d61278b234c8ca18cfe0d387db8c03c6",
+      "current_sha256": "a2e1bcb04fa9a24734507db62c40d510d61278b234c8ca18cfe0d387db8c03c6",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/pages/MfaPage.tsx",
+      "baseline_sha256": "817b4cc8d87e296fed588430f1577cae1c5087f8eec82c6b847911b5e062ea71",
+      "current_sha256": "817b4cc8d87e296fed588430f1577cae1c5087f8eec82c6b847911b5e062ea71",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/pages/NotFoundPage.tsx",
+      "baseline_sha256": "a9f4b2ab285c6d647055529d4e8e917a831b32ada4d3e873ff3e473aa2d80f83",
+      "current_sha256": "a9f4b2ab285c6d647055529d4e8e917a831b32ada4d3e873ff3e473aa2d80f83",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/pages/PageTitle.tsx",
+      "baseline_sha256": "0c1fe9ebc4b956e5e15731fab5a2dbae43d6080fbf73d6ac159f442704c5a462",
+      "current_sha256": "0c1fe9ebc4b956e5e15731fab5a2dbae43d6080fbf73d6ac159f442704c5a462",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/pages/PasskeysPage.tsx",
+      "baseline_sha256": "d0345c7f72a7dea30e2636e9de9a11b5d999880a62c3357c26f891d1706a06ef",
+      "current_sha256": "d0345c7f72a7dea30e2636e9de9a11b5d999880a62c3357c26f891d1706a06ef",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/pages/PasswordChangePage.tsx",
+      "baseline_sha256": "9aea9412b4e093cefacbe60ef6ec1939f6538534af8a7366d16b23cb7eb6f458",
+      "current_sha256": "9aea9412b4e093cefacbe60ef6ec1939f6538534af8a7366d16b23cb7eb6f458",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/pages/PasswordResetPage.tsx",
+      "baseline_sha256": "6b0863ff11e8b90cb0c309996d100e93e9453e0495981554ae233b23d69eb2b3",
+      "current_sha256": "6b0863ff11e8b90cb0c309996d100e93e9453e0495981554ae233b23d69eb2b3",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/pages/RegisterPage.tsx",
+      "baseline_sha256": "00a8fc9eccd2cea13ecb9fcd236cf4c0e13322a8bff9df2cf14c743ecd12cbfd",
+      "current_sha256": "00a8fc9eccd2cea13ecb9fcd236cf4c0e13322a8bff9df2cf14c743ecd12cbfd",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/pages/SessionsPage.tsx",
+      "baseline_sha256": "d57216547cd8b3e447c71c4011007f9f1399a963a36fc46516d25a989abc95b9",
+      "current_sha256": "d57216547cd8b3e447c71c4011007f9f1399a963a36fc46516d25a989abc95b9",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/pages/account-security.test.tsx",
+      "baseline_sha256": "8cfd612031bc007c9502ee27caa78a67935c3bd0a4efe025e730608f016277fb",
+      "current_sha256": "8cfd612031bc007c9502ee27caa78a67935c3bd0a4efe025e730608f016277fb",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/pages/admin/AdminConsole.tsx",
+      "baseline_sha256": "861ac0ab793bb29c60170e93346a1448c6dd9be7f2acffc65cca97dc2988e4dd",
+      "current_sha256": "861ac0ab793bb29c60170e93346a1448c6dd9be7f2acffc65cca97dc2988e4dd",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/pages/admin/AdminShared.tsx",
+      "baseline_sha256": "d32352cb4c5abb0d1b1f8f3ab95ad532fcd7bbdbae1ff58d49608395ce58b651",
+      "current_sha256": "d32352cb4c5abb0d1b1f8f3ab95ad532fcd7bbdbae1ff58d49608395ce58b651",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/pages/admin/AuditPage.tsx",
+      "baseline_sha256": "f7a790361ceccf0771a4ed26a39290a5eb4c3112451e15db2c79f8d71249fc51",
+      "current_sha256": "f7a790361ceccf0771a4ed26a39290a5eb4c3112451e15db2c79f8d71249fc51",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/pages/admin/ClientsPage.tsx",
+      "baseline_sha256": "515a97c1584d0840d4375f31b4ba8281afa9129379e929cfa43d2846de2f8767",
+      "current_sha256": "515a97c1584d0840d4375f31b4ba8281afa9129379e929cfa43d2846de2f8767",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/pages/admin/MembersPage.tsx",
+      "baseline_sha256": "a98e7d2db6673f408e7b03ff271cc5e914f327f5e7efa43fcb71eef274ce20d6",
+      "current_sha256": "a98e7d2db6673f408e7b03ff271cc5e914f327f5e7efa43fcb71eef274ce20d6",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/pages/admin/UsersPage.tsx",
+      "baseline_sha256": "e45f4a28a474bed1b83c0362410bf7b229a64f50de3012347c221d618fceffed",
+      "current_sha256": "e45f4a28a474bed1b83c0362410bf7b229a64f50de3012347c221d618fceffed",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/pages/admin/admin.test.tsx",
+      "baseline_sha256": "2b3559d4f955e100466bfa31b122b0d49049c0ccaa2d6e8b101ac2fe18dbb66e",
+      "current_sha256": "2b3559d4f955e100466bfa31b122b0d49049c0ccaa2d6e8b101ac2fe18dbb66e",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/pages/consent.test.tsx",
+      "baseline_sha256": "03f66520c0ea20f0933224ab0d50928753e5f9c0ccd8ba738092e892f933d753",
+      "current_sha256": "03f66520c0ea20f0933224ab0d50928753e5f9c0ccd8ba738092e892f933d753",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/pages/logout-grants.test.tsx",
+      "baseline_sha256": "f92762aeb42671d9e43b7f34b9d62202e9ff1e9fbe813989e079dfcfa338b963",
+      "current_sha256": "f92762aeb42671d9e43b7f34b9d62202e9ff1e9fbe813989e079dfcfa338b963",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/pages/passwords.test.tsx",
+      "baseline_sha256": "421b5da87e239f835f0fc26802fe5a00c59fd292b2ba612ec5f67ab21d400690",
+      "current_sha256": "421b5da87e239f835f0fc26802fe5a00c59fd292b2ba612ec5f67ab21d400690",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/pages/public-auth.test.tsx",
+      "baseline_sha256": "a7d6f8bc60606a7e50bc0ec5c49428a482c7d573db0022d1fffa675a398d7e6a",
+      "current_sha256": "a7d6f8bc60606a7e50bc0ec5c49428a482c7d573db0022d1fffa675a398d7e6a",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/pages/sessions.test.tsx",
+      "baseline_sha256": "642b5e8fd1171a8402f0c758afbe1198819f64585e8cdd3743af4081f31787ec",
+      "current_sha256": "642b5e8fd1171a8402f0c758afbe1198819f64585e8cdd3743af4081f31787ec",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/src/styles.css",
+      "baseline_sha256": "0773c0848055355c9904bb9f1e59285b6a0d58d7e2183d26e6a1538f6f87d015",
+      "current_sha256": "0773c0848055355c9904bb9f1e59285b6a0d58d7e2183d26e6a1538f6f87d015",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/tsconfig.json",
+      "baseline_sha256": "aa704f945bc6086da61ad380d7cc86c9d255c8655dcec91c53bb4e148956dc7b",
+      "current_sha256": "aa704f945bc6086da61ad380d7cc86c9d255c8655dcec91c53bb4e148956dc7b",
+      "equal": true
+    },
+    {
+      "path": "apps/identity-web/vite.config.ts",
+      "baseline_sha256": "78022d7c2f23d59b1bb1b3aa1bb0279cb1aa68748e06c6d29bb9d6b0112e6bc1",
+      "current_sha256": "78022d7c2f23d59b1bb1b3aa1bb0279cb1aa68748e06c6d29bb9d6b0112e6bc1",
+      "equal": true
+    },
+    {
+      "path": "infra/Caddyfile.prod",
+      "baseline_sha256": "a8846cdf4725f643ef4eff19a1be1ee52e1789f33539eaa86bd689387168f05a",
+      "current_sha256": "a8846cdf4725f643ef4eff19a1be1ee52e1789f33539eaa86bd689387168f05a",
+      "equal": true
+    },
+    {
+      "path": "infra/Dockerfile.edge.prod",
+      "baseline_sha256": "6b41aac3c1de833ed2a3298ed8ece074cdcab0952453a89fc956e68f8dc1f57c",
+      "current_sha256": "6b41aac3c1de833ed2a3298ed8ece074cdcab0952453a89fc956e68f8dc1f57c",
+      "equal": true
+    },
+    {
+      "path": "package-lock.json",
+      "baseline_sha256": "4a016eb1d048cb0a7e06e41bff5909a8e1863584696585c1977b8be24abf1bca",
+      "current_sha256": "4a016eb1d048cb0a7e06e41bff5909a8e1863584696585c1977b8be24abf1bca",
+      "equal": true
+    },
+    {
+      "path": "package.json",
+      "baseline_sha256": "411ea735309e88c42231a6bee4a097930232aee92adc231d452ee5de52f754fb",
+      "current_sha256": "a2524e7fc2c249ef0f7d9265abec3f41ce58d3417c3a58092580d2b279b8178f",
+      "equal": false
+    }
+  ],
+  "differences": [
+    "package.json"
+  ],
+  "note": "Root package.json adds only test:interactions script; inspect separately; release workspace src/dependency lock differences require actual rebuild."
+}

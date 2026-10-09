@@ -291,3 +291,7 @@ aeb40648915bef2386c84c623ab75dac0be1b301:docs/evidence/T21/load-mixed-2026-10-08
 # Final required SQL probe public integrity hashes.
 2bad9529eb46779371a7c4a1e0421d58f65c8cab:docs/evidence/T21/sql-probe-2026-10-08T19-30-34-253Z.json:generic-api-key:4617
 2bad9529eb46779371a7c4a1e0421d58f65c8cab:docs/evidence/T21/sql-probe-2026-10-08T19-30-34-253Z.json:generic-api-key:4622
+
+# Reviewed exact public source and observed executable SHA256 in the final authority SQL probe.
+57aa52cfb092c9f39096578347ca10d0533782e6:docs/evidence/T21/sql-probe-2026-10-09T00-28-49-567Z.json:generic-api-key:4617
+57aa52cfb092c9f39096578347ca10d0533782e6:docs/evidence/T21/sql-probe-2026-10-09T00-28-49-567Z.json:generic-api-key:4622

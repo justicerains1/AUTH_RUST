@@ -1,5 +1,5 @@
 {
-  "completed": "2026-10-08T19:32:33.741Z",
+  "completed": "2026-10-09T01:45:30.985Z",
   "results": [
     {
       "name": "metrics",
@@ -11,6 +11,10 @@
     },
     {
       "name": "backup-wal-production-config",
+      "exitCode": 0
+    },
+    {
+      "name": "local-exporter-prometheus-alertmanager-receiver",
       "exitCode": 0
     },
     {

@@ -814,7 +814,7 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 |---|---|---|---|---|---|---|
 | T21-PERF-01 | 规定硬件与数据 | 单项/综合各 15 分钟 | 达到第 8.4 节门槛，错误分类明确 | 原四场及共享Redis后综合900s精准319500/零错误drop达本机门槛；规定硬件未提供 | 阻塞 | [本机结果](docs/evidence/T21/test-summary.md)、[四场复核](docs/evidence/T21/load-evidence-verification.json) |
 | T21-PERF-02 | 移动模拟环境 | 五次冷加载和关键交互 | LCP/CLS/体积达标，报告方法完整 | Chrome153、390×844/CPU4x/1.6Mbps-750Kbps/150ms各5次：首页-登录LCP1624-1632ms、CLS0、JS149.17-151.79KiB；本地max31.1ms/实验室p75max30.1ms，局部阈值达到 | 通过 | [前端方法](docs/evidence/T21/frontend-measurement.md)、[实际报告](docs/evidence/T21/frontend-2026-10-08T08-04-18-937Z.json) |
-| T21-PERF-03 | 查询计划与队列 | 分析慢 SQL、峰值 hash 队列 | 无明显 N+1，资源限制有效 | 真实十万fixtures精确15SQL计划/10请求探测、本人分页1-20条SQL次数固定；900秒SQL/获取等待/PG等待/密码队列与短容量已实测；未覆盖全部业务写路径及参考环境 | 未执行 | [本机结果](docs/evidence/T21/test-summary.md)、[四场复核](docs/evidence/T21/load-evidence-verification.json) |
+| T21-PERF-03 | 查询计划与队列 | 分析慢 SQL、峰值 hash 队列 | 无明显 N+1，资源限制有效 | 真实十万用户15权威+8管理Worker计划；本人分页固定、管理用户/客户端/审计1-20条SQL为7/8/7固定，真实Worker1/10投递5/32；900秒队列/等待与短容量已实测，未覆盖全部写路径/参考环境 | 阻塞 | [本机结果](docs/evidence/T21/test-summary.md)、[四场复核](docs/evidence/T21/load-evidence-verification.json) |
 
 **实现子步骤检查：**
 
@@ -850,7 +850,7 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 | T22-OPS-01 | 干净 Linux 主机/域名/秘密 | 按 runbook 部署、检查开放端口 | HTTPS、安全 headers、健康正常，DB/Redis 不外露 | 本地镜像/readonly非root/Caddyconfig通过，真实生产域名部署未准备 | 未执行 | [本地记录](docs/evidence/T22/test-summary.md) |
 | T22-OPS-02 | 独立备份与新主机 | 恢复到已知时间并操作账号 | RPO/RTO 达标，密钥可用，日志脱敏 | 命名点PITR与完整身份新PG恢复已本地验证密码/TOTP/虚拟Passkey/live-revokedOAuth；生产独立主机/规模/RPO-RTO未验 | 未执行 | [本地记录](docs/evidence/T22/test-summary.md) |
 | T22-OPS-03 | 活动用户与旧 token | 签名/加密密钥轮换 | 新凭证正常，旧窗口兼容，TOTP 不丢 | 本地全部AEAD用途/TOTP维护及真实BFF新公钥先发/切签/缓存刷新/回滚/精确期限通过；生产分发/退役尚未验 | 未执行 | [本地记录](docs/evidence/T22/test-summary.md) |
-| T22-OPS-04 | 邮件域名与监控 | 发真实邮件，制造可控失败告警 | 送达/DNS验证、告警可达 | API/Worker与主机磁盘/TLS/备份采集、18条规则/20场景已本地验证；生产SMTP/DNS/调度/通知到达未验 | 未执行 | [本地记录](docs/evidence/T22/test-summary.md) |
+| T22-OPS-04 | 邮件域名与监控 | 发真实邮件，制造可控失败告警 | 送达/DNS验证、告警可达 | API/Worker/磁盘TLS备份WAL采集、25规则31场景和38运维项通过；真实本地exporter-Prometheus-Alertmanager接收firing/resolved，生产SMTP/DNS/调度/通知未验 | 未执行 | [本地记录](docs/evidence/T22/test-summary.md) |
 
 **实现子步骤检查：**
 
