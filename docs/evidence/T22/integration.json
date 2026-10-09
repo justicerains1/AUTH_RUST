@@ -1,5 +1,5 @@
 {
-  "completed": "2026-10-09T01:45:30.985Z",
+  "completed": "2026-10-09T03:23:14.199Z",
   "results": [
     {
       "name": "metrics",
@@ -27,6 +27,10 @@
     },
     {
       "name": "release-and-compatible-rollback",
+      "exitCode": 0
+    },
+    {
+      "name": "five-service-local-tls-release-migration-stop-and-rollback",
       "exitCode": 0
     },
     {

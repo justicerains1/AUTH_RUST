@@ -14,7 +14,7 @@
 | T23.04 生产行为 | 本地弱配置/测试数据库拒绝和真实页面/API 检查已有模块证据。 | 在最终生产制品核对调试/seed 禁用、最终品牌及合法文本、所有按钮/邮件链接/回调/错误页确实可用；生产域名下的 issuer/RP/Cookie/headers 与部署匹配。 |
 | T23.05 外部运维条件 | [T22 artifacts-summary.md](../T22/artifacts-summary.md) 记录本地镜像/config 验证；[T22 本地测试](../T22/test-summary.md) 已完成独立临时 PG 容器的小样本加密 PITR、AEAD 各用途维护与内部指标实测。 | 正式域名/DNS、Linux 生产部署、真实 SMTP DNS 与送达、独立加密备份/WAL、新主机完整业务恢复、生产密钥轮换和可达告警均要实际执行并留证。本地小样本不证明生产 RPO/RTO。 |
 | T23.06 安全风险 | [最终安全六阶段](../T20/security-checks-2026-10-08T13-55-56-915Z.json) 退出 0；[最终有限 ZAP](../T20/zap/scan-1791467778399.json) 范围内 High/Critical/Medium/Low 为 0。 | 发布版本扫描与威胁/并发完整回归、信息及误报分诊、未解决风险影响和日期；关键场景未通过仍禁止发布。有限 ZAP 不覆盖全部写接口/业务，也不是 OpenID 官方认证。 |
-| T23.07 版本制品 | [最新138815c edge与runtime输入范围](final-artifacts-20261009-focus.md)锁文件构建/54制品SHA/12运行检查均0；UID10001/read-only/cap-drop ALL/no-new-privileges下配置、公钥维护及Caddy真实启动通过。 | 本地制品已验证；正式版本部署、兼容rollback/迁移失败中止与注册表发布尚未执行，不能把本地tag当正式上线。 |
+| T23.07 版本制品 | [最新138815c edge与runtime输入范围](final-artifacts-20261009-focus.md)锁文件构建/54制品SHA/12运行检查均0；UID10001/read-only/cap-drop ALL/no-new-privileges下配置、公钥维护及Caddy真实启动通过。 | 本地制品已验证；正式版本生产部署与注册表发布尚未执行；本地五服务兼容rollback/迁移失败中止已实测，不能把本地tag当正式上线。 |
 | T23.08 生产冒烟 | 本地真实注册/MFA/虚拟 Passkey/双 BFF/撤销/管理员模块已执行。 | 正式部署后按完整链路实测：注册→真实邮件验证→密码/MFA/实体 Passkey→A/B SSO→全部退出→管理员禁用后旧凭证/刷新拒绝。 |
 | T23.09 上线观察 | 尚无生产观察记录。 | 至少 24 小时及一个实际业务高峰，记录认证、撤销、邮件、队列、数据库/Redis、错误和资源；发生异常按 runbook 回滚且保留原始证据。等待时间不能被本地短测替代。 |
 
@@ -25,7 +25,7 @@
 | 平台 | 文档要求 | 当前证据边界 |
 |---|---|---|
 | Windows/Linux | 当前稳定 Chrome 完整主要流程与实测版本 | Chromium 真实自动化已执行；仍需最终发布版本人工矩阵。 |
-| Windows/Linux | 当前稳定 Firefox | 未有完整真实流程证据。 |
+| Windows/Linux | 当前稳定 Firefox | Linux Playwright Firefox155已完成真实自动化产品流程；仍未完成手工稳定版全矩阵。 |
 | macOS | 当前稳定 Safari | 未有完整真实流程与实体认证器证据。 |
 | iOS | 当前稳定 Safari | 未有手机完整注册/恢复/MFA/Passkey/SSO/返回布局证据。 |
 | Android | 当前稳定 Chrome | 未有手机完整注册/恢复/MFA/Passkey/SSO/返回布局证据。 |
@@ -49,7 +49,7 @@ T09-PK-04 仍为实体设备待验收，不能把 CDP 虚拟 CTAP2/真实签名�
 | password（CSRF+POST） | 4500 / 5 | 132 ms | [密码流程](../T21/load-password-2026-10-08T11-24-05-797Z.json) |
 | mixed 状态/账号/密码 | 270000+45000+4500 / 355 | 5/2/157 ms | [综合场景](../T21/load-mixed-2026-10-08T11-44-37-116Z.json) |
 
-这些场次达到当前本机对应速率和延迟门槛。完整热 SQL、队列峰值、容量边界与规定环境仍需 T21 正式验收。当前 WSL2 Ryzen 7700X 16 logical CPU/15.217 GiB 与参考 Linux 8 vCPU/16 GiB/SSD 不同，不能推定参考环境或生产容量达标；原前置实体设备条件仍保留。
+这些场次达到当前本机对应速率和延迟门槛。本地热 SQL、队列与容量已补15+8实际计划、管理员分页N+1修复、900秒等待/队列记录及短阶梯；规定环境、全路径与生产容量仍需正式验收。当前 WSL2 Ryzen 7700X 16 logical CPU/15.217 GiB 与参考 Linux 8 vCPU/16 GiB/SSD 不同，不能推定参考环境或生产容量达标；原前置实体设备条件仍保留。
 
 ## T22 生产与恢复条件
 
@@ -60,9 +60,9 @@ T09-PK-04 仍为实体设备待验收，不能把 CDP 虚拟 CTAP2/真实签名�
 以下仍缺真实验收证据：
 
 - 干净 Linux 生产主机部署、正式域名/DNS、固定 issuer/RP、安全 Cookie/HTTPS/HSTS/CSP；只开放规定端口、DB/Redis 不外露、SSH 受控。
-- 配置验证→备份成功→迁移→启动→readiness→业务冒烟的完整发布与兼容 rollback 实操；迁移失败停止发布。
+- 生产配置验证→备份→迁移→启动→readiness→冒烟与兼容rollback实操。已有[本地五服务完整演练](../T22/release-stack-summary.md)旧/新/回滚与坏迁移中止，使用严格本地CA与测试SMTP；真实生产环境仍待验。
 - 真实 SMTP 账号与 SPF/DKIM/DMARC，实际验证/恢复/通知邮件送达；Mailpit 投递和故障重试不替代生产送达。
-- 等价监控系统及 5xx/延迟/队列/连接池/攻击/磁盘/证书/备份告警，实际可控故障触发且告警可达。
+- 生产监控与实际接收方。已有[本地接收链](../T22/monitoring-chain/test-summary.md)真实exporter→Prometheus→Alertmanager→回环receiver触发/恢复、25条规则和WAL失败采集；生产部署/调度/通知送达仍未验。
 - 每日基础备份、持续 WAL 到独立加密存储、至少 14 天保留；数据库/配置元信息及另受控签名/AEAD 密钥备份。
 - 新主机恢复到已知时间点，实际验证密码/TOTP/Passkey/OAuth/撤销；完整计时并核算 RPO≤15 分钟、RTO≤60 分钟。
 - 签名新公钥先发布再切签、旧公钥保留兼容窗口；AEAD 旧 key 解密/版本化重加密，真实轮换后 TOTP 和现有凭证不丢。
@@ -92,3 +92,7 @@ T24 为后续高可用阶段，不阻塞第一版；第一版的单机维护中�
 
 
 当前最终本地自动结果与[E01～E28具体断言](e2e-release-matrix.md)对应；以上“发布仍需”中的本地完整回归已实际完成，其余正式域名/生产/设备/容量边界保持。用户已再次授权继续补齐本地实现与验收；当前新增查询/交互/WAL模块之后会重跑完整回归并推送证据，不把缺失条件转为通过。
+
+## 本轮收尾状态
+
+895c16c新干净检出七阶段0，53制品SHA复核一致且身份秘密0；新增[恢复码导出](../T18/recovery-export-summary.md)、[后台七案例](../T19/management/test-summary.md)、[WAL38项](../T22/wal-monitoring/test-summary.md)、[本地告警链](../T22/monitoring-chain/test-summary.md)、[五服务发布](../T22/release-stack-summary.md)已实测。df28706新版双镜像36检查/54制品摘要0。最新完整回归已03:35:31Z十二阶段全0，起点a8ea705；期间ab3de33补根interaction命令分派，应用源码不变，不能把这一轮描述为单一干净固定SHA。所有本地成功范围与外部未验条件分别保持，不把局部通过自动放行第一版。

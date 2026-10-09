@@ -1,4 +1,4 @@
-T08 real MFA integration 2026-10-08T19:25:54.555Z
+T08 real MFA integration 2026-10-09T03:10:16.045Z
 PASS T08-MFA-01 actual encrypted enrollment rejects wrong code, confirms ten recovery codes; password only not authenticated; independent RFC TOTP grants session
 PASS T08-MFA-04 password reauthentication cannot disable/regenerate; actual TOTP strong proof enables regeneration and invalidates old recovery set
 T08 fixture prepared: removed one budget key in the random per-run key namespace; replay counters unchanged
@@ -9,5 +9,5 @@ PASS T08 five wrong proofs destroy challenge; valid code cannot revive exhausted
 T08 fixture prepared: removed one budget key in the random per-run key namespace; replay counters unchanged
 PASS T08-MFA-03 ten recovery-code requests grant one session; old recovery codes absent after real regeneration
 PASS T08 actual SystemClock independent RFC TOTP enrollment confirms against real wall clock
-Completed 2026-10-08T19:26:16.294Z
+Completed 2026-10-09T03:10:37.948Z
 Exit code 0

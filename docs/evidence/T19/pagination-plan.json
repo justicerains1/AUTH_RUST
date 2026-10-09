@@ -5,11 +5,11 @@
       "Parallel Aware": false,
       "Async Capable": false,
       "Startup Cost": 0.42,
-      "Total Cost": 2.44,
+      "Total Cost": 2.43,
       "Plan Rows": 20,
       "Plan Width": 47,
-      "Actual Startup Time": 0.009,
-      "Actual Total Time": 0.036,
+      "Actual Startup Time": 0.011,
+      "Actual Total Time": 0.037,
       "Actual Rows": 20,
       "Actual Loops": 1,
       "Shared Hit Blocks": 21,
@@ -33,11 +33,11 @@
           "Relation Name": "users",
           "Alias": "users",
           "Startup Cost": 0.42,
-          "Total Cost": 10100.11,
+          "Total Cost": 10038.34,
           "Plan Rows": 100003,
           "Plan Width": 47,
-          "Actual Startup Time": 0.009,
-          "Actual Total Time": 0.034,
+          "Actual Startup Time": 0.01,
+          "Actual Total Time": 0.035,
           "Actual Rows": 20,
           "Actual Loops": 1,
           "Shared Hit Blocks": 21,
@@ -65,8 +65,8 @@
       "Temp Read Blocks": 0,
       "Temp Written Blocks": 0
     },
-    "Planning Time": 0.163,
+    "Planning Time": 0.156,
     "Triggers": [],
-    "Execution Time": 0.046
+    "Execution Time": 0.047
   }
 ]

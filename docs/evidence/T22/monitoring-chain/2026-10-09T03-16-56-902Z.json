@@ -1,0 +1,66 @@
+{
+  "started": "2026-10-09T03:16:56.902Z",
+  "scope": "Real loopback monitoring transport, exact production alert hold and recovery; synthetic encrypted file fixtures, not production delivery, backups or RPO.",
+  "phases": [
+    {
+      "name": "healthy collector and actual exporter scrape",
+      "exitCode": 0
+    },
+    {
+      "name": "missing receipt publishes failure and pending rule",
+      "exitCode": 0
+    },
+    {
+      "name": "actual Prometheus firing through Alertmanager to loopback receiver",
+      "exitCode": 0,
+      "holdObservedMs": 61279
+    },
+    {
+      "name": "verified recovery clears rule and delivers resolved webhook",
+      "exitCode": 0
+    }
+  ],
+  "tools": {
+    "prometheus": {
+      "version": "3.15.0",
+      "binarySha256": "dac83d1d1007961de3b9ba624942c9af0c192ee3df262ac47ef390bcade71c65"
+    },
+    "alertmanager": {
+      "version": "0.34.1",
+      "binarySha256": "154890307c382a186d4ddf9354cfa0cab08771f818aac1e647d0cf277ecef854"
+    },
+    "exporter": {
+      "version": "1.12.1",
+      "binarySha256": "1108f7453ecfe4a72f131c73b69537c171840ad4f1713a2402328ad56cf12e09"
+    }
+  },
+  "exitCode": 0,
+  "sourceSha256": {
+    "infra/ops/collect-metrics.mjs": "1a5972ea38606e86055988eb516807759edf349366ec2d34d31704d246a6e031",
+    "infra/ops/archive-wal.sh": "9ecb5cdc8e1e01c7d3b1795b2be8866a4da2b731e3dc8fd319093914ab1c735f",
+    "infra/ops/identity-alerts.yaml": "4010eb477e47cda2d4e11c8239e75d4e1496ca28bf2ac959f17b3b11a2531761",
+    "infra/ops/prometheus.yaml": "adfd88d63672fa12465d415eaac7af5d6cc07e3e6c30a00865b637f3234e8f55",
+    "infra/ops/systemd/identity-ops-metrics.service": "31f157e99c3c5a8de0ec5bf8713668c87da9b2f0f47c97484744cb5600392a23",
+    "infra/ops/systemd/identity-ops-metrics.timer": "ace4b0a225922a377ab06f6367523fb427a4e3739b9a9fdf4366af91f0e61c5e",
+    "tests/ops/monitoring-chain.mjs": "09b4dea1afe371904cb48535d2f4ad1304d6fccdf87e6cd69be46a3824b17a8a"
+  },
+  "notifications": [
+    {
+      "status": "firing",
+      "alertname": "IdentityOpsCheckFailed",
+      "check": "wal_archive"
+    },
+    {
+      "status": "resolved",
+      "alertname": "IdentityOpsCheckFailed",
+      "check": "wal_archive"
+    }
+  ],
+  "method": {
+    "transport": "loopback only; exporter real textfile collector; production rules unchanged",
+    "sampling": "laboratory scrape/evaluation interval 1s replaces production 15s; exact for:1m unchanged",
+    "fixture": "actual statfs, trusted local TLS and actual age ciphertext/SHA receipts; plaintext is explicitly synthetic monitoring input",
+    "externallyDelivered": false
+  },
+  "completed": "2026-10-09T03:18:06.763Z"
+}

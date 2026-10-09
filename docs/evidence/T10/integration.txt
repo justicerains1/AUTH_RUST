@@ -1,8 +1,8 @@
-T10 real authorization integration 2026-10-08T19:26:23.782Z
+T10 real authorization integration 2026-10-09T03:10:46.392Z
 PASS T10-AUTHZ-01 registered client secret only hashed; GET/POST real login/consent yields code60s or access_denied with original state
 PASS T10-AUTHZ-02 invalid/prefix/wildcard callbacks remain local; duplicate params and PKCE downgrade rejected
 PASS T10-AUTHZ-03 prompt none returns standard login_required/consent_required with original state
 PASS T10 prompt login requires a new real password session; expanded scope requires consent; max_age rejects stale authentication
 PASS T10-AUTHZ-04 browser context isolation; ten concurrent decisions consume once; disabled client prevents code issuance
-Completed 2026-10-08T19:26:33.299Z
+Completed 2026-10-09T03:10:56.974Z
 Exit code 0

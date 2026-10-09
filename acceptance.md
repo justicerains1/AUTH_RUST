@@ -797,7 +797,7 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 
 - 代码版本：最终自动回归ffe3b98，历史模块及失败修复记录保留。
 - 环境与时间：2026-10-08 Linux/Rust1.98/Node22、PG17/Redis7.4/Mailpit、ZAP2.17.0/Gitleaks8.30.1/cargo-deny0.20.2。
-- 命令退出码：历史六阶段security为0；首次完整test:full于2026-10-08T12:29Z实际退出1，11阶段全部运行；修复后unit/check、T13/T19真实流程及T22集成0，第二完整回归仅旧T13组合集成1；早期完整0已保留，当前ffe3b98包含SQL/共享连接/告警/恢复/发布/保留/焦点模块的11阶段0，完成2026-10-08T19:40:55Z。
+- 命令退出码：历史六阶段security为0；首次完整test:full于2026-10-08T12:29Z实际退出1，11阶段全部运行；修复后unit/check、T13/T19真实流程及T22集成0，第二完整回归仅旧T13组合集成1；早期完整0已保留，基线ffe3b98十一阶段0；本轮a8ea705起点+ab3de33入口补正十二阶段0，完成2026-10-09T03:35:31Z，源码边界记录见TEST_SUMMARY。
 - 失败/阻塞项：原ZAP/私有工具lint/worker审计DTO及本次测试夹具/故障恢复/秘密误报已修；最终完整11阶段均0且含新增组合；T18设备前置与参考性能/生产条件未放行。
 - 修复与复测：[T20记录](docs/evidence/T20/test-summary.md)、[威胁映射](docs/evidence/T20/cross-module-summary.md)、[ZAP分诊](docs/evidence/T20/zap/triage.md)。
 - 任务结论：待验收（本地完整自动检查通过，原设备前置及生产必要条件未放行）。
@@ -885,7 +885,7 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 
 | 案例 | 前置状态 | 操作步骤 | 预期结果 | 实际结果 | 状态 | 证据 |
 |---|---|---|---|---|---|---|
-| T23-REL-01 | 干净环境 | 完整安装/测试/构建 | 全套真实检查成功，无 skipped 关键测试 | 失败历史保留；ffe3b98新干净7阶段0/53制品SHA一致/身份秘密0；同提交最终完整11阶段0，当前镜像输入范围另记录 | 通过 | [完整报告](TEST_SUMMARY.md)、[干净验证与历史失败](docs/evidence/T23/clean-checkout/test-summary.md) |
+| T23-REL-01 | 干净环境 | 完整安装/测试/构建 | 全套真实检查成功，无 skipped 关键测试 | 失败历史保留；895c16c新干净7阶段0/53制品SHA/身份秘密0；本轮完整12阶段0（起点a8ea+ab3入口补正），df新双镜像36检查0，源码范围明记 | 通过 | [完整报告](TEST_SUMMARY.md)、[干净验证与历史失败](docs/evidence/T23/clean-checkout/test-summary.md) |
 | T23-REL-02 | 五类浏览器 | 完整主要流程、键盘与 reduced-motion | 无阻塞体验问题 | Chromium/Firefox12真实键盘流程、80四宽布局与20文字200%缩放已通过；实体Passkey、真实读屏/完整zoom及五类浏览器人工矩阵未准备 | 阻塞 | [剩余条件](docs/evidence/T23/remaining-verification.md) |
 | T23-REL-03 | 生产部署 | 冒烟并观察 24 小时/高峰 | 认证/撤销/邮件健康，指标无异常 | 用户明确生产域名/主机/SMTP/独立备份暂未准备；未部署、未开始24小时观察 | 阻塞 | [运维审计](docs/evidence/T23/ops-release-audit.md)、[剩余条件](docs/evidence/T23/remaining-verification.md) |
 
@@ -903,7 +903,7 @@ T24 不阻塞第一版；其他关键任务不得用“后续再做”释放关�
 
 **验收记录：**
 
-- 代码版本：当前完整测试及直接干净构建ffe3b98；edge镜像138815c生产/测试源码与ffe3相同，runtime95生产输入与2c9c712相同且testharness差异不入发布二进制，具体归档/版本证据独立保存。
+- 代码版本：本轮完整回归起点a8ea705+ab3de33入口补正；895c16c直接干净构建七stage0；双镜像df28706重建并实测，161生产输入与当前无差，新harness不参与release编译，阶段边界见TEST_SUMMARY。
 - 环境与时间：2026-10-08 UTC，WSL2Linux/Rust1.98.0/Node22.22.1、PG17/Redis7.4/Mailpit/Chromium；生产未部署。
 - 命令退出码：首轮干净checkout7阶段overall1（unit1，其余0）；319f30c第二干净七阶段全0；首轮完整test:full整体1（unit/integration/e2e/security1，其余0），第二完整复跑整体1（仅旧T13组合集成1）；旧场次0已保留；当前ffe3b98完整11阶段0、19集成/11E2E/6安全与12双浏览器流程0，完成2026-10-08T19:40:55Z。
 - 失败/阻塞项：首次失败已定位修复并保留证据；实体设备/五浏览器、参考性能/容量、生产域名/SMTP/独立恢复/告警与24小时观察未验。
