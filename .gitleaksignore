@@ -435,3 +435,7 @@ aeb40648915bef2386c84c623ab75dac0be1b301:docs/evidence/T21/load-mixed-2026-10-08
 759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:509
 759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:510
 759867d5bbbe8e07fba0a6cb3bf2205545eb0025:docs/evidence/T23/final-artifacts-20261009-df28706.json:generic-api-key:511
+
+# Final full-test SQL probe: identical previously reviewed public source and executed harness digests.
+0a25d9999e4ebca05912ce76292fd9172f399b0e:docs/evidence/T21/sql-probe-2026-10-09T03-16-00-882Z.json:generic-api-key:4617
+0a25d9999e4ebca05912ce76292fd9172f399b0e:docs/evidence/T21/sql-probe-2026-10-09T03-16-00-882Z.json:generic-api-key:4622
