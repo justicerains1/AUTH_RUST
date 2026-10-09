@@ -1,0 +1,13 @@
+{
+  "observed": "2026-10-09T05:46:11.472988+00:00",
+  "attempt": "HTTPS public IP test issuer, strict Origin retained",
+  "result": "Startup rejected by existing WebAuthn library: rp_id is not an effective_domain of rp_origin",
+  "productionSourceChanged": false,
+  "rollback": "Restored original development Compose, ten services healthy, localhost ready200",
+  "unappliedConfig": ".local/ip-test (ignored); not committed as working deployment",
+  "windowsCertificateImport": "CurrentUser trust import required interactive Windows confirmation; not applied",
+  "nextOptions": [
+    "Use temporary DNS hostname pointing to current public IP with HTTPS and existing Passkey support",
+    "Explicitly implement IP-only test mode with Passkey disabled, production configuration rejecting that mode"
+  ]
+}
