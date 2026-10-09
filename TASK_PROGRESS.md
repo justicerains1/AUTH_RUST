@@ -305,3 +305,7 @@ c3885fa这一轮完整测试只有T05集成失败（19集成其他18项0、E2E/s
 ## CI启动计时与文档触发修复
 
 远端product组报T17harness启动失败，新增各组测试target独立--no-run预编译，编译不再占用原60秒启动计时，未放宽限流/认证断言。本地product完整组与75工具测试/actionlint/ESLint均0。[记录](docs/evidence/tooling/ci-harness-precompile/test-summary.md)。按用户要求纯docs/Markdown push/PR不触发普通CI，代码/脚本/依赖/workflow仍完整执行；文档和代码混合提交仍触发。
+
+## 安装代理检测与开发者接入文档
+
+按用户要求，安装器检测宿主Nginx，缺失/未运行则启用CI Docker Caddy；运行时交互询问切换，拒绝则保留并退出，端口冲突恢复被停止的Nginx，成功后询问开机启动冲突处理。域名由用户交互输入。新真实socket及代理选择/拒绝/恢复测试加入，原安装/部署共19项全0，ESLint/bash/docs/OpenAPI0。新增[开发者接入](docs/developer-integration.md)，README与CI包包含接入/BFF文档，原db:migrate开发命令补明确environment。真实新主机Nginx切换与生产验收未执行，不借模拟service测试放行。

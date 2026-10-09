@@ -30,7 +30,7 @@ esac
 # shellcheck disable=SC1091
 source /etc/os-release
 [[ "$ID" == ubuntu || "$ID" == debian ]] || { echo 'Supported systems: Debian and Ubuntu.' >&2; exit 1; }
-printf 'CDNGOD: install Docker/Compose and verified Node runtime, download CI products, configure services.\n'
+printf 'CDNGOD: install Docker/Compose, CI-built Caddy and verified Node runtime. Domains are entered interactively; existing Nginx will be checked before switching web ports.\n'
 read -r -p 'Proceed? [y/N]: ' answer
 [[ "$answer" == y || "$answer" == Y ]] || exit 0
 apt-get update -qq

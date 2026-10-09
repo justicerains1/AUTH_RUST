@@ -4,6 +4,10 @@
 
 实现依据为 [plan.md](plan.md) 和 [acceptance.md](acceptance.md)。邮箱/密码/MFA/Passkey、OAuth/OIDC、双 BFF、账号与管理后台，以及本地生产制品和运维工具已实现并逐模块推送。实体设备、规定性能环境、正式生产部署/邮件/独立恢复等仍待验收；最终自动回归实际结果见 [TEST_SUMMARY.md](TEST_SUMMARY.md)，任务状态和外部条件见 [TASK_PROGRESS.md](TASK_PROGRESS.md)。当前尚不具备生产发布条件。
 
+## 开发者接入
+
+新应用接入统一身份认证，请先阅读[开发者接入指南](docs/developer-integration.md)：包含客户端申请、BFF配置、登录/退出代码、刷新撤销、常见错误和接入验收。已有A/B演示可直接作为参考。
+
 ## 生产一键安装
 
 在 **Debian/Ubuntu x86_64** 服务器的交互式 SSH 终端执行：
@@ -13,7 +17,7 @@ curl -fL https://raw.githubusercontent.com/justicerains1/AUTH_RUST/main/install.
 sudo bash install.sh
 ```
 
-脚本安装 Docker/Compose 和已校验的 Node 运行时，下载已完成 CI 的镜像及部署包，交互生成配置、初始化管理员和 A/B 客户端，备份后迁移数据库并启动整套服务。**生产服务器不编译 Rust、安装 npm 依赖或构建镜像。**请先下载再执行，不使用 `curl | bash`。
+脚本检查现有 Nginx；未运行时使用 CI 成品中的 Docker Caddy，运行时交互确认是否切换，并检查 80/443 端口冲突。三个域名在安装时由用户输入。脚本安装 Docker/Compose 和已校验的 Node 运行时，下载已完成 CI 的镜像及部署包，交互生成配置、初始化管理员和 A/B 客户端，备份后迁移数据库并启动整套服务。**生产服务器不编译 Rust、安装 npm 依赖或构建镜像。**请先下载再执行，不使用 `curl | bash`。
 
 运行前准备好三个已解析到服务器的域名（身份中心、演示 A、演示 B），开放 TCP 80/443，准备验证证书的 STARTTLS SMTP 服务、已挂载的独立备份位置以及 age 公开 recipient。当前生产认证不支持纯 IP 地址。
 

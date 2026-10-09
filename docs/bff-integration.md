@@ -2,6 +2,8 @@
 
 同一 Rust `demo-bff` 包以两份独立配置运行应用 A/B。前端只接收本应用随机 HttpOnly Cookie、用户 UUID 和 CSRF；OAuth access/refresh/ID token 与 client secret 留在服务端。数据库长期令牌使用版本化 AEAD，并绑定 namespace/session UUID，详见 [持久化与共享锁](bff-storage.md)。
 
+开发者首次接入可先阅读[接入指南](developer-integration.md)，按客户端申请、配置、浏览器流程及验收步骤实施。
+
 ## 配置与开发接入
 
 | 字段 | A 示例 | B 示例 |
@@ -23,7 +25,7 @@
 ```sh
 npm run dev:secrets
 npm run dev:up
-npm run db:migrate
+npm run db:migrate -- --env=development
 npm run dev:clients
 docker compose --env-file .local/dev.env -f infra/compose.dev.yaml --profile bff up -d --wait --build
 ```

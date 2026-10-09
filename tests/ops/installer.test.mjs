@@ -6,13 +6,33 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { setTimeout as delay } from 'node:timers/promises';
-import { validDomain, envText } from '../../infra/ops/install-production.mjs';
+import { validDomain, envText, prepareProxy, portAvailable } from '../../infra/ops/install-production.mjs';
 import { ApiSession } from '../../infra/ops/install-production.mjs';
 import { createServer } from 'node:http';
 import { backup } from '../../infra/ops/installer-operations.mjs';
 import { verifiedBackupReceipt } from '../../infra/ops/collect-metrics.mjs';
 
 const root = resolve(import.meta.dirname, '../..');
+test('missing Nginx selects Docker Caddy without installing a second host proxy', async () => {
+  const calls = [];
+  const result = await prepareProxy({ executor: async (program, args) => { calls.push([program, ...args]); return { code: 127 }; }, ask: async () => { throw new Error('Unexpected prompt'); }, available: async () => true });
+  assert.equal(result.proxy, 'docker-caddy'); assert.equal(result.nginxInstalled, false); assert.equal(result.nginxStoppedByInstaller, false);
+  assert.equal(calls.some((args) => args.includes('stop') || args.includes('install')), false);
+});
+test('running Nginx is retained when user declines switching', async () => {
+  const calls = [];
+  await assert.rejects(prepareProxy({ executor: async (program, args) => { calls.push([program, ...args]); return { code: 0 }; }, ask: async () => 'n', available: async () => true }), /retained/u);
+  assert.equal(calls.some((args) => args.includes('stop')), false);
+});
+test('switching Nginx needs approval and a port conflict restores its service', async () => {
+  const calls = [];
+  await assert.rejects(prepareProxy({ executor: async (program, args) => { calls.push([program, ...args]); return { code: 0 }; }, ask: async () => 'y', available: async () => false }), /occupied/u);
+  assert.deepEqual(calls.filter((args) => args.includes('stop') || args.includes('start')), [['systemctl', 'stop', 'nginx'], ['systemctl', 'start', 'nginx']]);
+});
+test('port detection observes a real occupied socket', async (t) => {
+  const server = createServer(); await new Promise((done) => server.listen(0, '0.0.0.0', done)); t.after(() => new Promise((done) => server.close(done)));
+  assert.equal(await portAvailable(server.address().port), false);
+});
 test('wizard accepts exact hostnames and refuses raw IP, URL, wildcards and configuration injection', () => {
   assert.equal(validDomain('auth.cdngod.com'), true);
   for (const value of ['111.10.137.17', 'https://auth.cdngod.com', '*.cdngod.com', 'auth.cdngod.com/path', 'auth\n.example', '-auth.example']) assert.equal(validDomain(value), false);

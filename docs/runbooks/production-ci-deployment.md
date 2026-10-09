@@ -13,6 +13,8 @@ sudo bash install.sh
 
 交互填写安装路径、身份中心和A/B域名、TLS邮箱、SMTP主机/端口/用户名/密码/发件人、已挂载独立备份路径、age公开recipient、首管理员邮箱和隐藏密码。域名DNS和入站80/443须提前可用；WebAuthn不支持纯IP生产origin，向导拒绝IP，不用临时域名绕过接入要求。SMTP需要证书验证的STARTTLS。备份路径须是真实挂载点，age私钥由运维另行保管，安装器只收公开recipient。
 
+向导检测Nginx：没有或未运行时使用CI成品中的Docker Caddy并自动申请HTTPS证书；若Nginx正在运行，则交互询问是否停止它并切换到Caddy。拒绝切换时保留Nginx并退出；端口冲突时停止安装，失败且端口已释放时尝试恢复Nginx。成功切换后询问是否禁用Nginx开机启动，原配置保留。域名全部由安装时输入，不写死CDNGOD域名。
+
 向导生成RSA3072/AEAD/随机数据库和指标秘密，文件0600与应用UID匹配，首次加密备份成功后才迁移。真实CLI初始化管理员后，通过HTTPS密码确认、TOTP绑定（交互输入认证器验证码）取得强认证，再通过管理API创建两BFF客户端并写入秘密；不直接SQL造权限。完成后全部服务运行、开启每日02:00UTC备份timer，显示身份与A/B地址。恢复码在安装目录`.local/production/administrator-recovery-codes.txt`，请另可信保存；管理员密码不持久化。部分失败保留诊断和密钥，不自动重新生成或覆盖。
 
 当前自动冒烟验证三站HTTPS安全头、API readiness、issuer和Secure/HttpOnly Cookie，管理员及客户端创建由真实请求验证；它不会自动声称真实SMTP送达、实体Passkey、完整浏览器SSO/撤销或24小时生产观察已经通过。首次生产验收仍按既有清单完成。再次运行脚本检测installed记录，可确认升级；保留数据、原配置与密钥，沿用备份/兼容发布流程。

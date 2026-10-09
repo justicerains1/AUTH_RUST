@@ -1,0 +1,127 @@
+TAP version 13
+# Subtest: CI bundle contains deployment tools and verified age, excludes source and secrets
+ok 1 - CI bundle contains deployment tools and verified age, excludes source and secrets
+  ---
+  duration_ms: 390.485404
+  type: 'test'
+  ...
+# Subtest: production rejects builds, floating images and mismatched CI digests
+ok 2 - production rejects builds, floating images and mismatched CI digests
+  ---
+  duration_ms: 0.6117
+  type: 'test'
+  ...
+# Subtest: plan validates bundle and Compose without pull, build, up or migration
+ok 3 - plan validates bundle and Compose without pull, build, up or migration
+  ---
+  duration_ms: 363.516704
+  type: 'test'
+  ...
+# Subtest: failed image pull stops before data startup, backup or migration
+ok 4 - failed image pull stops before data startup, backup or migration
+  ---
+  duration_ms: 350.638504
+  type: 'test'
+  ...
+# Subtest: actual verified backup then failed migration never starts application and all compose commands prohibit builds
+ok 5 - actual verified backup then failed migration never starts application and all compose commands prohibit builds
+  ---
+  duration_ms: 382.106105
+  type: 'test'
+  ...
+# No Nginx service found. Installing Caddy from the CI-built Docker image.
+# Nginx is running. This stack uses the prebuilt Docker Caddy for HTTPS and automatic certificates.
+# Nginx is running. This stack uses the prebuilt Docker Caddy for HTTPS and automatic certificates.
+# Subtest: missing Nginx selects Docker Caddy without installing a second host proxy
+ok 6 - missing Nginx selects Docker Caddy without installing a second host proxy
+  ---
+  duration_ms: 1.8422
+  type: 'test'
+  ...
+# Subtest: running Nginx is retained when user declines switching
+ok 7 - running Nginx is retained when user declines switching
+  ---
+  duration_ms: 0.5596
+  type: 'test'
+  ...
+# Subtest: switching Nginx needs approval and a port conflict restores its service
+ok 8 - switching Nginx needs approval and a port conflict restores its service
+  ---
+  duration_ms: 1.0806
+  type: 'test'
+  ...
+# Subtest: port detection observes a real occupied socket
+ok 9 - port detection observes a real occupied socket
+  ---
+  duration_ms: 7.5835
+  type: 'test'
+  ...
+# Subtest: wizard accepts exact hostnames and refuses raw IP, URL, wildcards and configuration injection
+ok 10 - wizard accepts exact hostnames and refuses raw IP, URL, wildcards and configuration injection
+  ---
+  duration_ms: 0.5222
+  type: 'test'
+  ...
+# Subtest: single download shell parses and rejects bad release before installing or writing system files
+ok 11 - single download shell parses and rejects bad release before installing or writing system files
+  ---
+  duration_ms: 10.0511
+  type: 'test'
+  ...
+# Subtest: installer session rotates CSRF across MFA and removes expired cookie values
+ok 12 - installer session rotates CSRF across MFA and removes expired cookie values
+  ---
+  duration_ms: 32.978601
+  type: 'test'
+  ...
+# Subtest: installer backup uses actual isolated PostgreSQL, verifies then encrypts, and missing device cannot publish
+ok 13 - installer backup uses actual isolated PostgreSQL, verifies then encrypts, and missing device cannot publish
+  ---
+  duration_ms: 7084.007175
+  type: 'test'
+  ...
+# Subtest: release ordering verifies new backup before migrate, up, ready and smoke
+ok 14 - release ordering verifies new backup before migrate, up, ready and smoke
+  ---
+  duration_ms: 28.8539
+  type: 'test'
+  ...
+# Subtest: migration failure never starts new services and retains prior successful state
+ok 15 - migration failure never starts new services and retains prior successful state
+  ---
+  duration_ms: 15.536
+  type: 'test'
+  ...
+# Subtest: zero-exit backup command cannot reuse old completion or corrupt ciphertext
+ok 16 - zero-exit backup command cannot reuse old completion or corrupt ciphertext
+  ---
+  duration_ms: 19.7713
+  type: 'test'
+  ...
+# Subtest: a concurrently replaced receipt cannot replace the backup actually verified for release
+ok 17 - a concurrently replaced receipt cannot replace the backup actually verified for release
+  ---
+  duration_ms: 19.701401
+  type: 'test'
+  ...
+# Subtest: rollback requires matched schema and key compatibility and never runs migration
+ok 18 - rollback requires matched schema and key compatibility and never runs migration
+  ---
+  duration_ms: 32.0174
+  type: 'test'
+  ...
+# Subtest: production rejects floating tags or partial config checks; local tags require acknowledgement
+ok 19 - production rejects floating tags or partial config checks; local tags require acknowledgement
+  ---
+  duration_ms: 0.585
+  type: 'test'
+  ...
+1..19
+# tests 19
+# suites 0
+# pass 19
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 7289.750078
