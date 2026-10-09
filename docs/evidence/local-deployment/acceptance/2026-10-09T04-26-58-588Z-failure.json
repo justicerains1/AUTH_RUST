@@ -1,0 +1,21 @@
+{
+  "started": "2026-10-09T04:26:58.589Z",
+  "target": "Running Docker development deployment on localhost:5173/5174/5175",
+  "cases": [
+    {
+      "name": "管理员真实绑定因素与后台访问",
+      "status": "passed"
+    },
+    {
+      "name": "后台用户禁用、启用与会话撤销",
+      "status": "passed"
+    },
+    {
+      "name": "独立测试客户端创建、编辑、停启与秘密轮换",
+      "status": "failed",
+      "reason": "Actual UI/API assertion failed; private diagnostics retained without publishing credentials."
+    }
+  ],
+  "exitCode": 1,
+  "completed": "2026-10-09T04:27:27.457Z"
+}

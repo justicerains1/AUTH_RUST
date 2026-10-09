@@ -1,0 +1,16 @@
+{
+  "started": "2026-10-09T04:33:34.935Z",
+  "target": "Running Docker development deployment on localhost:5173/5174/5175",
+  "cases": [
+    {
+      "name": "管理员成员授予移除及最后管理员保护",
+      "status": "passed"
+    },
+    {
+      "name": "Chromium桌面手机布局、键盘及axe检查",
+      "status": "passed"
+    }
+  ],
+  "exitCode": 0,
+  "completed": "2026-10-09T04:33:44.812Z"
+}

@@ -12,7 +12,7 @@
 
 必须用 `localhost`，不要改成IP或其他域名；issuer、RP和应用回调固定使用这些地址。浏览器localhost属于可信本地上下文，可在支持的设备上测试Passkey。当前是本地HTTP开发Cookie配置，不代表生产HTTPS/Cookie验收。
 
-管理员邮箱为 `admin@local.test`；随机密码只保存在本机受限文件 `.local/manual-acceptance/accounts.md`，不提交Git。首次登录后按页面提示绑定TOTP或Passkey，自行保存恢复码，再进入管理后台；没有在数据库中伪造强认证。该文件还会记录一个已验证的普通验收用户。
+管理员邮箱为 `admin@local.test`；随机密码只保存在本机受限文件 `.local/manual-acceptance/accounts.md`，不提交Git。本次自动验收已通过真实页面绑定管理员TOTP；登录需从该受限文件读取设置密钥导入自己的验证器，或使用尚未消费恢复码。后续自行保存恢复码，再进入管理后台；没有在数据库中伪造强认证。该文件还会记录一个已验证的普通验收用户。
 
 建议依次检查：
 

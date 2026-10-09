@@ -1,0 +1,37 @@
+{
+  "started": "2026-10-09T04:21:46.647Z",
+  "target": "Running Docker development deployment on localhost:5173/5174/5175",
+  "cases": [
+    {
+      "name": "Windows localhost入口与十Docker服务",
+      "status": "passed"
+    },
+    {
+      "name": "真实注册、Mailpit验证邮件与显式确认",
+      "status": "passed"
+    },
+    {
+      "name": "普通账号后台访问拒绝",
+      "status": "passed"
+    },
+    {
+      "name": "第二设备撤销后实际401",
+      "status": "passed"
+    },
+    {
+      "name": "真实TOTP绑定与恢复码复制下载清除",
+      "status": "passed"
+    },
+    {
+      "name": "恢复码登录与已消费码拒绝",
+      "status": "passed"
+    },
+    {
+      "name": "虚拟Passkey注册、取消删除与真实签名登录",
+      "status": "failed",
+      "reason": "Actual UI/API assertion failed; private diagnostics retained without publishing credentials."
+    }
+  ],
+  "exitCode": 1,
+  "completed": "2026-10-09T04:22:42.261Z"
+}

@@ -1,0 +1,57 @@
+{
+  "completed": "2026-10-09T04:35:26.996555+00:00",
+  "scope": "Acceptance of actual running Docker development services, Windows HTTP reachability and Linux Chromium UI; no mocked authentication or SQL privilege fabrication",
+  "passedCases": [
+    "Windows localhost入口与十Docker服务",
+    "真实注册、Mailpit验证邮件与显式确认",
+    "普通账号后台访问拒绝",
+    "第二设备撤销后实际401",
+    "真实TOTP绑定与恢复码复制下载清除",
+    "恢复码登录与已消费码拒绝",
+    "虚拟Passkey注册、取消删除与真实签名登录",
+    "双BFF SSO与全设备退出即时失效",
+    "管理员真实绑定因素与后台访问",
+    "后台用户禁用、启用与会话撤销",
+    "独立测试客户端创建、编辑、停启与秘密轮换",
+    "管理员成员授予移除及最后管理员保护",
+    "Chromium桌面手机布局、键盘及axe检查"
+  ],
+  "caseEvidence": {
+    "Windows localhost入口与十Docker服务": "2026-10-09T04-21-46-647Z-failure.json",
+    "真实注册、Mailpit验证邮件与显式确认": "2026-10-09T04-21-46-647Z-failure.json",
+    "普通账号后台访问拒绝": "2026-10-09T04-21-46-647Z-failure.json",
+    "第二设备撤销后实际401": "2026-10-09T04-21-46-647Z-failure.json",
+    "真实TOTP绑定与恢复码复制下载清除": "2026-10-09T04-21-46-647Z-failure.json",
+    "恢复码登录与已消费码拒绝": "2026-10-09T04-21-46-647Z-failure.json",
+    "虚拟Passkey注册、取消删除与真实签名登录": "2026-10-09T04-23-12-313Z-failure.json",
+    "双BFF SSO与全设备退出即时失效": "2026-10-09T04-23-12-313Z-failure.json",
+    "管理员真实绑定因素与后台访问": "2026-10-09T04-26-58-588Z-failure.json",
+    "后台用户禁用、启用与会话撤销": "2026-10-09T04-26-58-588Z-failure.json",
+    "独立测试客户端创建、编辑、停启与秘密轮换": "2026-10-09T04-30-13-236Z-failure.json",
+    "管理员成员授予移除及最后管理员保护": "2026-10-09T04-33-34-935Z.json",
+    "Chromium桌面手机布局、键盘及axe检查": "2026-10-09T04-33-34-935Z.json"
+  },
+  "passwordReset": {
+    "realMailLinkHttp": 200,
+    "confirmedTotpAfterReset": 1,
+    "webauthnCredentialsAfterReset": 1,
+    "oldPasswordRejectionRetested": false
+  },
+  "administrator": {
+    "realTotpEnrollment": true,
+    "realTotpLogin": true,
+    "firstAdminRemainsEnabled": true,
+    "credentialFile": ".local/manual-acceptance/accounts.md (0600, excluded from Git)"
+  },
+  "execution": "Initial suite and sequential resumed tests; passed earlier steps were not repeated during each resume. Failures and partial reports preserved.",
+  "limits": [
+    "Real physical Passkey and Windows Hello were not exercised; CDP virtual CTAP2 only.",
+    "Windows PowerShell verified four HTTP entrypoints; actual UI automation used Linux Chromium.",
+    "Safari, Windows browser full flow, screen reader, production DNS/SMTP/independent backup/RPO/RTO remain unaccepted.",
+    "Repeated reset requests reached original 3/hour/account mail budget; accepted response correctly did not send extra mail. No Redis keys cleared or limits weakened.",
+    "Old-password rejection after the successful reset was not repeated in this live deployment; prior isolated T07/full regression evidence remains separate."
+  ],
+  "servicesHealthy": 10,
+  "localTestedScope": "passed",
+  "fullProjectAcceptance": "not granted"
+}

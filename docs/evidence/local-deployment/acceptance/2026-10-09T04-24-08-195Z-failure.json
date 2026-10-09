@@ -1,0 +1,13 @@
+{
+  "started": "2026-10-09T04:24:08.196Z",
+  "target": "Running Docker development deployment on localhost:5173/5174/5175",
+  "cases": [
+    {
+      "name": "邮件重置密码保留MFA且旧密码拒绝",
+      "status": "failed",
+      "reason": "Actual UI/API assertion failed; private diagnostics retained without publishing credentials."
+    }
+  ],
+  "exitCode": 1,
+  "completed": "2026-10-09T04:24:14.709Z"
+}

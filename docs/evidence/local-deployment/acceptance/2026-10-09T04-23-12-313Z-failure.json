@@ -1,0 +1,21 @@
+{
+  "started": "2026-10-09T04:23:12.313Z",
+  "target": "Running Docker development deployment on localhost:5173/5174/5175",
+  "cases": [
+    {
+      "name": "虚拟Passkey注册、取消删除与真实签名登录",
+      "status": "passed"
+    },
+    {
+      "name": "双BFF SSO与全设备退出即时失效",
+      "status": "passed"
+    },
+    {
+      "name": "邮件重置密码保留MFA且旧密码拒绝",
+      "status": "failed",
+      "reason": "Actual UI/API assertion failed; private diagnostics retained without publishing credentials."
+    }
+  ],
+  "exitCode": 1,
+  "completed": "2026-10-09T04:23:56.601Z"
+}
