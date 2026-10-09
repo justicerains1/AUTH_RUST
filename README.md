@@ -23,7 +23,7 @@ sudo bash install.sh
 
 安装向导会询问：
 
-- 安装目录，默认 `/srv/auth-rust`；私有仓库/镜像所需的 GitHub 下载凭据。
+- 安装目录，默认 `/srv/auth-rust`；可选 HTTP/HTTPS 网络代理和可信公开文件下载网关，无需 GitHub Token。
 - 三个站点域名、TLS 联系邮箱、SMTP 参数及隐藏密码。
 - 独立备份挂载路径和 age 公钥；备份私钥须另行保管。
 - 管理员邮箱、隐藏密码，以及绑定验证器时的 TOTP 验证码。
@@ -34,7 +34,7 @@ sudo bash install.sh
 sudo bash install.sh --release ci-<完整提交SHA>
 ```
 
-CI 成品发布未完成时脚本会停止，不回退到生产构建。安装后的服务健康检查不替代真实邮件、实体 Passkey、浏览器及上线观察验收。完整参数、凭据保存位置、失败处理和回滚见[生产安装说明](docs/runbooks/production-ci-deployment.md)。
+默认选择最新已完整发布的安装版成品，公开下载无需 Token（GHCR 镜像包也须公开）。国内网络可交互配置下载代理及 Docker 镜像拉取代理；仅文件网关不能代替 API/GHCR 网络连接。CI 成品发布未完成时脚本会停止，不回退到生产构建。安装后的服务健康检查不替代真实邮件、实体 Passkey、浏览器及上线观察验收。完整参数、凭据保存位置、失败处理和回滚见[生产安装说明](docs/runbooks/production-ci-deployment.md)。
 
 ## 环境
 

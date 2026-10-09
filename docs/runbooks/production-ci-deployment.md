@@ -9,7 +9,7 @@ curl -fL https://raw.githubusercontent.com/justicerains1/AUTH_RUST/main/install.
 sudo bash install.sh
 ```
 
-先下载文件再运行，交互过程中读取终端，不使用`curl | bash`。脚本会提示安装Docker/Compose与固定校验的Node运行时；不会编译Rust、安装npm依赖或Docker build。选择最新已完成的CI部署release，也可以`sudo bash install.sh --release ci-<完整提交SHA>`固定版本。GitHub仓库/镜像私有时交互输入GitHub token（隐藏），token需仓库读权限与read:packages；不会记录token或作为命令参数传递。成品发布未完成时脚本停止，不回退源码构建。
+先下载文件再运行，交互过程中读取终端，不使用`curl | bash`。脚本会提示安装Docker/Compose与固定校验的Node运行时；不会编译Rust、安装npm依赖或Docker build。按published_at选择最新已完成且安装脚本/包/校验均uploaded的CI部署release，也可以`sudo bash install.sh --release ci-<完整提交SHA>`固定版本。仓库公开，脚本不询问GitHub token，文件使用公开下载地址；GHCR的runtime/edge包也需在GitHub Packages设置为Public，否则无Token的docker pull会失败。成品发布未完成时脚本停止，不回退源码构建。
 
 交互填写安装路径、身份中心和A/B域名、TLS邮箱、SMTP主机/端口/用户名/密码/发件人、已挂载独立备份路径、age公开recipient、首管理员邮箱和隐藏密码。域名DNS和入站80/443须提前可用；WebAuthn不支持纯IP生产origin，向导拒绝IP，不用临时域名绕过接入要求。SMTP需要证书验证的STARTTLS。备份路径须是真实挂载点，age私钥由运维另行保管，安装器只收公开recipient。
 
@@ -62,3 +62,18 @@ sh /srv/auth-rust/infra/ops/deploy-production.sh rollback /srv/auth-rust/.local/
 回滚拉取已记录前版digest，按原release.mjs核对真实兼容事实、重新备份、启动旧镜像和smoke，不运行down migration。不可逆迁移需独立窗口与恢复方案。首次部署的数据库备份仍需可用；脚本不会将“空数据库”变成跳过备份的理由。
 
 正式域名、真实SMTP及DNS、独立备份/保留/RPO-RTO、设备/人工矩阵和上线24小时观察仍须按acceptance.md验收。此脚本已可审查并由CI产物携带，生产环境未准备时不会自动触发远程部署。
+
+## 国内网络与公开下载
+
+默认无需GitHub凭据。启动时可输入HTTP/HTTPS代理，例如`http://127.0.0.1:7890`，作用于GitHub API、Node/Docker软件下载；脚本另询问是否写Docker systemd代理并重启Docker，用于GHCR镜像拉取。重启可能影响现有容器，只有明确确认后执行。代理只支持不带账号密码的host:port，避免写明文凭据。
+
+如果GitHub文件下载受限，可交互填写可信HTTPS下载网关前缀（以`/`结尾）；它仅代理公开release文件，无Token或Authorization头。该网关不会加速GitHub API或GHCR，API/镜像不可达仍需可用网络代理，不能声称一个下载加速地址解决全部访问性。所有下载有连接超时、总时限和重试；Node/Docker key和部署包SHA/manifest仍核对，禁止关闭TLS校验。网关提供者可能看到公开下载内容，来源完整性依赖受信任渠道，不推荐随机公共站点。
+
+首次install.sh无法直连时，可先在能访问GitHub的机器下载再上传服务器，或使用服务器已有代理：
+
+```sh
+curl --proxy http://127.0.0.1:7890 -fL https://raw.githubusercontent.com/justicerains1/AUTH_RUST/main/install.sh -o install.sh
+sudo bash install.sh
+```
+
+默认只选择完整的安装版成品；不选择仅有旧部署包或尚在上传的Release，不回退生产编译。三站域名、SMTP、备份挂载等仍由交互输入；生产运行条件不因下载优化改变。

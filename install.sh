@@ -13,7 +13,9 @@ case "${1:-}" in
 CDNGOD production installer (Debian/Ubuntu x86_64).
 Usage: sudo bash install.sh [--release ci-<40-character-commit>]
 Requires interactive terminal, real HTTPS domains, SMTP and mounted backup storage.
-Downloads tested CI images; never runs cargo/npm/docker build.
+Downloads latest completed installer-capable CI products from this public repository.
+Interactive HTTP/HTTPS proxy and trusted release gateway supported; no GitHub token required.
+Never runs cargo/npm/docker build.
 Existing installations retain data and keys and use the verified release upgrade path.
 EOF
     exit 0 ;;
@@ -31,15 +33,21 @@ esac
 source /etc/os-release
 [[ "$ID" == ubuntu || "$ID" == debian ]] || { echo 'Supported systems: Debian and Ubuntu.' >&2; exit 1; }
 printf 'CDNGOD: install Docker/Compose, CI-built Caddy and verified Node runtime. Domains are entered interactively; existing Nginx will be checked before switching web ports.\n'
+read -r -p 'HTTP/HTTPS proxy for downloads (Enter for direct connection; example http://127.0.0.1:7890): ' DOWNLOAD_PROXY
+if [[ -n "$DOWNLOAD_PROXY" ]]; then
+  [[ "$DOWNLOAD_PROXY" =~ ^https?://[a-zA-Z0-9._-]+:[0-9]+$ ]] || { echo 'Use http(s)://host:port without credentials.' >&2; exit 1; }
+  export https_proxy="$DOWNLOAD_PROXY" http_proxy="$DOWNLOAD_PROXY" HTTPS_PROXY="$DOWNLOAD_PROXY" HTTP_PROXY="$DOWNLOAD_PROXY"
+  export no_proxy="localhost,127.0.0.1,::1" NO_PROXY="localhost,127.0.0.1,::1"
+fi
 read -r -p 'Proceed? [y/N]: ' answer
 [[ "$answer" == y || "$answer" == Y ]] || exit 0
 apt-get update -qq
 apt-get install -y --no-install-recommends ca-certificates curl gnupg jq xz-utils openssl util-linux tar
 temporary=$(mktemp -d)
-trap 'rm -rf "$temporary"; unset GH_TOKEN' EXIT
+trap 'rm -rf "$temporary"' EXIT
 if ! command -v docker >/dev/null || ! docker compose version >/dev/null 2>&1; then
   install -d -m 0755 /etc/apt/keyrings
-  curl --fail --silent --show-error --location "https://download.docker.com/linux/$ID/gpg" -o "$temporary/docker.asc"
+  curl --fail --silent --show-error --location --connect-timeout 15 --max-time 120 --retry 3 --retry-all-errors "https://download.docker.com/linux/$ID/gpg" -o "$temporary/docker.asc"
   fingerprint=$(gpg --show-keys --with-colons "$temporary/docker.asc" | awk -F: '$1=="fpr" {print $10; exit}')
   [[ "$fingerprint" == 9DC858229FC7DD38854AE2D88D81803C0EBFCD88 ]] || { echo 'Docker repository signing key mismatch.' >&2; exit 1; }
   install -m 0644 "$temporary/docker.asc" /etc/apt/keyrings/docker.asc
@@ -48,9 +56,18 @@ if ! command -v docker >/dev/null || ! docker compose version >/dev/null 2>&1; t
   apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 fi
 systemctl enable --now docker
+if [[ -n "$DOWNLOAD_PROXY" ]]; then
+  read -r -p 'Also configure this proxy for Docker image pulls (restarts Docker)? [y/N]: ' docker_proxy_answer
+  if [[ "$docker_proxy_answer" == y || "$docker_proxy_answer" == Y ]]; then
+    install -d -m 0755 /etc/systemd/system/docker.service.d
+    printf '[Service]\nEnvironment="HTTP_PROXY=%s" "HTTPS_PROXY=%s" "NO_PROXY=localhost,127.0.0.1,::1"\n' "$DOWNLOAD_PROXY" "$DOWNLOAD_PROXY" > /etc/systemd/system/docker.service.d/auth-rust-proxy.conf
+    systemctl daemon-reload
+    systemctl restart docker
+  fi
+fi
 docker info >/dev/null
 if ! command -v node >/dev/null || [[ $(node --version) != v$NODE_VERSION ]]; then
-  curl --fail --silent --show-error --location --retry 3 "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz" -o "$temporary/node.tar.xz"
+  curl --fail --silent --show-error --location --connect-timeout 15 --max-time 600 --retry 3 --retry-all-errors "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz" -o "$temporary/node.tar.xz"
   printf '%s  %s\n' "$NODE_SHA256" "$temporary/node.tar.xz" | sha256sum --check
   install -d /opt/auth-rust-node
   tar -xJf "$temporary/node.tar.xz" -C /opt/auth-rust-node --strip-components=1
@@ -64,25 +81,25 @@ mkdir -p "$INSTALL_ROOT"
 [[ $(realpath "$INSTALL_ROOT") == "$INSTALL_ROOT" ]] || { echo 'Install path cannot contain symbolic links.' >&2; exit 1; }
 exec 9>"$INSTALL_ROOT/.installer.lock"
 flock -n 9 || { echo 'Another installation is running.' >&2; exit 1; }
-read -r -s -p 'GitHub token (Enter for public downloads; token may need read:packages): ' GH_TOKEN
-printf '\n'
-curl_auth=()
-if [[ -n "$GH_TOKEN" ]]; then
-  # Keep tokens out of process arguments and logs. curl reads an owner-only config.
-  [[ "$GH_TOKEN" =~ ^[a-zA-Z0-9_]+$ ]] || { echo 'Invalid GitHub token characters.' >&2; exit 1; }
-  printf 'header = "Authorization: Bearer %s"\n' "$GH_TOKEN" > "$temporary/curl-auth"
-  curl_auth=(--config "$temporary/curl-auth")
+read -r -p 'GitHub release download gateway (Enter for github.com; trusted URL prefix ending /): ' RELEASE_GATEWAY
+if [[ -n "$RELEASE_GATEWAY" ]]; then
+  [[ "$RELEASE_GATEWAY" =~ ^https://[a-zA-Z0-9.-]+(/[a-zA-Z0-9._/-]*)?/$ ]] || { echo 'Gateway must be HTTPS without credentials/query.' >&2; exit 1; }
 fi
-curl --fail --silent --show-error --location "${curl_auth[@]}" -H 'Accept: application/vnd.github+json' "https://api.github.com/repos/$REPOSITORY/releases?per_page=100" -o "$temporary/releases.json"
+# Public repository: unauthenticated API and browser asset URLs. No token goes to gateways.
+curl --fail --silent --show-error --location --connect-timeout 15 --max-time 60 --retry 3 --retry-all-errors -H 'Accept: application/vnd.github+json' "https://api.github.com/repos/$REPOSITORY/releases?per_page=100" -o "$temporary/releases.json" || {
+  echo 'GitHub API unavailable. Configure a working HTTP/HTTPS proxy and rerun. A download gateway does not proxy the API or Docker registry.' >&2; exit 1;
+}
 if [[ -z "$RELEASE_TAG" ]]; then
-  RELEASE_TAG=$(jq -r '[.[] | select(.draft==false and (.tag_name|test("^ci-[a-f0-9]{40}$"))) | select(any(.assets[]; .name=="auth-rust-deploy-linux-amd64.tar.gz"))][0].tag_name // empty' "$temporary/releases.json")
+  RELEASE_TAG=$(jq -r '[.[] | select(.draft==false and (.tag_name|test("^ci-[a-f0-9]{40}$"))) | select(any(.assets[]; .name=="install.sh" and .state=="uploaded")) | select(any(.assets[]; .name=="auth-rust-deploy-linux-amd64.tar.gz" and .state=="uploaded")) | select(any(.assets[]; .name=="auth-rust-deploy-linux-amd64.tar.gz.sha256" and .state=="uploaded"))] | sort_by(.published_at) | reverse | .[0].tag_name // empty' "$temporary/releases.json")
 fi
-[[ "$RELEASE_TAG" =~ ^ci-[a-f0-9]{40}$ ]] || { echo 'No completed CI deployment release exists yet. Wait for the publishing job; nothing will be built on this server.' >&2; exit 1; }
-printf 'Selected completed CI release: %s\n' "$RELEASE_TAG"
+[[ "$RELEASE_TAG" =~ ^ci-[a-f0-9]{40}$ ]] || { echo 'No completed installer-capable CI deployment release exists yet. Wait for publishing; no server-side build fallback.' >&2; exit 1; }
+printf 'Selected latest completed CI release: %s\n' "$RELEASE_TAG"
 for name in auth-rust-deploy-linux-amd64.tar.gz auth-rust-deploy-linux-amd64.tar.gz.sha256; do
-  asset=$(jq -r --arg tag "$RELEASE_TAG" --arg name "$name" '.[]|select(.tag_name==$tag)|.assets[]|select(.name==$name)|.url' "$temporary/releases.json")
-  [[ "$asset" =~ ^https://api.github.com/repos/justicerains1/AUTH_RUST/releases/assets/[0-9]+$ ]] || { echo 'Completed release asset missing.' >&2; exit 1; }
-  curl --fail --silent --show-error --location --retry 3 "${curl_auth[@]}" -H 'Accept: application/octet-stream' "$asset" -o "$temporary/$name"
+  asset=$(jq -r --arg tag "$RELEASE_TAG" --arg name "$name" '.[]|select(.tag_name==$tag)|.assets[]|select(.name==$name)|.browser_download_url' "$temporary/releases.json")
+  [[ "$asset" == "https://github.com/$REPOSITORY/releases/download/$RELEASE_TAG/$name" ]] || { echo 'Unexpected or missing release asset URL.' >&2; exit 1; }
+  url="$asset"
+  if [[ -n "$RELEASE_GATEWAY" ]]; then url="$RELEASE_GATEWAY$asset"; fi
+  curl --fail --silent --show-error --location --connect-timeout 15 --max-time 600 --retry 3 --retry-all-errors "$url" -o "$temporary/$name"
 done
 (cd "$temporary"; [[ $(cat auth-rust-deploy-linux-amd64.tar.gz.sha256) =~ ^[a-f0-9]{64}[[:space:]][[:space:]]auth-rust-deploy-linux-amd64.tar.gz$ ]]; sha256sum --check auth-rust-deploy-linux-amd64.tar.gz.sha256)
 # Refuse traversal, links and special files before extraction as root.
@@ -95,11 +112,6 @@ import {pathToFileURL} from 'node:url';
 const root=process.argv[2];const {validateBundle}=await import(pathToFileURL(root+'/infra/ops/deploy-production.mjs'));
 const manifest=await validateBundle(root);if(manifest.revision!==process.argv[3])throw Error('Downloaded revision does not match release');
 EOF
-if [[ -n "$GH_TOKEN" ]]; then
-  read -r -p 'GitHub username for GHCR: ' registry_user
-  printf '%s' "$GH_TOKEN" | docker login ghcr.io -u "$registry_user" --password-stdin
-fi
-unset GH_TOKEN
 # Only CI deployment files are updated. Existing secrets, state and volumes are preserved.
 node --input-type=module - "$temporary/bundle" "$INSTALL_ROOT" <<'EOF'
 import {readFile,mkdir,copyFile,lstat} from 'node:fs/promises';import{dirname,join}from'node:path';

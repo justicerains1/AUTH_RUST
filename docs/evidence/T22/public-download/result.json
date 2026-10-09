@@ -1,0 +1,24 @@
+{
+  "observed": "2026-10-09T08:00:01.746574+00:00",
+  "latestInstallerRelease": "ci-287089164d3d05654078bb6150023a82b77da4e7",
+  "anonymousGhcr": {
+    "runtimeToken": 200,
+    "runtimeManifest": 200,
+    "edgeToken": 200,
+    "edgeManifest": 200
+  },
+  "tests": 20,
+  "failed": 0,
+  "skipped": 0,
+  "scope": "Release-selection fixtures and actual public API/anonymous registry access from current host; mainland target connectivity not yet measured",
+  "source": [
+    {
+      "path": "install.sh",
+      "sha256": "ac76d392f403d8236398761236ab5edb11563ac5169ad785d227413c45703228"
+    },
+    {
+      "path": "tests/ops/installer.test.mjs",
+      "sha256": "721d3e0ddaf1ff47d4d2692660dea2beced844a3d79d8060a02741c3da691379"
+    }
+  ]
+}

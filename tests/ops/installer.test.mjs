@@ -41,8 +41,19 @@ test('wizard accepts exact hostnames and refuses raw IP, URL, wildcards and conf
 });
 test('single download shell parses and rejects bad release before installing or writing system files', () => {
   execFileSync('bash', ['-n', join(root, 'install.sh')]);
-  assert.match(execFileSync('bash', [join(root, 'install.sh'), '--help'], { encoding: 'utf8' }), /never runs cargo\/npm\/docker build/u);
+  assert.match(execFileSync('bash', [join(root, 'install.sh'), '--help'], { encoding: 'utf8' }), /Never runs cargo\/npm\/docker build/u);
   const invalid = spawnSync('bash', [join(root, 'install.sh'), '--release', '../latest'], { encoding: 'utf8' }); assert.equal(invalid.status, 2);
+});
+test('latest public release selection ignores unfinished uploads and old non-installer bundles', async () => {
+  const script = await readFile(join(root, 'install.sh'), 'utf8');
+  const expression = /RELEASE_TAG=\$\(jq -r '([^']+)' "\$temporary\/releases.json"\)/u.exec(script)?.[1];
+  assert.ok(expression);
+  const names = ['install.sh', 'auth-rust-deploy-linux-amd64.tar.gz', 'auth-rust-deploy-linux-amd64.tar.gz.sha256'];
+  const release = (id, date, files, draft = false) => ({ tag_name: `ci-${id.repeat(40)}`, published_at: date, draft, assets: files.map((name) => ({ name, state: 'uploaded' })) });
+  const rows = [release('a', '2026-01-01', names), release('b', '2026-03-01', names.slice(1)), release('c', '2026-04-01', names.slice(0, 2)), release('d', '2026-02-01', names), release('e', '2026-05-01', names, true)];
+  assert.equal(execFileSync('jq', ['-r', expression], { input: JSON.stringify(rows), encoding: 'utf8' }).trim(), `ci-${'d'.repeat(40)}`);
+  assert.equal(script.includes('GH_TOKEN'), false);
+  assert.equal(script.includes('browser_download_url'), true);
 });
 test('installer session rotates CSRF across MFA and removes expired cookie values', async (t) => {
   let step = 0;

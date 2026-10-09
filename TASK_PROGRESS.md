@@ -309,3 +309,7 @@ c3885fa这一轮完整测试只有T05集成失败（19集成其他18项0、E2E/s
 ## 安装代理检测与开发者接入文档
 
 按用户要求，安装器检测宿主Nginx，缺失/未运行则启用CI Docker Caddy；运行时交互询问切换，拒绝则保留并退出，端口冲突恢复被停止的Nginx，成功后询问开机启动冲突处理。域名由用户交互输入。新真实socket及代理选择/拒绝/恢复测试加入，原安装/部署共19项全0，ESLint/bash/docs/OpenAPI0。新增[开发者接入](docs/developer-integration.md)，README与CI包包含接入/BFF文档，原db:migrate开发命令补明确environment。真实新主机Nginx切换与生产验收未执行，不借模拟service测试放行。
+
+## 公开最新版与国内下载支持
+
+用户要求公开仓库默认最新版成品。install默认筛选install.sh/包/SHA全uploaded并按published_at排序，跳旧缺安装器/草稿/未完成，不问GitHubToken；匿名runtime/edgeGHCR实际200。交互代理+可信release文件网关、超时重试加入，Dockerdaemon代理独立确认重启，API/GHCR不可达不会冒文件网关万能或生产编译回退。20相关测试全0、bash/ESLint/docs0。[记录](docs/evidence/T22/public-download/test-summary.md)，国内目标机访问性尚未实测。
