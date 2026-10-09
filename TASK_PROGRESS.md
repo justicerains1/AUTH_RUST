@@ -313,3 +313,7 @@ c3885fa这一轮完整测试只有T05集成失败（19集成其他18项0、E2E/s
 ## 公开最新版与国内下载支持
 
 用户要求公开仓库默认最新版成品。install默认筛选install.sh/包/SHA全uploaded并按published_at排序，跳旧缺安装器/草稿/未完成，不问GitHubToken；匿名runtime/edgeGHCR实际200。交互代理+可信release文件网关、超时重试加入，Dockerdaemon代理独立确认重启，API/GHCR不可达不会冒文件网关万能或生产编译回退。20相关测试全0、bash/ESLint/docs0。[记录](docs/evidence/T22/public-download/test-summary.md)，国内目标机访问性尚未实测。
+
+## 备份挂载改为建议
+
+按用户明确要求，安装器不再强制独立挂载；普通目录默认/var/backups，自动创建受控目录并记录local-directory、提示同机风险。挂载目录记录mounted/backupMount，后续挂载丢失仍拒备份；普通目录也核对设备。备份加密/校验/迁移前备份要求保留，独立故障域/生产RPO-RTO未验状态不放行。

@@ -1,7 +1,7 @@
 // Interactive, dependency-free installation of prebuilt production products.
 import { createInterface } from 'node:readline/promises';
 import { stdin, stdout } from 'node:process';
-import { mkdir, readFile, writeFile, stat, chown, chmod, access, readdir, rm } from 'node:fs/promises';
+import { mkdir, readFile, writeFile, stat, chown, chmod, access, readdir, rm, realpath, lstat } from 'node:fs/promises';
 import { randomBytes, generateKeyPairSync } from 'node:crypto';
 import { resolve, join } from 'node:path';
 import { lookup } from 'node:dns/promises';
@@ -20,6 +20,14 @@ async function hidden(prompt) {
 async function question(text, defaultValue = '') { const input = createInterface({ input: stdin, output: stdout }); try { return (await input.question(`${text}${defaultValue ? ` [${defaultValue}]` : ''}: `)).trim() || defaultValue; } finally { input.close(); } }
 async function required(text, validator, defaultValue = '') { for (;;) { const value = await question(text, defaultValue); if (validator(value)) return value; console.log('Invalid value; please retry.'); } }
 async function secretFile(path, bytes, uid = 10001) { await writeFile(path, bytes, { flag: 'wx', mode: 0o600 }); await chown(path, uid, uid); }
+export async function prepareBackupLocation(location, executor = executeCommand) {
+  if (!/^\/[a-zA-Z0-9_./-]+$/u.test(location) || resolve(location) !== location || location === '/') throw new Error('Use a canonical absolute backup directory.');
+  await mkdir(location, { recursive: true, mode: 0o755 });
+  const info = await lstat(location);
+  if (!info.isDirectory() || info.isSymbolicLink() || await realpath(location) !== location || info.mode & 0o022) throw new Error('Backup directory must be controlled and cannot contain symbolic links.');
+  const mounted = (await executor('mountpoint', ['-q', location])).code === 0;
+  return { backupLocation: location, backupStorage: mounted ? 'mounted' : 'local-directory', ...(mounted ? { backupMount: location } : {}) };
+}
 export async function detectProxy(executor = executeCommand) {
   const version = await executor('nginx', ['-v']);
   const active = await executor('systemctl', ['is-active', '--quiet', 'nginx']);
@@ -68,9 +76,10 @@ async function install(root) {
   const smtpUser = await required('SMTP username', (v) => v.length > 0 && !/[\s'"$\\#]/u.test(v));
   const smtpFrom = await required('SMTP sender email', (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/u.test(v));
   const smtpPassword = await hidden('SMTP password (hidden): '); if (!smtpPassword || /[\r\n\0]/u.test(smtpPassword)) throw new Error('Invalid SMTP password.');
-  const backupMount = await required('Existing independent backup mount', (v) => /^\/[a-zA-Z0-9_./-]+$/u.test(v) && !v.includes('/../') && v !== '/');
-  const mountResult = await executeCommand('mountpoint', ['-q', backupMount]); if (mountResult.code) throw new Error('Backup location must already be mounted; no fallback directory will be created.');
-  const backupRoot = join(backupMount, 'auth-rust'); await mkdir(backupRoot, { recursive: true, mode: 0o755 }); await mkdir(join(backupRoot, 'wal'), { mode: 0o700 }); await chown(join(backupRoot, 'wal'), 999, 999); await chmod(join(backupRoot, 'wal'), 0o700); await mkdir(join(backupRoot, 'base'), { mode: 0o700 });
+  const backupLocation = await required('Backup directory (independent mounted storage recommended, not required)', (v) => /^\/[a-zA-Z0-9_./-]+$/u.test(v) && resolve(v) === v && v !== '/', '/var/backups');
+  const backupStorage = await prepareBackupLocation(backupLocation);
+  if (backupStorage.backupStorage === 'local-directory') console.log('Using a local backup directory. Independent storage is recommended: a host or disk failure may destroy both database and backups.');
+  const backupRoot = join(backupLocation, 'auth-rust'); await mkdir(backupRoot, { recursive: true, mode: 0o755 }); await mkdir(join(backupRoot, 'wal'), { mode: 0o700 }); await chown(join(backupRoot, 'wal'), 999, 999); await chmod(join(backupRoot, 'wal'), 0o700); await mkdir(join(backupRoot, 'base'), { mode: 0o700 });
   const device = String((await stat(join(backupRoot, 'wal'), { bigint: true })).dev);
   const recipient = await required('Age backup PUBLIC recipient (keep private key separately)', (v) => /^age1[0-9a-z]{58}$/u.test(v));
   const adminEmail = await required('First administrator email', (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/u.test(v));
@@ -87,7 +96,7 @@ async function install(root) {
   await writeFile(join(local, 'identity.env'), envText(settings), { flag: 'wx', mode: 0o600 });
   for (const [name, domain, port] of [['a', appA, 8082], ['b', appB, 8083]]) await writeFile(join(local, `demo-${name}.env`), envText({ APP_ENV: 'production', BIND: `0.0.0.0:${port}`, BFF_PUBLIC_ORIGIN: `https://${domain}`, ISSUER: issuer, BFF_CLIENT_ID: `installer-demo-${name}`, BFF_CLIENT_SECRET_FILE: '/run/secrets/client-secret', DATABASE_URL: database, BFF_NAMESPACE: `demo_${name}`, BFF_COOKIE_NAME: `__Host-demo-${name}`, ENCRYPTION_KEYS_FILE: '/run/secrets/encryption-keys.json', ACTIVE_ENCRYPTION_KID: 'production-aead-1' }), { flag: 'wx', mode: 0o600 });
   const envFile = join(root, 'infra/production.env'); await writeFile(envFile, envText({ RUST_IMAGE: manifest.images.runtime, EDGE_IMAGE: manifest.images.edge, IDENTITY_HOST: identity, DEMO_A_HOST: appA, DEMO_B_HOST: appB, TLS_EMAIL: tlsEmail, BACKUP_DESTINATION: backupRoot, WAL_ARCHIVE_DEVICE: device, AGE_RECIPIENT: recipient }), { flag: 'wx', mode: 0o600 });
-  const wizard = { version: 1, root, project: 'auth-rust-production', identity, appA, appB, issuer, adminEmail, proxy, backupMount, backupRoot, backupDevice: device, recipient };
+  const wizard = { version: 1, root, project: 'auth-rust-production', identity, appA, appB, issuer, adminEmail, proxy, ...backupStorage, backupRoot, backupDevice: device, recipient };
   await writeFile(wizardPath, JSON.stringify(wizard, null, 2) + '\n', { flag: 'wx', mode: 0o600 });
   const operations = join(root, 'infra/ops/installer-operations.mjs'); const deployConfig = { project: wizard.project, envFile, stateDirectory: join(local, 'release-state'), backupDirectory: join(backupRoot, 'base'), databaseUser: 'identity', databaseName: 'identity_production', encryptionKeysFile: join(secrets, 'encryption-keys.json'), backup: { program: process.execPath, args: [operations, 'backup', root] }, smoke: { program: process.execPath, args: [operations, 'smoke', root] } };
   await writeFile(join(local, 'deploy.json'), JSON.stringify(deployConfig, null, 2) + '\n', { flag: 'wx', mode: 0o600 });
@@ -122,7 +131,7 @@ async function install(root) {
     return executeCommand(program, args, options);
   } });
   await rm(join(local, 'administrator-totp-setup.txt'));
-  const backupService = `[Unit]\nDescription=Verified CDNGOD encrypted PostgreSQL backup\nRequiresMountsFor=${backupMount}\nAfter=docker.service\n[Service]\nType=oneshot\nUser=root\nUMask=0077\nExecStart=${process.execPath} ${operations} backup ${root}\nNoNewPrivileges=true\nPrivateTmp=true\nTimeoutStartSec=1h\n`;
+  const backupService = `[Unit]\nDescription=Verified CDNGOD encrypted PostgreSQL backup\nRequiresMountsFor=${backupLocation}\nAfter=docker.service\n[Service]\nType=oneshot\nUser=root\nUMask=0077\nExecStart=${process.execPath} ${operations} backup ${root}\nNoNewPrivileges=true\nPrivateTmp=true\nTimeoutStartSec=1h\n`;
   await writeFile('/etc/systemd/system/auth-rust-backup.service', backupService);
   await writeFile('/etc/systemd/system/auth-rust-backup.timer', '[Unit]\nDescription=Daily CDNGOD database backup\n[Timer]\nOnCalendar=*-*-* 02:00:00 UTC\nPersistent=true\nUnit=auth-rust-backup.service\n[Install]\nWantedBy=timers.target\n');
   for (const args of [['daemon-reload'], ['enable', '--now', 'auth-rust-backup.timer']]) if ((await executeCommand('systemctl', args)).code) throw new Error('Backup schedule activation failed.');

@@ -1,6 +1,6 @@
 # Rust 统一身份中心
 
-全新Debian/Ubuntu x86_64服务器可只下载根目录`install.sh`并`sudo bash install.sh`交互配置整套；域名、SMTP和独立备份挂载需提前准备。生产部署使用[CI成品与一键部署](docs/runbooks/production-ci-deployment.md)：GitHub CI构建Rust/前端镜像并发布GHCR digest与部署包，生产主机只下载、校验、拉取和启动，不编译源码。
+全新Debian/Ubuntu x86_64服务器可只下载根目录`install.sh`并`sudo bash install.sh`交互配置整套；域名和SMTP需提前准备；备份可用普通目录，建议独立挂载存储。生产部署使用[CI成品与一键部署](docs/runbooks/production-ci-deployment.md)：GitHub CI构建Rust/前端镜像并发布GHCR digest与部署包，生产主机只下载、校验、拉取和启动，不编译源码。
 
 实现依据为 [plan.md](plan.md) 和 [acceptance.md](acceptance.md)。邮箱/密码/MFA/Passkey、OAuth/OIDC、双 BFF、账号与管理后台，以及本地生产制品和运维工具已实现并逐模块推送。实体设备、规定性能环境、正式生产部署/邮件/独立恢复等仍待验收；最终自动回归实际结果见 [TEST_SUMMARY.md](TEST_SUMMARY.md)，任务状态和外部条件见 [TASK_PROGRESS.md](TASK_PROGRESS.md)。当前尚不具备生产发布条件。
 
@@ -19,13 +19,13 @@ sudo bash install.sh
 
 脚本检查现有 Nginx；未运行时使用 CI 成品中的 Docker Caddy，运行时交互确认是否切换，并检查 80/443 端口冲突。三个域名在安装时由用户输入。脚本安装 Docker/Compose 和已校验的 Node 运行时，下载已完成 CI 的镜像及部署包，交互生成配置、初始化管理员和 A/B 客户端，备份后迁移数据库并启动整套服务。**生产服务器不编译 Rust、安装 npm 依赖或构建镜像。**请先下载再执行，不使用 `curl | bash`。
 
-运行前准备好三个已解析到服务器的域名（身份中心、演示 A、演示 B），开放 TCP 80/443，准备验证证书的 STARTTLS SMTP 服务、已挂载的独立备份位置以及 age 公开 recipient。当前生产认证不支持纯 IP 地址。
+运行前准备好三个已解析到服务器的域名（身份中心、演示 A、演示 B），开放 TCP 80/443，准备验证证书的 STARTTLS SMTP 服务、备份目录以及 age 公开 recipient（建议独立挂载，普通目录也可安装）。当前生产认证不支持纯 IP 地址。
 
 安装向导会询问：
 
 - 安装目录，默认 `/srv/auth-rust`；可选 HTTP/HTTPS 网络代理和可信公开文件下载网关，无需 GitHub Token。
 - 三个站点域名、TLS 联系邮箱、SMTP 参数及隐藏密码。
-- 独立备份挂载路径和 age 公钥；备份私钥须另行保管。
+- 备份目录（默认 `/var/backups`，独立存储仅建议）和 age 公钥；备份私钥须另行保管。
 - 管理员邮箱、隐藏密码，以及绑定验证器时的 TOTP 验证码。
 
 再次执行可确认升级，保留已有数据、配置和密钥。也可指定已发布版本：

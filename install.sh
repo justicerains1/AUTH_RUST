@@ -12,7 +12,8 @@ case "${1:-}" in
     cat <<'EOF'
 CDNGOD production installer (Debian/Ubuntu x86_64).
 Usage: sudo bash install.sh [--release ci-<40-character-commit>]
-Requires interactive terminal, real HTTPS domains, SMTP and mounted backup storage.
+Requires interactive terminal, real HTTPS domains, SMTP and a backup directory.
+Independent mounted backup storage is recommended, not required.
 Downloads latest completed installer-capable CI products from this public repository.
 Interactive HTTP/HTTPS proxy and trusted release gateway supported; no GitHub token required.
 Never runs cargo/npm/docker build.

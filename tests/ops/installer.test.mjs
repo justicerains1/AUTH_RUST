@@ -6,13 +6,26 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { setTimeout as delay } from 'node:timers/promises';
-import { validDomain, envText, prepareProxy, portAvailable } from '../../infra/ops/install-production.mjs';
+import { validDomain, envText, prepareProxy, portAvailable, prepareBackupLocation } from '../../infra/ops/install-production.mjs';
 import { ApiSession } from '../../infra/ops/install-production.mjs';
 import { createServer } from 'node:http';
 import { backup } from '../../infra/ops/installer-operations.mjs';
 import { verifiedBackupReceipt } from '../../infra/ops/collect-metrics.mjs';
 
 const root = resolve(import.meta.dirname, '../..');
+test('ordinary backup directory is accepted without setting a mandatory mount', async (t) => {
+  const directory = await mkdtemp(join(tmpdir(), 'identity-backup-location-')); t.after(() => rm(directory, { recursive: true, force: true }));
+  const location = join(directory, 'ordinary');
+  const result = await prepareBackupLocation(location, async () => ({ code: 1 }));
+  assert.equal(result.backupStorage, 'local-directory'); assert.equal(result.backupMount, undefined); assert.ok((await stat(location)).isDirectory());
+});
+test('explicit mounted backup location retains later mount-loss protection', async (t) => {
+  const directory = await mkdtemp(join(tmpdir(), 'identity-backup-mounted-')); t.after(() => rm(directory, { recursive: true, force: true }));
+  const result = await prepareBackupLocation(directory, async () => ({ code: 0 }));
+  assert.equal(result.backupMount, directory); assert.equal(result.backupStorage, 'mounted');
+  await mkdir(join(directory, '.local/production'), { recursive: true }); await writeFile(join(directory, '.local/production/installer.json'), JSON.stringify({ backupMount: directory }));
+  await assert.rejects(backup(directory, async () => ({ code: 1 })), /mount/u);
+});
 test('missing Nginx selects Docker Caddy without installing a second host proxy', async () => {
   const calls = [];
   const result = await prepareProxy({ executor: async (program, args) => { calls.push([program, ...args]); return { code: 127 }; }, ask: async () => { throw new Error('Unexpected prompt'); }, available: async () => true });
@@ -80,5 +93,5 @@ test('installer backup uses actual isolated PostgreSQL, verifies then encrypts, 
   await backup(directory, async () => ({ code: 0, output: id })); const receipt = await verifiedBackupReceipt(join(backupRoot, 'base'), Math.floor(Date.now() / 1000)); assert.ok(receipt.ciphertext_bytes > 0);
   const tar = join(directory, 'base.tar'); execFileSync(age, ['-d', '-i', key, '-o', tar, join(backupRoot, 'base', receipt.backup_name)], { stdio: 'pipe' });
   assert.match(execFileSync('tar', ['-tf', tar], { encoding: 'utf8' }), /base\/backup_manifest/u);
-  const original = await readFile(join(backupRoot, 'base/last-success.json'), 'utf8'); settings.backupDevice = '0'; await writeFile(join(directory, '.local/production/installer.json'), JSON.stringify(settings)); await assert.rejects(backup(directory), /mount/u); assert.equal(await readFile(join(backupRoot, 'base/last-success.json'), 'utf8'), original);
+  const original = await readFile(join(backupRoot, 'base/last-success.json'), 'utf8'); settings.backupDevice = '0'; await writeFile(join(directory, '.local/production/installer.json'), JSON.stringify(settings)); await assert.rejects(backup(directory), /device/u); assert.equal(await readFile(join(backupRoot, 'base/last-success.json'), 'utf8'), original);
 });

@@ -11,7 +11,7 @@ sudo bash install.sh
 
 先下载文件再运行，交互过程中读取终端，不使用`curl | bash`。脚本会提示安装Docker/Compose与固定校验的Node运行时；不会编译Rust、安装npm依赖或Docker build。按published_at选择最新已完成且安装脚本/包/校验均uploaded的CI部署release，也可以`sudo bash install.sh --release ci-<完整提交SHA>`固定版本。仓库公开，脚本不询问GitHub token，文件使用公开下载地址；GHCR的runtime/edge包也需在GitHub Packages设置为Public，否则无Token的docker pull会失败。成品发布未完成时脚本停止，不回退源码构建。
 
-交互填写安装路径、身份中心和A/B域名、TLS邮箱、SMTP主机/端口/用户名/密码/发件人、已挂载独立备份路径、age公开recipient、首管理员邮箱和隐藏密码。域名DNS和入站80/443须提前可用；WebAuthn不支持纯IP生产origin，向导拒绝IP，不用临时域名绕过接入要求。SMTP需要证书验证的STARTTLS。备份路径须是真实挂载点，age私钥由运维另行保管，安装器只收公开recipient。
+交互填写安装路径、身份中心和A/B域名、TLS邮箱、SMTP主机/端口/用户名/密码/发件人、备份目录（建议独立挂载，可使用普通目录）、age公开recipient、首管理员邮箱和隐藏密码。域名DNS和入站80/443须提前可用；WebAuthn不支持纯IP生产origin，向导拒绝IP，不用临时域名绕过接入要求。SMTP需要证书验证的STARTTLS。备份路径不强制挂载：默认/var/backups，普通目录允许安装并记录local-directory；独立挂载只作建议。选择已挂载目录时记录backupMount，后续挂载丢失仍中止备份；普通目录核对原设备号。age私钥由运维另行保管，安装器只收公开recipient。
 
 向导检测Nginx：没有或未运行时使用CI成品中的Docker Caddy并自动申请HTTPS证书；若Nginx正在运行，则交互询问是否停止它并切换到Caddy。拒绝切换时保留Nginx并退出；端口冲突时停止安装，失败且端口已释放时尝试恢复Nginx。成功切换后询问是否禁用Nginx开机启动，原配置保留。域名全部由安装时输入，不写死CDNGOD域名。
 
@@ -76,4 +76,6 @@ curl --proxy http://127.0.0.1:7890 -fL https://raw.githubusercontent.com/justice
 sudo bash install.sh
 ```
 
-默认只选择完整的安装版成品；不选择仅有旧部署包或尚在上传的Release，不回退生产编译。三站域名、SMTP、备份挂载等仍由交互输入；生产运行条件不因下载优化改变。
+默认只选择完整的安装版成品；不选择仅有旧部署包或尚在上传的Release，不回退生产编译。三站域名、SMTP、备份目录等仍由交互输入；生产运行条件不因下载优化改变。
+
+用户明确允许本机普通目录完成安装，此选择不代表独立故障域或生产恢复验收通过。同机磁盘/主机故障可能同时损坏数据库和备份，建议另复制至独立存储；原验收清单保留未验状态。备份加密、首次备份成功后才迁移、设备号核对与摘要校验均保留。

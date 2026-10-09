@@ -1,0 +1,145 @@
+TAP version 13
+# Subtest: CI bundle contains deployment tools and verified age, excludes source and secrets
+ok 1 - CI bundle contains deployment tools and verified age, excludes source and secrets
+  ---
+  duration_ms: 387.609802
+  type: 'test'
+  ...
+# Subtest: production rejects builds, floating images and mismatched CI digests
+ok 2 - production rejects builds, floating images and mismatched CI digests
+  ---
+  duration_ms: 0.7161
+  type: 'test'
+  ...
+# Subtest: plan validates bundle and Compose without pull, build, up or migration
+ok 3 - plan validates bundle and Compose without pull, build, up or migration
+  ---
+  duration_ms: 371.520102
+  type: 'test'
+  ...
+# Subtest: failed image pull stops before data startup, backup or migration
+ok 4 - failed image pull stops before data startup, backup or migration
+  ---
+  duration_ms: 357.102601
+  type: 'test'
+  ...
+# Subtest: actual verified backup then failed migration never starts application and all compose commands prohibit builds
+ok 5 - actual verified backup then failed migration never starts application and all compose commands prohibit builds
+  ---
+  duration_ms: 381.621301
+  type: 'test'
+  ...
+# Subtest: ordinary backup directory is accepted without setting a mandatory mount
+ok 6 - ordinary backup directory is accepted without setting a mandatory mount
+  ---
+  duration_ms: 8.4831
+  type: 'test'
+  ...
+# No Nginx service found. Installing Caddy from the CI-built Docker image.
+# Nginx is running. This stack uses the prebuilt Docker Caddy for HTTPS and automatic certificates.
+# Nginx is running. This stack uses the prebuilt Docker Caddy for HTTPS and automatic certificates.
+# Subtest: explicit mounted backup location retains later mount-loss protection
+ok 7 - explicit mounted backup location retains later mount-loss protection
+  ---
+  duration_ms: 4.2609
+  type: 'test'
+  ...
+# Subtest: missing Nginx selects Docker Caddy without installing a second host proxy
+ok 8 - missing Nginx selects Docker Caddy without installing a second host proxy
+  ---
+  duration_ms: 0.6624
+  type: 'test'
+  ...
+# Subtest: running Nginx is retained when user declines switching
+ok 9 - running Nginx is retained when user declines switching
+  ---
+  duration_ms: 0.2513
+  type: 'test'
+  ...
+# Subtest: switching Nginx needs approval and a port conflict restores its service
+ok 10 - switching Nginx needs approval and a port conflict restores its service
+  ---
+  duration_ms: 1.1272
+  type: 'test'
+  ...
+# Subtest: port detection observes a real occupied socket
+ok 11 - port detection observes a real occupied socket
+  ---
+  duration_ms: 6.8891
+  type: 'test'
+  ...
+# Subtest: wizard accepts exact hostnames and refuses raw IP, URL, wildcards and configuration injection
+ok 12 - wizard accepts exact hostnames and refuses raw IP, URL, wildcards and configuration injection
+  ---
+  duration_ms: 0.5853
+  type: 'test'
+  ...
+# Subtest: single download shell parses and rejects bad release before installing or writing system files
+ok 13 - single download shell parses and rejects bad release before installing or writing system files
+  ---
+  duration_ms: 10.0609
+  type: 'test'
+  ...
+# Subtest: latest public release selection ignores unfinished uploads and old non-installer bundles
+ok 14 - latest public release selection ignores unfinished uploads and old non-installer bundles
+  ---
+  duration_ms: 7.1273
+  type: 'test'
+  ...
+# Subtest: installer session rotates CSRF across MFA and removes expired cookie values
+ok 15 - installer session rotates CSRF across MFA and removes expired cookie values
+  ---
+  duration_ms: 27.0477
+  type: 'test'
+  ...
+# Subtest: installer backup uses actual isolated PostgreSQL, verifies then encrypts, and missing device cannot publish
+ok 16 - installer backup uses actual isolated PostgreSQL, verifies then encrypts, and missing device cannot publish
+  ---
+  duration_ms: 7068.857822
+  type: 'test'
+  ...
+# Subtest: release ordering verifies new backup before migrate, up, ready and smoke
+ok 17 - release ordering verifies new backup before migrate, up, ready and smoke
+  ---
+  duration_ms: 29.687701
+  type: 'test'
+  ...
+# Subtest: migration failure never starts new services and retains prior successful state
+ok 18 - migration failure never starts new services and retains prior successful state
+  ---
+  duration_ms: 14.537
+  type: 'test'
+  ...
+# Subtest: zero-exit backup command cannot reuse old completion or corrupt ciphertext
+ok 19 - zero-exit backup command cannot reuse old completion or corrupt ciphertext
+  ---
+  duration_ms: 18.9614
+  type: 'test'
+  ...
+# Subtest: a concurrently replaced receipt cannot replace the backup actually verified for release
+ok 20 - a concurrently replaced receipt cannot replace the backup actually verified for release
+  ---
+  duration_ms: 18.3955
+  type: 'test'
+  ...
+# Subtest: rollback requires matched schema and key compatibility and never runs migration
+ok 21 - rollback requires matched schema and key compatibility and never runs migration
+  ---
+  duration_ms: 31.9086
+  type: 'test'
+  ...
+# Subtest: production rejects floating tags or partial config checks; local tags require acknowledgement
+ok 22 - production rejects floating tags or partial config checks; local tags require acknowledgement
+  ---
+  duration_ms: 0.5195
+  type: 'test'
+  ...
+1..22
+# tests 22
+# suites 0
+# pass 22
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 7291.800223

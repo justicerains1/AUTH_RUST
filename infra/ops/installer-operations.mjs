@@ -8,7 +8,7 @@ import { verifiedBackupReceipt } from './collect-metrics.mjs';
 export async function backup(root, executor = executeCommand) {
   const settings = JSON.parse(await readFile(join(root, '.local/production/installer.json'), 'utf8'));
   if (settings.backupMount && (await executor('mountpoint', ['-q', settings.backupMount])).code !== 0) throw new Error('Independent backup mount is unavailable.');
-  const actual = String((await stat(join(settings.backupRoot, 'wal'), { bigint: true })).dev); if (actual !== settings.backupDevice) throw new Error('Independent backup mount is unavailable.');
+  const actual = String((await stat(join(settings.backupRoot, 'wal'), { bigint: true })).dev); if (actual !== settings.backupDevice) throw new Error('Backup storage device changed or is unavailable.');
   const compose = ['compose', '--project-name', settings.project, '--env-file', join(root, 'infra/production.env'), '-f', join(root, 'infra/compose.prod.yaml')];
   const id = await executor('docker', [...compose, 'ps', '-q', 'postgres']); if (id.code || !/^[a-f0-9]{12,64}$/u.test(id.output.trim())) throw new Error('Actual PostgreSQL container unavailable.');
   const container = id.output.trim();
