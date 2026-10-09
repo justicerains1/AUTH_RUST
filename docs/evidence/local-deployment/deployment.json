@@ -1,0 +1,72 @@
+{
+  "completed": "2026-10-09T04:15:42.631281+00:00",
+  "sourceCommit": "fab864a436642d2bb66a203d741f667ac6132261",
+  "environment": "development",
+  "services": [
+    {
+      "name": "api",
+      "health": "healthy",
+      "image": "auth-rust-api:development"
+    },
+    {
+      "name": "demo-a",
+      "health": "healthy",
+      "image": "auth-rust-demo-a:development"
+    },
+    {
+      "name": "demo-a-bff",
+      "health": "healthy",
+      "image": "auth-rust-demo-a-bff:development"
+    },
+    {
+      "name": "demo-b",
+      "health": "healthy",
+      "image": "auth-rust-demo-b:development"
+    },
+    {
+      "name": "demo-b-bff",
+      "health": "healthy",
+      "image": "auth-rust-demo-b-bff:development"
+    },
+    {
+      "name": "identity-web",
+      "health": "healthy",
+      "image": "auth-rust-identity-web:development"
+    },
+    {
+      "name": "mailpit",
+      "health": "healthy",
+      "image": "docker.m.daocloud.io/axllent/mailpit:v1.31.4@sha256:b68349e3a014b90c5610bfb26b2ae36f3892d7b8cf25ee140c6c71c98d2fcf48"
+    },
+    {
+      "name": "postgres",
+      "health": "healthy",
+      "image": "docker.m.daocloud.io/library/postgres:17.11-bookworm@sha256:3645570cccdfa447589da9f57dd740faa29b30938e861289a5574b6ca6b03826"
+    },
+    {
+      "name": "redis",
+      "health": "healthy",
+      "image": "docker.m.daocloud.io/library/redis:7.4@sha256:4fa24486b8bcca8eec45ee0eb166edc674795e53a2b53d1a9ef263eecebaac85"
+    },
+    {
+      "name": "worker",
+      "health": "healthy",
+      "image": "auth-rust-worker:development"
+    }
+  ],
+  "smoke": {
+    "completed": "2026-10-09T04:15:22.040Z",
+    "registration": true,
+    "smtpMailpit": true,
+    "emailVerification": true,
+    "passwordLogin": true,
+    "demoA": true,
+    "demoB": true,
+    "logoutAllRevocation": true,
+    "administratorLogin": true,
+    "exitCode": 0
+  },
+  "credentialFile": ".local/manual-acceptance/accounts.md (0600, ignored; contents intentionally omitted)",
+  "manualAcceptance": "Pending user review; no production deployment performed",
+  "scope": "Current source Docker dev images, actual SMTP Mailpit/browser email/login/BFF SSO/revocation/admin login; local deployment stays running"
+}

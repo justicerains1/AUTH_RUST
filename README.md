@@ -11,6 +11,8 @@
 
 Linux 可用 rustup 官方安装程序安装 Rust；Windows 使用 rustup-init 并安装 Docker Desktop 的 Linux containers。两个平台均在仓库根目录执行以下 npm 命令。安装后确认 `cargo`、`node`、`npm`、`docker`、`openssl` 可从终端运行。Windows MSVC还需完整OpenSSL开发头文件、导入库及运行DLL；当前CI严格核对预装3.6.4并设置动态链接，见 [Windows环境配置](infra/windows/README.md)。
 
+本地Docker人工验收入口、管理员凭据位置和操作顺序见[本地人工验收](docs/runbooks/local-manual-acceptance.md)。
+
 ## 安装与开发启动
 
 ```text
