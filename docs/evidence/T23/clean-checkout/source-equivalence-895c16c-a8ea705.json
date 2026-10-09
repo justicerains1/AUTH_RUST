@@ -1,0 +1,22 @@
+{
+  "baselineCleanCheckout": "895c16c8a25243bd5c1292276bb73752a208f5a4",
+  "laterFullRegression": "a8ea70544f12e373289481c82ca1691c8b90beb7",
+  "comparedPaths": [
+    "crates",
+    "apps",
+    "migrations",
+    "data",
+    "Cargo.toml",
+    "Cargo.lock",
+    "rust-toolchain.toml",
+    "package.json",
+    "package-lock.json",
+    "infra/Dockerfile.prod",
+    "infra/Dockerfile.edge.prod",
+    "infra/Caddyfile.prod",
+    "infra/compose.prod.yaml"
+  ],
+  "changedFiles": [],
+  "onlyBaselineExecutedCleanSevenStages": true,
+  "laterFullResultNotInferred": true
+}

@@ -1,5 +1,11 @@
 # T23 干净 checkout 子模块最终结果
 
+2026-10-09新增最新独立检出实测提交 `895c16c8a25243bd5c1292276bb73752a208f5a4`，02:56:15～03:04:53 UTC完成，七阶段全部退出0，见[最新结构报告](20261009-2026-10-09T02-56-15-708Z.json)与[命令摘要](20261009-2026-10-09T02-56-15-708Z.md)。工具70测试0failed/0skipped；Rust63 lib/bin单元0ignored，身份前端60、A/B各6单元通过，release七Rust命令和三前端构建成功，共53项制品。
+
+新detached worktree为 `/root/code/rust/auth_rust_clean_t23_20261009`，开始前node_modules/target/dist/.local全无；空npmcache/userconfig、独立Cargo target和build jobs2，仅共享工具链及Cargo注册表源码缓存。运行前后Git均clean，1249项受跟踪源码SHA全部一致，53项制品二次读取摘要一致；身份秘密文件0、必需产物缺失0。没有复制本机dev.env/签名/AEAD文件，没有Compose、集成、浏览器或生产部署。前六阶段分别14.45/0.11/0.50/2.67/116.05/130.05秒，release与前端build252.57秒。
+
+根代理随后在 `a8ea705` 执行最新完整回归，属于另一份实际结果；这次干净七阶段仅证明895c16c，不冒a8ea705自身在该worktree执行。895→a8ea的crate/app/data/migration/锁文件/Dockerfile/Caddy/Compose生产与构建输入Git diff为空，后续新增专属五服务部署测试/入口与证据不在此静态子模块执行范围。最新全量和远端CI仍按各自提交报告。下面保留早期所有干净检出与失败历史，不覆盖其含义。
+
 最新一次验证提交为 `ffe3b9878ef729e7ca6966186657e00da4886d99`，2026-10-08 19:25:06～19:33 UTC（上海日期2026-10-09）。[本次原报告](2026-10-08T19-25-06-451Z.json) 和 [命令摘要](2026-10-08T19-25-06-451Z.md) 七阶段实际退出码全部0：空缓存`npm ci`、文档/OpenAPI、工具测试、静态检查、单元和release/三前端构建。工具70测试0failed/0skipped；Rust63 lib/bin单元0ignored，身份前端60、A/B各6单元全部通过。数量来自各crate实际结果求和，没有用预计数。
 
 本次使用另一全新detached worktree `auth_rust_clean_t23_20261008_retry3`，开始前node_modules/target/三dist/.local全部不存在；Cargo并行任务2，独立target及空npm cache/userconfig，只共享现有Rustup工具链与Cargo注册表源码缓存。源码开始/结束均clean，身份秘密文件0，必需产物无缺；53份制品SHA-256实盘逐个复核一致，锁文件与两md摘要也已核对。没有启动Compose或数据库/浏览器测试，完整回归由根另行记录；这次结果直接对应ffe3b98，早期提交的源码等价说明不替代此轮实际验证。
