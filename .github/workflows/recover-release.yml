@@ -1,0 +1,65 @@
+name: Recover completed deployment artifact
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: Existing CI run whose tests and artifact upload passed
+        required: true
+        default: '37891296558'
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  publish-existing-artifact:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Verify original tests and find artifact
+        id: original
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ inputs.run_id }}
+          REPOSITORY: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$RUN_ID" =~ ^[0-9]+$ ]]
+          gh api "repos/$REPOSITORY/actions/runs/$RUN_ID" > run.json
+          [[ "$(jq -r '.head_repository.full_name' run.json)" == "$REPOSITORY" ]]
+          [[ "$(jq -r '.head_branch' run.json)" == main ]]
+          [[ "$(jq -r '.status' run.json)" == completed ]]
+          gh api --paginate "repos/$REPOSITORY/actions/runs/$RUN_ID/jobs?per_page=100" --jq '.jobs[]' | jq -s . > jobs.json
+          jq -e 'any(.[]; .name=="check-and-build (ubuntu-24.04)" and .conclusion=="success") and any(.[]; .name=="check-and-build (windows-2025)" and .conclusion=="success") and any(.[]; .name=="integration-t01" and .conclusion=="success") and any(.[]; .name=="publish-production-artifacts" and any(.steps[]; .name=="Package deploy-only files and verified age tool" and .conclusion=="success"))' jobs.json
+          revision=$(jq -r '.head_sha' run.json)
+          [[ "$revision" =~ ^[a-f0-9]{40}$ ]]
+          echo "revision=$revision" >> "$GITHUB_OUTPUT"
+          echo "artifact=production-deployment-$revision" >> "$GITHUB_OUTPUT"
+      - name: Download existing CI artifact without rebuilding
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.run_id }}
+          name: ${{ steps.original.outputs.artifact }}
+          path: recovered
+      - name: Verify package and publish versioned download
+        env:
+          # Optional token for policy-restricted releases/old commits. Never printed.
+          GH_TOKEN: ${{ secrets.RELEASE_TOKEN || github.token }}
+          REVISION: ${{ steps.original.outputs.revision }}
+          REPOSITORY: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd recovered
+          [[ "$(cat auth-rust-deploy-linux-amd64.tar.gz.sha256)" =~ ^[a-f0-9]{64}[[:space:]][[:space:]]auth-rust-deploy-linux-amd64.tar.gz$ ]]
+          sha256sum --check auth-rust-deploy-linux-amd64.tar.gz.sha256
+          tar -xOzf auth-rust-deploy-linux-amd64.tar.gz ./release-manifest.json > manifest.json
+          [[ "$(jq -r '.revision' manifest.json)" == "$REVISION" ]]
+          tag="ci-$REVISION"
+          if ! gh release view "$tag" --repo "$REPOSITORY" >/dev/null 2>&1; then
+            gh release create "$tag" --repo "$REPOSITORY" --target "$REVISION" --prerelease --title "Recovered production artifacts $REVISION" --notes "Reuses the original successful tests, images and uploaded deployment artifact. No test or build rerun. This version predates the interactive installer."
+          fi
+          gh release upload "$tag" --repo "$REPOSITORY" auth-rust-deploy-linux-amd64.tar.gz auth-rust-deploy-linux-amd64.tar.gz.sha256 --clobber
