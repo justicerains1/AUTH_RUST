@@ -1,6 +1,6 @@
 # Docker 本地人工验收
 
-此部署使用 `infra/compose.dev.yaml` 与 `.local/dev.env`，环境为 development。所有入口绑定127.0.0.1，数据库、Redis、Mailpit数据使用持久卷。已重建当前工作区的后端与前端镜像，并启动bff profile；本地验收确认后再准备生产环境测试。
+此部署使用 `infra/compose.dev.yaml` 与 `.local/dev.env`，环境为 development。按用户要求，所有发布端口绑定0.0.0.0（包含页面、API、BFF、PG、Redis与Mailpit），数据库、Redis、Mailpit数据使用持久卷。已重建当前工作区的后端与前端镜像，并启动bff profile；本地验收确认后再准备生产环境测试。
 
 | 入口 | 地址 |
 | --- | --- |
@@ -39,3 +39,7 @@ docker compose --env-file .local/dev.env -f infra/compose.dev.yaml --profile bff
 ```
 
 不要使用 `down -v`，不要覆盖 `.local` 密钥/密码。Windows使用WSL2时，可在Windows浏览器访问上述localhost入口；若Docker/WSL端口转发不可用，先核对Docker Desktop的WSL集成与localhost转发。
+
+## 全网卡监听
+
+Compose发布端口已改为`0.0.0.0`，即监听WSL宿主可用网络接口。Windows本机仍使用localhost入口；其他机器访问还取决于Windows防火墙、WSL网络模式和端口转发。应用issuer、RP与A/B回调仍固定localhost，直接用局域网IP登录不是同一配置，不能仅修改监听地址就保证跨机器认证有效。容器内健康检查仍访问127.0.0.1。

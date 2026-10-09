@@ -1,0 +1,61 @@
+{
+  "ports": [
+    {
+      "service": "api",
+      "host": "0.0.0.0",
+      "port": 8080
+    },
+    {
+      "service": "demo-a",
+      "host": "0.0.0.0",
+      "port": 5174
+    },
+    {
+      "service": "demo-a-bff",
+      "host": "0.0.0.0",
+      "port": 8082
+    },
+    {
+      "service": "demo-b",
+      "host": "0.0.0.0",
+      "port": 5175
+    },
+    {
+      "service": "demo-b-bff",
+      "host": "0.0.0.0",
+      "port": 8083
+    },
+    {
+      "service": "identity-web",
+      "host": "0.0.0.0",
+      "port": 5173
+    },
+    {
+      "service": "mailpit",
+      "host": "0.0.0.0",
+      "port": 1025
+    },
+    {
+      "service": "mailpit",
+      "host": "0.0.0.0",
+      "port": 8025
+    },
+    {
+      "service": "postgres",
+      "host": "0.0.0.0",
+      "port": 5432
+    },
+    {
+      "service": "redis",
+      "host": "0.0.0.0",
+      "port": 6379
+    },
+    {
+      "service": "worker",
+      "host": "0.0.0.0",
+      "port": 8081
+    }
+  ],
+  "healthy": 10,
+  "scope": "Development host published ports only; issuer/RP/callback remain localhost; Windows/WSL routing unchanged"
+}

@@ -277,3 +277,7 @@ c3885fa这一轮完整测试只有T05集成失败（19集成其他18项0、E2E/s
 ## 最后一轮生产发布前本地测试
 
 用户要求最后上线前检查；本轮固定干净a2d7f99提交，05:16:49Z十二阶段全部0、源码SHA前后零变。19integration/11E2E/6security/双浏览器可访问性/60交互均通过，新镜像36检查54SHA与Windows入口通过，Docker十服务测试后healthy。详情见[发布前报告](docs/evidence/T23/preproduction-final/test-summary.md)。生产配置/主机域名SMTP/独立备份及真实设备未准备，生产release未放行，没有执行部署。
+
+## 开发Docker监听地址变更
+
+用户要求127.0.0.1改为0.0.0.0，已修改compose.dev全部11个宿主发布端口并重新创建服务。实测11端口HostIP均0.0.0.0、10服务healthy，Windows四页面入口HTTP200。包含PG/Redis/SMTP/API/BFF与网页；issuer/RP/A-B回调仍localhost，跨机器认证需另配置合法origin/HTTPS。生产Compose不在此次变更范围。

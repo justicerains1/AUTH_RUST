@@ -23,7 +23,7 @@ npm run dev:up
 
 `dev:secrets` 生成 `.local/signing.pem`（RSA 3072）、`.local/encryption-keys.json`（32 字节 AEAD key）、`.local/dev.env`（随机数据库密码）。不回显秘密，已有文件会拒绝覆盖，避免破坏既有数据库和密钥。Linux 文件权限为 0600、目录 0700；Windows 将 `.local` ACL 限制到当前账号。`.local` 被 Git 与 Docker build context 忽略。
 
-Compose 创建 PostgreSQL 17、Redis 7.4、Mailpit、API、Worker 和三个前端服务并等待健康检查。第一次下载镜像和编译会较慢。不要打印 `docker compose config` 的完整配置或上传 `.local`。开发数据库和缓存端口只绑定本机，生产开放端口另见 T22。
+Compose 创建 PostgreSQL 17、Redis 7.4、Mailpit、API、Worker 和三个前端服务并等待健康检查。第一次下载镜像和编译会较慢。不要打印 `docker compose config` 的完整配置或上传 `.local`。当前用户要求开发发布端口绑定0.0.0.0，包含数据库/缓存；实际可达性由WSL网络和Windows防火墙决定，生产开放端口另见T22。
 
 | 服务 | 地址 | 当前行为 |
 |---|---|---|
