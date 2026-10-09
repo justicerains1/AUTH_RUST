@@ -43,3 +43,17 @@ docker compose --env-file .local/dev.env -f infra/compose.dev.yaml --profile bff
 ## 全网卡监听
 
 Compose发布端口已改为`0.0.0.0`，即监听WSL宿主可用网络接口。Windows本机仍使用localhost入口；其他机器访问还取决于Windows防火墙、WSL网络模式和端口转发。应用issuer、RP与A/B回调仍固定localhost，直接用局域网IP登录不是同一配置，不能仅修改监听地址就保证跨机器认证有效。容器内健康检查仍访问127.0.0.1。
+
+## Windows公网网卡到WSL转发
+
+本机检查：Windows地址111.10.137.17，WSL地址172.24.66.254；Windows现只有localhost转发，公网IP访问5173失败，而Windows直接请求WSL地址5173返回200。用户选择只公开身份中心5173，其他端口不加入Windows转发/防火墙规则。
+
+当前会话没有Windows管理员权限。以下在**管理员PowerShell**执行：
+
+```powershell
+& "\\wsl.localhost\Ubuntu-26.04.1\root\code\rust\auth_rust\infra\windows\forward-wsl-web.ps1" -Distribution "Ubuntu-26.04.1" -ListenAddress "111.10.137.17"
+```
+
+脚本只接受页面端口，默认5173；校验WSL目标可达，配置IP Helper、Windows指定网卡portproxy和对应TCP入站规则，然后检查Windows公网地址HTTP响应。可加`-Plan`只读预览、`-Remove`删除本脚本规则、`-AllowedRemoteAddress <允许的访问者IP>`限制来源。不会修改Windows全局防火墙开关，不开放数据库、Redis或SMTP。脚本语法与只读预览已实际通过；管理员写入步骤仍待用户执行，不能说已转发成功。
+
+WSL重启后地址可能变化，重新执行刷新目标。若Windows本机公网地址已可访问、外网仍失败，继续核对上游路由/运营商/安全设备的5173入站限制。仅打通端口不改变issuer/RP/邮件和SSO地址：当前认证仍是localhost，非loopback公网完整认证需HTTPS域名和对应配置；Vite也可能拒绝未允许Host，需要按实际错误配置，不能直接开放全部Host。

@@ -281,3 +281,7 @@ c3885fa这一轮完整测试只有T05集成失败（19集成其他18项0、E2E/s
 ## 开发Docker监听地址变更
 
 用户要求127.0.0.1改为0.0.0.0，已修改compose.dev全部11个宿主发布端口并重新创建服务。实测11端口HostIP均0.0.0.0、10服务healthy，Windows四页面入口HTTP200。包含PG/Redis/SMTP/API/BFF与网页；issuer/RP/A-B回调仍localhost，跨机器认证需另配置合法origin/HTTPS。生产Compose不在此次变更范围。
+
+## Windows公网访问诊断
+
+用户选择只公开身份中心5173。实测Windows网卡111.10.137.17仅loopback转发，公网IP5173连接失败；Windows访问WSL172.24.66.254:5173与localhost均HTTP200，portproxy当前空。当前Windows非管理员，系统防火墙查询也拒绝访问。已提供限定单公网网卡/默认5173的管理员PowerShell转发脚本并通过语法/只读Plan实际验证，用户须执行管理员步骤，尚不宣称公网打通。仅网络转发不改变localhost认证origin，完整公网认证仍需HTTPS域名配置。
