@@ -84,7 +84,7 @@ CI 复用相同根脚本，分别配置 Linux/Windows 构建及 Linux Compose �
 
 ## 完整检查与总结
 
-`npm run test:full`依次执行npm ci、文档/契约/工具检查、check、unit、全部integration/e2e/security/accessibility及build。任一失败仍执行剩余项，整体返回非零，生成`TEST_SUMMARY.md`及带时间戳的`docs/evidence/full-test/`报告。原始进程输出只保存到受限的`.local/full-test/`，避免把秘密写入提交。缺必要套件或工具会如实失败；此命令不代替性能、真实设备或生产恢复验收。
+`npm run test:full`依次执行npm ci、文档/契约/工具检查、check、unit、全部integration/e2e/security/accessibility、build以及账号/管理交互实验。任一失败仍执行剩余项，整体返回非零，生成`TEST_SUMMARY.md`及带时间戳的`docs/evidence/full-test/`报告。原始进程输出只保存到受限的`.local/full-test/`，避免把秘密写入提交。缺必要套件或工具会如实失败；此命令不代替性能、真实设备或生产恢复验收。
 
 运行完整安全与运维检查需准备固定 Gitleaks、cargo-deny、ZAP/Java 和 age 工具；版本/摘要见 [安全工具记录](docs/evidence/T20/scan-tool-versions.json) 和 [age来源与默认路径](docs/evidence/T22/age-source.md)。T22 会真实运行隔离 PG 备份/WAL 测试，缺 age 工具不会跳过返回成功。
 
@@ -120,7 +120,7 @@ TTY会隐藏密码输入；自动化可通过受控stdin传入单行密码，密
 
 ## 负载、安全与运维模块
 
-`npm run test:load -- --scenario=introspection|account|password|mixed` 使用真实测试服务，两分钟预热、十五分钟测量，失败报告保留。`npm run seed:acceptance`验证十万账号、二十客户端、十万授权种子后清理本次schema，禁止生产；测试秘密仅.local受限文件。前端独立性能测量：`node tests/performance/frontend.mjs`，固定移动网络、Chrome及五次冷加载。
+`npm run test:load -- --scenario=introspection|account|password|mixed` 使用真实测试服务，两分钟预热、十五分钟测量，失败报告保留。`npm run seed:acceptance`验证十万账号、二十客户端、十万授权种子后清理本次schema，禁止生产；测试秘密仅.local受限文件。前端独立性能测量：`node tests/performance/frontend.mjs`，固定移动网络、Chrome及五次冷加载；`npm run test:interactions`另跑真实账号/管理六场景各五本地和五实验室样本，构建production dist后执行，完整回归必跑。
 
 生产镜像、Caddy/Compose、备份/WAL/恢复和密钥维护操作稿位于infra及docs/runbooks。它们已做相应本地验证，实际域名/SMTP/独立备份/告警和生产恢复仍未验收。内部API/Worker `/metrics`需要配置受限METRICS_TOKEN_FILE供私网采集；未配置时仅loopback可读，公网Caddy不代理。密钥维护不可删除仍被历史备份依赖的旧版本。
 

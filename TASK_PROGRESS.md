@@ -1,6 +1,6 @@
 # 任务进度与接续记录
 
-更新时间：2026-10-08（Asia/Shanghai）。实现基准：[plan.md](plan.md)、[acceptance.md](acceptance.md)。各模块版本由下方记录及 Git 历史追踪。仓库：https://github.com/justicerains1/AUTH_RUST ，分支 `main`。
+更新时间：2026-10-09（Asia/Shanghai）。实现基准：[plan.md](plan.md)、[acceptance.md](acceptance.md)。各模块版本由下方记录及 Git 历史追踪。仓库：https://github.com/justicerains1/AUTH_RUST ，分支 `main`。
 
 用户已再次授权补齐本地实现与验收；T21本地真实SQL/等待与容量、T22告警/轮换/恢复/发布/保留工具、T23双浏览器与当前源码全量回归已完成实际检查；外部及人工必要验收仍未完成。用户要求逐模块测试后推送并保留最终失败总结，所有失败/修复证据均保留。Git推送不等于生产部署，整个文档规定的生产验收尚未完成。
 
@@ -230,3 +230,11 @@ c3885fa这一轮完整测试只有T05集成失败（19集成其他18项0、E2E/s
 [当前完整报告](TEST_SUMMARY.md)、[干净证据](docs/evidence/T23/clean-checkout/test-summary.md)、[最新edge/runtime制品范围](docs/evidence/T23/final-artifacts-20261009-focus.md)及[最终性能](docs/evidence/T21/shared-redis-mixed-summary.md)已归档。最后文档提交不改变被测源码、测试、依赖或构建定义。原T05偶发失败仍保留，三次独立复测及本轮完整均0；没有无证据归因或放宽断言。
 
 仍未提供的真实设备/稳定五类浏览器人工读屏/完整zoom、规定参考性能机器、生产RUM/高峰、正式域名/SMTP/DNS、独立故障域/每日调度14天真实恢复链、生产告警送达/规模恢复RPO-RTO/24小时观察保持待验。T24升级设计已交付，但实际HA实施依赖T23生产验收，未开始部署或声称SLO达标。
+
+## 本轮继续：管理员查询、真实交互与WAL监测
+
+用户重新授权“继续”，多agent按模块并行，历史停止记录已被本次授权取代。基线ffe3b98完整十一阶段和干净七阶段通过；[实际远端CI](docs/evidence/T23/remote-ci-completed-ffe3b98.json) run37831393844已completed/success，Linux/Windows/integration均成功。基线结果不证明当前新增修改已全部通过。
+
+真实账号/管理交互已完成并推送 `c7bbda9`，六场景×两模式×五样本共60；[根复测](docs/evidence/T21/product-interactions-2026-10-09T00-09-59-799Z.json)0，本地max47.9ms/实验室p75max47.2ms。真实分页和设备撤销结果另校验，网络完成耗时单列，不宣称生产INP。新增 `npm run test:interactions` 和full构建后必跑；最终完整编排十二阶段尚待本轮模块结束后执行。
+
+真实十万用户SQL取证发现管理员客户端页1/20为9/47次SQL，原始[失败证据](docs/evidence/T21/sql-operational-before.md)保留。root改为完整分页行和一次批量URI查询，同口径首复测8/8、用户/审计7/7、Worker1/10真实投递5/32；扩展空页/游标/内容边界与最终入口复测仍在进行。WAL agent继续归档完成记录、设备校验与实际PG/Promtool监测，不把本地通过写为生产RPO/通知验收通过。
