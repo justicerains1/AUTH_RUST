@@ -297,3 +297,7 @@ c3885fa这一轮完整测试只有T05集成失败（19集成其他18项0、E2E/s
 ## 单文件交互生产安装
 
 新增根install.sh：下载一个脚本后sudo交互安装Docker/Compose和固定Node运行时，读取已完成CI成品包，交互域名/SMTP/独立备份/管理员，生成受限秘密/真实初始化TOTP与BFF、备份迁移和启动每日备份，生产不编译。15本地组件/真实PG备份加密解密测试全0，bash/ESLint/actionlint/docs0。[验证范围](docs/evidence/T22/interactive-installer/test-summary.md)。完整OS安装/生产DNSACMESMTP与CI首次发布尚未执行，不把组件通过冒生产安装通过。
+
+## CI并行与缓存优化推送
+
+用户确认可推送此前暂存的优化。原普通CI全部测试保持，认证/协议/产品三独立runner并行、组内故障顺序执行，Rust/镜像层缓存和同分支旧任务取消启用；成品发布仍依赖全部矩阵成功，并使用已配置RELEASE_TOKEN修复标签权限。73工具测试/actionlint/ESLint/完整protocolgroup真实0。[依据与验证](docs/evidence/tooling/ci-speed/test-summary.md)。远端耗时/首次缓存命中尚未确认，不预报提速或发布成功。

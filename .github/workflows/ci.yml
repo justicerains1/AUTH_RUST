@@ -7,6 +7,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   check-and-build:
     strategy:
@@ -25,6 +29,16 @@ jobs:
         with:
           toolchain: 1.98.0
           components: rustfmt, clippy
+      - name: Restore Rust compiled artifacts
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: rust-${{ runner.os }}-1.98-${{ hashFiles('Cargo.lock') }}-${{ github.sha }}
+          restore-keys: |
+            rust-${{ runner.os }}-1.98-${{ hashFiles('Cargo.lock') }}-
       - name: Configure Windows OpenSSL
         if: runner.os == 'Windows'
         shell: pwsh
@@ -36,9 +50,13 @@ jobs:
       - run: node scripts/ci-command.mjs test:unit
       - run: node scripts/ci-command.mjs build
 
-  integration-t01:
+  integration:
     runs-on: ubuntu-24.04
     timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        group: [authentication, protocol, product]
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
@@ -49,48 +67,56 @@ jobs:
         with:
           toolchain: 1.98.0
           components: rustfmt, clippy
+      - name: Restore Rust integration artifacts
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: integration-${{ matrix.group }}-1.98-${{ hashFiles('Cargo.lock') }}-${{ github.sha }}
+          restore-keys: |
+            integration-${{ matrix.group }}-1.98-${{ hashFiles('Cargo.lock') }}-
       - run: npm ci
+      - uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3
+      - name: Build cached development runtime
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
+        with:
+          context: .
+          file: infra/Dockerfile.dev
+          load: true
+          tags: |
+            auth-rust-api:development
+            auth-rust-worker:development
+            auth-rust-demo-a-bff:development
+            auth-rust-demo-b-bff:development
+          cache-from: type=gha,scope=dev-rust-${{ matrix.group }}
+          cache-to: type=gha,scope=dev-rust-${{ matrix.group }},mode=max
+      - name: Build cached development frontend
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
+        with:
+          context: .
+          file: infra/Dockerfile.web.dev
+          load: true
+          tags: |
+            auth-rust-identity-web:development
+            auth-rust-demo-a:development
+            auth-rust-demo-b:development
+          cache-from: type=gha,scope=dev-web-${{ matrix.group }}
+          cache-to: type=gha,scope=dev-web-${{ matrix.group }},mode=max
       - run: npm run dev:secrets
       - run: node scripts/ci-dev-up.mjs
-      - run: npm run test:integration -- --task=T01
-      - run: npm run test:integration -- --task=T03
-      - run: npm run test:security -- --task=T04
-      - run: npm run test:integration -- --task=T05
+        env:
+          CI_PREBUILT_DEV_IMAGES: '1'
       - run: node node_modules/playwright/cli.js install --with-deps chromium firefox
-      - run: npm run test:e2e -- --task=T05
-      - run: npm run test:integration -- --task=T06
-      - run: npm run test:e2e -- --task=T06
-      - run: npm run test:integration -- --task=T07
-      - id: t07-e2e
-        run: npm run test:e2e -- --task=T07
-      - name: Publish sanitized T07 browser diagnostics
-        if: failure() && steps.t07-e2e.conclusion == 'failure'
-        run: node scripts/ci-e2e-diagnostics.mjs T07
-      - run: npm run test:integration -- --task=T08
-      - run: npm run test:e2e -- --task=T08
-      - run: npm run test:integration -- --task=T09
-      - run: npm run test:e2e -- --task=T09
-      - run: npm run test:integration -- --task=T10
-      - run: npm run test:e2e -- --task=T10
-      - run: npm run test:integration -- --task=T11
-      - run: npm run test:integration -- --task=T12
-      - run: npm run test:e2e -- --task=T12
-      - id: t13-integration
-        run: npm run test:integration -- --task=T13
-      - name: Publish sanitized T13 integration diagnostics
-        if: failure() && steps.t13-integration.conclusion == 'failure'
-        run: node scripts/ci-e2e-diagnostics.mjs T13
-      - run: npm run test:integration -- --task=T14
-      - run: npm run test:e2e -- --task=T17
-      - run: npm run test:e2e -- --task=T18
-      - run: npm run test:e2e -- --task=T19
-      - run: npm run test:accessibility
+      - name: Run isolated integration group
+        run: node scripts/ci-integration-group.mjs ${{ matrix.group }}
       - if: always()
         run: npm run dev:down
 
   publish-production-artifacts:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: [check-and-build, integration-t01]
+    needs: [check-and-build, integration]
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     permissions:
@@ -104,26 +130,50 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 22.22.1
-      - name: Build and push immutable production images
+      - uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3
+      - name: Authenticate production registry
         env:
           GH_TOKEN: ${{ github.token }}
-          RELEASE_REVISION: ${{ github.sha }}
-          RELEASE_REPOSITORY: ${{ github.repository }}
         shell: bash
-        run: |
-          set -euo pipefail
-          release_repository="${RELEASE_REPOSITORY,,}"
-          printf '%s' "$GH_TOKEN" | docker login ghcr.io -u "${GITHUB_ACTOR}" --password-stdin
-          docker buildx create --use --name release-builder
-          mkdir -p .local/release-metadata
-          docker buildx build --platform linux/amd64 --push --metadata-file .local/release-metadata/runtime.json --label "org.opencontainers.image.revision=$RELEASE_REVISION" --label "org.opencontainers.image.source=https://github.com/$RELEASE_REPOSITORY" -t "ghcr.io/$release_repository/runtime:sha-$RELEASE_REVISION" -f infra/Dockerfile.prod .
-          docker buildx build --platform linux/amd64 --push --metadata-file .local/release-metadata/edge.json --label "org.opencontainers.image.revision=$RELEASE_REVISION" --label "org.opencontainers.image.source=https://github.com/$RELEASE_REPOSITORY" -t "ghcr.io/$release_repository/edge:sha-$RELEASE_REVISION" -f infra/Dockerfile.edge.prod .
-          printf 'RELEASE_RUNTIME_IMAGE=ghcr.io/%s/runtime@%s\n' "$release_repository" "$(jq -r '."containerimage.digest"' .local/release-metadata/runtime.json)" >> "$GITHUB_ENV"
-          printf 'RELEASE_EDGE_IMAGE=ghcr.io/%s/edge@%s\n' "$release_repository" "$(jq -r '."containerimage.digest"' .local/release-metadata/edge.json)" >> "$GITHUB_ENV"
+        run: printf '%s' "$GH_TOKEN" | docker login ghcr.io -u "${GITHUB_ACTOR}" --password-stdin
+      - name: Select image repository
+        env:
+          SOURCE_REPOSITORY: ${{ github.repository }}
+        run: echo "RELEASE_REPOSITORY_LOWER=${SOURCE_REPOSITORY,,}" >> "$GITHUB_ENV"
+      - name: Publish cached Rust production image
+        id: runtime-image
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
+        with:
+          context: .
+          file: infra/Dockerfile.prod
+          platforms: linux/amd64
+          push: true
+          tags: ghcr.io/${{ env.RELEASE_REPOSITORY_LOWER }}/runtime:sha-${{ github.sha }}
+          labels: |
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+          cache-from: type=gha,scope=production-runtime
+          cache-to: type=gha,scope=production-runtime,mode=max
+      - name: Publish cached frontend production image
+        id: edge-image
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
+        with:
+          context: .
+          file: infra/Dockerfile.edge.prod
+          platforms: linux/amd64
+          push: true
+          tags: ghcr.io/${{ env.RELEASE_REPOSITORY_LOWER }}/edge:sha-${{ github.sha }}
+          labels: |
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+          cache-from: type=gha,scope=production-edge
+          cache-to: type=gha,scope=production-edge,mode=max
       - name: Package deploy-only files and verified age tool
         env:
           RELEASE_REVISION: ${{ github.sha }}
           RELEASE_REPOSITORY: ${{ github.repository }}
+          RELEASE_RUNTIME_IMAGE: ghcr.io/${{ env.RELEASE_REPOSITORY_LOWER }}/runtime@${{ steps.runtime-image.outputs.digest }}
+          RELEASE_EDGE_IMAGE: ghcr.io/${{ env.RELEASE_REPOSITORY_LOWER }}/edge@${{ steps.edge-image.outputs.digest }}
         shell: bash
         run: |
           set -euo pipefail
@@ -143,7 +193,7 @@ jobs:
           include-hidden-files: true
       - name: Publish versioned deployment download
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.RELEASE_TOKEN || github.token }}
           RELEASE_REVISION: ${{ github.sha }}
         shell: bash
         run: |

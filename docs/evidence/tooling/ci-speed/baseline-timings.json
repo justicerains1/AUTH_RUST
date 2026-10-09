@@ -1,0 +1,357 @@
+{
+  "run": 37888996667,
+  "groupCommandSeconds": {
+    "authentication": 558,
+    "protocol": 235,
+    "product": 490
+  },
+  "oldSequentialCommandSeconds": 1283,
+  "scope": "Prior actual step times mapped to new groups; future speed is not measured yet",
+  "jobs": [
+    {
+      "name": "check-and-build (windows-2025)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "seconds": 1,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "seconds": 5,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "seconds": 15,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run dtolnay/rust-toolchain@7e38f4b43b4db5c8dd498af069a4f6196df1d067",
+          "seconds": 14,
+          "conclusion": "success"
+        },
+        {
+          "name": "Configure Windows OpenSSL",
+          "seconds": 1,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm ci",
+          "seconds": 7,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run verify:docs",
+          "seconds": 1,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run test:tooling",
+          "seconds": 6,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run node scripts/ci-command.mjs check",
+          "seconds": 240,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run node scripts/ci-command.mjs test:unit",
+          "seconds": 270,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run node scripts/ci-command.mjs build",
+          "seconds": 492,
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "seconds": 0,
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "seconds": 2,
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "seconds": 0,
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "name": "integration-t01",
+      "steps": [
+        {
+          "name": "Set up job",
+          "seconds": 1,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "seconds": 2,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "seconds": 6,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run dtolnay/rust-toolchain@7e38f4b43b4db5c8dd498af069a4f6196df1d067",
+          "seconds": 9,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm ci",
+          "seconds": 4,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run dev:secrets",
+          "seconds": 0,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run node scripts/ci-dev-up.mjs",
+          "seconds": 178,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run test:integration -- --task=T01",
+          "seconds": 21,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run test:integration -- --task=T03",
+          "seconds": 85,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run test:security -- --task=T04",
+          "seconds": 104,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run test:integration -- --task=T05",
+          "seconds": 29,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run node node_modules/playwright/cli.js install --with-deps chromium firefox",
+          "seconds": 27,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run test:e2e -- --task=T05",
+          "seconds": 17,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run test:integration -- --task=T06",
+          "seconds": 47,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run test:e2e -- --task=T06",
+          "seconds": 17,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run test:integration -- --task=T07",
+          "seconds": 94,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run test:e2e -- --task=T07",
+          "seconds": 34,
+          "conclusion": "success"
+        },
+        {
+          "name": "Publish sanitized T07 browser diagnostics",
+          "seconds": 0,
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Run npm run test:integration -- --task=T08",
+          "seconds": 37,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run test:e2e -- --task=T08",
+          "seconds": 24,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run test:integration -- --task=T09",
+          "seconds": 15,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run test:e2e -- --task=T09",
+          "seconds": 34,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run test:integration -- --task=T10",
+          "seconds": 19,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run test:e2e -- --task=T10",
+          "seconds": 17,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run test:integration -- --task=T11",
+          "seconds": 22,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run test:integration -- --task=T12",
+          "seconds": 50,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run test:e2e -- --task=T12",
+          "seconds": 20,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run test:integration -- --task=T13",
+          "seconds": 67,
+          "conclusion": "success"
+        },
+        {
+          "name": "Publish sanitized T13 integration diagnostics",
+          "seconds": 0,
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Run npm run test:integration -- --task=T14",
+          "seconds": 40,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run test:e2e -- --task=T17",
+          "seconds": 66,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run test:e2e -- --task=T18",
+          "seconds": 46,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run test:e2e -- --task=T19",
+          "seconds": 116,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run test:accessibility",
+          "seconds": 262,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run dev:down",
+          "seconds": 1,
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "seconds": 0,
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "seconds": 0,
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "seconds": 1,
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "name": "check-and-build (ubuntu-24.04)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "seconds": 1,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "seconds": 2,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "seconds": 7,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run dtolnay/rust-toolchain@7e38f4b43b4db5c8dd498af069a4f6196df1d067",
+          "seconds": 9,
+          "conclusion": "success"
+        },
+        {
+          "name": "Configure Windows OpenSSL",
+          "seconds": 0,
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Run npm ci",
+          "seconds": 2,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run verify:docs",
+          "seconds": 0,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run test:tooling",
+          "seconds": 3,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run node scripts/ci-command.mjs check",
+          "seconds": 94,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run node scripts/ci-command.mjs test:unit",
+          "seconds": 97,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run node scripts/ci-command.mjs build",
+          "seconds": 187,
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "seconds": 0,
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "seconds": 0,
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "seconds": 0,
+          "conclusion": "success"
+        }
+      ]
+    }
+  ]
+}

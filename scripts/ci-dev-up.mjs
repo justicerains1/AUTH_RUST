@@ -5,7 +5,9 @@ import { localEnvironment } from './database-target.mjs';
 import { sanitizeDiagnostic } from './ci-command.mjs';
 
 const root = resolve(import.meta.dirname, '..');
-const result = await runStage(process.execPath, [resolve(root, 'scripts/run.mjs'), 'dev:up'], { cwd: root });
+const result = process.env.CI_PREBUILT_DEV_IMAGES === '1'
+  ? await runStage('docker', ['compose', '--env-file', resolve(root, '.local/dev.env'), '-f', resolve(root, 'infra/compose.dev.yaml'), 'up', '-d', '--wait', '--no-build'], { cwd: root })
+  : await runStage(process.execPath, [resolve(root, 'scripts/run.mjs'), 'dev:up'], { cwd: root });
 const directory = resolve(root, '.local/ci'); await mkdir(directory, { recursive: true, mode: 0o700 });
 await writeFile(resolve(directory, 'dev-up.txt'), result.diagnostic, { mode: 0o600 });
 const local = await localEnvironment(root);

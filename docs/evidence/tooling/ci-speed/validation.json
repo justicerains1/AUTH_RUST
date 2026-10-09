@@ -1,0 +1,29 @@
+{
+  "completed": "2026-10-09T06:50:38.345846+00:00",
+  "toolingTests": 73,
+  "failed": 0,
+  "skipped": 0,
+  "workflowLint": "actionlint1.7.12 exit0; shellcheck not available",
+  "eslint": "targeted exit0",
+  "realProtocolGroup": "T10 integration/e2e, T11 integration, T12 integration/e2e, T13, T14 integration all completed0",
+  "coverage": "Every prior CI integration/browser command retained exactly once; three separate runners, sequential inside group",
+  "performance": "New remote pipeline not measured yet; cache cold start may remain slow",
+  "source": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "6891568d2e3f5f7c939736b0e67e6761f064f1a8beeb92483a20e7002c52741e"
+    },
+    {
+      "path": "scripts/ci-dev-up.mjs",
+      "sha256": "492d97ae4fab32a243807e19b2a21a600402fc66cf488477f8fb8a7d9e208ff2"
+    },
+    {
+      "path": "scripts/ci-integration-group.mjs",
+      "sha256": "98d58d4e64227fcee7251ad45713007aca45dff1cecedba95e04267a5b08bfa2"
+    },
+    {
+      "path": "scripts/ci-integration-group.test.mjs",
+      "sha256": "b21aad4b5ae5bc859966dbcf21c4d121604a1a6e3e7b18a10ea289fbdb2bedcf"
+    }
+  ]
+}
