@@ -4,6 +4,34 @@
 
 实现依据为 [plan.md](plan.md) 和 [acceptance.md](acceptance.md)。邮箱/密码/MFA/Passkey、OAuth/OIDC、双 BFF、账号与管理后台，以及本地生产制品和运维工具已实现并逐模块推送。实体设备、规定性能环境、正式生产部署/邮件/独立恢复等仍待验收；最终自动回归实际结果见 [TEST_SUMMARY.md](TEST_SUMMARY.md)，任务状态和外部条件见 [TASK_PROGRESS.md](TASK_PROGRESS.md)。当前尚不具备生产发布条件。
 
+## 生产一键安装
+
+在 **Debian/Ubuntu x86_64** 服务器的交互式 SSH 终端执行：
+
+```sh
+curl -fL https://raw.githubusercontent.com/justicerains1/AUTH_RUST/main/install.sh -o install.sh
+sudo bash install.sh
+```
+
+脚本安装 Docker/Compose 和已校验的 Node 运行时，下载已完成 CI 的镜像及部署包，交互生成配置、初始化管理员和 A/B 客户端，备份后迁移数据库并启动整套服务。**生产服务器不编译 Rust、安装 npm 依赖或构建镜像。**请先下载再执行，不使用 `curl | bash`。
+
+运行前准备好三个已解析到服务器的域名（身份中心、演示 A、演示 B），开放 TCP 80/443，准备验证证书的 STARTTLS SMTP 服务、已挂载的独立备份位置以及 age 公开 recipient。当前生产认证不支持纯 IP 地址。
+
+安装向导会询问：
+
+- 安装目录，默认 `/srv/auth-rust`；私有仓库/镜像所需的 GitHub 下载凭据。
+- 三个站点域名、TLS 联系邮箱、SMTP 参数及隐藏密码。
+- 独立备份挂载路径和 age 公钥；备份私钥须另行保管。
+- 管理员邮箱、隐藏密码，以及绑定验证器时的 TOTP 验证码。
+
+再次执行可确认升级，保留已有数据、配置和密钥。也可指定已发布版本：
+
+```sh
+sudo bash install.sh --release ci-<完整提交SHA>
+```
+
+CI 成品发布未完成时脚本会停止，不回退到生产构建。安装后的服务健康检查不替代真实邮件、实体 Passkey、浏览器及上线观察验收。完整参数、凭据保存位置、失败处理和回滚见[生产安装说明](docs/runbooks/production-ci-deployment.md)。
+
 ## 环境
 
 - Rust **1.98.0**（`rustup` 根据 `rust-toolchain.toml` 安装 rustfmt/clippy）。
