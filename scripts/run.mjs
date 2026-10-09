@@ -114,6 +114,8 @@ export async function runCommand(command, args = []) {
       await runProcess(process.execPath, [product], { cwd: ROOT });
       return;
     }
+    case 'test:interactions':
+      return runProcess(process.execPath, [resolve(ROOT, 'tests/performance/product-interactions.mjs')], { cwd: ROOT });
     case 'dev:secrets':
       return generateDevSecrets(ROOT);
     case 'dev:up':
