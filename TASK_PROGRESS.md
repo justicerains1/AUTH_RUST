@@ -238,3 +238,5 @@ c3885fa这一轮完整测试只有T05集成失败（19集成其他18项0、E2E/s
 真实账号/管理交互已完成并推送 `c7bbda9`，六场景×两模式×五样本共60；[根复测](docs/evidence/T21/product-interactions-2026-10-09T00-09-59-799Z.json)0，本地max47.9ms/实验室p75max47.2ms。真实分页和设备撤销结果另校验，网络完成耗时单列，不宣称生产INP。新增 `npm run test:interactions` 和full构建后必跑；最终完整编排十二阶段尚待本轮模块结束后执行。
 
 真实十万用户SQL取证发现管理员客户端页1/20为9/47次SQL，原始[失败证据](docs/evidence/T21/sql-operational-before.md)保留。root改为完整分页行和一次批量URI查询，同口径首复测8/8、用户/审计7/7、Worker1/10真实投递5/32；扩展空页/游标/内容边界与最终入口复测仍在进行。WAL agent继续归档完成记录、设备校验与实际PG/Promtool监测，不把本地通过写为生产RPO/通知验收通过。
+
+恢复码复制/下载真实正文与关闭/导航/刷新清除已验收推送 `b4b2209`。管理员查询完整边界与T21入口已推 `57aa52c`，WAL归档receipt/设备/真实pg_stat_archiver及耐久重试已推 `df28706`，运维38项/31Promtool场景通过。根新增监控collector系统服务/timer和实际本地exporter→Prometheus→Alertmanager→receiver，firing/resolved已实测；正式外部联系未发生。后台危险UI与五服务真实发布/回滚仍由agent并行补验；最新runtime冻结df28706已真实locked重建，但完整测试/最终制品验证尚待结束后执行。

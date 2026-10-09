@@ -86,7 +86,7 @@ CI 复用相同根脚本，分别配置 Linux/Windows 构建及 Linux Compose �
 
 `npm run test:full`依次执行npm ci、文档/契约/工具检查、check、unit、全部integration/e2e/security/accessibility、build以及账号/管理交互实验。任一失败仍执行剩余项，整体返回非零，生成`TEST_SUMMARY.md`及带时间戳的`docs/evidence/full-test/`报告。原始进程输出只保存到受限的`.local/full-test/`，避免把秘密写入提交。缺必要套件或工具会如实失败；此命令不代替性能、真实设备或生产恢复验收。
 
-运行完整安全与运维检查需准备固定 Gitleaks、cargo-deny、ZAP/Java 和 age 工具；版本/摘要见 [安全工具记录](docs/evidence/T20/scan-tool-versions.json) 和 [age来源与默认路径](docs/evidence/T22/age-source.md)。T22 会真实运行隔离 PG 备份/WAL 测试，缺 age 工具不会跳过返回成功。
+运行完整安全与运维检查需准备固定 Gitleaks、cargo-deny、ZAP/Java 和 age 工具；版本/摘要见 [安全工具记录](docs/evidence/T20/scan-tool-versions.json) 和 [age来源与默认路径](docs/evidence/T22/age-source.md)。T22 会真实运行隔离 PG 备份/WAL 测试以及本地 exporter→Prometheus→Alertmanager 接收链；后者需固定 Prometheus3.15.0、node_exporter1.12.1、Alertmanager0.34.1，官方来源、摘要、默认路径见[监控链复测](docs/evidence/T22/monitoring-chain/test-summary.md)。缺必要工具不会跳过返回成功。
 
 
 ## 双 BFF 演示开发环境（T13）

@@ -14,3 +14,12 @@ scrape_configs:
     bearer_token_file: /run/secrets/metrics-token
     static_configs:
       - targets: [worker:8081]
+  # Resolve this private host alias to the existing restricted textfile exporter.
+  - job_name: identity-ops
+    metrics_path: /metrics
+    static_configs:
+      - targets: [identity-ops-exporter:9100]
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: [identity-alertmanager:9093]

@@ -1,0 +1,13 @@
+# Configure a tested, private receiver and resolve identity-alertmanager from Prometheus.
+# This file is a reviewable template; no receiver has been installed in production.
+route:
+  receiver: identity-operations
+  group_by: [alertname, job, instance, check, volume]
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 4h
+receivers:
+  - name: identity-operations
+    webhook_configs:
+      - url: https://REPLACE_WITH_RESTRICTED_OPERATIONAL_RECEIVER/identity-alerts
+        send_resolved: true

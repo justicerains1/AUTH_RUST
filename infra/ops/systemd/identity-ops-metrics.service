@@ -1,0 +1,22 @@
+# Review paths, pre-mounted storage, service user and read permissions before installation.
+[Unit]
+Description=Verified identity disk, TLS and encrypted backup metrics
+RequiresMountsFor=/srv/identity/postgres /mnt/independent-backup
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=identity-backup
+Group=identity-metrics
+UMask=0027
+EnvironmentFile=/etc/identity/metrics.env
+ExecStart=/usr/bin/node /opt/identity/infra/ops/collect-metrics.mjs
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/node_exporter/textfile_collector
+TimeoutStartSec=140s
+# systemd does not start another instance of this unit while one is active.
+# Provide a tested local failure notification unit through an operator override.

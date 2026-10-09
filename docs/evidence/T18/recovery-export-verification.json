@@ -1,0 +1,9 @@
+{
+  "scope": "Actual T18 browser/API recovery export and close/navigation/reload assertions; no generated recovery values persisted",
+  "sourceSha256": "afb5e7ddf5a5ba69fa6d136e6a5d20475e2a2ecba88d48e2f30a65d9fd0fbca6",
+  "source": "tests/e2e/T18.spec.ts",
+  "runEvidence": "e2e.txt",
+  "runEvidenceSha256": "e3d791df97ad9effbdab11a795ef35f9a668116917b673e155451a0c4e567d36",
+  "realCases": 4,
+  "exitCode": 0
+}

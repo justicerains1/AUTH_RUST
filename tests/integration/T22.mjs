@@ -23,6 +23,9 @@ const ops = await runStage(process.execPath, ['--test', ...['base-backup', 'wal-
 await writeFile(resolve(privateDirectory, 'backup-wal-production-config.txt'), ops.diagnostic, { mode: 0o600 });
 const opsPassed = ops.exitCode === 0 && /# tests 38\r?\n/u.test(ops.diagnostic) && /# pass 38\r?\n/u.test(ops.diagnostic) && /# skipped 0\r?\n/u.test(ops.diagnostic);
 results.push({ name: 'backup-wal-production-config', exitCode: opsPassed ? 0 : ops.exitCode || 1 });
+const monitoring = await runStage(process.execPath, [resolve(root, 'tests/ops/monitoring-chain.mjs')], { cwd: root, env: opsEnvironment });
+await writeFile(resolve(privateDirectory, 'local-monitoring-chain.txt'), monitoring.diagnostic, { mode: 0o600 });
+results.push({ name: 'local-exporter-prometheus-alertmanager-receiver', exitCode: monitoring.exitCode });
 const signing = await runStage(process.execPath, [resolve(root, 'tests/integration/t22-signing.mjs')], { cwd: root, env });
 await writeFile(resolve(privateDirectory, 'signing-rotation.txt'), signing.diagnostic, { mode: 0o600 });
 results.push({ name: 'signing-rotation', exitCode: signing.exitCode });

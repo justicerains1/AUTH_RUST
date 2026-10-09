@@ -1,0 +1,12 @@
+# Example only; no production schedule has been installed or observed.
+[Unit]
+Description=Collect verified identity host metrics every minute
+
+[Timer]
+OnCalendar=*-*-* *:*:00 UTC
+Persistent=true
+AccuracySec=1s
+Unit=identity-ops-metrics.service
+
+[Install]
+WantedBy=timers.target

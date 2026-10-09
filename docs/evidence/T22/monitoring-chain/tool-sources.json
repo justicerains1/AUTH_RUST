@@ -1,0 +1,23 @@
+{
+  "verifiedAgainst": "Official GitHub release asset SHA256 metadata, compared with downloaded archives; Apache-2.0 LICENSE in each archive",
+  "tools": {
+    "prometheus": {
+      "version": "3.15.0",
+      "release": "https://github.com/prometheus/prometheus/releases/tag/v3.15.0",
+      "archive": "prometheus-3.15.0.linux-amd64.tar.gz",
+      "sha256": "2a542df32eac02ee17b9d844fb2aa1de00dafa5476579ba8a3ba862e9d572ea0"
+    },
+    "exporter": {
+      "version": "1.12.1",
+      "release": "https://github.com/prometheus/node_exporter/releases/tag/v1.12.1",
+      "archive": "node_exporter-1.12.1.linux-amd64.tar.gz",
+      "sha256": "b51d8a76aa2a9156a55d501aca6276fae09e262259a5e4e831d2c2222f084e63"
+    },
+    "alertmanager": {
+      "version": "0.34.1",
+      "release": "https://github.com/prometheus/alertmanager/releases/tag/v0.34.1",
+      "archive": "alertmanager-0.34.1.linux-amd64.tar.gz",
+      "sha256": "265b9d1e55ef0d5306a436018af6d2b686c2ce051f03d968f7464ecb1372a7e8"
+    }
+  }
+}

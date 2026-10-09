@@ -40,3 +40,11 @@ AGE_BINARY=/absolute/verified/age AGE_KEYGEN_BINARY=/absolute/verified/age-keyge
 WAL扩展配置为`OPS_WAL_DIRECTORY`及`OPS_WAL_DEVICE`，与实际已挂载归档根一致。collector新增固定`check="wal_archive"`、`identity_ops_wal_archive_completed_timestamp_seconds`/`identity_ops_wal_archive_duration_seconds`，不输出WAL名/路径。严格核对规范目录及祖先、预期设备号、指针与对象不可变回执完全一致、manifest仅`wal.age`、实际size/流式SHA，错误输出check0与当前attempt；不从mtime或重试推造新完成时间。
 
 Worker新增真实`pg_stat_archiver`聚合指标（job identity-worker）：enabled、archived_total、archive_failures_total、last_archived/last_failed Unix秒、stats_reset时间。NULL初始时间=0是明确缺历史状态，SQL权限/连接错误不会变成零成功。总规则现25条，原20个host场景另新增11个WAL场景：失败未恢复/disabled/missing/future/duration边界和idle旧观察仅warning。最后成功段超过900秒持续5分钟发“待调查”warning，不将空闲数据库直接判RPO；最后失败晚于成功持续1分钟critical。采集器停止仍由attempt时间检测，pg_archive_timeout300s不是空闲心跳。
+
+## 采集调度与本地接收链
+
+新增[collector service](../../infra/ops/systemd/identity-ops-metrics.service)和[timer](../../infra/ops/systemd/identity-ops-metrics.timer)供部署评审。服务通过受控EnvironmentFile运行Node，ProtectSystem=strict/NoNewPrivileges/PrivateTmp，只允许写textfile目录；同一systemd unit运行中不会启动第二实例，140秒超时覆盖并行两个120秒摘要检查及TLS。每分钟Calendar调度与Persistent示例已用systemd-analyze校验，未安装生产调度。部署前修订实际service用户、metrics可读group、受控备份读取权限、挂载路径和Node绝对路径。
+
+[Prometheus配置](../../infra/ops/prometheus.yaml)已加入固定job identity-ops与私网identity-ops-exporter:9100，并连接identity-alertmanager:9093。部署需要实际私网DNS/服务与ACL；[Alertmanager模板](../../infra/ops/alertmanager.yaml.example)需要替换为受控receiver。模板没有虚构生产收件人或发送通知。
+
+[真实本地接收链](../evidence/T22/monitoring-chain/test-summary.md)已执行collector→node_exporter→Prometheus→Alertmanager→回环HTTPreceiver。检查实际健康scrape、缺WALreceipt的pending、原for:1m后firing、恢复resolved；规则原文未改，实验scrape/evaluation改1s而生产15s。本地密文输入明确合成，实际age/TLS/statfs和SHA校验不能冒成PG备份/RPO。正式发送到运维接收端、实际调度/抓取故障、静默/抑制与空间/时钟/14天恢复历史继续实测。
